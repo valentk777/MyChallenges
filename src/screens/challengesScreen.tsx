@@ -1,6 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useContext, useState} from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
+import {
+    FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator
+} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {PressableTile} from '../components/Tile/PressableTile';
 import {globalChallengesDB} from '../database/challengesDB';
@@ -11,27 +13,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type ChallengesScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenges'>;
 
 export const ChallengesScreen = (props: ChallengesScreenProps) => {
-
-  async function readData() {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      const result = await AsyncStorage.multiGet(keys);
-      const data = result.map((req) => JSON.parse(req[1]))
-      if (data !== null) {
-        setInput(data);
-      }
-    } catch (error) {
-      alert(error)
-    }
-  }
-
-  const [challengesFromStorage, setInput] = useState('');
+  const [challengesFromStorage, setDataSource] = useState('');
+  const [refreshing, setRefreshing] = useState(true);
   const {theme} = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  React.useEffect(() => {
+  useEffect(() => {
     readData();
   }, []);
+
+    async function readData() {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        const result = await AsyncStorage.multiGet(keys);
+        const data = result.map((req) => JSON.parse(req[1]))
+
+        if (data !== null) {
+          setRefreshing(false);
+          setDataSource(data);
+        }
+      } catch (error) {
+        alert(error)
+      }
+    }
+
+    const onRefresh = () => {
+      setDataSource([]);
+      readData();
+    };
 
   const renderItem = ({item}: {item: Challenge}) => {
     return (
@@ -45,6 +54,7 @@ export const ChallengesScreen = (props: ChallengesScreenProps) => {
 
   return (
     <SafeAreaView style={styles.global}>
+      {refreshing ? <ActivityIndicator /> : null}
       <FlatList
         data={challengesFromStorage}
         renderItem={renderItem}
@@ -53,6 +63,9 @@ export const ChallengesScreen = (props: ChallengesScreenProps) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         columnWrapperStyle={styles.columns}
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
       />
     </SafeAreaView>
   );

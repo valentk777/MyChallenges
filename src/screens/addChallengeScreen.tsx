@@ -118,10 +118,11 @@ const createStyles = (theme: typeof customTheme) => {
     },
     textbox: {
       marginBottom: 15,
-      marginLeft: 30,
-      marginRight: 30,
+      marginLeft: 20,
+      marginRight: 20,
       fontSize: 20,
-      backgroundColor: theme.colors.secondary,
+      backgroundColor: theme.colors.input,
+      borderRadius: 10,
     },
     buttonContainer: {
       marginTop: 70,

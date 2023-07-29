@@ -46,6 +46,8 @@ const createStyles = (theme: typeof customTheme) => {
       fontSize: 40,
       lineHeight: 50,
       fontWeight: 'bold',
+      fontFamily: theme.text.fontFamily,
+      color: theme.colors.text,
     },
   });
   return styles;

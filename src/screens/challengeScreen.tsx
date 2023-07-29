@@ -61,22 +61,27 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      marginTop: 15,
-      marginBottom: 15,
+      paddingTop: 20,
+      backgroundColor: theme.colors.background,
+      height: '100%'
     },
     tileContainer: {
       alignItems: 'center',
       height: '55%',
+      marginBottom: 15,
     },
     quantityContainer: {
-      height: '20%',
+      paddingTop: 10,
+      alignItems: 'center',
+      height: '25%',
     },
     text: {
-      marginLeft: 30,
-      fontSize: 20,
+      fontSize: 25,
+      fontFamily: theme.text.fontFamily,
+      fontWeight: 'bold',
+      color: theme.colors.text,
     },
     buttonContainer: {
-      height: '25%',
       marginRight: 20,
       marginLeft: 20,
     },

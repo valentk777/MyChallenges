@@ -1,7 +1,6 @@
 const palette = {
   darkGreen: '#5F7161',
   green: '#6D8B74',
-  lightGrey: '#EFEAD8',
   grey: '#D0C9C0',
   white: '#FFFFFF',
 };
@@ -12,11 +11,12 @@ export const customTheme = {
     secondary: palette.green,
     background: palette.darkGreen,
     primaryButton: palette.green,
-    secondaryButton: palette.lightGrey,
+    secondaryButton: palette.grey,
     border: palette.green,
     card: palette.grey,
     text: palette.grey,
     notification: palette.grey,
+    input: palette.green,
   },
   spacing: {
     s: 8,

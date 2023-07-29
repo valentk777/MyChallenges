@@ -25,29 +25,29 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       borderWidth: 2,
-      borderRadius: 3,
+      borderRadius: 10,
+      backgroundColor: theme.colors.secondary,
+      borderColor: theme.colors.border,
       width: '90%',
       height: '100%',
-    },
-    label: {
-      fontSize: 20,
-      paddingLeft: 10,
-      paddingTop: 10,
+      alignItems: 'center',
     },
     title: {
-      fontSize: 20,
-      color: 'black',
+      fontSize: 25,
+      color: theme.colors.text,
       fontWeight: 'bold',
       paddingLeft: 10,
     },
     description: {
-      fontSize: 20,
-      color: 'black',
+      fontFamily: theme.text.fontFamily,
+      fontSize: 18,
+      color: theme.colors.text,
       paddingLeft: 10,
     },
     image: {
       width: '100%',
-      height: '70%',
+      height: '65%',
+      borderRadius: 10,
     },
   });
 

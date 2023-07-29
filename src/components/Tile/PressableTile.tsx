@@ -25,7 +25,7 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       borderWidth: 2,
-      borderRadius: 3,
+      borderRadius: 10,
       width: 170,
       height: 200,
       backgroundColor: theme.colors.secondary,
@@ -40,6 +40,7 @@ const createStyles = (theme: typeof customTheme) => {
     image: {
       width: '100%',
       height: '60%',
+      borderRadius: 10,
     },
   });
 
