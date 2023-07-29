@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import {RootStackParamList} from '../../App';
 import {PressableTile} from '../components/Tile/PressableTile';
@@ -10,29 +10,29 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ChallengesScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenges'>;
 
-// const importData = async () => {
-//   try {
-//     const keys = await AsyncStorage.getAllKeys();
-//     const result = await AsyncStorage.multiGet(keys);
-//
-// //     alert([ JSON.parse(jsonValue)])
-// //     return [ JSON.parse(jsonValue)]
-//
-//     // cccc, xsxs
-//     return result.map((req) => JSON.parse(req[1]));
-//   } catch (error) {
-//     alert(error)
-//   }
-// }
+export const ChallengesScreen = (props: ChallengesScreenProps) => {
 
-export const ChallengesScreen = async (props: ChallengesScreenProps) => {
+  async function readData() {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const result = await AsyncStorage.multiGet(keys);
+      const data = result.map((req) => JSON.parse(req[1]))
+      if (data !== null) {
+        setInput(data);
+      }
+    } catch (error) {
+      alert(error)
+    }
+  }
+
+  const [challengesFromStorage, setInput] = useState('');
   const {theme} = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-//   const allChallenger = await importData();
+  React.useEffect(() => {
+    readData();
+  }, []);
 
-//     alert(allChallenger);
-//     alert(globalChallengesDB);
   const renderItem = ({item}: {item: Challenge}) => {
     return (
       <PressableTile
@@ -46,7 +46,7 @@ export const ChallengesScreen = async (props: ChallengesScreenProps) => {
   return (
     <SafeAreaView style={styles.global}>
       <FlatList
-        data={globalChallengesDB}
+        data={challengesFromStorage}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         numColumns={2}

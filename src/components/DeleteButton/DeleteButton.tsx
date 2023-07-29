@@ -2,13 +2,24 @@ import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../contexts/themeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface DeleteButtonProps {
   challenge: Challenge;
 }
 
+removeValueOnPress = async (challenge : Challenge, redirect) => {
+  try {
+    await AsyncStorage.removeItem(challenge.id);
+    redirect();
+  } catch(e) {
+    alert("Error removing item");
+    alert(e);
+  }
+}
+
 export const DeleteButton = (props: DeleteButtonProps) => {
-  const {onPress} = props;
+  const {challenge, onPress} = props;
 
   const {theme} = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -16,7 +27,7 @@ export const DeleteButton = (props: DeleteButtonProps) => {
   return (
     <View style={styles.container}>
       <Pressable>
-        <Icon name="delete" onPress={onPress} size={40} />
+        <Icon name="delete" onPress={async () => removeValueOnPress(challenge, onPress)} size={40} />
       </Pressable>
     </View>
   );

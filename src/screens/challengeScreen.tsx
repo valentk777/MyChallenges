@@ -6,6 +6,7 @@ import {Button, ButtonTypes} from '../components/ButtonWrapper/ButtonWrapper';
 import {Quantity} from '../components/Quantity/Quantity';
 import {Tile} from '../components/Tile/Tile';
 import {ThemeContext} from '../contexts/themeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenge'>;
 
@@ -17,29 +18,30 @@ const storeData = async (value: Challenge) => {
     return true;
   } catch (e) {
     alert("error saving to storage");
+    alert(e);
     return false;
   }
 };
 
-const onSave = (challenge: Challenge, newValue: int, props) => {
-  challengeCandidate.currentValue = newValue;
+const onSave = async (challenge: Challenge, newValue: int, props) => {
+  challenge.currentValue = newValue;
 
-  const result = storeData(challengeCandidate);
+  const result = await storeData(challenge);
 
   if (result) {
     props.navigation.push('Challenges');
   }
 }
 
-export const ChallengeScreen = ({route}: ChallengeScreenProps) => {
-  const [newCount, setCount] = useState(route.params.challenge.currentValue);
+export const ChallengeScreen = (props: ChallengeScreenProps) => {
+  const [newCount, setCount] = useState(props.route.params.challenge.currentValue);
   const {theme} = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   return (
     <View style={styles.container}>
       <View style={styles.tileContainer}>
-        <Tile challenge={route.params.challenge} />
+        <Tile challenge={props.route.params.challenge} />
       </View>
       <View style={styles.quantityContainer}>
         <Text style={styles.text}>Quantity</Text>
@@ -49,7 +51,7 @@ export const ChallengeScreen = ({route}: ChallengeScreenProps) => {
         <Button
           type={ButtonTypes.Primary}
           title="Save"
-          onPress={() => onSave(route.params.challenge, newCount, props)}
+          onPress={async () => onSave(props.route.params.challenge, newCount, props)}
         />
       </View>
     </View>

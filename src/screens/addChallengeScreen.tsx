@@ -24,7 +24,7 @@ const storeData = async (value: Challenge) => {
 };
 
 // TODO: move to shared component
-const onSave = (title, description, targetValue, props) => {
+const onSave = async (title, description, targetValue, props) => {
   if (title === "") {
     alert("Title cannot be empty");
     return false;
@@ -39,7 +39,7 @@ const onSave = (title, description, targetValue, props) => {
   challengeCandidate.targetValue = targetValue;
   challengeCandidate.image = getRandomImage();
 
-  const result = storeData(challengeCandidate);
+  const result = await storeData(challengeCandidate);
 
   if (result) {
     props.navigation.push('Challenges');
@@ -71,21 +71,21 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Challenge title</Text>
+      <Text style={styles.text}>Displayed title</Text>
       <TextInput
-        style={styles.text}
+        style={styles.textbox}
         onChangeText={onChangeTitleText}
         value={title}
       />
-      <Text style={styles.text}>Challenge description</Text>
+      <Text style={styles.text}>Short description</Text>
       <TextInput
-        style={styles.text}
+        style={styles.textbox}
         onChangeText={onChangeDescriptionText}
         value={description}
       />
-    <Text style={styles.text}>Challenge target value</Text>
+    <Text style={styles.text}>Target numeric value</Text>
     <TextInput
-        style={styles.text}
+        style={styles.textbox}
         onChangeText={onChangeTargetValueText}
         value={targetValue}
         keyboardType="numeric"
@@ -95,7 +95,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
         <Button
           type={ButtonTypes.Primary}
           title="Save"
-          onPress={() => onSave(title, description, targetValue, props)}
+          onPress={async () => onSave(title, description, targetValue, props)}
         />
       </View>
     </View>
@@ -105,17 +105,26 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      marginTop: 15,
-      marginBottom: 15,
       height: '100%',
       backgroundColor: theme.colors.primary,
     },
     text: {
+      marginTop: 10,
       marginLeft: 30,
       fontSize: 20,
+      fontFamily: theme.text.fontFamily,
+      fontWeight: 'bold',
+      color: theme.colors.text,
+    },
+    textbox: {
+      marginBottom: 15,
+      marginLeft: 30,
+      marginRight: 30,
+      fontSize: 20,
+      backgroundColor: theme.colors.secondary,
     },
     buttonContainer: {
-      height: '25%',
+      marginTop: 70,
       marginRight: 20,
       marginLeft: 20,
     },
