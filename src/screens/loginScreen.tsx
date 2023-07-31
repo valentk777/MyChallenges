@@ -1,11 +1,12 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useContext} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import {RootStackParamList} from '../../App';
-import Icon from 'react-native-vector-icons/Feather';
-import {useAuthorizationContext} from '../contexts/authorizationContext';
-import {Button, ButtonTypes} from '../components/ButtonWrapper/ButtonWrapper';
-import {ThemeContext} from '../contexts/themeContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { RootStackParamList } from '../../App';
+import { useAuthorizationContext } from '../contexts/authorizationContext';
+import { Button, ButtonTypes } from '../components/ButtonWrapper/ButtonWrapper';
+import { ThemeContext } from '../contexts/themeContext';
+import { customTheme } from '../styles/customTheme';
+import LinearGradient from 'react-native-linear-gradient'
 
 interface LoginScreenProps
   extends NativeStackScreenProps<RootStackParamList, 'Login'> {
@@ -13,26 +14,36 @@ interface LoginScreenProps
 }
 
 export const LoginScreen = (props: LoginScreenProps) => {
-  const {signIn} = useAuthorizationContext();
-  const {theme} = useContext(ThemeContext);
+  const { signIn } = useAuthorizationContext();
+  const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   return (
     <View style={styles.global}>
-      <View style={styles.section}>
-        <Icon name="lock" size={70} color="#000" />
-        <Text style={styles.text}>Login</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          type={ButtonTypes.Primary}
-          title="Show my challenges"
-          onPress={() => {
-            signIn();
-          }}
-        />
-      </View>
-    </View>
+      <LinearGradient
+        colors={styles.linearGradient.colors}
+        style={styles.linearGradient}
+      >
+        <View style={styles.section}>
+          {/* <View style={[{borderWidth:0, borderRadius:35},styles.dropShadow]}> */}
+          <Image
+            style={styles.image}
+            source={require('./../assets/logo_500x500.png')}
+          />
+          {/* </View> */}
+          <Text style={styles.text}>Challenge tracker</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            type={ButtonTypes.Primary}
+            title="Show my challenges"
+            onPress={() => {
+              signIn();
+            }}
+          />
+        </View>
+      </LinearGradient>
+    </View >
   );
 };
 
@@ -42,10 +53,27 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.primary,
       height: '100%'
     },
+    linearGradient: {
+      height: '100%',
+      colors: [theme.colors.primary, theme.colors.secondary]
+    },
+    // dropShadow:{
+    //   shadowColor: '#d86a1b',
+    //   shadowOpacity: 0.2,
+    //   shadowRadius: 1,
+    //   elevation: 200,
+    // },
     section: {
       alignItems: 'center',
       justifyContent: 'center',
-      height: '60%',
+      height: '70%',
+    },
+    image: {
+      width: '40%',
+      height: undefined,
+      aspectRatio: 1 / 1,
+      // borderColor: '#d86a1b',
+      // borderWidth: 5,
     },
     text: {
       fontSize: 20,
@@ -53,7 +81,7 @@ const createStyles = (theme: typeof customTheme) => {
       fontFamily: theme.text.fontFamily,
       fontWeight: 'bold',
       color: theme.colors.text,
-      marginTop: 10,
+      marginTop: 30,
     },
     buttonContainer: {
       margin: 20,

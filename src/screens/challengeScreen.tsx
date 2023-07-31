@@ -7,6 +7,8 @@ import {Quantity} from '../components/Quantity/Quantity';
 import {Tile} from '../components/Tile/Tile';
 import {ThemeContext} from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Challenge } from '../entities/challenge';
+import { customTheme } from '../styles/customTheme';
 
 type ChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenge'>;
 
@@ -29,7 +31,7 @@ const onSave = async (challenge: Challenge, newValue: int, props) => {
   const result = await storeData(challenge);
 
   if (result) {
-    props.navigation.push('Challenges');
+    props.navigation.navigate('Challenges');
   }
 }
 
@@ -40,11 +42,16 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
 
   return (
     <View style={styles.container}>
+
+
+
+
+      
       <View style={styles.tileContainer}>
         <Tile challenge={props.route.params.challenge} />
       </View>
       <View style={styles.quantityContainer}>
-        <Text style={styles.text}>Quantity</Text>
+        {/* <Text style={styles.text}>Quantity</Text> */}
         <Quantity count={newCount} setCount={setCount} />
       </View>
       <View style={styles.buttonContainer}>
@@ -75,12 +82,12 @@ const createStyles = (theme: typeof customTheme) => {
       alignItems: 'center',
       height: '25%',
     },
-    text: {
-      fontSize: 25,
-      fontFamily: theme.text.fontFamily,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-    },
+    // text: {
+    //   fontSize: 25,
+    //   fontFamily: theme.text.fontFamily,
+    //   fontWeight: 'bold',
+    //   color: theme.colors.text,
+    // },
     buttonContainer: {
       marginRight: 20,
       marginLeft: 20,

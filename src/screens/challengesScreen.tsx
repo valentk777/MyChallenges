@@ -1,18 +1,19 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useContext, useState, useEffect} from 'react';
 import {
-    FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator
+    FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator, StatusBar
 } from 'react-native';
-import {RootStackParamList} from '../../App';
+import {HomeStackParamList} from '../../App';
 import {PressableTile} from '../components/Tile/PressableTile';
 import {globalChallengesDB} from '../database/challengesDB';
 import {Challenge} from '../entities/challenge';
 import {ThemeContext} from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { customTheme } from '../styles/customTheme';
 
-type ChallengesScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenges'>;
+type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenges'>;
 
-export const ChallengesScreen = (props: ChallengesScreenProps) => {
+export const ChallengesScreen = ({navigation}: ChallengesScreenProps) => {
   const [challengesFromStorage, setDataSource] = useState('');
   const [refreshing, setRefreshing] = useState(true);
   const {theme} = useContext(ThemeContext);
@@ -42,13 +43,27 @@ export const ChallengesScreen = (props: ChallengesScreenProps) => {
       readData();
     };
 
-  const renderItem = ({item}: {item: Challenge}) => {
+    const getColor = (index: number) => {
+      if(index % 3 === 0) {
+        return theme.colors.tile1;
+      }
+
+      if(index % 3 === 1) {
+        return theme.colors.tile2;
+      }
+
+      return theme.colors.tile3;
+    }
+    
+  const renderItem = (item: Challenge, index: number) => {
+    const color = getColor(index);
+
     return (
       <PressableTile
         title={item.title}
         challenge={item}
-        onPress={() => props.navigation.push('Challenge', {challenge: item})}
-      />
+        color={color}
+        onPress={() => navigation.navigate('Challenge', { challenge: item })}/>
     );
   };
 
@@ -57,12 +72,12 @@ export const ChallengesScreen = (props: ChallengesScreenProps) => {
       {refreshing ? <ActivityIndicator /> : null}
       <FlatList
         data={challengesFromStorage}
-        renderItem={renderItem}
+        renderItem={({item, index}) => renderItem(item, index)}
         keyExtractor={item => item.id}
-        numColumns={2}
+        numColumns={1}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        columnWrapperStyle={styles.columns}
+        // contentContainerStyle={{flexGrow: 10, justifyContent: 'center'}}
         refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -75,7 +90,10 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     global: {
       backgroundColor: theme.colors.background,
-      height: '100%'
+      height: '100%',
+    },
+    flatList: {
+
     },
     columns: {
       justifyContent: 'space-around',
@@ -86,5 +104,4 @@ const createStyles = (theme: typeof customTheme) => {
 
   return styles;
 };
-
 

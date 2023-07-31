@@ -1,21 +1,23 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, Image, ButtonProps, Pressable} from 'react-native';
-import {Challenge} from '../../entities/challenge';
-import {ThemeContext} from '../../contexts/themeContext';
+import React, { useContext } from 'react';
+import { StyleSheet, Text, Image, ButtonProps, Pressable } from 'react-native';
+import { Challenge } from '../../entities/challenge';
+import { ThemeContext } from '../../contexts/themeContext';
+import { customTheme } from '../../styles/customTheme';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
+  color: string
 }
 
 export const PressableTile = (props: TileProps) => {
-  const {onPress, challenge} = props;
+  const { onPress, challenge, color } = props;
 
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-
+  
   return (
-    <Pressable style={styles.container} onPress={onPress}>
-      <Image style={styles.image} source={{uri: challenge.image}} />
+    <Pressable style={[{ backgroundColor: color, borderColor: color }, styles.container]} onPress={onPress}>
+      <Image style={styles.image} source={{ uri: challenge.image }} />
       <Text style={styles.title}>{challenge.title}</Text>
     </Pressable>
   );
@@ -25,14 +27,12 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       borderWidth: 2,
-      borderRadius: 10,
-      width: 170,
-      height: 200,
-      backgroundColor: theme.colors.secondary,
-      borderColor: theme.colors.border,
+      borderRadius: 5,
+      width: '90%',
+      height: 150,
     },
     title: {
-      fontSize: 20,
+      fontSize: 15,
       fontFamily: theme.text.fontFamily,
       color: theme.colors.text,
       paddingLeft: 10,
@@ -40,7 +40,7 @@ const createStyles = (theme: typeof customTheme) => {
     image: {
       width: '100%',
       height: '60%',
-      borderRadius: 10,
+      borderRadius: 5,
     },
   });
 

@@ -1,15 +1,15 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState, useContext} from 'react';
-import {Alert, StyleSheet, Text, View, TextInput} from 'react-native';
-import {RootStackParamList} from '../../App';
-import {Button, ButtonTypes} from '../components/ButtonWrapper/ButtonWrapper';
-import {Quantity} from '../components/Quantity/Quantity';
-import {Tile} from '../components/Tile/Tile';
-import {ThemeContext} from '../contexts/themeContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { HomeStackParamList } from '../../App';
+import { Button, ButtonTypes } from '../components/ButtonWrapper/ButtonWrapper';
+import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import { Challenge } from '../entities/challenge';
+import { customTheme } from '../styles/customTheme';
 
-type AddChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'AddChallenge'>;
+type AddChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'AddChallenge'>;
 
 // TODO: move to shared component
 const storeData = async (value: Challenge) => {
@@ -47,22 +47,22 @@ const onSave = async (title, description, targetValue, props) => {
 }
 
 function getRandomImage() {
-    const images = [
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
-        'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
-    ]
-    const imageId = Math.floor(Math.random() * 100) % 7;
+  const images = [
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
+  ]
+  const imageId = Math.floor(Math.random() * 100) % 7;
 
-    return images[imageId];
+  return images[imageId];
 }
 
 export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   const [title, onChangeTitleText] = useState('');
@@ -83,8 +83,8 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
         onChangeText={onChangeDescriptionText}
         value={description}
       />
-    <Text style={styles.text}>Target numeric value</Text>
-    <TextInput
+      <Text style={styles.text}>Target numeric value</Text>
+      <TextInput
         style={styles.textbox}
         onChangeText={onChangeTargetValueText}
         value={targetValue}
@@ -132,7 +132,3 @@ const createStyles = (theme: typeof customTheme) => {
   });
   return styles;
 };
-
-
-
-
