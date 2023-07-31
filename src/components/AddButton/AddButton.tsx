@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeContext} from '../../contexts/themeContext';
+import { customTheme } from '../../styles/customTheme';
 
 interface AddButtonProps { }
 
@@ -14,7 +15,7 @@ export const AddButton = (props: AddButtonProps) => {
   return (
     <View style={styles.container}>
       <Pressable>
-        <Icon name="plus" onPress={onPress} size={40} />
+        <Icon name="user-plus" onPress={onPress} size={20} />
       </Pressable>
     </View>
   );

@@ -1,16 +1,17 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState, useContext} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import {RootStackParamList} from '../../App';
-import {Button, ButtonTypes} from '../components/ButtonWrapper/ButtonWrapper';
-import {Quantity} from '../components/Quantity/Quantity';
-import {Tile} from '../components/Tile/Tile';
-import {ThemeContext} from '../contexts/themeContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useState, useContext } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { HomeStackParamList } from '../../App';
+import { SaveButton, ButtonTypes } from '../components/ButtonWrapper/ButtonWrapper';
+import { Quantity } from '../components/Quantity/Quantity';
+import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
+import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
+import LinearGradient from 'react-native-linear-gradient'
 
-type ChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenge'>;
+type ChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenge'>;
 
 // TODO: move to shared component
 const storeData = async (value: Challenge) => {
@@ -25,9 +26,8 @@ const storeData = async (value: Challenge) => {
   }
 };
 
-const onSave = async (challenge: Challenge, newValue: int, props) => {
-  challenge.currentValue = newValue;
-
+// todo: remove and update or up
+const onSave = async (challenge: Challenge, props) => {
   const result = await storeData(challenge);
 
   if (result) {
@@ -37,28 +37,33 @@ const onSave = async (challenge: Challenge, newValue: int, props) => {
 
 export const ChallengeScreen = (props: ChallengeScreenProps) => {
   const [newCount, setCount] = useState(props.route.params.challenge.currentValue);
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+
+  function setCounterWithUpdate(value: number) {
+    setCount(value);
+    props.route.params.challenge.currentValue = value;
+  }
 
   return (
     <View style={styles.container}>
-
-
-
-
-      
-      <View style={styles.tileContainer}>
-        <Tile challenge={props.route.params.challenge} />
+      <View style={styles.animationContainer}>
+        <LinearGradient
+        start={{ x: 0.9, y: 0 }}
+          colors={styles.linearGradient.colors}
+          locations={[0, 0.6, 1]}
+          style={styles.linearGradient}
+        >
+          <NumericProgressTile challenge={props.route.params.challenge} />
+        </LinearGradient>
       </View>
-      <View style={styles.quantityContainer}>
-        {/* <Text style={styles.text}>Quantity</Text> */}
-        <Quantity count={newCount} setCount={setCount} />
+      <View style={styles.dataContainer}>
+        <Quantity count={newCount} setCount={setCounterWithUpdate} />
       </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          type={ButtonTypes.Primary}
+      <View style={styles.saveContainer}>
+        <SaveButton
           title="Save"
-          onPress={async () => onSave(props.route.params.challenge, newCount, props)}
+          onPress={async () => onSave(props.route.params.challenge, props)}
         />
       </View>
     </View>
@@ -68,19 +73,26 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      paddingTop: 20,
-      backgroundColor: theme.colors.background,
-      height: '100%'
+      // paddingTop: 20,
+      backgroundColor: theme.colors.white,
+      height: '100%',
     },
-    tileContainer: {
+    animationContainer: {
       alignItems: 'center',
-      height: '55%',
-      marginBottom: 15,
+      height: '60%',
+      width: '100%',
     },
-    quantityContainer: {
-      paddingTop: 10,
+    linearGradient: {
+      height: '100%',
+      width: '100%',
+      borderBottomLeftRadius: 30,
+      borderBottomRightRadius: 30,
+      colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary],
+    },
+    dataContainer: {
+      // paddingTop: 10,
       alignItems: 'center',
-      height: '25%',
+      height: '32%',
     },
     // text: {
     //   fontSize: 25,
@@ -88,9 +100,10 @@ const createStyles = (theme: typeof customTheme) => {
     //   fontWeight: 'bold',
     //   color: theme.colors.text,
     // },
-    buttonContainer: {
-      marginRight: 20,
-      marginLeft: 20,
+    saveContainer: {
+      // marginRight: 20,
+      // marginLeft: 20,
+      height: '8%',
     },
   });
   return styles;

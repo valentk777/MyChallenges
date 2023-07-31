@@ -1,13 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import { HomeStackParamList } from '../../App';
-import { Button, ButtonTypes } from '../components/ButtonWrapper/ButtonWrapper';
+import { Button, ButtonTypes, SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
+import LinearGradient from 'react-native-linear-gradient'
 
 type AddChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'AddChallenge'>;
 
@@ -30,6 +31,11 @@ const onSave = async (title, description, targetValue, props) => {
     return false;
   }
 
+  if (targetValue === 0) {
+    alert("Target value cannot be 0");
+    return false;
+  }
+
   const challengeCandidate = {} as Challenge;
   challengeCandidate.id = uuid.v4();
   challengeCandidate.title = title;
@@ -42,7 +48,7 @@ const onSave = async (title, description, targetValue, props) => {
   const result = await storeData(challengeCandidate);
 
   if (result) {
-    props.navigation.push('Challenges');
+    props.navigation.navigate('Challenges');
   }
 }
 
@@ -69,35 +75,46 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
   const [description, onChangeDescriptionText] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
 
+  const image = getRandomImage();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Displayed title</Text>
-      <TextInput
-        style={styles.textbox}
-        onChangeText={onChangeTitleText}
-        value={title}
-      />
-      <Text style={styles.text}>Short description</Text>
-      <TextInput
-        style={styles.textbox}
-        onChangeText={onChangeDescriptionText}
-        value={description}
-      />
-      <Text style={styles.text}>Target numeric value</Text>
-      <TextInput
-        style={styles.textbox}
-        onChangeText={onChangeTargetValueText}
-        value={targetValue}
-        keyboardType="numeric"
-      />
+      <LinearGradient
+        colors={styles.linearGradient.colors}
+        style={styles.linearGradient}
+      >
+          <View style={styles.inputBox}>
+          <View style={styles.inputContaine}>
+            <Image style={styles.image} source={{ uri: image }} />
 
-      <View style={styles.buttonContainer}>
-        <Button
-          type={ButtonTypes.Primary}
-          title="Save"
-          onPress={async () => onSave(title, description, targetValue, props)}
-        />
-      </View>
+            <Text style={styles.text}>Displayed title</Text>
+            <TextInput
+              style={styles.textbox}
+              onChangeText={onChangeTitleText}
+              value={title}
+            />
+            <Text style={styles.text}>Short description</Text>
+            <TextInput
+              style={styles.textbox}
+              onChangeText={onChangeDescriptionText}
+              value={description}
+            />
+            <Text style={styles.text}>Target numeric value</Text>
+            <TextInput
+              style={styles.textbox}
+              onChangeText={onChangeTargetValueText}
+              value={targetValue}
+              keyboardType="numeric"
+            />
+          </View>
+        </View>
+        <View style={styles.saveContainer}>
+          <SaveButton
+            title="Save"
+            onPress={async () => onSave(title, description, targetValue, props)}
+          />
+        </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -108,26 +125,68 @@ const createStyles = (theme: typeof customTheme) => {
       height: '100%',
       backgroundColor: theme.colors.primary,
     },
+    linearGradient: {
+      height: '100%',
+      colors: [theme.colors.primary, theme.colors.secondary],
+    },
+    inputBox: {
+      height: '92%',
+      alignItems: 'center',
+    },
+    inputContaine: {
+      width: '90%',
+      height: '85%',
+      // alignItems: 'center',
+      // marginTop: 10,
+      // marginBottom: 10,
+
+      marginTop: 50,
+      // marginBottom: 100,
+      backgroundColor: theme.colors.white,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+    image: {
+      width: '100%',
+      height: '30%',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      // marginTop: 10,
+      // marginLeft: 30,
+      // fontSize: 15,
+      // fontFamily: theme.text.fontFamily,
+      // fontWeight: 'bold',
+      // color: theme.colors.black,
+    },
     text: {
-      marginTop: 10,
-      marginLeft: 30,
-      fontSize: 20,
+      paddingLeft: 30,
+      paddingTop: 25,
+      paddingBottom: 5,
+      // marginTop: 10,
+      // marginLeft: 30,
+      fontSize: 15,
       fontFamily: theme.text.fontFamily,
       fontWeight: 'bold',
-      color: theme.colors.text,
+      color: theme.colors.black,
     },
     textbox: {
-      marginBottom: 15,
-      marginLeft: 20,
-      marginRight: 20,
-      fontSize: 20,
+      marginLeft: 30,
+      // marginBottom: 15,
+      // marginLeft: 20,
+      // marginRight: 20,
+      // fontSize: 20,
+      width: '85%',
       backgroundColor: theme.colors.input,
-      borderRadius: 10,
+      borderRadius: 5,
+      fontFamily: theme.text.fontFamily,
+      fontSize: 13,
+      color: theme.colors.white,
+      // borderRadius: 10,
     },
-    buttonContainer: {
-      marginTop: 70,
-      marginRight: 20,
-      marginLeft: 20,
+    saveContainer: {
+      // marginRight: 20,
+      // marginLeft: 20,
+      height: '8%',
     },
   });
   return styles;

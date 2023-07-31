@@ -31,7 +31,7 @@ export type HomeStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator<HomeStackParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 const App = () => {
   return (
@@ -43,46 +43,45 @@ const App = () => {
   );
 };
 
-function HomeStack() {
+function HomeStackComponent() {
   const { isDarkMode, theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <Tab.Navigator
+    <HomeStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: theme.colors.secondary,
         },
         headerTitleAlign: 'center',
-
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         tabBarActiveBackgroundColor: theme.colors.secondary,
         tabBarInactiveBackgroundColor: theme.colors.secondary,
       }}>
-      <Tab.Screen
+      <HomeStack.Screen
         name="Challenges"
         component={ChallengesScreen}
-        // options={({ navigation }) => ({
-        //   headerRight: () => (
-        //     <AddButton onPress={() => navigation.navigate('Create new challenge')} />
-        //   ),
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <AddButton onPress={() => navigation.navigate('Create new challenge')} />
+          ),
           // headerLeft: () => (
           //   <Image
           //   source={require('./src/assets/logo_500x500.png')}
           // />
           // ),
-        // })}
+        })}
       />
-      <Tab.Screen
+      <HomeStack.Screen
         name="Challenge"
         component={ChallengeScreen}
         options={{
-          headerShown: false,
+          // headerShown: false,
           // tabBarIcon: ({ focused, size }) => null, // Hide the icon
-          tabBarButton: () => null, // Hide the tab bar button
+          // tabBarButton: () => null, // Hide the tab bar button
         }}
       />
-      <Tab.Screen
+      <HomeStack.Screen
         name="Create new challenge"
         component={AddChallengeScreen}
       />
@@ -90,7 +89,7 @@ function HomeStack() {
         name="User"
         component={UserScreen}
       /> */}
-    </Tab.Navigator>
+    </HomeStack.Navigator>
   );
 }
 
@@ -111,7 +110,7 @@ export const AppComponent = () => {
           <>
             <Stack.Screen
               name="Home"
-              component={HomeStack}
+              component={HomeStackComponent}
               options={{
                 headerShown: false,
               }}
@@ -126,6 +125,15 @@ export const AppComponent = () => {
                 headerShown: false,
               }}
             />
+                  <Stack.Screen
+        name="Challenge"
+        component={ChallengeScreen}
+        options={{
+          headerShown: false,
+          // tabBarIcon: ({ focused, size }) => null, // Hide the icon
+          // tabBarButton: () => null, // Hide the tab bar button
+        }}
+      />
           </>
         )}
       </Stack.Navigator>

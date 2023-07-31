@@ -1,7 +1,8 @@
-import React, {useContext} from 'react';
-import {ButtonProps, Pressable, StyleSheet, Text} from 'react-native';
-import {customTheme} from '../../styles/customTheme';
-import {ThemeContext} from '../../contexts/themeContext';
+import React, { useContext } from 'react';
+import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
+import { customTheme } from '../../styles/customTheme';
+import { ThemeContext } from '../../contexts/themeContext';
+import LinearGradient from 'react-native-linear-gradient'
 
 export enum ButtonTypes {
   Primary,
@@ -13,9 +14,9 @@ interface ExpandedButtonProps extends ButtonProps {
 }
 
 export const Button = (props: ExpandedButtonProps) => {
-  const {onPress, title, type} = props;
+  const { onPress, title, type } = props;
 
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   return (
@@ -34,6 +35,30 @@ export const Button = (props: ExpandedButtonProps) => {
         }>
         {title}
       </Text>
+    </Pressable>
+  );
+};
+
+export const SaveButton = (props: ButtonProps) => {
+  const { onPress, title } = props;
+
+  const { theme } = useContext(ThemeContext);
+  const styles = createStyles(theme);
+
+  return (
+    <Pressable
+      onPress={onPress}>
+      <LinearGradient
+        colors={styles.buttonSave.colors}
+        style={styles.buttonSave}
+      >
+        <Text
+          style={styles.textPrimary}>
+          {title}
+        </Text>
+
+      </LinearGradient>
+
     </Pressable>
   );
 };
@@ -70,6 +95,17 @@ const createStyles = (theme: typeof customTheme) => {
       fontWeight: 'bold',
       letterSpacing: 0.25,
       color: theme.colors.text,
+    },
+    buttonSave: {
+      height: '100%',
+      width: '100%',
+      colors: [theme.colors.primary, '#242c50', theme.colors.secondary],
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 5,
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      // borderWidth: 5,
     },
   });
   return styles;

@@ -18,10 +18,12 @@ export const customTheme = {
     card: palette.blue1,
     text: palette.white,
     notification: palette.blue1,
-    input: palette.darkBlue2,
+    input: palette.blue1,
     tile1: palette.blue1,
     tile2: palette.electric,
     tile3: palette.darkBlue3,
+    white: palette.white,
+    black: palette.darkBlue,
   },
   spacing: {
     s: 8,
