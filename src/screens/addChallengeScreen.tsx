@@ -123,7 +123,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      height: windowHeight - 80,
+      height: windowHeight - 50,
       backgroundColor: theme.colors.primary,
     },
     linearGradient: {

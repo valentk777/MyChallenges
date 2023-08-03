@@ -73,13 +73,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.challengetracker"
+    namespace "com.baitupasaulis.challengetracker"
     defaultConfig {
-        applicationId "com.challengetracker"
+        applicationId "com.baitupasaulis.challengetracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.1"
     }
     signingConfigs {
         release {
@@ -89,7 +89,7 @@ android {
                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
                 keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
-        },
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
