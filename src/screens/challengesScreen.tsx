@@ -110,9 +110,10 @@ const createStyles = (theme: typeof customTheme) => {
     flatList: {
       // flex: 1,
       // height: '100%',
-      alignItems: 'center',
+      // alignItems: 'center',
       marginTop: 10,
       marginBottom: 10,
+      marginLeft: '7%',
       // justifyContent: 'center',
     },
     // columns: {

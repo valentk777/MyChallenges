@@ -9,8 +9,12 @@ import uuid from 'react-native-uuid';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
+import {Dimensions} from 'react-native';
 
 type AddChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'AddChallenge'>;
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // TODO: move to shared component
 const storeData = async (value: Challenge) => {
@@ -25,7 +29,7 @@ const storeData = async (value: Challenge) => {
 };
 
 // TODO: move to shared component
-const onSave = async (title, description, targetValue, props) => {
+const onSave = async (title, description, targetValue, image, props) => {
   if (title === "") {
     alert("Title cannot be empty");
     return false;
@@ -39,11 +43,10 @@ const onSave = async (title, description, targetValue, props) => {
   const challengeCandidate = {} as Challenge;
   challengeCandidate.id = uuid.v4();
   challengeCandidate.title = title;
-  challengeCandidate.id = title;
   challengeCandidate.description = description;
   challengeCandidate.currentValue = 0;
   challengeCandidate.targetValue = targetValue;
-  challengeCandidate.image = getRandomImage();
+  challengeCandidate.image = image;
 
   const result = await storeData(challengeCandidate);
 
@@ -74,8 +77,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
-
-  const image = getRandomImage();
+  const [image, onChangeImageText] = useState(getRandomImage());
 
   return (
     <View style={styles.container}>
@@ -86,7 +88,6 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
           <View style={styles.inputBox}>
           <View style={styles.inputContaine}>
             <Image style={styles.image} source={{ uri: image }} />
-
             <Text style={styles.text}>Displayed title</Text>
             <TextInput
               style={styles.textbox}
@@ -111,7 +112,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
         <View style={styles.saveContainer}>
           <SaveButton
             title="Save"
-            onPress={async () => onSave(title, description, targetValue, props)}
+            onPress={async () => onSave(title, description, targetValue, image, props)}
           />
         </View>
       </LinearGradient>
@@ -122,7 +123,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      height: '100%',
+      height: windowHeight - 80,
       backgroundColor: theme.colors.primary,
     },
     linearGradient: {
