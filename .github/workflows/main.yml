@@ -3,7 +3,7 @@ name: "Build Android app"
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   install-and-test:
