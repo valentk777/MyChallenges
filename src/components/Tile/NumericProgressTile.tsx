@@ -8,16 +8,22 @@ import { ChallengeContext } from '../../views/challengeScreen';
 interface NumericProgressTileProps {
 }
 
-export const NumericProgressTile = (props: NumericProgressTileProps) => {
-  const {newValue, challenge} = useContext(ChallengeContext);
-  const { theme } = useContext(ThemeContext);
-  const styles = createStyles(theme);
-
-  let percentage = newValue / challenge.targetValue * 100;
-  percentage = Number(challenge.targetValue) === 0 || challenge.targetValue === undefined ? 0 : percentage;
+const getPercentage = (currentValue: number, targetValue: number) => {
+  let percentage = currentValue / targetValue * 100;
+  percentage = Number(targetValue) === 0 || targetValue === undefined ? 0 : percentage;
   percentage = percentage > 100 ? 100 : percentage;
   percentage = Math.floor(percentage);
 
+  return percentage;
+}
+
+export const NumericProgressTile = (props: NumericProgressTileProps) => {
+  const { newValue, challenge } = useContext(ChallengeContext);
+  const { theme } = useContext(ThemeContext);
+  const styles = createStyles(theme);
+  const percentage = getPercentage(newValue, challenge.targetValue);
+  const initialPercentage = getPercentage(challenge.currentValue, challenge.targetValue)
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{challenge.title}</Text>
@@ -27,7 +33,7 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
           titleStyle={{ fontSize: 13 }}
           radius={100}
           value={percentage}
-          initialValue={percentage}
+          initialValue={initialPercentage}
           valueSuffix={"%"}
           activeStrokeColor={styles.progress.activeStrokeColor}
           inActiveStrokeColor={styles.progress.inActiveStrokeColor}
