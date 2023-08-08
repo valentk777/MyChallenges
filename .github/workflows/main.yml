@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v3
+      - uses: gradle/gradle-build-action@v2
+        with:
+         gradle-version: 8.0.1
       - name: Install npm dependencies
         run: |
           npm install
