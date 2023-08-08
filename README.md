@@ -1,4 +1,6 @@
 # ChallengeTracker
+[![Build Android app](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml)
+
 This is a mobile app with ReactNative for creating and tracing your challenges
 
 ## Tech stack:
