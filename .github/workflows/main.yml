@@ -6,28 +6,27 @@ on:
       - main
 
 jobs:
-  install-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install npm dependencies
-        run: |
-          npm install
-          
   build-android:
-    needs: install-and-test
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@v3
-      - uses: gradle/gradle-build-action@v2
-        with:
-         gradle-version: 8.0.1
+      - name: Checkout the main GitHub branch
+        uses: actions/checkout@v3
+      
       - name: Install npm dependencies
         run: |
           npm install
-      - name: Build Android Release
+
+      - name: Build Android App
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: android
+          
+      - name: List versions
         run: |
-          cd android && ./gradlew bundleRelease
+          cd android
+          ./gradlew -version
+          
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
