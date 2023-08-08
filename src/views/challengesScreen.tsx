@@ -1,11 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useState, useEffect } from 'react';
 import {
-  FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator, StatusBar
+  FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator
 } from 'react-native';
 import { HomeStackParamList } from '../../App';
 import { PressableTile } from '../components/Tile/PressableTile';
-import { globalChallengesDB } from '../database/challengesDB';
 import { Challenge } from '../entities/challenge';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -113,7 +112,8 @@ const createStyles = (theme: typeof customTheme) => {
       // alignItems: 'center',
       marginTop: 10,
       marginBottom: 10,
-      marginLeft: '7%',
+      marginLeft: '5%',
+      marginRight: '5%',
       // justifyContent: 'center',
     },
     // columns: {

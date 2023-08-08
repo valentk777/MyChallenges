@@ -1,31 +1,30 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import { ChallengeContext } from '../../views/challengeScreen';
 
 interface NumericProgressTileProps {
-  challenge: Challenge;
 }
 
 export const NumericProgressTile = (props: NumericProgressTileProps) => {
-  const { title, description, currentValue, image, targetValue } = props.challenge;
+  const {newValue, challenge} = useContext(ChallengeContext);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  let percentage = currentValue / targetValue * 100;
-  percentage = percentage === Infinity ? 0 : percentage;
+  let percentage = newValue / challenge.targetValue * 100;
+  percentage = Number(challenge.targetValue) === 0 || challenge.targetValue === undefined ? 0 : percentage;
   percentage = percentage > 100 ? 100 : percentage;
   percentage = Math.floor(percentage);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{challenge.title}</Text>
       <View style={styles.progress}>
-        <CircularProgress 
-          title={currentValue + " / " + targetValue}
-          titleStyle={{fontSize: 13}}
+        <CircularProgress
+          title={newValue + " / " + Number(challenge.targetValue)}
+          titleStyle={{ fontSize: 13 }}
           radius={100}
           value={percentage}
           initialValue={percentage}
@@ -38,7 +37,7 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
         />
       </View>
       {/* <Image style={styles.image} source={{uri: image}} /> */}
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.description}>{challenge.description}</Text>
     </View>
   );
 };

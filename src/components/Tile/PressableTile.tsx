@@ -3,7 +3,6 @@ import { StyleSheet, Text, Image, ButtonProps, Pressable } from 'react-native';
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -32,13 +31,14 @@ const createStyles = (theme: typeof customTheme) => {
     container: {
       borderWidth: 2,
       borderRadius: 2,
-      width: 350, //todo: fix this to %
+      width: '100%', //todo: fix this to %
       height: 150,
       marginTop: 10,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
     },
     title: {
+      flex: 1,
       fontSize: 15,
       fontFamily: theme.text.fontFamily,
       color: theme.colors.text,
@@ -46,7 +46,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     image: {
       width: '100%',
-      height: '60%',
+      flex: 2,
       borderRadius: 5,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,

@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import { HomeStackParamList } from '../../App';
-import { Button, ButtonTypes, SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
+import { SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
@@ -35,7 +35,7 @@ const onSave = async (title, description, targetValue, image, props) => {
     return false;
   }
 
-  if (targetValue === 0) {
+  if (targetValue === undefined || targetValue === "" || targetValue === 0) {
     alert("Target value cannot be 0");
     return false;
   }
@@ -123,7 +123,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      height: windowHeight - 50,
+      height: '100%',
       backgroundColor: theme.colors.primary,
     },
     linearGradient: {

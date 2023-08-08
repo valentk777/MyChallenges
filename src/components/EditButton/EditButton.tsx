@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../contexts/themeContext';
+import { Challenge } from '../../entities/challenge';
+import { customTheme } from '../../styles/customTheme';
 
 interface EditButtonProps {
   challenge: Challenge;
