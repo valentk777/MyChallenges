@@ -28,7 +28,7 @@ export const LoginScreen = (props: LoginScreenProps) => {
           {/* <View style={[{borderWidth:0, borderRadius:35},styles.dropShadow]}> */}
           <Image
             style={styles.image}
-            source={require('./../assets/logo_500x500.png')}
+            source={require('./../img/logo_500x500.png')}
           />
           {/* </View> */}
           <Text style={styles.text}>Challenge tracker</Text>

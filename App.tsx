@@ -66,8 +66,8 @@ function HomeStackComponent() {
             <AddButton onPress={() => navigation.navigate('Create new challenge')} />
           ),
           // headerLeft: () => (
-          //   <Image
-          //   source={require('./src/assets/logo_500x500.png')}
+          //   <Image 
+          //   source={require('./src/img/logo_500x500.png')}
           // />
           // ),
         })}
