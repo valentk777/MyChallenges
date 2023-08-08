@@ -9,7 +9,7 @@ import uuid from 'react-native-uuid';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 type AddChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'AddChallenge'>;
 
@@ -85,9 +85,10 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-          <View style={styles.inputBox}>
+        <View style={styles.inputBox}>
           <View style={styles.inputContaine}>
             <Image style={styles.image} source={{ uri: image }} />
+            <View style={styles.space} />
             <Text style={styles.text}>Displayed title</Text>
             <TextInput
               style={styles.textbox}
@@ -107,8 +108,10 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
               value={targetValue}
               keyboardType="numeric"
             />
+            <View style={styles.space} />
           </View>
         </View>
+        <View style={styles.emptyWindow}></View>
         <View style={styles.saveContainer}>
           <SaveButton
             title="Save"
@@ -123,7 +126,7 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      height: '100%',
+      height: windowHeight - 50, //header
       backgroundColor: theme.colors.primary,
     },
     linearGradient: {
@@ -131,25 +134,41 @@ const createStyles = (theme: typeof customTheme) => {
       colors: [theme.colors.primary, theme.colors.secondary],
     },
     inputBox: {
-      height: '92%',
+      // flex: 9,
+      height: 500,
       alignItems: 'center',
+    },
+    emptyWindow: {
+      // marginRight: 20,
+      // marginLeft: 20,
+      height: '27%',
+      // flex: 4,
+    },
+    saveContainer: {
+      // marginRight: 20,
+      // marginLeft: 20,
+      height: windowHeight - 500 - 60 - (windowHeight * 0.27),
+      // flex: 1,
+      // alignSelf: 'flex-end',
+      // bottom: 0
     },
     inputContaine: {
       width: '90%',
-      height: '85%',
+      // flex: 1,
+      height: '100%',
       // alignItems: 'center',
       // marginTop: 10,
       // marginBottom: 10,
-
       marginTop: 50,
       // marginBottom: 100,
-      backgroundColor: theme.colors.white,
+      // backgroundColor: theme.colors.white,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
     },
     image: {
+      flex: 10,
       width: '100%',
-      height: '30%',
+      // height: '30%',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       // marginTop: 10,
@@ -159,36 +178,39 @@ const createStyles = (theme: typeof customTheme) => {
       // fontWeight: 'bold',
       // color: theme.colors.black,
     },
+    space: {
+      flex: 2,
+    },
     text: {
+      flex: 2,
       paddingLeft: 30,
-      paddingTop: 25,
-      paddingBottom: 5,
+      // paddingTop: 25,
+      // paddingBottom: 10,
       // marginTop: 10,
       // marginLeft: 30,
       fontSize: 15,
+
       fontFamily: theme.text.fontFamily,
       fontWeight: 'bold',
-      color: theme.colors.black,
+      color: theme.colors.white,
     },
     textbox: {
+      flex: 1,
       marginLeft: 30,
       // marginBottom: 15,
       // marginLeft: 20,
       // marginRight: 20,
       // fontSize: 20,
       width: '85%',
-      backgroundColor: theme.colors.input,
-      borderRadius: 5,
+      opacity: 0.2,
+      backgroundColor: theme.colors.black,
+      // borderRadius: 5,
       fontFamily: theme.text.fontFamily,
       fontSize: 13,
       color: theme.colors.white,
       // borderRadius: 10,
     },
-    saveContainer: {
-      // marginRight: 20,
-      // marginLeft: 20,
-      height: '8%',
-    },
+
   });
   return styles;
 };

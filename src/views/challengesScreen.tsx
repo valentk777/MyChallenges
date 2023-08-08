@@ -20,8 +20,10 @@ export const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
   const styles = createStyles(theme);
 
   useEffect(() => {
-    readData();
-  }, []);
+    navigation.addListener('focus', () => {
+      readData();
+    });
+  }, [navigation]);
 
   async function readData() {
     try {

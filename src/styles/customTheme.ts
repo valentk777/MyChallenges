@@ -5,6 +5,7 @@ const palette = {
   electric: '#035471',
   darkBlue3: '#242c50',
   white: '#FFFFFF',
+  black: '#000000',
 };
 
 export const customTheme = {
@@ -23,7 +24,7 @@ export const customTheme = {
     tile2: palette.electric,
     tile3: palette.darkBlue3,
     white: palette.white,
-    black: palette.darkBlue,
+    black: palette.black,
   },
   spacing: {
     s: 8,
