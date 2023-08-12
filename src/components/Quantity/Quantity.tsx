@@ -88,9 +88,9 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.tile3,
     },
     icon: {
-      width: 30,
-      height: 30,
-      tintColor: '#fff',
+      flex: 1,
+      width: 60,
+      tintColor: theme.colors.black,
     },
   });
 

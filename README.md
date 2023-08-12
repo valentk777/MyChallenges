@@ -10,7 +10,7 @@ This is a mobile app with ReactNative for creating and tracing your challenges
 - Java 19.0.2
 
 ## Setting up environment:
-
+- `npx react-native info`
 - `git lfs install` (used for large files)
 - Install Node.Js v18.14.0
 - Install Android studio
@@ -25,9 +25,11 @@ This is a mobile app with ReactNative for creating and tracing your challenges
 `npx react-native-rename@latest "Challenge Tracker" -b com.baitupasaulis.challengetracker`
 
 ## Versioning
-`npm install -g react-native-version`
+https://github.com/gustarus/react-native-version-up
+npm run version:up -- --patch
+<!-- `npm install -g react-native-version`
 change version in packages.json. then run command
-`react-native-version --never-amend`
+`react-native-version --never-amend` -->
 
 ## Release
 
@@ -36,3 +38,4 @@ To release an application run this command under androind folder
 `./gradlew bundleRelease`
 Bundle appear in ...\ChallengeTracker\android\app\build\outputs\bundle\release
 https://play.google.com/console/u/0/developers/6969098457648081136/app-list
+
