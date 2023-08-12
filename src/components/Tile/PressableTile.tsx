@@ -3,7 +3,6 @@ import { StyleSheet, Text, Image, ButtonProps, Pressable, View } from 'react-nat
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -26,7 +25,7 @@ export const PressableTile = (props: TileProps) => {
         <View style={styles.space} />
       </View>
       <Pressable style={styles.heart}>
-          <Icon name="heart" size={20} color="#500" />
+          {/* <Icon name="heart" size={20} color="#500" /> */}
       </Pressable>
     </Pressable>
   );

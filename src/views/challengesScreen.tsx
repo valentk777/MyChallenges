@@ -3,17 +3,17 @@ import React, { useContext, useState, useEffect } from 'react';
 import {
   FlatList, SafeAreaView, StyleSheet, View, RefreshControl, ActivityIndicator
 } from 'react-native';
-import { HomeStackParamList } from '../../App';
 import { PressableTile } from '../components/Tile/PressableTile';
 import { Challenge } from '../entities/challenge';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
+import Menu, { HomeStackParamList } from '../components/Menu/Menu';
 
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenges'>;
 
-export const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
+const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
   const [challengesFromStorage, setDataSource] = useState('');
   const [refreshing, setRefreshing] = useState(true);
   const { theme } = useContext(ThemeContext);
@@ -70,43 +70,54 @@ export const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
   };
 
   return (
-    <LinearGradient
-      colors={styles.linearGradient.colors}
-      style={styles.linearGradient}
-    >
-      <SafeAreaView style={styles.global}>
-        {refreshing ? <ActivityIndicator /> : null}
-        <View style={styles.flatList}>
-          <FlatList
-            data={challengesFromStorage}
-            renderItem={({ item, index }) => renderItem(item, index)}
-            keyExtractor={item => item.id}
-            numColumns={1}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 100, justifyContent: 'center' }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          />
-        </View>
-      </SafeAreaView>
-    </LinearGradient>
+    <View style={styles.container}>
+
+      <LinearGradient
+        start={{ x: 0.9, y: 0 }}
+        locations={[0, 0.6, 1]}
+        colors={styles.linearGradient.colors}
+        style={styles.linearGradient}
+      >
+        <SafeAreaView style={styles.container}>
+          {refreshing ? <ActivityIndicator /> : null}
+          <View style={styles.flatList}>
+            <FlatList
+              data={challengesFromStorage}
+              renderItem={({ item, index }) => renderItem(item, index)}
+              keyExtractor={item => item.id}
+              numColumns={1}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ flexGrow: 100, justifyContent: 'center', paddingBottom: 150 }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            />
+          </View>
+
+        </SafeAreaView>
+      </LinearGradient>
+    </View>
   );
 };
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
-    global: {
-      height: '100%',
-      width: '100%',
+    container: {
+      flex: 1,
     },
     linearGradient: {
-      height: '100%',
-      width: '100%',
+      flex: 15,
+      // width: '100%',
       // alignItems: 'center',
       // justifyContent: 'center',
-      colors: [theme.colors.primary, theme.colors.secondary]
+      colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
+    },
+    menu: {
+      flex: 1,
+      // width: '100%',
+      // alignItems: 'center',
+      // justifyContent: 'center',
     },
     flatList: {
       // flex: 1,
@@ -128,3 +139,4 @@ const createStyles = (theme: typeof customTheme) => {
   return styles;
 };
 
+export default ChallengesScreen;

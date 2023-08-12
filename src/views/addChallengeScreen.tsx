@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
-import { HomeStackParamList } from '../../App';
 import { SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,67 +9,11 @@ import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { Dimensions } from 'react-native';
+import { RootStackParamList } from '../../App';
 
-type AddChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'AddChallenge'>;
+type AddChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'CreateNewChallenge'>;
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-// TODO: move to shared component
-const storeData = async (value: Challenge) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(value.id, jsonValue);
-    return true;
-  } catch (e) {
-    alert("error saving to storage");
-    return false;
-  }
-};
-
-// TODO: move to shared component
-const onSave = async (title, description, targetValue, image, props) => {
-  if (title === "") {
-    alert("Title cannot be empty");
-    return false;
-  }
-
-  if (targetValue === undefined || targetValue === "" || targetValue === 0) {
-    alert("Target value cannot be 0");
-    return false;
-  }
-
-  const challengeCandidate = {} as Challenge;
-  challengeCandidate.id = uuid.v4();
-  challengeCandidate.title = title;
-  challengeCandidate.description = description;
-  challengeCandidate.currentValue = 0;
-  challengeCandidate.targetValue = targetValue;
-  challengeCandidate.image = image;
-
-  const result = await storeData(challengeCandidate);
-
-  if (result) {
-    props.navigation.navigate('Challenges');
-  }
-}
-
-function getRandomImage() {
-  const images = [
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
-  ]
-  const imageId = Math.floor(Math.random() * 100) % 7;
-
-  return images[imageId];
-}
-
-export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
+export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -95,12 +38,14 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
               onChangeText={onChangeTitleText}
               value={title}
             />
+            <View style={styles.space} />
             <Text style={styles.text}>Short description</Text>
             <TextInput
               style={styles.textbox}
               onChangeText={onChangeDescriptionText}
               value={description}
             />
+            <View style={styles.space} />
             <Text style={styles.text}>Target numeric value</Text>
             <TextInput
               style={styles.textbox}
@@ -109,19 +54,78 @@ export const AddChallengeScreen = (props: AddChallengeScreenProps) => {
               keyboardType="numeric"
             />
             <View style={styles.space} />
+            <View style={styles.space} />
+            <View style={styles.space} />
           </View>
         </View>
         <View style={styles.emptyWindow}></View>
         <View style={styles.saveContainer}>
           <SaveButton
             title="Save"
-            onPress={async () => onSave(title, description, targetValue, image, props)}
+            onPress={async () => onSave(title, description, targetValue, image, navigation)}
           />
         </View>
       </LinearGradient>
     </View>
   );
 };
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+// TODO: move to shared component
+const storeData = async (value: Challenge) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(value.id, jsonValue);
+    return true;
+  } catch (e) {
+    alert("error saving to storage");
+    return false;
+  }
+};
+
+// TODO: move to shared component
+const onSave = async (title, description, targetValue, image, navigation) => {
+  if (title === "") {
+    alert("Title cannot be empty");
+    return false;
+  }
+
+  if (targetValue === undefined || targetValue === "" || targetValue === 0) {
+    alert("Target value cannot be 0");
+    return false;
+  }
+
+  const challengeCandidate = {} as Challenge;
+  challengeCandidate.id = uuid.v4();
+  challengeCandidate.title = title;
+  challengeCandidate.description = description;
+  challengeCandidate.currentValue = 0;
+  challengeCandidate.targetValue = targetValue;
+  challengeCandidate.image = image;
+
+  const result = await storeData(challengeCandidate);
+
+  if (result) {
+    navigation.navigate('Challenges');
+  }
+}
+
+function getRandomImage() {
+  const images = [
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
+    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
+  ]
+  const imageId = Math.floor(Math.random() * 100) % 7;
+
+  return images[imageId];
+}
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
@@ -134,81 +138,51 @@ const createStyles = (theme: typeof customTheme) => {
       colors: [theme.colors.primary, theme.colors.secondary],
     },
     inputBox: {
-      // flex: 9,
       height: 500,
       alignItems: 'center',
     },
     emptyWindow: {
-      // marginRight: 20,
-      // marginLeft: 20,
       height: '27%',
-      // flex: 4,
     },
     saveContainer: {
-      // marginRight: 20,
-      // marginLeft: 20,
       height: windowHeight - 500 - 60 - (windowHeight * 0.27),
-      // flex: 1,
-      // alignSelf: 'flex-end',
-      // bottom: 0
     },
     inputContaine: {
       width: '90%',
-      // flex: 1,
       height: '100%',
-      // alignItems: 'center',
-      // marginTop: 10,
-      // marginBottom: 10,
       marginTop: 50,
-      // marginBottom: 100,
-      // backgroundColor: theme.colors.white,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
     },
     image: {
-      flex: 10,
+      flex: 7,
       width: '100%',
-      // height: '30%',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      // marginTop: 10,
-      // marginLeft: 30,
-      // fontSize: 15,
-      // fontFamily: theme.text.fontFamily,
-      // fontWeight: 'bold',
-      // color: theme.colors.black,
     },
     space: {
       flex: 2,
     },
     text: {
-      flex: 2,
+      flex: 1,
       paddingLeft: 30,
-      // paddingTop: 25,
-      // paddingBottom: 10,
-      // marginTop: 10,
-      // marginLeft: 30,
       fontSize: 15,
-
       fontFamily: theme.text.fontFamily,
       fontWeight: 'bold',
       color: theme.colors.white,
+      lineHeight: 17,
     },
     textbox: {
       flex: 1,
       marginLeft: 30,
-      // marginBottom: 15,
-      // marginLeft: 20,
-      // marginRight: 20,
-      // fontSize: 20,
       width: '85%',
-      opacity: 0.2,
-      backgroundColor: theme.colors.black,
-      // borderRadius: 5,
+      borderBottomColor: theme.colors.white,
+      // opacity: 0.3,
+      // backgroundColor: theme.colors.black,
       fontFamily: theme.text.fontFamily,
-      fontSize: 13,
+      fontSize: 15,
       color: theme.colors.white,
-      // borderRadius: 10,
+      borderBottomWidth: 1,
     },
 
   });

@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Challenge } from '../../entities/challenge';
@@ -29,7 +28,7 @@ export const DeleteButton = (props: DeleteButtonProps) => {
   return (
     <View style={styles.container}>
       <Pressable>
-        <Icon name="delete" onPress={async () => removeValueOnPress(challenge, onPress)} size={40} />
+        {/* <Icon name="delete" onPress={async () => removeValueOnPress(challenge, onPress)} size={40} /> */}
       </Pressable>
     </View>
   );

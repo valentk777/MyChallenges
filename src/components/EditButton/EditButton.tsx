@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../contexts/themeContext';
 import { Challenge } from '../../entities/challenge';
 import { customTheme } from '../../styles/customTheme';
@@ -18,7 +17,7 @@ export const EditButton = (props: EditButtonProps) => {
   return (
     <View style={styles.container}>
       <Pressable onPress={onPress} >
-        <Icon name="edit" size={30} />
+        {/* <Icon name="edit" size={30} /> */}
       </Pressable>
     </View>
   );

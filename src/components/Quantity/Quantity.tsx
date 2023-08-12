@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { ChallengeContext } from '../../views/challengeScreen';
@@ -20,14 +19,14 @@ export const Quantity = (props: QuantityProps) => {
     intervalRef.current = setInterval(() => {
       newLocalValue = newLocalValue - 5;
       updateValue(newLocalValue);
-    }, 150);
+    }, 300);
   };
 
   const increaseInterval = () => {
     intervalRef.current = setInterval(() => {
       newLocalValue = newLocalValue + 5;
       updateValue(newLocalValue);
-    }, 150);
+    }, 300);
   };
 
   return (
@@ -38,7 +37,11 @@ export const Quantity = (props: QuantityProps) => {
           onPressIn={decreaseInterval}
           onPressOut={() => clearInterval(intervalRef.current)}
           disabled={newValue <= 0}>
-          <Icon name="angle-left" size={70} color="#000" />
+          <Image
+            source={require('../../assets/icons/angle-left.png')}
+            resizeMode="contain"
+            style={styles.icon}
+          />
         </TouchableWithoutFeedback>
       </View>
 
@@ -48,7 +51,11 @@ export const Quantity = (props: QuantityProps) => {
           onPress={() => updateValue(newLocalValue + 1)}
           onPressIn={increaseInterval}
           onPressOut={() => clearInterval(intervalRef.current)}>
-          <Icon name="angle-right" size={70} color="#000" />
+          <Image
+            source={require('../../assets/icons/angle-right.png')}
+            resizeMode="contain"
+            style={styles.icon}
+          />
         </TouchableWithoutFeedback>
       </View>
     </View>
@@ -79,6 +86,11 @@ const createStyles = (theme: typeof customTheme) => {
       height: '70%',
       width: 1,
       backgroundColor: theme.colors.tile3,
+    },
+    icon: {
+      width: 30,
+      height: 30,
+      tintColor: '#fff',
     },
   });
 

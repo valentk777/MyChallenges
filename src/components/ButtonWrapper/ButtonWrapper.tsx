@@ -76,7 +76,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     textPrimary: {
       fontSize: 16,
-      lineHeight: 21,
+      lineHeight: 35,
       fontWeight: 'bold',
       color: theme.colors.text,
     },

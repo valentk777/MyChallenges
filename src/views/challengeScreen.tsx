@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext, createContext } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { HomeStackParamList } from '../../App';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
 import { Quantity } from '../components/Quantity/Quantity';
 import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
@@ -10,8 +9,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
+import { RootStackParamList } from '../../App';
 
-type ChallengeScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenge'>;
+type ChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenge'>;
 
 interface ChallengeContextProvider {
   challenge: Challenge;
@@ -31,18 +31,38 @@ const storeData = async (value: Challenge) => {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem(value.id, jsonValue);
     return true;
-  } catch (e) {
+  } catch (exception) {
     alert("error saving to storage");
-    alert(e);
+    alert(exception);
     return false;
   }
 };
 
+const removeData = async (value: Challenge) => {
+  try {
+    await AsyncStorage.removeItem(value.id);
+    return true;
+  }
+  catch (exception) {
+    alert("error deleting item from storage");
+    alert(exception);
+    return false;
+  }
+}
+
 // todo: remove and update or up
 const onSave = async (challenge: Challenge, newCount: number, props) => {
   challenge.currentValue = newCount;
-  
+
   const result = await storeData(challenge);
+
+  if (result) {
+    props.navigation.navigate('Challenges');
+  }
+}
+
+const onDelete = async (challenge: Challenge, props) => {
+  const result = await removeData(challenge);
 
   if (result) {
     props.navigation.navigate('Challenges');
@@ -75,7 +95,17 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
             locations={[0, 0.6, 1]}
             style={styles.linearGradient}
           >
-            <NumericProgressTile/>
+            <TouchableOpacity
+              style={styles.trashCan}
+              onPress={async () => onDelete(challenge, props)}
+            >
+              <Image
+                source={require('./../assets/icons/trash.png')}
+                resizeMode="contain"
+                style={styles.trashCan}
+              />
+            </TouchableOpacity>
+            <NumericProgressTile />
           </LinearGradient>
         </View>
         <View style={styles.dataContainer}>
@@ -96,41 +126,43 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      // paddingTop: 20,
+      flex: 1,
       backgroundColor: theme.colors.white,
-      height: '100%',
     },
     animationContainer: {
       alignItems: 'center',
-      // height: '60%',
       width: '100%',
       flex: 6,
     },
     linearGradient: {
-      height: '100%',
+      flex: 1,
       width: '100%',
       borderBottomLeftRadius: 30,
       borderBottomRightRadius: 30,
       colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary],
     },
     dataContainer: {
-      // paddingTop: 10,
       alignItems: 'center',
-      // height: '32%',
       flex: 5
     },
-    // text: {
-    //   fontSize: 25,
-    //   fontFamily: theme.text.fontFamily,
-    //   fontWeight: 'bold',
-    //   color: theme.colors.text,
-    // },
     saveContainer: {
-      // marginRight: 20,
-      // marginLeft: 20,
-      // height: '8%',
       flex: 1
     },
+    titleAndTrashCanWrapper: {
+      flex: 1
+    },
+    numericProgressTile: {
+      flex: 1
+    },
+    trashCan: {
+      tintColor: theme.colors.white,
+      position: 'absolute',
+      top: 15,
+      right: 15,
+      height: 30,
+      width: 30,
+    }
   });
+
   return styles;
 };
