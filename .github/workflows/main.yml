@@ -60,7 +60,7 @@ jobs:
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: com.baitupasaulis.challengetracker
           releaseFiles: output.apk
           track: production
