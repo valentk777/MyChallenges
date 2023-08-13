@@ -3,9 +3,9 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChallengesScreen from '../../views/challengesScreen';
-import { UserScreen } from '../../views/userScreen';
-import { CompletedChallengesScreen } from '../../views/completedChallengesScreen';
+import ChallengesScreen from '../../screen/challengesScreen';
+import { UserScreen } from '../../screen/userScreen';
+import { CompletedChallengesScreen } from '../../screen/completedChallengesScreen';
 import { CreateNewChallengeButton } from '../CreateNewChallengeButton/CreateNewChallengeButton';
 
 export type HomeStackParamList = {

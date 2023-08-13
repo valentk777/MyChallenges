@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import { ChallengeContext } from '../../views/challengeScreen';
+import { ChallengeContext } from '../../screen/challengeScreen';
 
 interface QuantityProps {
 }
@@ -17,14 +17,14 @@ export const Quantity = (props: QuantityProps) => {
 
   const decreaseInterval = () => {
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue - 5;
+      newLocalValue = newLocalValue - 2;
       updateValue(newLocalValue);
     }, 300);
   };
 
   const increaseInterval = () => {
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue + 5;
+      newLocalValue = newLocalValue + 2;
       updateValue(newLocalValue);
     }, 300);
   };
@@ -91,6 +91,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       width: 60,
       tintColor: theme.colors.black,
+      backgroundColor: theme.colors.black,
     },
   });
 
