@@ -64,4 +64,3 @@ jobs:
           packageName: com.baitupasaulis.challengetracker
           releaseFiles: output.apk
           track: production
-          status: inProgress
