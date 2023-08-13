@@ -57,3 +57,11 @@ jobs:
           name: release-${{ steps.package-version.outputs.current-version}}
           path: output.apk
 
+      - name: Upload to Google Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON }}
+          packageName: com.baitupasaulis.challengetracker
+          releaseFiles: output.apk
+          track: production
+          status: inProgress
