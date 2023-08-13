@@ -5,7 +5,6 @@ import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
 
 interface CreateNewChallengeButtonProps extends TouchableOpacityProps {
-
 }
 
 export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) => {
@@ -19,17 +18,10 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
       style={{ ...styles.container, ...styles.shadow }}
       onPress={() => navigation.navigate('CreateNewChallenge')}
     >
-      <View style={styles.xxx}>
+      <View style={styles.childrenContainer}>
         {children}
       </View>
     </TouchableOpacity>
-
-
-    // <View style={styles.container}>
-    //   <Pressable>
-    //     <Icon name="user-plus" onPress={onPress} size={20} />
-    //   </Pressable>
-    // </View>
   );
 };
 
@@ -50,9 +42,9 @@ const createStyles = (theme: typeof customTheme) => {
         height: 10,
       }
     },
-    xxx: {
+    childrenContainer: {
       width: 70,
-      height:70,
+      height: 70,
       borderRadius: 35,
       backgroundColor: theme.colors.input,
     }

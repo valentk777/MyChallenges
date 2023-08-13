@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
-export const LoginScreen = ({navigation}: LoginScreenProps) => {
+export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { signIn } = useAuthorizationContext();
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -76,6 +76,7 @@ const createStyles = (theme: typeof customTheme) => {
       margin: 40,
     },
   });
+  
   return styles;
 };
 

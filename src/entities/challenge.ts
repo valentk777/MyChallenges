@@ -11,8 +11,8 @@ export interface Challenge {
   currentValue: number;
   targetValue: number;
   image: string;
-  // timeCreated: string;
+  timeCreated: string;
   // lastTimeUpdated: string;
-  // favorite: boolean;
-  // status: ProgressStatus;
+  favorite: boolean;
+  status: ProgressStatus;
 }

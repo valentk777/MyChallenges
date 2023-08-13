@@ -6,7 +6,7 @@ import { Quantity } from '../components/Quantity/Quantity';
 import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
 import { ThemeContext } from '../contexts/themeContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Challenge } from '../entities/challenge';
+import { Challenge, ProgressStatus } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { RootStackParamList } from '../../App';
@@ -50,9 +50,21 @@ const removeData = async (value: Challenge) => {
   }
 }
 
+const updateChallengeStatus = (challenge: Challenge) => {
+  if (challenge.currentValue >= challenge.targetValue) {
+    challenge.status = ProgressStatus.Completed;
+  } 
+  else if (challenge.currentValue > 0) {
+    challenge.status = ProgressStatus.InProgress;
+  }
+
+  return challenge;
+}
+
 // todo: remove and update or up
 const onSave = async (challenge: Challenge, newCount: number, props) => {
   challenge.currentValue = newCount;
+  challenge = updateChallengeStatus(challenge);
 
   const result = await storeData(challenge);
 

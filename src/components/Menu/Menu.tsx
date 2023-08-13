@@ -5,8 +5,9 @@ import { customTheme } from '../../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../../screen/challengesScreen';
 import { UserScreen } from '../../screen/userScreen';
-import { CompletedChallengesScreen } from '../../screen/completedChallengesScreen';
 import { CreateNewChallengeButton } from '../CreateNewChallengeButton/CreateNewChallengeButton';
+import CompletedChallengesScreen from '../../screen/completedChallengesScreen';
+import FavoriteChallengesScreenScreen from '../../screen/favoriteChallengesScreen';
 
 export type HomeStackParamList = {
   Challenges: {};
@@ -48,15 +49,15 @@ const Menu = () => {
                 source={require('../../assets/icons/bars-staggered.png')}
                 resizeMode="contain"
                 style={{
-                  tintColor: focused ? '#e32f45' : '#748c98',
+                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
               />
               <Text style={{
-                color: focused ? '#e32f45' : '#748c98',
+                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
               }}>
-                LIST
+                ACTIVE
               </Text>
             </View>
           ),
@@ -65,7 +66,7 @@ const Menu = () => {
       {/* o gal tiesiog bendrame liste parodyt juos auksciau? */}
       <HomeTab.Screen
         name="FavoriteChallenges"
-        component={ChallengesScreen}
+        component={FavoriteChallengesScreenScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={styles.menuBar}>
@@ -73,12 +74,12 @@ const Menu = () => {
                 source={require('../../assets/icons/heart.png')}
                 resizeMode="contain"
                 style={{
-                  tintColor: focused ? '#e32f45' : '#748c98',
+                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
               />
               <Text style={{
-                color: focused ? '#e32f45' : '#748c98',
+                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
               }}>
                 TOP
@@ -117,12 +118,12 @@ const Menu = () => {
                 source={require('../../assets/icons/read.png')}
                 resizeMode="contain"
                 style={{
-                  tintColor: focused ? '#e32f45' : '#748c98',
+                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
               />
               <Text style={{
-                color: focused ? '#e32f45' : '#748c98',
+                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
               }}>
                 DONE
@@ -143,12 +144,12 @@ const Menu = () => {
                 source={require('../../assets/icons/list.png')}
                 resizeMode="contain"
                 style={{
-                  tintColor: focused ? '#e32f45' : '#748c98',
+                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
               />
               <Text style={{
-                color: focused ? '#e32f45' : '#748c98',
+                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
               }}>
                 HOME
@@ -167,12 +168,12 @@ const Menu = () => {
                 source={require('../../assets/icons/user.png')}
                 resizeMode="contain"
                 style={{
-                  tintColor: focused ? '#e32f45' : '#748c98',
+                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
               />
               <Text style={{
-                color: focused ? '#e32f45' : '#748c98',
+                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
               }}>
                 USER
@@ -220,7 +221,7 @@ const createStyles = (theme: typeof customTheme) => {
     createNewIcon: {
       width: 30,
       height: 30,
-      tintColor: '#fff',
+      tintColor: theme.colors.white,
     },
     menuText: {
       fontSize: 10,

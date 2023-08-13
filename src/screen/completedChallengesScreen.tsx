@@ -1,31 +1,31 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {
+  StyleSheet, View} from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../components/Menu/Menu';
+import { ChallengesList } from '../components/ChallengesList/ChallengesList';
+import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 
 type CompletedChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'CompletedChallenges'>;
 
-export const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProps) => {
+const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   return (
     <View style={styles.container}>
       <LinearGradient
+        start={{ x: 0.9, y: 0 }}
+        locations={[0, 0.6, 1]}
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <View style={styles.section}>
-          <Text style={styles.text}>Completed challenges information screen.</Text>
-        </View>
+        <ChallengesList navigation={navigation} filteringOptions={ChallengeFilteringOptions.OnlyCompleted}  />
       </LinearGradient>
-      {/* <View style={styles.menu}>
-        <Menu />
-      </View> */}
-    </View >
+    </View>
   );
 };
 
@@ -34,38 +34,13 @@ const createStyles = (theme: typeof customTheme) => {
     container: {
       flex: 1,
     },
-    // global: {
-    //   backgroundColor: theme.colors.primary,
-    //   height: '100%'
-    // },
     linearGradient: {
       flex: 15,
-      colors: [theme.colors.primary, theme.colors.secondary]
-    },
-    menu: {
-      flex: 1,
-      // width: '100%',
-      // alignItems: 'center',
-      // justifyContent: 'center',
-    },
-    section: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '70%',
-    },
-    text: {
-      fontSize: 20,
-      lineHeight: 21,
-      fontFamily: theme.text.fontFamily,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-      marginTop: 30,
-    },
-    buttonContainer: {
-      margin: 20,
+      colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
     },
   });
+
   return styles;
 };
 
-
+export default CompletedChallengesScreen;

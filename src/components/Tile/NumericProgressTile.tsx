@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -23,7 +23,7 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const styles = createStyles(theme);
   const percentage = getPercentage(newValue, challenge.targetValue);
   const initialPercentage = getPercentage(challenge.currentValue, challenge.targetValue)
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{challenge.title}</Text>
@@ -42,7 +42,6 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
           circleBackgroundColor={styles.progress.circleBackgroundColor}
         />
       </View>
-      {/* <Image style={styles.image} source={{uri: image}} /> */}
       <Text style={styles.description}>{challenge.description}</Text>
     </View>
   );
@@ -51,10 +50,6 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      // borderWidth: 2,
-      // borderRadius: 10,
-      // backgroundColor: theme.colors.secondary,
-      // borderColor: theme.colors.border,
       height: '100%',
       width: '100%',
       alignItems: 'center',
@@ -78,11 +73,6 @@ const createStyles = (theme: typeof customTheme) => {
       fontSize: 18,
       color: theme.colors.text,
     },
-    // image: {
-    //   width: '100%',
-    //   height: '65%',
-    //   borderRadius: 10,
-    // },
   });
 
   return styles;

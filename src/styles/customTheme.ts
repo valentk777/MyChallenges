@@ -6,6 +6,9 @@ const palette = {
   darkBlue3: '#242c50',
   white: '#FFFFFF',
   black: '#000000',
+  red: '#e32f45',
+  darkRed: '#80211b',
+  grey: '#748c98',
 };
 
 export const customTheme = {
@@ -25,6 +28,9 @@ export const customTheme = {
     tile3: palette.darkBlue3,
     white: palette.white,
     black: palette.black,
+    focused: palette.red,
+    menuNotFocused: palette.grey,
+    heart: palette.darkRed,
   },
   spacing: {
     s: 8,
@@ -33,7 +39,7 @@ export const customTheme = {
     xl: 40,
   },
   text: {
-    fontFamily: 'Times new roman'
+    fontFamily: 'Times new roman',
   },
 };
 
@@ -41,8 +47,5 @@ export const customDarkTheme = {
   ...customTheme,
   colors: {
     ...customTheme.colors,
-//     background: palette.black,
-//     foreground: palette.white,
-//     primary: palette.grey,
   },
 };

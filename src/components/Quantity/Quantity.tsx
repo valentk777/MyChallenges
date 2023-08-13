@@ -74,13 +74,13 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.2,
+      opacity: 0.3,
     },
     right: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.2,
+      opacity: 0.3,
     },
     verticleLine: {
       height: '70%',
@@ -91,7 +91,6 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       width: 60,
       tintColor: theme.colors.black,
-      backgroundColor: theme.colors.black,
     },
   });
 

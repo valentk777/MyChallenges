@@ -105,8 +105,8 @@ const createStyles = (theme: typeof customTheme) => {
       paddingVertical: 5,
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
-      // borderWidth: 5,
     },
   });
+
   return styles;
 };
