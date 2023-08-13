@@ -45,7 +45,7 @@ jobs:
         run: |
           cd android
           ./gradlew -version
-          echo ${{ steps.package-version.outputs.current-version}}
+          echo ${{ steps.package-version.outputs.current-version }}
           
       - name: get-npm-version
         id: package-version
@@ -54,13 +54,13 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: release-${{ steps.package-version.outputs.current-version}}
+          name: release-${{ steps.package-version.outputs.current-version }}
           path: output.apk
 
       - name: Upload to Google Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.baitupasaulis.challengetracker
           releaseFiles: output.apk
           track: production
