@@ -12,57 +12,40 @@ jobs:
       - name: Checkout the main GitHub branch
         uses: actions/checkout@v3
 
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-            
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: |
-          npm list
+          java-version: 11
 
-      - name: Install npm dependencies
-        run: |
-          npm install
-
-      - name: Build Android App
-        uses: sparkfabrik/android-build-action@v1.5.0
+      - name: Install Node.js
+        uses: actions/setup-node@v2
         with:
-          project-path: android
-          gradle-task: bundleRelease
-          output-path: app-release.aab
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install
 
+      - name: Build Android release
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew bundleRelease
+          cd ..
+          cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+        
       - name: List versions
         run: |
           cd android
           ./gradlew -version
           echo ${{ steps.package-version.outputs.current-version }}
-          
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
+          cd ..
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: release-${{ steps.package-version.outputs.current-version }}
           path: app-release.aab
-
-      - name: Upload to Google Play Store
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: com.baitupasaulis.challengetracker
-          releaseFiles: app-release.aab
-          track: production
