@@ -26,9 +26,9 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
  * @type {import('metro-config').MetroConfig}
  */
 const config = {
-    resolver: {
-        sourceExts: ['png', 'jpeg', 'jpg'],
-    },
+    // resolver: {
+    //     sourceExts: ['png', 'jpeg', 'jpg'],
+    // },
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
