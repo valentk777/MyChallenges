@@ -41,12 +41,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      - name: Build Android release
-        run: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew bundleRelease --no-daemon
-
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
@@ -56,6 +50,12 @@ jobs:
           cd android
           ./gradlew -version
           echo ${{ steps.package-version.outputs.current-version }}
+
+      - name: Build Android release
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew bundleRelease --no-daemon
 
       - name: Sign App Bundle
         id: sign_app
