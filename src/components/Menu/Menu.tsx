@@ -45,14 +45,14 @@ const Menu = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <View style={styles.menuBar}>
-              {/* <Image
+              <Image
                 source={require('../../assets/icons/bars-staggered.png')}
                 resizeMode="contain"
                 style={{
                   tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                   ...styles.menuIcon
                 }}
-              /> */}
+              />
               <Text style={{
                 color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
                 ...styles.menuText,
