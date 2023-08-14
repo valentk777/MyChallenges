@@ -15,25 +15,37 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 11
-
-      - name: Install Node.js
-        uses: actions/setup-java@v3
-        with:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
-          
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+        
       - name: Install dependencies
         run: npm install
 
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+  
+      - name: Cache Gradle Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+
       - name: Build Android release
         run: |
-          chmod +x android/gradlew
           cd android
-          ./gradlew bundleRelease
-          cd ..
-          cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          chmod +x ./gradlew
+          ./gradlew bundleRelease --no-daemon
 
       - name: get-npm-version
         id: package-version
@@ -44,10 +56,19 @@ jobs:
           cd android
           ./gradlew -version
           echo ${{ steps.package-version.outputs.current-version }}
-          cd ..
+
+      - name: Sign App Bundle
+        id: sign_app
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: android/app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: release-${{ steps.package-version.outputs.current-version }}
-          path: app-release.aab
+          name: Signed App Bundle v-${{ steps.package-version.outputs.current-version }}
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
