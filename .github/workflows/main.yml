@@ -11,7 +11,9 @@ jobs:
     steps: 
       - name: Checkout the main GitHub branch
         uses: actions/checkout@v3
-
+        with:
+          lfs: 'true'
+          
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -22,7 +24,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.17
         
       - name: Install dependencies
         run: npm install
@@ -41,7 +43,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      - name: get-npm-version
+      - name: Get Product current version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
         
@@ -49,7 +51,8 @@ jobs:
         run: |
           cd android
           ./gradlew -version
-          echo ${{ steps.package-version.outputs.current-version }}
+          echo Product version:       ${{ steps.package-version.outputs.current-version }}
+          node --version
 
       - name: Build Android release
         run: |
