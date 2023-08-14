@@ -150,14 +150,17 @@ const createStyles = (theme: typeof customTheme) => {
       colors: [theme.colors.primary, theme.colors.secondary],
     },
     inputBox: {
-      height: 500,
+      flex: 7,
+      // height: 500,
       alignItems: 'center',
     },
     emptyWindow: {
-      height: '27%',
+      flex: 3,
+      // height: '27%',
     },
     saveContainer: {
-      height: windowHeight - 500 - 60 - (windowHeight * 0.27),
+      flex: 1,
+      // height: windowHeight - 500 - 60 - (windowHeight * 0.27),
     },
     inputContaine: {
       width: '90%',
