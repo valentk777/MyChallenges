@@ -59,7 +59,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'my-upload-key.keystore'
-          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
+          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
           encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
           
       - name: Build signed Android release
@@ -69,12 +69,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
         run: |
           cd android
-
           ls
-          cd app
-          ls
-          cd ..
-          
           chmod +x ./gradlew
           ./gradlew bundleRelease --no-daemon
           cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
