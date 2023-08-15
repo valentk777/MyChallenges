@@ -55,13 +55,13 @@ jobs:
           node --version
           
       - name: Decode Keystore
-        env:
-            ENCODED_STRING: ${{ secrets.ANDROID_SIGNING_KEY }}
-        run: |
-            TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
-            mkdir "${TMP_KEYSTORE_FILE_PATH}"
-            echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/my-upload-key.keystore
-
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'my-upload-key.keystore'
+          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
+          encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
+          
       - name: Build signed Android release
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
