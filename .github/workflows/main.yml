@@ -53,25 +53,38 @@ jobs:
           ./gradlew -version
           echo Product version:       ${{ steps.package-version.outputs.current-version }}
           node --version
+          
+      - name: Decode Keystore
+        env:
+            ENCODED_STRING: ${{ secrets.ANDROID_SIGNING_KEY }}
+        run: |
+            TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+            mkdir "${TMP_KEYSTORE_FILE_PATH}"
+            echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/my-upload-key.keystore
 
-      - name: Build Android release
+      - name: Build signed Android release
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
         run: |
           cd android
           chmod +x ./gradlew
           ./gradlew bundleRelease --no-daemon
-
-      - name: Sign App Bundle
-        id: sign_app
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: android/app/build/outputs/bundle/release
-          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
-          alias: ${{ secrets.ANDROID_SIGNING_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+          cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Signed App Bundle v-${{ steps.package-version.outputs.current-version }}
-          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+          path: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+
+      - name: Upload App to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.baitupasaulis.challengetracker
+          releaseFiles: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          track: production
+          status: completed
+
