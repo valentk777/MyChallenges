@@ -91,14 +91,6 @@ android {
             }
             // Github actions path
             else if (System.getenv("ANDROID_SIGNING_KEY") != null) {
-                def tmpFilePath = System.getProperty("user.home") + "/work/_temp/keystore/"
-                def allFilesFromDir = new File(tmpFilePath).listFiles()
-
-                if (allFilesFromDir != null) {
-                    def keystoreFile = allFilesFromDir.first()
-                    keystoreFile.renameTo("my-upload-key.keystore")
-                }
-
                 storeFile = file("my-upload-key.keystore")
                 storePassword System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
                 keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
