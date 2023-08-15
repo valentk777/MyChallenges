@@ -68,6 +68,14 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+// Load keystore
+def keystorePropertiesFile = rootProject.file("../keystore.properties");
+def keystoreProperties = new Properties()
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -83,18 +91,18 @@ android {
     }
     signingConfigs {
         release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile file(keystoreProperties['MYAPP_UPLOAD_STORE_FILE'])
+                storePassword keystoreProperties['MYAPP_UPLOAD_STORE_PASSWORD']
+                keyAlias keystoreProperties['MYAPP_UPLOAD_KEY_ALIAS']
+                keyPassword keystoreProperties['MYAPP_UPLOAD_KEY_PASSWORD']
+            }
             // Github actions path
-            if (System.getenv("ANDROID_SIGNING_KEY") != null) {
+            else {
                 storeFile = file("my-upload-key.keystore")
                 storePassword System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
                 keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
                 keyPassword System.getenv("ANDROID_SIGNING_KEY_PASSWORD")
-            }
-            else if(project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
         }
         debug {

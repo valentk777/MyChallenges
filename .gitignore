@@ -409,3 +409,4 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+keystore.properties
