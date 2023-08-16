@@ -73,12 +73,15 @@ jobs:
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
           ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
           ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+          temp: ${{ secrets.ANDROID_SIGNING_KEY }}
         run: |
           cd android
           chmod +x ./gradlew
           echo $ANDROID_SIGNING_ALIAS
           echo $ANDROID_SIGNING_KEY_PASSWORD
           echo $ANDROID_SIGNING_STORE_PASSWORD
+          echo $temp
+          cat /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
           ./gradlew signingReport
 
       # - name: Build signed Android release
