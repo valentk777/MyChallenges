@@ -59,7 +59,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'my-upload-key.keystore'
-          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
+          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
           encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
           
       - name: Build signed Android release
