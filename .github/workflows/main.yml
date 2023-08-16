@@ -59,21 +59,21 @@ jobs:
       #   with:
       #     fileName: 'my-upload-key.keystore'
       #     fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
-      #     encodedString: ${{ secrets.TEST_SECRET }}
+      #     encodedString: ${{ secrets.ANDROID_SIGNING_KEY_BASE64 }}
                     
       # - name: Decode Keystore to another location
       #   uses: timheuer/base64-to-file@v1.2
       #   with:
       #     fileName: 'my-upload-key.keystore'
       #     fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
-      #     encodedString: ${{ secrets.TEST_SECRET }}
+      #     encodedString: ${{ secrets.ANDROID_SIGNING_KEY_BASE64 }}
           
       - name: Decode Keystore
         env:
-          KEYSTORE_BASE64: ${{ secrets.TEST_SECRET }}
+          ANDROID_SIGNING_KEY_BASE64: ${{ secrets.ANDROID_SIGNING_KEY_BASE64 }}
         run: |
-          echo $KEYSTORE_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/my-upload-key.keystore
-          echo $KEYSTORE_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
+          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/my-upload-key.keystore
+          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
 
       - name: Test signing
         env:
@@ -83,43 +83,31 @@ jobs:
         run: |
           cd android
           chmod +x ./gradlew
-          echo $ANDROID_SIGNING_ALIAS
-          echo $ANDROID_SIGNING_KEY_PASSWORD
-          echo $ANDROID_SIGNING_STORE_PASSWORD
           ./gradlew signingReport
 
-      # - name: Build signed Android release
-      #   env:
-      #     SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
-      #     SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
-      #     SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
-      #   run: |
-      #     cd android
+      - name: Build signed Android release
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew bundleRelease --no-daemon
+          cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
 
-      #     echo 'Start testing - xxxxxxxxxx'
-      #     ls
-      #     echo 'xxxxxxxxxx'
-      #     cd app
-      #     ls
-      #     cd ..
-      #     echo 'End testing - xxxxxxxxxx'
-          
-      #     chmod +x ./gradlew
-      #     ./gradlew bundleRelease --no-daemon
-      #     cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Signed App Bundle v-${{ steps.package-version.outputs.current-version }}
+          path: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Signed App Bundle v-${{ steps.package-version.outputs.current-version }}
-      #     path: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
-
-      # - name: Upload App to Google Play
-      #   uses: r0adkll/upload-google-play@v1
-      #   with:
-      #     serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-      #     packageName: com.baitupasaulis.challengetracker
-      #     releaseFiles: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
-      #     track: production
-      #     status: completed
+      - name: Upload App to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.baitupasaulis.challengetracker
+          releaseFiles: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          track: production
+          status: completed
 
