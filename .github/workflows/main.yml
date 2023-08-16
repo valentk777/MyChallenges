@@ -59,15 +59,22 @@ jobs:
         with:
           fileName: 'my-upload-key.keystore'
           fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
-          encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
+          encodedString: ${{ secrets.TEST_SECRET }}
                     
       - name: Decode Keystore to another location
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'my-upload-key.keystore'
           fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
-          encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
+          encodedString: ${{ secrets.TEST_SECRET }}
           
+      - name: Decode Keystore
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.TEST_SECRET }}
+        run: |
+          echo $CERTIFICATE_BASE64 | base64 --decode > test.keystore 
+          cat test.keystore
+
       - name: Test signing
         env:
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
@@ -81,7 +88,7 @@ jobs:
           echo $ANDROID_SIGNING_KEY_PASSWORD
           echo $ANDROID_SIGNING_STORE_PASSWORD
           echo $temp
-          cat /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
+          cat "app/my-upload-key.keystore"
           ./gradlew signingReport
 
       # - name: Build signed Android release
