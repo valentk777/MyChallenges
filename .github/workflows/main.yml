@@ -55,19 +55,17 @@ jobs:
           node --version
           
       - name: Decode Keystore
-        id: decode_keystore
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'my-upload-key.keystore'
           fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
           encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
                     
-      - name: Decode Keystore
-        id: decode_keystore_2
+      - name: Decode Keystore to another location
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'my-upload-key.keystore'
-          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app'
+          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
           encodedString: ${{ secrets.ANDROID_SIGNING_KEY }}
           
       - name: Build signed Android release
@@ -77,7 +75,15 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
         run: |
           cd android
+
+          echo 'Start testing - xxxxxxxxxx'
           ls
+          echo 'xxxxxxxxxx'
+          cd app
+          ls
+          cd ..
+          echo 'End testing - xxxxxxxxxx'
+          
           chmod +x ./gradlew
           ./gradlew bundleRelease --no-daemon
           cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
