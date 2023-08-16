@@ -99,7 +99,7 @@ android {
             }
             // Github actions path
             else {
-                storeFile = file("my-upload-key.keystore")
+                storeFile = file(System.getenv("MYAPP_UPLOAD_STORE_FILE"))
                 storePassword System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
                 keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
                 keyPassword System.getenv("ANDROID_SIGNING_KEY_PASSWORD")
