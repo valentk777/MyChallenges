@@ -101,9 +101,10 @@ android {
             // else {
             storeFile file("my-upload-key.keystore")
             storePassword System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
-            keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
+            // keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
+            keyAlias "my-key-alias"
             keyPassword System.getenv("ANDROID_SIGNING_KEY_PASSWORD")
-            // }
+            // } 
         }
         debug {
             storeFile file('debug.keystore')

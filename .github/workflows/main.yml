@@ -54,41 +54,38 @@ jobs:
           echo Product version:       ${{ steps.package-version.outputs.current-version }}
           node --version
           
-      - name: Decode Keystore
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: 'my-upload-key.keystore'
-          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
-          encodedString: ${{ secrets.TEST_SECRET }}
+      # - name: Decode Keystore
+      #   uses: timheuer/base64-to-file@v1.2
+      #   with:
+      #     fileName: 'my-upload-key.keystore'
+      #     fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/'
+      #     encodedString: ${{ secrets.TEST_SECRET }}
                     
-      - name: Decode Keystore to another location
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: 'my-upload-key.keystore'
-          fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
-          encodedString: ${{ secrets.TEST_SECRET }}
+      # - name: Decode Keystore to another location
+      #   uses: timheuer/base64-to-file@v1.2
+      #   with:
+      #     fileName: 'my-upload-key.keystore'
+      #     fileDir: '/home/runner/work/ChallengeTracker/ChallengeTracker/android/app/'
+      #     encodedString: ${{ secrets.TEST_SECRET }}
           
       - name: Decode Keystore
         env:
-          CERTIFICATE_BASE64: ${{ secrets.TEST_SECRET }}
+          KEYSTORE_BASE64: ${{ secrets.TEST_SECRET }}
         run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > test.keystore 
-          cat test.keystore
+          echo $KEYSTORE_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/my-upload-key.keystore
+          echo $KEYSTORE_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
 
       - name: Test signing
         env:
           ANDROID_SIGNING_ALIAS: ${{ secrets.ANDROID_SIGNING_ALIAS }}
           ANDROID_SIGNING_KEY_PASSWORD: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
           ANDROID_SIGNING_STORE_PASSWORD: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
-          temp: ${{ secrets.ANDROID_SIGNING_KEY }}
         run: |
           cd android
           chmod +x ./gradlew
           echo $ANDROID_SIGNING_ALIAS
           echo $ANDROID_SIGNING_KEY_PASSWORD
           echo $ANDROID_SIGNING_STORE_PASSWORD
-          echo $temp
-          cat "app/my-upload-key.keystore"
           ./gradlew signingReport
 
       # - name: Build signed Android release
