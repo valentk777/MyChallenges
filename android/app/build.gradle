@@ -91,8 +91,6 @@ android {
     }
     signingConfigs {
         release {
-            project.logger.debug('!!!!!!!!!!!!!!!!!!!!!my debug message')
-            project.logger.debug(file("my-upload-key.keystore"))
             // project.logger.debug(System.getenv("ANDROID_SIGNING_STORE_PASSWORD"))
             // project.logger.debug(System.getenv("ANDROID_SIGNING_STORE_PASSWORD"))
             // project.logger.debug(file("my-upload-key.keystore"))
