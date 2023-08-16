@@ -91,9 +91,6 @@ android {
     }
     signingConfigs {
         release {
-            // project.logger.debug(System.getenv("ANDROID_SIGNING_STORE_PASSWORD"))
-            // project.logger.debug(System.getenv("ANDROID_SIGNING_STORE_PASSWORD"))
-            // project.logger.debug(file("my-upload-key.keystore"))
             // if (keystorePropertiesFile.exists()) {
             //     storeFile file(keystoreProperties['MYAPP_UPLOAD_STORE_FILE'])
             //     storePassword keystoreProperties['MYAPP_UPLOAD_STORE_PASSWORD']
@@ -103,9 +100,9 @@ android {
             // // Github actions path
             // else {
             storeFile file("my-upload-key.keystore")
-            storePassword "BaituPasaulis1+"
-            keyAlias "my-key-alias"
-            keyPassword "BaituPasaulis1+"
+            storePassword System.getenv("ANDROID_SIGNING_STORE_PASSWORD")
+            keyAlias System.getenv("ANDROID_SIGNING_ALIAS")
+            keyPassword System.getenv("ANDROID_SIGNING_KEY_PASSWORD")
             // }
         }
         debug {
