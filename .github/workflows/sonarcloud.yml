@@ -29,4 +29,4 @@ jobs:
           args:
             -Dsonar.projectKey=valentk777_ChallengeTracker
             -Dsonar.organization=valentk777
-            -Dsonar.exclusions=**/*.java
+            -Dsonar.exclusions=**/*.java,**/*.cpp,**/*.c,**/*.h,**/*.m,**/*.mm
