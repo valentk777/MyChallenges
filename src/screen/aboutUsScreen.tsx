@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -37,10 +37,6 @@ const createStyles = (theme: typeof customTheme) => {
     },
     section: {
       alignItems: 'center',
-      justifyContent: 'center',
-      justifyContent: 'center',
-      justifyContent: 'center',
-      justifyContent: 'center',
       justifyContent: 'center',
       height: '70%',
     },

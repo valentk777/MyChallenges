@@ -8,7 +8,7 @@ import { HomeStackParamList } from '../components/Menu/Menu';
 
 type UserScreenProps = NativeStackScreenProps<HomeStackParamList, 'User'>;
 
-export const UserScreen = ({ navigation }: UserScreenProps) => {
+export const UserScreen = ({  }: UserScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 

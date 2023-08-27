@@ -1,5 +1,4 @@
-import {createContext} from 'react';
-import React, {useState} from 'react';
+import React, { createContext, useState } from 'react';
 import {customDarkTheme, customTheme} from '../styles/customTheme';
 
 interface ContextProvider {

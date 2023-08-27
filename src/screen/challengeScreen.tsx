@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext, createContext } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
 import { Quantity } from '../components/Quantity/Quantity';
 import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
@@ -32,8 +32,8 @@ const storeData = async (value: Challenge) => {
     await AsyncStorage.setItem(value.id, jsonValue);
     return true;
   } catch (exception) {
-    alert("error saving to storage");
-    alert(exception);
+    Alert.alert("error saving to storage");
+    Alert.alert(exception);
     return false;
   }
 };
@@ -44,8 +44,8 @@ const removeData = async (value: Challenge) => {
     return true;
   }
   catch (exception) {
-    alert("error deleting item from storage");
-    alert(exception);
+    Alert.alert("error deleting item from storage");
+    Alert.alert(exception);
     return false;
   }
 }
@@ -64,6 +64,7 @@ const updateChallengeStatus = (challenge: Challenge) => {
 // todo: remove and update or up
 const onSave = async (challenge: Challenge, newCount: number, props) => {
   challenge.currentValue = newCount;
+  challenge.lastTimeUpdated = new Date().toISOString();
   challenge = updateChallengeStatus(challenge);
 
   const result = await storeData(challenge);

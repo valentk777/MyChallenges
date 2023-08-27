@@ -61,7 +61,7 @@ const createStyles = (theme: typeof customTheme) => {
     image: {
       width: '40%',
       height: undefined,
-      aspectRatio: 1 / 1,
+      aspectRatio: 0,
     },
     text: {
       fontSize: 25,

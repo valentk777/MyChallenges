@@ -15,11 +15,6 @@ export type HomeStackParamList = {
   CreateNewChallengeStack: {};
   CompletedChallenges: {};
   User: {};
-
-  // Challenge: { challenge: Challenge };
-  // AboutUs: {};
-  // EditButton: { challenge: Challenge };
-  // DeleteButton: { challenge: Challenge };
 };
 
 const HomeTab = createBottomTabNavigator<HomeStackParamList>();

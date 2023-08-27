@@ -12,7 +12,7 @@ export interface Challenge {
   targetValue: number;
   image: string;
   timeCreated: string;
-  // lastTimeUpdated: string;
+  lastTimeUpdated: string;
   favorite: boolean;
   status: ProgressStatus;
 }

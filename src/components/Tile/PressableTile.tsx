@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity, Alert } from 'react-native';
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
@@ -16,7 +16,7 @@ const storeData = async (value: Challenge) => {
     await AsyncStorage.setItem(value.id, jsonValue);
     return true;
   } catch (e) {
-    alert("error saving to storage");
+    Alert.alert("error saving to storage");
     return false;
   }
 };
@@ -33,6 +33,28 @@ const renderIcon = (styles, isFavorite) => {
   );
 }
 
+const convertUTCToLocalTime = (utcTime: string) => {
+  if (utcTime == null) {
+    return "";
+  }
+
+  let date = new Date(utcTime);
+  const milliseconds = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  );
+
+  const localTime = new Date(milliseconds);
+
+  // return utcTime;
+  return date.toLocaleString();
+  // return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+};
+
 export const PressableTile = (props: TileProps) => {
   const { onPress, challenge, color } = props;
   const { theme } = useContext(ThemeContext);
@@ -45,15 +67,21 @@ export const PressableTile = (props: TileProps) => {
     onChangeFavorite(challenge.favorite);
   }
 
+  const title = challenge.title.length < 12 ? challenge.title : challenge.title.substring(0, 12) + "...";
+  const description = challenge.description.length < 17 ? challenge.description : challenge.description.substring(0, 16) + "...";
+  const timeCreated = convertUTCToLocalTime(challenge.timeCreated);
+
   return (
-    <Pressable style={[{ backgroundColor: color }, styles.container]} onPress={onPress}>
-      {/* <Image style={styles.image} source={challenge.image} /> */}
-      <Image style={styles.image} source={{ uri: challenge.image }} />
+    <Pressable style={[{ backgroundColor: color }, styles.container, styles.shadow]} onPress={onPress}>
+      <Image
+        style={styles.image}
+        source={{ uri: challenge.image }}
+        resizeMode='stretch' />
       <View style={styles.textArea}>
         <View style={styles.space} />
-        <Text style={styles.title}>{challenge.title}</Text>
-        <Text style={styles.description}>{challenge.description}</Text>
-        {/* <Text style={styles.description}>{challenge.timeCreated}</Text> */}
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.time}>{timeCreated}</Text>
         <View style={styles.space} />
       </View>
       <TouchableOpacity
@@ -62,6 +90,12 @@ export const PressableTile = (props: TileProps) => {
       >
         {renderIcon(styles, isFavorite)}
       </TouchableOpacity>
+      <Image
+        source={require('../../assets/icons/angle-right.png')}
+        resizeMode='contain'
+        style={styles.arrowIcon}
+      />
+      <View style={styles.space} />
     </Pressable>
   );
 };
@@ -71,7 +105,7 @@ const createStyles = (theme: typeof customTheme) => {
     container: {
       flex: 1,
       flexDirection: 'row',
-      height: 150,
+      height: 90,
       marginTop: 10,
       borderTopColor: theme.colors.black,
       borderTopWidth: 1,
@@ -79,32 +113,51 @@ const createStyles = (theme: typeof customTheme) => {
       borderBottomWidth: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: theme.colors.white,
+      borderRadius: 10,
+    },
+    shadow: {
+      shadowColor: theme.colors.input,
+      shadowOpacity: 0.25,
+      shadowRadius: 3.5,
+      elevation: 5,
+      shadowOffset: {
+        width: 0,
+        height: 10,
+      }
     },
     image: {
-      flex: 5,
-      width: 100,
-      height: 100,
+      flex: 3,
+      width: 60,
+      height: 60,
       borderRadius: 100,
       margin: 10,
     },
     textArea: {
-      flex: 7,
+      flex: 5,
     },
     space: {
       flex: 1,
     },
     title: {
-      flex: 1,
-      fontSize: 20,
+      flex: 2,
+      fontSize: 18,
       fontFamily: theme.text.fontFamily,
-      color: theme.colors.text,
+      color: theme.colors.black,
       paddingLeft: 10,
     },
     description: {
       flex: 2,
-      fontSize: 15,
+      fontSize: 14,
       fontFamily: theme.text.fontFamily,
-      color: theme.colors.text,
+      color: theme.colors.black,
+      paddingLeft: 10,
+    },
+    time: {
+      flex: 2,
+      fontSize: 10,
+      fontFamily: theme.text.fontFamily,
+      color: theme.colors.black,
       paddingLeft: 10,
     },
     heart: {
@@ -113,7 +166,13 @@ const createStyles = (theme: typeof customTheme) => {
     hearIcon: {
       height: 30,
       width: 30,
-      tintColor: theme.colors.heart
+      tintColor: theme.colors.focused
+    },
+    arrowIcon: {
+      flex: 1,
+      height: 20,
+      width: 30,
+      tintColor: theme.colors.black,
     },
   });
 
