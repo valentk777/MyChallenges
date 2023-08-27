@@ -30,8 +30,8 @@ jobs:
             -Dsonar.projectKey=valentk777_ChallengeTracker
             -Dsonar.organization=valentk777
             -Dsonar.exclusions=**/*.java,**/*.cpp,**/*.c,**/*.h,**/*.m,**/*.mm
-
-      - name:Check SonarCloud Quality Gate status
+      
+      - name: Check SonarCloud Quality Gate status
         run: |
           sleep 30s # Wait for results to be uploaded
           GATE_STATUS=$(curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=valentk777_ChallengeTracker --silent | jq .projectStatus.status)
