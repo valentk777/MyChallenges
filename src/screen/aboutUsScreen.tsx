@@ -38,6 +38,10 @@ const createStyles = (theme: typeof customTheme) => {
     section: {
       alignItems: 'center',
       justifyContent: 'center',
+      justifyContent: 'center',
+      justifyContent: 'center',
+      justifyContent: 'center',
+      justifyContent: 'center',
       height: '70%',
     },
     text: {
