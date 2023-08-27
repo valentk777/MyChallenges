@@ -19,6 +19,26 @@ export type HomeStackParamList = {
 
 const HomeTab = createBottomTabNavigator<HomeStackParamList>();
 
+// TODO: move to separate file
+const CustomTabBarIcon = ({ focused, styles, theme, text, iconName }) => (
+  <View style={styles.menuBar}>
+    <Image
+      source={require(`../../assets/icons/${iconName}`)}
+      resizeMode="contain"
+      style={{
+        tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
+        ...styles.menuIcon
+      }}
+    />
+    <Text style={{
+      color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
+      ...styles.menuText,
+    }}>
+      {text}
+    </Text>
+  </View>
+);
+
 const Menu = () => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -39,47 +59,30 @@ const Menu = () => {
         component={ChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={styles.menuBar}>
-              <Image
-                source={require('../../assets/icons/bars-staggered.png')}
-                resizeMode="contain"
-                style={{
-                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                  ...styles.menuIcon
-                }}
-              />
-              <Text style={{
-                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                ...styles.menuText,
-              }}>
-                ACTIVE
-              </Text>
-            </View>
+            <CustomTabBarIcon
+              focused={focused}
+              styles={styles}
+              theme={theme}
+              text={"ACTIVE"}
+              iconName={"bars-staggered.png"}
+            />
           ),
         }}
       />
+
       {/* o gal tiesiog bendrame liste parodyt juos auksciau? */}
       <HomeTab.Screen
         name="FavoriteChallenges"
         component={FavoriteChallengesScreenScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={styles.menuBar}>
-              <Image
-                source={require('../../assets/icons/heart.png')}
-                resizeMode="contain"
-                style={{
-                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                  ...styles.menuIcon
-                }}
-              />
-              <Text style={{
-                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                ...styles.menuText,
-              }}>
-                TOP
-              </Text>
-            </View>
+            <CustomTabBarIcon
+              focused={focused}
+              styles={styles}
+              theme={theme}
+              text={"TOP"}
+              iconName={"heart.png"}
+            />
           ),
         }}
       />
@@ -108,72 +111,28 @@ const Menu = () => {
         component={CompletedChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={styles.menuBar}>
-              <Image
-                source={require('../../assets/icons/read.png')}
-                resizeMode="contain"
-                style={{
-                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                  ...styles.menuIcon
-                }}
-              />
-              <Text style={{
-                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                ...styles.menuText,
-              }}>
-                DONE
-              </Text>
-            </View>
+            <CustomTabBarIcon
+              focused={focused}
+              styles={styles}
+              theme={theme}
+              text={"DONE"}
+              iconName={"read.png"}
+            />
           ),
         }}
-
       />
-      {/* TODO: add about us and settings under uder in a top corner */}
-      {/* <HomeTab.Screen
-        name="AboutUs"
-        component={AboutUsScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={styles.menuBar}>
-              <Image
-                source={require('../../assets/icons/list.png')}
-                resizeMode="contain"
-                style={{
-                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                  ...styles.menuIcon
-                }}
-              />
-              <Text style={{
-                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                ...styles.menuText,
-              }}>
-                HOME
-              </Text>
-            </View>
-          ),
-        }}
-      /> */}
       <HomeTab.Screen
         name="User"
         component={UserScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View style={styles.menuBar}>
-              <Image
-                source={require('../../assets/icons/user.png')}
-                resizeMode="contain"
-                style={{
-                  tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                  ...styles.menuIcon
-                }}
-              />
-              <Text style={{
-                color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-                ...styles.menuText,
-              }}>
-                USER
-              </Text>
-            </View>
+            <CustomTabBarIcon
+              focused={focused}
+              styles={styles}
+              theme={theme}
+              text={"USER"}
+              iconName={"user.png"}
+            />
           ),
         }}
       />
