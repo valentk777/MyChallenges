@@ -36,4 +36,11 @@ jobs:
           sleep 30s # Wait for results to be uploaded
           GATE_STATUS=$(curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=valentk777_ChallengeTracker --silent | jq .projectStatus.status)
           echo "Gate status: $GATE_STATUS"
-          [[ $GATE_STATUS != "ERROR" ]] # Will fail if equal to ERROR
+
+          # Will fail if equal to ERROR
+          if [[ $GATE_STATUS != "ERROR" ]]; then
+            echo "Quality gate failed"
+            exit 1 # Fail the pipeline
+          else
+            echo "Quality gate passed"
+          fi
