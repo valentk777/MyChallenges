@@ -29,7 +29,7 @@ const App = () => {
 };
 
 export const AppComponent = () => {
-  const { isDarkMode, theme, toggleTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { isSignedIn } = useAuthorizationContext();
 
   return (
