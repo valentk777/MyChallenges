@@ -1,14 +1,10 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { HomeStackParamList } from '../components/Menu/Menu';
 
-type UserScreenProps = NativeStackScreenProps<HomeStackParamList, 'User'>;
-
-export const UserScreen = ({  }: UserScreenProps) => {
+export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -55,8 +51,6 @@ const createStyles = (theme: typeof customTheme) => {
       margin: 20,
     },
   });
-  
+
   return styles;
 };
-
-

@@ -1,32 +1,20 @@
-import React, { createContext, useState } from 'react';
-import {customDarkTheme, customTheme} from '../styles/customTheme';
+import React, { createContext, useMemo } from 'react';
+import { customTheme } from '../styles/customTheme';
 
 interface ContextProvider {
-  isDarkMode: boolean;
   theme: typeof customTheme;
-  toggleTheme: () => void;
 }
 
 export const ThemeContext = createContext<ContextProvider>({
-  isDarkMode: false,
   theme: customTheme,
-  toggleTheme: () => {},
 });
 
-export const ThemeProvider: React.FunctionComponent = ({children}) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
-
+export const ThemeProvider: React.FunctionComponent = ({ children }) => {
+  const currentTheme = useMemo(() => ({theme: customTheme}), []); // value is cached by useMemo
+  
   return (
     <ThemeContext.Provider
-      value={{
-        isDarkMode: darkMode,
-        theme: darkMode ? customDarkTheme : customTheme,
-        toggleTheme: toggleTheme,
-      }}>
+      value={currentTheme}>
       {children}
     </ThemeContext.Provider>
   );

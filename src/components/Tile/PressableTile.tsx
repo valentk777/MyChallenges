@@ -38,21 +38,9 @@ const convertUTCToLocalTime = (utcTime: string) => {
     return "";
   }
 
-  let date = new Date(utcTime);
-  const milliseconds = Date.UTC(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-  );
+  const date = new Date(utcTime);
 
-  const localTime = new Date(milliseconds);
-
-  // return utcTime;
   return date.toLocaleString();
-  // return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
 };
 
 export const PressableTile = (props: TileProps) => {
