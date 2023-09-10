@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChallengesScreen from '../../screen/challengesScreen';
-import { UserScreen } from '../../screen/userScreen';
+import ChallengesScreen from '../../screens/challengesScreen';
+import { UserScreen } from '../../screens/userScreen';
 import { CreateNewChallengeButton } from '../CreateNewChallengeButton/CreateNewChallengeButton';
-import CompletedChallengesScreen from '../../screen/completedChallengesScreen';
-import FavoriteChallengesScreenScreen from '../../screen/favoriteChallengesScreen';
+import CompletedChallengesScreen from '../../screens/completedChallengesScreen';
+import FavoriteChallengesScreenScreen from '../../screens/favoriteChallengesScreen';
+import { CustomTabBarIcon } from '../TabBarWrapper/CustomTabBarIcon';
 
 export type HomeStackParamList = {
   Challenges: {};
@@ -18,26 +19,6 @@ export type HomeStackParamList = {
 };
 
 const HomeTab = createBottomTabNavigator<HomeStackParamList>();
-
-// TODO: move to separate file
-const CustomTabBarIcon = ({ focused, styles, theme, text, iconName }) => (
-  <View style={styles.menuBar}>
-    <Image
-      source={require(`../../assets/icons/${iconName}`)}
-      resizeMode="contain"
-      style={{
-        tintColor: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-        ...styles.menuIcon
-      }}
-    />
-    <Text style={{
-      color: focused ? theme.colors.focused : theme.colors.menuNotFocused,
-      ...styles.menuText,
-    }}>
-      {text}
-    </Text>
-  </View>
-);
 
 const Menu = () => {
   const { theme } = useContext(ThemeContext);
@@ -64,7 +45,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"ACTIVE"}
-              iconName={"bars-staggered.png"}
+              iconUrl={require("../../assets/icons/bars-staggered.png")}
             />
           ),
         }}
@@ -81,7 +62,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"TOP"}
-              iconName={"heart.png"}
+              iconUrl={require("../../assets/icons/heart.png")}
             />
           ),
         }}
@@ -116,7 +97,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"DONE"}
-              iconName={"read.png"}
+              iconUrl={require("../../assets/icons/read.png")}
             />
           ),
         }}
@@ -131,7 +112,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"USER"}
-              iconName={"user.png"}
+              iconUrl={require("../../assets/icons/user.png")}
             />
           ),
         }}

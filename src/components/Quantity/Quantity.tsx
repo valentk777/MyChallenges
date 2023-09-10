@@ -2,7 +2,7 @@ import React, { useContext, useRef } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import { ChallengeContext } from '../../screen/challengeScreen';
+import { ChallengeContext } from '../../screens/challengeScreen';
 
 interface QuantityProps {
 }

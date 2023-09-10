@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
 import { ThemeContext } from '../../contexts/themeContext';
-import { Challenge, ProgressStatus } from '../../entities/challenge';
+import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeStackParamList } from '../Menu/Menu';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
+import { ProgressStatus } from '../../entities/progressStatus';
 
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenges'>;
 
@@ -22,20 +23,8 @@ export const ChallengesList = (props: ChallengesListProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const [challengesFromStorage, setDataSource] = useState('');
+  const [challengesFromStorage, setDataSource] = useState([] as Challenge[]);
   const [refreshing, setRefreshing] = useState(true);
-
-  const getColor = (index: number) => {
-    if (index % 3 === 0) {
-      return theme.colors.tile1;
-    }
-
-    if (index % 3 === 1) {
-      return theme.colors.tile2;
-    }
-
-    return theme.colors.tile3;
-  }
 
   useEffect(() => {
     navigation.addListener('focus', () => {
@@ -43,20 +32,16 @@ export const ChallengesList = (props: ChallengesListProps) => {
     });
   }, [navigation]);
 
-
   const renderItem = (item: Challenge, index: number) => {
-    const color = getColor(index);
-
     return (
       <PressableTile
         title={item.title}
         challenge={item}
-        color={color}
         onPress={() => navigation.navigate('Challenge', { challenge: item })} />
     );
   };
 
-  const filterData = (data) => {
+  const filterData = (data: Challenge[]) => {
     if (filteringOptions === ChallengeFilteringOptions.OnlyFavorite) {
       return data.filter((item) => item.favorite);
     }
@@ -80,7 +65,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
         setDataSource(filteredData);
       }
     } catch (error) {
-      alert(error)
+      Alert.alert(error)
     }
   }
 

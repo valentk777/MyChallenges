@@ -1,30 +1,28 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../components/Menu/Menu';
-import { ChallengesList } from '../components/ChallengesList/ChallengesList';
-import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 
-type FavoriteChallengesScreenScreenProps = NativeStackScreenProps<HomeStackParamList, 'FavoriteChallenges'>;
+type AboutUsScreenProps = NativeStackScreenProps<HomeStackParamList, 'AboutUs'>;
 
-const FavoriteChallengesScreenScreen = ({ navigation }: FavoriteChallengesScreenScreenProps) => {
+export const AboutUsScreen = ({ navigation }: AboutUsScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   return (
     <View style={styles.container}>
       <LinearGradient
-        start={{ x: 0.9, y: 0 }}
-        locations={[0, 0.6, 1]}
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <ChallengesList navigation={navigation} filteringOptions={ChallengeFilteringOptions.OnlyFavorite} />
+        <View style={styles.section}>
+          <Text style={styles.text}>AboutUs information screen.</Text>
+        </View>
       </LinearGradient>
-    </View>
+    </View >
   );
 };
 
@@ -35,11 +33,24 @@ const createStyles = (theme: typeof customTheme) => {
     },
     linearGradient: {
       flex: 15,
-      colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
+      colors: [theme.colors.primary, theme.colors.secondary]
+    },
+    section: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '70%',
+    },
+    text: {
+      fontSize: 20,
+      lineHeight: 21,
+      fontFamily: theme.text.fontFamily,
+      fontWeight: 'bold',
+      color: theme.colors.text,
+      marginTop: 30,
     },
   });
 
   return styles;
 };
 
-export default FavoriteChallengesScreenScreen;
+export default AboutUsScreen;

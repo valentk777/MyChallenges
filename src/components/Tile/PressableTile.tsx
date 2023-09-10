@@ -1,30 +1,19 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity } from 'react-native';
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storeData } from '../../hooks/useDataStorage';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
-  color: string
 }
-
-const storeData = async (value: Challenge) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(value.id, jsonValue);
-    return true;
-  } catch (e) {
-    Alert.alert("error saving to storage");
-    return false;
-  }
-};
 
 const renderIcon = (styles, isFavorite) => {
   const image = isFavorite
     ? require('../../assets/icons/heart-full.png')
     : require('../../assets/icons/heart-empty.png');
+
   return (
     <Image
       source={image}
@@ -43,8 +32,12 @@ const convertUTCToLocalTime = (utcTime: string) => {
   return date.toLocaleString();
 };
 
+const getCroppedTest = (text: string, cropUntil: number) => {
+  return text.length < cropUntil ? text : text.substring(0, cropUntil) + "...";
+}
+
 export const PressableTile = (props: TileProps) => {
-  const { onPress, challenge, color } = props;
+  const { onPress, challenge } = props;
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
   const [isFavorite, onChangeFavorite] = useState(challenge.favorite);
@@ -55,12 +48,12 @@ export const PressableTile = (props: TileProps) => {
     onChangeFavorite(challenge.favorite);
   }
 
-  const title = challenge.title.length < 12 ? challenge.title : challenge.title.substring(0, 12) + "...";
-  const description = challenge.description.length < 17 ? challenge.description : challenge.description.substring(0, 16) + "...";
+  const title = getCroppedTest(challenge.title, 12);
+  const description = getCroppedTest(challenge.description, 16);
   const timeCreated = convertUTCToLocalTime(challenge.timeCreated);
 
   return (
-    <Pressable style={[{ backgroundColor: color }, styles.container, styles.shadow]} onPress={onPress}>
+    <Pressable style={[styles.container, styles.shadow]} onPress={onPress}>
       <Image
         style={styles.image}
         source={{ uri: challenge.image }}

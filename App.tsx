@@ -3,10 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ThemeContext, ThemeProvider } from './src/contexts/themeContext';
 import { AuthorizationContextProvider, useAuthorizationContext } from './src/contexts/authorizationContext';
-import { LoginScreen } from './src/screen/loginScreen';
+import { LoginScreen } from './src/screens/loginScreen';
 import Menu from './src/components/Menu/Menu';
-import { AddChallengeScreen } from './src/screen/addChallengeScreen';
-import { ChallengeScreen } from './src/screen/challengeScreen';
+import { AddChallengeScreen } from './src/screens/addChallengeScreen';
+import { ChallengeScreen } from './src/screens/challengeScreen';
 import { Challenge } from './src/entities/challenge';
 
 export type RootStackParamList = {

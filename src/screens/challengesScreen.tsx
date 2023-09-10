@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
-import {
-  StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -9,9 +8,9 @@ import { HomeStackParamList } from '../components/Menu/Menu';
 import { ChallengesList } from '../components/ChallengesList/ChallengesList';
 import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 
-type CompletedChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'CompletedChallenges'>;
+type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenges'>;
 
-const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProps) => {
+const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -23,7 +22,7 @@ const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProp
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <ChallengesList navigation={navigation} filteringOptions={ChallengeFilteringOptions.OnlyCompleted}  />
+        <ChallengesList navigation={navigation} filteringOptions={ChallengeFilteringOptions.All} />
       </LinearGradient>
     </View>
   );
@@ -43,4 +42,4 @@ const createStyles = (theme: typeof customTheme) => {
   return styles;
 };
 
-export default CompletedChallengesScreen;
+export default ChallengesScreen;

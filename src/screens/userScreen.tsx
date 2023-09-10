@@ -54,3 +54,5 @@ const createStyles = (theme: typeof customTheme) => {
 
   return styles;
 };
+
+export default UserScreen;

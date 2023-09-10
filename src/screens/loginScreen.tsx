@@ -3,10 +3,11 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { RootStackParamList } from '../../App';
 import { useAuthorizationContext } from '../contexts/authorizationContext';
-import { Button, ButtonTypes } from '../components/ButtonWrapper/ButtonWrapper';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
+import { CustomButton } from '../components/ButtonWrapper/CustomButton';
+import { ButtonTypes } from '../entities/buttonTypes';
 
 type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -24,12 +25,12 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
         <View style={styles.section}>
           <Image
             style={styles.image}
-            source={require('./../assets/logo/logo_500x500.png')}
+            source={require('../assets/logo/logo_500x500.png')}
           />
           <Text style={styles.text}>Challenge tracker</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Button
+          <CustomButton
             type={ButtonTypes.Primary}
             title="Show my challenges"
             onPress={() => {
@@ -76,8 +77,8 @@ const createStyles = (theme: typeof customTheme) => {
       margin: 40,
     },
   });
-  
+
   return styles;
 };
 
-
+export default LoginScreen;

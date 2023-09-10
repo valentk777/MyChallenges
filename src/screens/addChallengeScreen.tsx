@@ -1,16 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, Dimensions, Alert } from 'react-native';
-import { SaveButton } from '../components/ButtonWrapper/ButtonWrapper';
+import { StyleSheet, Text, View, TextInput, Image, Dimensions } from 'react-native';
+import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import uuid from 'react-native-uuid';
-import { Challenge, ProgressStatus } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { RootStackParamList } from '../../App';
+import { storeData } from '../hooks/useDataStorage';
+import getRandomImage from '../hooks/getRandomImage';
+import createNewChallenge from '../hooks/createNewChallenge';
 
 type AddChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'CreateNewChallenge'>;
+
+const windowHeight = Dimensions.get('window').height;
 
 export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
@@ -64,66 +66,19 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   );
 };
 
-const windowHeight = Dimensions.get('window').height;
-
-// TODO: move to shared component
-const storeData = async (value: Challenge) => {
+const onSave = async (title: string, description: string, targetValue: string, image: string, navigation) => {
   try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(value.id, jsonValue);
-    return true;
-  } catch (e) {
-    Alert.alert("error saving to storage");
+    const targetValueInt = parseInt(targetValue, 10);
+    const challenge = createNewChallenge(title, description, targetValueInt, image);
+    const result = await storeData(challenge);
+
+    if (result) {
+      navigation.navigate('Challenges');
+    }
+  }
+  catch (exception) {
     return false;
   }
-};
-
-// TODO: move to shared component
-const onSave = async (title, description, targetValue, image, navigation) => {
-  if (title === "") {
-    Alert.alert("Title cannot be empty");
-    return false;
-  }
-
-  if (targetValue === undefined || targetValue === "" || targetValue === 0) {
-    Alert.alert("Target value cannot be 0");
-    return false;
-  }
-
-  const currentUtcTime = new Date().toISOString();
-  const challengeCandidate = {} as Challenge;
-  challengeCandidate.id = uuid.v4().toString();
-  challengeCandidate.title = title;
-  challengeCandidate.description = description;
-  challengeCandidate.currentValue = 0;
-  challengeCandidate.targetValue = targetValue;
-  challengeCandidate.image = image;
-  challengeCandidate.timeCreated = currentUtcTime;
-  challengeCandidate.lastTimeUpdated = currentUtcTime;
-  challengeCandidate.favorite = false;
-  challengeCandidate.status = ProgressStatus.NotStarted;
-
-  const result = await storeData(challengeCandidate);
-
-  if (result) {
-    navigation.navigate('Challenges');
-  }
-}
-
-function getRandomImage() {
-  const images = [
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
-  ]
-
-  const imageId = Math.floor(Math.random() * 100) % 7;
-
-  return images[imageId];
 }
 
 const createStyles = (theme: typeof customTheme) => {
@@ -192,7 +147,9 @@ const createStyles = (theme: typeof customTheme) => {
       borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
     },
-
   });
+
   return styles;
 };
+
+export default AddChallengeScreen;

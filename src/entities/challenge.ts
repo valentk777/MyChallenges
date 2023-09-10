@@ -1,8 +1,4 @@
-export enum ProgressStatus {
-  NotStarted = 1,
-  InProgress,
-  Completed,
-}
+import {ProgressStatus} from './progressStatus';
 
 export interface Challenge {
   id: string;
@@ -16,3 +12,4 @@ export interface Challenge {
   favorite: boolean;
   status: ProgressStatus;
 }
+

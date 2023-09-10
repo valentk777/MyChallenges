@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { ChallengeContext } from '../../screen/challengeScreen';
+import { ChallengeContext } from '../../screens/challengeScreen';
 
 interface NumericProgressTileProps {
 }
