@@ -30,6 +30,8 @@ This is a mobile app with ReactNative for creating and tracing your challenges.
 ## Versioning
 https://github.com/gustarus/react-native-version-up
 npm run version:up -- --patch
+`git tag -a v1.0.X -m 'release 1.0.X: increase versions and build numbers'`
+`git commit -m 'release 1.0.X: increase versions and build numbers'`
 <!-- `npm install -g react-native-version`
 change version in packages.json. then run command
 `react-native-version --never-amend` -->
