@@ -1,6 +1,7 @@
 name: 'Build Android app'
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - v2.*
