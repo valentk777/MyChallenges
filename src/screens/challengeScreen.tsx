@@ -45,6 +45,9 @@ const updateChallengeStatus = (challenge: Challenge) => {
   else if (challenge.currentValue > 0) {
     challenge.status = ProgressStatus.InProgress;
   }
+  else {
+    challenge.status = ProgressStatus.NotStarted;
+  }
 
   return challenge;
 }
@@ -59,7 +62,7 @@ const onDelete = async (challenge: Challenge, props) => {
 
 export const ChallengeScreen = (props: ChallengeScreenProps) => {
   const challenge = props.route.params.challenge;
-
+ 
   const [newCount, setCount] = useState(challenge.currentValue);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);

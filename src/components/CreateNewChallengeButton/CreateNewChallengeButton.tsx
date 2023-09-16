@@ -1,27 +1,80 @@
-import React, { useContext } from 'react';
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
+import { ChallengeTypes } from '../../entities/challengeTypes';
+import { Alert } from 'react-native';
 
 interface CreateNewChallengeButtonProps extends TouchableOpacityProps {
 }
 
 export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) => {
   const { children } = props;
+
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+
   const navigation = useNavigation();
+  const [showPopup, setShowPopup] = useState(false);
+
+  const onShowPopup = () => {
+    setShowPopup(true);
+  }
+
+  const onHidePopup = () => {
+    setShowPopup(false);
+  }
+
+  const onSelectOption = (option: ChallengeTypes) => {
+    onHidePopup();
+
+    if (option === ChallengeTypes.Counter) {
+      navigation.navigate('CreateNewChallenge');
+    }
+    else if (option === ChallengeTypes.Steps) {
+      navigation.navigate('CreateNewChallenge');
+    } else {
+      Alert.alert("Unknown challenge type")
+    }
+  }
 
   return (
-    <TouchableOpacity
+    <View
       style={{ ...styles.container, ...styles.shadow }}
-      onPress={() => navigation.navigate('CreateNewChallenge')}
     >
-      <View style={styles.childrenContainer}>
-        {children}
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity onPress={onShowPopup}>
+        <View style={styles.childrenContainer}>
+          {children}
+        </View>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showPopup}
+        onRequestClose={onHidePopup}
+      >
+        {/* Create a black bachground and allow to close menu when pressing outside of menu */}
+        <TouchableWithoutFeedback onPress={onHidePopup}>
+          <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback >
+        <View style={styles.modalContent}>
+          <View style={styles.modalArea}>
+            <View style={styles.modalTile}>
+              <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
+                <Text style={styles.menuText}>Counter</Text>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.modalTile}>
+              <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Steps)}>
+                <Text style={styles.menuText}>Steps</Text>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
@@ -47,7 +100,42 @@ const createStyles = (theme: typeof customTheme) => {
       height: 70,
       borderRadius: 35,
       backgroundColor: theme.colors.input,
+    },
+    modalContent: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+    modalOverlay: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'rgba(0,0,0,0.7)'
+    },
+    modalArea: {
+      width: '90%',
+      height: '20%',
+      alignItems: 'center',
+      marginBottom: '5%',
+    },
+    modalTile: {
+      flex: 1,
+      backgroundColor: theme.colors.white,
+      borderRadius: 10,
+      margin: '1%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+    },
+    menuText: {
+      fontSize: 22,
+      fontFamily: theme.text.fontFamily,
+      fontWeight: 'bold',
+      color: theme.colors.black,
     }
   });
+
   return styles;
 };

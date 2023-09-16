@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
@@ -9,10 +9,19 @@ interface TileProps extends ButtonProps {
   challenge: Challenge;
 }
 
-const renderIcon = (styles, isFavorite) => {
+const renderIcon = (styles: any, isFavorite: boolean) => {
   const image = isFavorite
-    ? require('../../assets/icons/heart-full.png')
-    : require('../../assets/icons/heart-empty.png');
+  ? require('../../assets/icons/heart-full.png')
+  : require('../../assets/icons/heart-empty.png');
+  
+  
+  // const [image, setImage] = useState(require('../../assets/icons/heart-empty.png'));
+
+  // useEffect(() => {
+  //   isFavorite
+  //     ? setImage(require('../../assets/icons/heart-full.png'))
+  //     : setImage(require('../../assets/icons/heart-empty.png'));
+  // }, [isFavorite]);
 
   return (
     <Image
@@ -28,8 +37,15 @@ const convertUTCToLocalTime = (utcTime: string) => {
   }
 
   const date = new Date(utcTime);
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
 
-  return date.toLocaleString();
+  return date.toLocaleString('en-US', options);
 };
 
 const getCroppedTest = (text: string, cropUntil: number) => {
