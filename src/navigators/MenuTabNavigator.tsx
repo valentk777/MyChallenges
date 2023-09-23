@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { ThemeContext } from '../../contexts/themeContext';
-import { customTheme } from '../../styles/customTheme';
+import { ThemeContext } from '../contexts/themeContext';
+import { customTheme } from '../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChallengesScreen from '../../screens/challengesScreen';
-import { UserScreen } from '../../screens/userScreen';
-import { CreateNewChallengeButton } from '../CreateNewChallengeButton/CreateNewChallengeButton';
-import CompletedChallengesScreen from '../../screens/completedChallengesScreen';
-import FavoriteChallengesScreenScreen from '../../screens/favoriteChallengesScreen';
-import { CustomTabBarIcon } from '../TabBarWrapper/CustomTabBarIcon';
+import ChallengesScreen from '../screens/challengesScreen';
+import { UserScreen } from '../screens/userScreen';
+import { CreateNewChallengeButton } from '../components/CreateNewChallengeButton/CreateNewChallengeButton';
+import CompletedChallengesScreen from '../screens/completedChallengesScreen';
+import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
+import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
 
 export type HomeStackParamList = {
   Challenges: {};
@@ -40,12 +40,12 @@ const Menu = () => {
         component={ChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <CustomTabBarIcon
+            <MenuTabBarIcon
               focused={focused}
               styles={styles}
               theme={theme}
               text={"ACTIVE"}
-              iconUrl={require("../../assets/icons/bars-staggered.png")}
+              iconUrl={require("../assets/icons/bars-staggered.png")}
             />
           ),
         }}
@@ -57,12 +57,12 @@ const Menu = () => {
         component={FavoriteChallengesScreenScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <CustomTabBarIcon
+            <MenuTabBarIcon
               focused={focused}
               styles={styles}
               theme={theme}
               text={"TOP"}
-              iconUrl={require("../../assets/icons/heart.png")}
+              iconUrl={require("../assets/icons/heart.png")}
             />
           ),
         }}
@@ -76,7 +76,7 @@ const Menu = () => {
           },
           tabBarIcon: ({ focused }) => (
             <Image
-              source={require('../../assets/icons/plus.png')}
+              source={require('../assets/icons/plus.png')}
               resizeMode="contain"
               style={styles.createNewIcon}
             />
@@ -92,12 +92,12 @@ const Menu = () => {
         component={CompletedChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <CustomTabBarIcon
+            <MenuTabBarIcon
               focused={focused}
               styles={styles}
               theme={theme}
               text={"DONE"}
-              iconUrl={require("../../assets/icons/read.png")}
+              iconUrl={require("../assets/icons/read.png")}
             />
           ),
         }}
@@ -107,12 +107,12 @@ const Menu = () => {
         component={UserScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <CustomTabBarIcon
+            <MenuTabBarIcon
               focused={focused}
               styles={styles}
               theme={theme}
               text={"USER"}
-              iconUrl={require("../../assets/icons/user.png")}
+              iconUrl={require("../assets/icons/user.png")}
             />
           ),
         }}

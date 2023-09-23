@@ -1,76 +1,16 @@
-import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ThemeContext, ThemeProvider } from './src/contexts/themeContext';
-import { AuthorizationContextProvider, useAuthorizationContext } from './src/contexts/authorizationContext';
-import { LoginScreen } from './src/screens/loginScreen';
-import Menu from './src/components/Menu/Menu';
-import { AddChallengeScreen } from './src/screens/addChallengeScreen';
-import { ChallengeScreen } from './src/screens/challengeScreen';
-import { Challenge } from './src/entities/challenge';
-
-export type RootStackParamList = {
-  Login: {};
-  Home: {};
-  CreateNewChallenge: {};
-  Challenge: { challenge: Challenge };
-};
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import React from 'react';
+import AppContent from './src/AppContent';
+import { AuthProvider } from './src/hooks/useAuth';
+import { ThemeProvider } from './src/contexts/themeContext';
+import authManager from './src/external/auth/authManager';
 
 const App = () => {
   return (
     <ThemeProvider>
-      <AuthorizationContextProvider>
-        <AppComponent />
-      </AuthorizationContextProvider>
+      <AuthProvider authManager={authManager}>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
-  );
-};
-
-export const AppComponent = () => {
-  const { theme } = useContext(ThemeContext);
-  const { isSignedIn } = useAuthorizationContext();
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.white,
-          },
-          headerTitleAlign: 'center',
-        }}
-      >
-        {isSignedIn ? (
-          <>
-            <Stack.Screen
-              name="Home"
-              component={Menu}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="CreateNewChallenge"
-              component={AddChallengeScreen}
-            />
-            <Stack.Screen
-              name="Challenge"
-              component={ChallengeScreen}
-            />
-          </>
-        ) : (
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{
-              headerShown: false,
-            }}
-          />
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

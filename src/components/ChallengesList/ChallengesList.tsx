@@ -6,7 +6,7 @@ import { ThemeContext } from '../../contexts/themeContext';
 import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { HomeStackParamList } from '../Menu/Menu';
+import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
 

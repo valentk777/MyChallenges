@@ -1,20 +1,32 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { RootStackParamList } from '../../App';
-import { useAuthorizationContext } from '../contexts/authorizationContext';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { CustomButton } from '../components/ButtonWrapper/CustomButton';
 import { ButtonTypes } from '../entities/buttonTypes';
+import { AuthStackParamList } from '../navigators/AuthStackNavigator';
+import { useAuth } from '../hooks/useAuth';
 
-type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
+const OnSignIn = (navigation, isSignedIn, signIn) => {
+
+  signIn();
+
+  if (isSignedIn === true) {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MainStack' }],
+    })
+  }
+
+}
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const { signIn } = useAuthorizationContext();
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+  const { isSignedIn, signIn } = useAuth();
 
   return (
     <View style={styles.global}>
@@ -33,9 +45,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
           <CustomButton
             type={ButtonTypes.Primary}
             title="Show my challenges"
-            onPress={() => {
-              signIn();
-            }}
+            onPress={() => OnSignIn(navigation, isSignedIn, signIn)}
           />
         </View>
       </LinearGradient>

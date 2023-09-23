@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { HomeStackParamList } from '../components/Menu/Menu';
+import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import { ChallengesList } from '../components/ChallengesList/ChallengesList';
 import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 

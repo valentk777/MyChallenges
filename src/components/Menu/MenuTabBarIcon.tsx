@@ -1,6 +1,6 @@
 import { ImageSourcePropType, View, Image, Text } from "react-native";
 
-interface CustomTabBarIconProps {
+interface MenuTabBarIconProps {
     focused: boolean;
     styles: any;
     theme: any;
@@ -8,7 +8,7 @@ interface CustomTabBarIconProps {
     iconUrl: ImageSourcePropType
 }
 
-export const CustomTabBarIcon = (props: CustomTabBarIconProps) => {
+export const MenuTabBarIcon = (props: MenuTabBarIconProps) => {
     const { focused, styles, theme, text, iconUrl } = props;
 
     return (
