@@ -61,16 +61,16 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
         </TouchableWithoutFeedback >
         <View style={styles.modalContent}>
           <View style={styles.modalArea}>
-            <View style={styles.modalTile}>
-              <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
+              <View style={styles.modalTile}>
                 <Text style={styles.menuText}>Counter</Text>
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.modalTile}>
-              <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Steps)}>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Steps)}>
+              <View style={styles.modalTile}>
                 <Text style={styles.menuText}>Steps</Text>
-              </TouchableWithoutFeedback>
-            </View>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </Modal>
