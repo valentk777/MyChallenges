@@ -6,7 +6,7 @@ import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 
-type AboutUsScreenProps = NativeStackScreenProps<HomeStackParamList, 'AboutUs'>;
+type AboutUsScreenProps = NativeStackScreenProps<HomeStackParamList, 'AboutUsScreen'>;
 
 export const AboutUsScreen = ({ navigation }: AboutUsScreenProps) => {
   const { theme } = useContext(ThemeContext);

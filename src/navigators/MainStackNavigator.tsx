@@ -5,9 +5,9 @@ import ChallengeScreen from "../screens/challengeScreen"
 import { Challenge } from "../entities/challenge";
 
 export type MainStackParamList = {
-    Home: {};
-    CreateNewChallenge: {};
-    Challenge: { challenge: Challenge };
+    HomeTab: {};
+    CreateNewChallengeScreen: {};
+    ChallengeScreen: { challenge: Challenge };
 };
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -21,20 +21,21 @@ const MainStackNavigator = () => {
                 // headerBackTitleVisible: false,
                 // headerBackTitle: localized('Back'),
             }}
-            initialRouteName="Home">
+            initialRouteName="HomeTab">
             <MainStack.Screen
-                name="Home"
+                name="HomeTab"
                 component={Menu}
                 options={{
                     headerShown: false,
                 }}
             />
             <MainStack.Screen
-                name="CreateNewChallenge"
+                name="CreateNewChallengeScreen"
                 component={AddChallengeScreen}
+                options={{ title: 'Create new challenge' }}
             />
             <MainStack.Screen
-                name="Challenge"
+                name="ChallengeScreen"
                 component={ChallengeScreen}
             />
         </MainStack.Navigator>

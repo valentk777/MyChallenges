@@ -21,7 +21,7 @@ const AuthStackNavigator = () => {
             initialRouteName="LoginScreen">
             <AuthStack.Screen
                 // options={{ headerStyle: styles.headerStyle }}
-                name="LoginScreen"
+                name= "LoginScreen"
                 component={LoginScreen}
             />
         </AuthStack.Navigator>

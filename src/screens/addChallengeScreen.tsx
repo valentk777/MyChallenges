@@ -5,12 +5,12 @@ import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { RootStackParamList } from '../../App';
 import { storeData } from '../hooks/useDataStorage';
 import getRandomImage from '../hooks/getRandomImage';
 import createNewChallenge from '../hooks/createNewChallenge';
+import { MainStackParamList } from '../navigators/MainStackNavigator';
 
-type AddChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'CreateNewChallenge'>;
+type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -73,7 +73,7 @@ const onSave = async (title: string, description: string, targetValue: string, i
     const result = await storeData(challenge);
 
     if (result) {
-      navigation.navigate('Challenges');
+      navigation.navigate('ChallengesScreen');
     }
   }
   catch (exception) {

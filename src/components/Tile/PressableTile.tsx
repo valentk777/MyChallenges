@@ -13,15 +13,6 @@ const renderIcon = (styles: any, isFavorite: boolean) => {
   const image = isFavorite
   ? require('../../assets/icons/heart-full.png')
   : require('../../assets/icons/heart-empty.png');
-  
-  
-  // const [image, setImage] = useState(require('../../assets/icons/heart-empty.png'));
-
-  // useEffect(() => {
-  //   isFavorite
-  //     ? setImage(require('../../assets/icons/heart-full.png'))
-  //     : setImage(require('../../assets/icons/heart-empty.png'));
-  // }, [isFavorite]);
 
   return (
     <Image

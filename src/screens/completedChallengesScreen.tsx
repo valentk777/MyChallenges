@@ -8,7 +8,7 @@ import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import { ChallengesList } from '../components/ChallengesList/ChallengesList';
 import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 
-type CompletedChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'CompletedChallenges'>;
+type CompletedChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'CompletedChallengesScreen'>;
 
 const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProps) => {
   const { theme } = useContext(ThemeContext);

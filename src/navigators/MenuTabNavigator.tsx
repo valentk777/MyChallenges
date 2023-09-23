@@ -11,11 +11,11 @@ import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen'
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
 
 export type HomeStackParamList = {
-  Challenges: {};
-  FavoriteChallenges: {};
-  CreateNewChallengeStack: {};
-  CompletedChallenges: {};
-  User: {};
+  ChallengesScreen: {};
+  FavoriteChallengesScreen: {};
+  CreateNewChallengeButton: {};
+  CompletedChallengesScreen: {};
+  UserScreen: {};
 };
 
 const HomeTab = createBottomTabNavigator<HomeStackParamList>();
@@ -36,7 +36,7 @@ const Menu = () => {
       }}
     >
       <HomeTab.Screen
-        name="Challenges"
+        name="ChallengesScreen"
         component={ChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -53,7 +53,7 @@ const Menu = () => {
 
       {/* o gal tiesiog bendrame liste parodyt juos auksciau? */}
       <HomeTab.Screen
-        name="FavoriteChallenges"
+        name="FavoriteChallengesScreen"
         component={FavoriteChallengesScreenScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -68,7 +68,7 @@ const Menu = () => {
         }}
       />
       <HomeTab.Screen
-        name="CreateNewChallengeStack"
+        name="CreateNewChallengeButton"
         component={CreateNewChallengeButton}
         options={{
           tabBarStyle: {
@@ -88,7 +88,7 @@ const Menu = () => {
         }}
       />
       <HomeTab.Screen
-        name="CompletedChallenges"
+        name="CompletedChallengesScreen"
         component={CompletedChallengesScreen}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -103,7 +103,7 @@ const Menu = () => {
         }}
       />
       <HomeTab.Screen
-        name="User"
+        name="UserScreen"
         component={UserScreen}
         options={{
           tabBarIcon: ({ focused }) => (

@@ -30,10 +30,10 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
     onHidePopup();
 
     if (option === ChallengeTypes.Counter) {
-      navigation.navigate('CreateNewChallenge');
+      navigation.navigate('CreateNewChallengeScreen');
     }
     else if (option === ChallengeTypes.Steps) {
-      navigation.navigate('CreateNewChallenge');
+      navigation.navigate('CreateNewChallengeScreen');
     } else {
       Alert.alert("Unknown challenge type")
     }

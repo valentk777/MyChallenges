@@ -36,10 +36,8 @@ const LoadScreen =({ navigation }: LoadScreenProps) => {
         //   fetchPersistedUserIfNeeded()
         //   return
         // }
-        Alert.alert("login");
         navigation.navigate('AuthStack')
       } else {
-        Alert.alert("alreadylogedIn");
         navigation.navigate('MainStack')
       }
     }

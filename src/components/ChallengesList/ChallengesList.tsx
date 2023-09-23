@@ -10,7 +10,7 @@ import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
 
-type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'Challenges'>;
+type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
 
 interface ChallengesListProps {
   navigation: ChallengesScreenProps;
@@ -37,7 +37,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
       <PressableTile
         title={item.title}
         challenge={item}
-        onPress={() => navigation.navigate('Challenge', { challenge: item })} />
+        onPress={() => navigation.navigate('ChallengeScreen', { challenge: item })} />
     );
   };
 

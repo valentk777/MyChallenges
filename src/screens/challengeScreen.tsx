@@ -8,11 +8,11 @@ import { ThemeContext } from '../contexts/themeContext';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { RootStackParamList } from '../../App';
 import { storeData, removeData } from '../hooks/useDataStorage';
 import { ProgressStatus } from '../entities/progressStatus';
+import { MainStackParamList } from '../navigators/MainStackNavigator';
 
-type ChallengeScreenProps = NativeStackScreenProps<RootStackParamList, 'Challenge'>;
+type ChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'ChallengeScreen'>;
 
 interface ChallengeContextProvider {
   challenge: Challenge;
@@ -34,7 +34,7 @@ const onSave = async (challenge: Challenge, newCount: number, props) => {
   const result = await storeData(challenge);
 
   if (result) {
-    props.navigation.navigate('Challenges');
+    props.navigation.navigate('ChallengesScreen');
   }
 }
 
@@ -56,7 +56,7 @@ const onDelete = async (challenge: Challenge, props) => {
   const result = await removeData(challenge);
 
   if (result) {
-    props.navigation.navigate('Challenges');
+    props.navigation.navigate('ChallengesScreen');
   }
 }
 
