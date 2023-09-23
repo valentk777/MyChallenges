@@ -136,7 +136,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 5
     },
     saveContainer: {
-      flex: 1
+      flex: 1,
     },
     titleAndTrashCanWrapper: {
       flex: 1

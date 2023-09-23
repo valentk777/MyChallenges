@@ -37,6 +37,7 @@ const MainStackNavigator = () => {
             <MainStack.Screen
                 name="ChallengeScreen"
                 component={ChallengeScreen}
+                options={{ title: 'Challenge' }}
             />
         </MainStack.Navigator>
     )
