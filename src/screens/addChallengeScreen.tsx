@@ -6,14 +6,59 @@ import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { storeData } from '../hooks/useDataStorage';
-import getRandomImage from '../hooks/getRandomImage';
-import createNewChallenge from '../hooks/createNewChallenge';
 import { MainStackParamList } from '../navigators/MainStackNavigator';
+import { Challenge } from '../entities/challenge';
+import { ProgressStatus } from '../entities/progressStatus';
+import uuid from 'react-native-uuid';
 // import { useHeaderHeight } from '@react-navigation/elements';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
 const windowHeight = Dimensions.get('window').height;
+
+export const getRandomImage = () => {
+  const images = [
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
+      'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
+  ]
+
+  const imageId = Math.floor(Math.random() * 100) % 7;
+
+  return images[imageId];
+}
+
+const createNewChallenge = (title: string, description: string, targetValue: number, image: string) => {
+  if (title === "") {
+      Alert.alert("Title cannot be empty");
+      throw new Error("Title cannot be empty");
+  }
+
+  if (targetValue === undefined || targetValue === 0) {
+      Alert.alert("Target value cannot be 0");
+      throw new Error("Target value cannot be 0");
+  }
+
+  const currentUtcTime = new Date().toISOString();
+  const challengeCandidate = {} as Challenge;
+
+  challengeCandidate.id = uuid.v4().toString();
+  challengeCandidate.title = title;
+  challengeCandidate.description = description;
+  challengeCandidate.currentValue = 0;
+  challengeCandidate.targetValue = targetValue;
+  challengeCandidate.image = image;
+  challengeCandidate.timeCreated = currentUtcTime;
+  challengeCandidate.lastTimeUpdated = currentUtcTime;
+  challengeCandidate.favorite = false;
+  challengeCandidate.status = ProgressStatus.NotStarted;
+
+  return challengeCandidate;
+}
 
 export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
