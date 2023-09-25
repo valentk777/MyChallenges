@@ -28,11 +28,11 @@ const RootNavigator = () => {
   }
 
   const renderScreenChange = () => {
-    if (state.isLoading) {
-      return (
-        <Root.Screen name="SplashScreen" component={SplashScreen} />
-      );
-    }
+    // if (state.isLoading) {
+    //   return (
+    //     <Root.Screen name="SplashScreen" component={SplashScreen} />
+    //   );
+    // }
 
     if (state?.isAuthenticated) {
       return (

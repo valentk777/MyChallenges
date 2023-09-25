@@ -19,16 +19,19 @@ const initialState: UserState = {
 interface IAuthorizationContext {
     state: UserState;
     createUser: (user: LoginUser) => void;
-    signIn: (user: LoginUser) => void;
+    emailSignIn: (user: LoginUser) => void;
     signOut: (userId: string | null) => void;
+
+    loginOrSignUpWithGoogle: () => void;
 }
 
 export const AuthContext = createContext<IAuthorizationContext>({
     state: initialState,
     createUser: (user: LoginUser) => { },
-    signIn: (user: LoginUser) => { },
+    emailSignIn: (user: LoginUser) => { },
     signOut: (userId: string | null) => { },
 
+    loginOrSignUpWithGoogle: () => { },
 
     // retrievePersistedAuthUser: () => { },
     // loginWithEmailAndPassword: (user: LoginUser) => { },
@@ -85,7 +88,7 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
         // So we can use this function to check if user should be logged in after closing an app
         function onAuthStateChanged(user) {
             if (user === null) {
-                // user is not logged in.
+                state.isLoading = false;
                 return;
             }
 
@@ -95,7 +98,7 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             // console.warn(user);
             // console.warn(doaminUser);
             // setUser(user);
-          }
+        }
 
         const unsubscribe = authManager?.retrievePersistedAuthUser(onAuthStateChanged);
         // .then(response => {
@@ -194,9 +197,9 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             value={{
                 state,
                 createUser,
-                signIn,
+                emailSignIn: signIn,
                 signOut,
-                // signInWithGoogle: authManager.signInWithGoogle,
+                loginOrSignUpWithGoogle: authManager.loginOrSignUpWithGoogle,
                 // signInWithFacebook: authManager.signInWithFacebook,
             }}>
             {children}

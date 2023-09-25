@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {ErrorCode} from '../../entities/errorCodes';
 import userDbTable from '../database/userDbTable';
+import {Alert} from 'react-native';
 
 export const usersRef = firestore().collection('users');
 
@@ -141,12 +142,125 @@ const retrievePersistedAuthUser = (listener: any): (() => void) => {
   return auth().onAuthStateChanged(listener);
 };
 
+const signInWithCredential = (credential: any, socialAuthType: string) => {
+  return new Promise((resolve, _reject) => {
+    auth()
+      .signInWithCredential(credential)
+      .then(async response => {
+        Alert.alert('3');
+
+        const isNewUser = response.additionalUserInfo.isNewUser;
+        // const { first_name, last_name, family_name, given_name } = response.additionalUserInfo.profile;
+        const {uid, email, phoneNumber, photoURL} = response.user;
+
+        const timestamp = getUnixTimeStamp();
+        const userData = {
+          id: uid,
+          email: email || '',
+          // firstName: first_name || given_name || socialAuthType || '',
+          // lastName: last_name || family_name || 'User',
+          // phone: phoneNumber || '',
+          // profilePictureURL: photoURL || defaultProfilePhotoURL,
+          createdAt: timestamp,
+          // ...(socialAuthType ? { socialAuthType } : {}),
+        } as UserAccount;
+
+        if (isNewUser) {
+          // do not await here.
+
+          Alert.alert('4');
+
+          userDbTable.addNewUser(userData);
+
+          resolve({isSuccessfull: true, result: userData} as AppResponse);
+        }
+
+        Alert.alert('5');
+
+        userDbTable
+          .getUserByID(uid)
+          .then(function (firestoreUser) {
+            if (firestoreUser) {
+              handleSuccessfulLogin(firestoreUser).then(response => {
+                resolve(response as AppResponse);
+              });
+            } else {
+              resolve({
+                isSuccessfull: false,
+                error: ErrorCode.noUser,
+              } as AppResponse);
+            }
+          })
+          .catch(function (_error) {
+            console.log('_error:', _error);
+            resolve({
+              isSuccessfull: false,
+              error: ErrorCode.serverError,
+            } as AppResponse);
+          });
+      })
+      .catch(_error => {
+        console.log(_error);
+        resolve({error: ErrorCode.serverError});
+      });
+  });
+};
+
+// const loginWithFacebook = (accessToken, appIdentifier) => {
+//   const credential = auth.FacebookAuthProvider.credential(accessToken);
+
+//   return new Promise((resolve, _reject) => {
+//     signInWithCredential(credential, appIdentifier, 'Facebook').then(
+//       response => {
+//         resolve(response);
+//       },
+//     )
+//   })
+// }
+
+const loginOrSignUpWithGoogle = () => {
+  GoogleSignin.configure({
+    webClientId:
+      '270930206979-5g92jrri5aa6ef56t892diu9p5hgmi2o.apps.googleusercontent.com',
+  });
+
+  return new Promise(async (resolve, _reject) => {
+    try {
+      const {idToken} = await GoogleSignin.signIn();
+      const credential = auth.GoogleAuthProvider.credential(idToken);
+
+      Alert.alert(`${idToken}`);
+
+      signInWithCredential(credential, 'Google').then(async response => {
+        if (response.isSuccessfull) {
+          handleSuccessfulLogin(response.result as UserAccount).then(
+            response => {
+              resolve(response as AppResponse);
+            },
+          );
+        } else {
+          resolve({
+            isSuccessfull: false,
+            error: ErrorCode.googleSigninFailed,
+          } as AppResponse);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      resolve({
+        isSuccessfull: false,
+        error: ErrorCode.googleSigninFailed,
+      } as AppResponse);
+    }
+  });
+};
+
 export interface IAuthManager {
   createAccountWithEmailAndPassword: (user: LoginUser) => Promise<AppResponse>;
   loginWithEmailAndPassword: (user: LoginUser) => Promise<AppResponse>;
   logout: (userId: string) => void;
   retrievePersistedAuthUser: (listener: any) => () => void;
-
+  loginOrSignUpWithGoogle: () => void;
   // logout: (user: UserAccount) => void;
 
   // onAuthStateChanged: (callback: any) => any;
@@ -158,6 +272,7 @@ export const authManager: IAuthManager = {
   logout,
   retrievePersistedAuthUser,
 
+  loginOrSignUpWithGoogle,
   // validateUsernameFieldIfNeeded,
   // sendPasswordResetEmail,
   // deleteUser,

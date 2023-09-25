@@ -1,13 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Dimensions, Image, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Dimensions, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
 import { useAuth } from '../hooks/useAuth';
 import { LoginUser } from '../entities/user';
+import { GoogleSignInButton } from '../components/ButtonWrapper/GoogleSignInButton';
 
 type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScreen'>;
 
@@ -15,7 +15,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const { signIn } = useAuth()
+  const { emailSignIn, loginOrSignUpWithGoogle } = useAuth()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,8 +28,8 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
     const userCandidate = {} as LoginUser;
     userCandidate.email = email;
     userCandidate.password = password;
-    
-    signIn(userCandidate);
+
+    emailSignIn(userCandidate);
   }
 
   const renderHeaderTextContainer = () => (
@@ -46,11 +46,11 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   const renderInputContainer = () => (
     <View style={styles.textInputContainer}>
       <TextInput
-      placeholder= "Email"
-      placeholderTextColor="#6C6D72"
-      style={styles.textInputStyle}
-      onChangeText={setEmail}
-    />
+        placeholder="Email"
+        placeholderTextColor="#6C6D72"
+        style={styles.textInputStyle}
+        onChangeText={setEmail}
+      />
       <TextInput
         placeholder="Password"
         placeholderTextColor="#6C6D72"
@@ -79,40 +79,6 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
     </View>
   );
 
-
-  const renderLoginButtonsContainer = () => {
-    return (
-      <View>
-        {/* <TouchableOpacity
-          style={styles.googleButtonStyle}
-          onPress={handleGoogleLogIn}
-        >
-          <Image
-            source={require("../../local-assets/google.png")}
-            style={styles.logoImageStyle}
-          />
-          <Text style={styles.googleButtonTextStyle}>
-            Sign In With Google
-          </Text>
-        </TouchableOpacity> */}
-
-        {/* <TouchableOpacity
-          style={styles.facebookButtonStyle}
-          onPress={handleFacebookLogIn}
-        >
-          <Image
-            source={require("../../local-assets/facebook.png")}
-            style={styles.logoImageStyle}
-          />
-          <Text
-            style={styles.facebookButtonTextStyle}
-          >
-            "Sign In With Facebook
-          </Text>
-        </TouchableOpacity> */}
-      </View>
-    );
-  };
 
   const renderSignUpButtonContainer = () => (
     <View style={styles.signUpButtonContainer}>
@@ -154,7 +120,8 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
                 bottom: 8,
               }}
             >
-              {renderLoginButtonsContainer()}
+              <GoogleSignInButton text="Log In With Google" onGoogleSignPress={loginOrSignUpWithGoogle} />
+
               {renderSignUpButtonContainer()}
             </View>
           </KeyboardAvoidingView>
@@ -255,20 +222,7 @@ const createStyles = (theme: typeof customTheme) => {
       height: 32,
       marginRight: 12,
     },
-    googleButtonStyle: {
-      backgroundColor: "#FFFFFF",
-      width: ScreenWidth * 0.85,
-      height: 55,
-      marginTop: 8,
-      borderRadius: 16,
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    googleButtonTextStyle: {
-      color: "#181A1F",
-      fontWeight: "600",
-    },
+
     facebookButtonStyle: {
       backgroundColor: "#3A579B",
       width: ScreenWidth * 0.85,

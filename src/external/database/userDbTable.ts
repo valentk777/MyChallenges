@@ -17,7 +17,7 @@ export const addNewUser = async (user: UserAccount) => {
 
   try {
     await usersRef.doc(user.id).set(dataWithOnlineStatus, {merge: true});
-    return {isSuccessfull: true} as AppResponse;
+    return {isSuccessfull: true, result: dataWithOnlineStatus} as AppResponse;
   } catch (error) {
     console.log(error);
     return {isSuccessfull: false, error: error} as AppResponse;

@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
 import { useAuth } from '../hooks/useAuth';
 import { LoginUser } from '../entities/user';
+import { GoogleSignInButton } from '../components/ButtonWrapper/GoogleSignInButton';
 
 interface RegisterScreenProps
     extends NativeStackScreenProps<AuthStackParamList, 'RegisterScreen'> {
@@ -16,7 +17,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
 
-    const { createUser } = useAuth()
+    const { createUser, loginOrSignUpWithGoogle } = useAuth()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -108,6 +109,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
                 <SafeAreaView style={styles.mainContainer}>
                     {renderHeaderTextContainer()}
                     {renderTextInputContainer()}
+                    <GoogleSignInButton text="Sign In With Google" onGoogleSignPress={loginOrSignUpWithGoogle} />
                 </SafeAreaView>
                 <View
                     style={{

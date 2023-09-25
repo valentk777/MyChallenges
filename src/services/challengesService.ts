@@ -1,8 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
 import {Challenge} from '../entities/challenge';
-import {getData, removeData, storeData} from './dataStorageService';
-import challengesDbTable from '../external/database/challengesDbTable';
+import {getData, storeData} from './dataStorageService';
 
 const initChallengesList = async () => {
   const challenges = [] as Challenge[];
@@ -86,7 +84,6 @@ const removeChallenge = async (challengeId: string) => {
 };
 
 const uploadChallengesToRemoteStorage = async () => {
-  challengesDbTable;
 };
 
 const challengesService = {
