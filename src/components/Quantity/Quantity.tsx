@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { ChallengeContext } from '../../screens/challengeScreen';
+import { icons } from '../../assets';
 
 interface QuantityProps {
 }
@@ -17,16 +18,16 @@ export const Quantity = (props: QuantityProps) => {
 
   const decreaseInterval = () => {
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue - 2;
+      newLocalValue = newLocalValue - 5;
       updateValue(newLocalValue);
-    }, 300);
+    }, 250);
   };
 
   const increaseInterval = () => {
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue + 2;
+      newLocalValue = newLocalValue + 5;
       updateValue(newLocalValue);
-    }, 300);
+    }, 250);
   };
 
   return (
@@ -38,7 +39,7 @@ export const Quantity = (props: QuantityProps) => {
           onPressOut={() => clearInterval(intervalRef.current)}
           disabled={newValue <= 0}>
           <Image
-            source={require('../../assets/icons/angle-left.png')}
+            source={icons['angle-left.png']}
             resizeMode="contain"
             style={styles.icon}
           />
@@ -52,7 +53,7 @@ export const Quantity = (props: QuantityProps) => {
           onPressIn={increaseInterval}
           onPressOut={() => clearInterval(intervalRef.current)}>
           <Image
-            source={require('../../assets/icons/angle-right.png')}
+            source={icons['angle-right.png']}
             resizeMode="contain"
             style={styles.icon}
           />

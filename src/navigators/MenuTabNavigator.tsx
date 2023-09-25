@@ -9,6 +9,7 @@ import { CreateNewChallengeButton } from '../components/CreateNewChallengeButton
 import CompletedChallengesScreen from '../screens/completedChallengesScreen';
 import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
+import { icons } from '../assets';
 
 export type HomeStackParamList = {
   ChallengesScreen: {};
@@ -45,7 +46,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"ACTIVE"}
-              iconUrl={require("../assets/icons/bars-staggered.png")}
+              iconUrl={icons['bars-staggered.png']}
             />
           ),
         }}
@@ -62,7 +63,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"TOP"}
-              iconUrl={require("../assets/icons/heart.png")}
+              iconUrl={icons['heart-full.png']}
             />
           ),
         }}
@@ -76,7 +77,7 @@ const Menu = () => {
           },
           tabBarIcon: ({ focused }) => (
             <Image
-              source={require('../assets/icons/plus.png')}
+              source={icons['plus.png']}
               resizeMode="contain"
               style={styles.createNewIcon}
             />
@@ -97,7 +98,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"DONE"}
-              iconUrl={require("../assets/icons/read.png")}
+              iconUrl={icons['read.png']}
             />
           ),
         }}
@@ -112,7 +113,7 @@ const Menu = () => {
               styles={styles}
               theme={theme}
               text={"USER"}
-              iconUrl={require("../assets/icons/user.png")}
+              iconUrl={icons['user.png']}
             />
           ),
         }}

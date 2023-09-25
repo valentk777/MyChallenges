@@ -1,22 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, Image, ButtonProps, Pressable, View, TouchableOpacity } from 'react-native';
 import { Challenge } from '../../entities/challenge';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
-import { storeData } from '../../hooks/useDataStorage';
+import { icons } from '../../assets';
+import challengesService from '../../services/challengesService';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
 }
 
 const renderIcon = (styles: any, isFavorite: boolean) => {
-  const image = isFavorite
-  ? require('../../assets/icons/heart-full.png')
-  : require('../../assets/icons/heart-empty.png');
-
   return (
     <Image
-      source={image}
+      source={isFavorite ? icons['heart-full.png'] : icons['heart-empty.png']}
       style={styles.hearIcon}
     />
   );
@@ -51,7 +48,7 @@ export const PressableTile = (props: TileProps) => {
 
   const onPressFavorite = async () => {
     challenge.favorite = !challenge.favorite;
-    await storeData(challenge);
+    await challengesService.storeChallenge(challenge);
     onChangeFavorite(challenge.favorite);
   }
 
@@ -79,7 +76,7 @@ export const PressableTile = (props: TileProps) => {
         {renderIcon(styles, isFavorite)}
       </TouchableOpacity>
       <Image
-        source={require('../../assets/icons/angle-right.png')}
+        source={icons['angle-right.png']}
         resizeMode='contain'
         style={styles.arrowIcon}
       />
