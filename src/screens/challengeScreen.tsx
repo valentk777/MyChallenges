@@ -8,9 +8,10 @@ import { ThemeContext } from '../contexts/themeContext';
 import { Challenge } from '../entities/challenge';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { storeData, removeData } from '../hooks/useDataStorage';
 import { ProgressStatus } from '../entities/progressStatus';
 import { MainStackParamList } from '../navigators/MainStackNavigator';
+import { icons } from '../assets';
+import challengesService from '../services/challengesService';
 
 type ChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'ChallengeScreen'>;
 
@@ -21,7 +22,7 @@ interface ChallengeContextProvider {
 }
 
 export const ChallengeContext = createContext<ChallengeContextProvider>({
-  challenge: null,
+  challenge: {} as Challenge,
   newValue: 0,
   updateValue: (value: number) => { },
 });
@@ -31,7 +32,7 @@ const onSave = async (challenge: Challenge, newCount: number, props) => {
   challenge.lastTimeUpdated = new Date().toISOString();
   challenge = updateChallengeStatus(challenge);
 
-  const result = await storeData(challenge);
+  const result = await challengesService.storeChallenge(challenge);
 
   if (result) {
     props.navigation.navigate('ChallengesScreen');
@@ -53,16 +54,16 @@ const updateChallengeStatus = (challenge: Challenge) => {
 }
 
 const onDelete = async (challenge: Challenge, props) => {
-  const result = await removeData(challenge);
+  const result = await challengesService.removeChallenge(challenge.id);
 
   if (result) {
-    props.navigation.navigate('ChallengesScreen');
+    props.navigation.navigate('HomeTab');
   }
 }
 
 export const ChallengeScreen = (props: ChallengeScreenProps) => {
   const challenge = props.route.params.challenge;
- 
+
   const [newCount, setCount] = useState(challenge.currentValue);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -91,7 +92,7 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
               onPress={async () => onDelete(challenge, props)}
             >
               <Image
-                source={require('./../assets/icons/trash.png')}
+                source={icons['trash.png']}
                 resizeMode="contain"
                 style={styles.trashCan}
               />

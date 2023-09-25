@@ -1,23 +1,30 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, Dimensions, Alert, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, Dimensions, Alert } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { storeData } from '../hooks/useDataStorage';
 import { MainStackParamList } from '../navigators/MainStackNavigator';
 import { Challenge } from '../entities/challenge';
 import { ProgressStatus } from '../entities/progressStatus';
 import uuid from 'react-native-uuid';
 import { useHeaderHeight } from '@react-navigation/elements';
+import challengesService from '../services/challengesService';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
 const windowHeight = Dimensions.get('window').height;
 
 export const getRandomImage = () => {
-  const images = [
+  const localImages = [
+    // images['freenaturestock-296-768x512.jpeg'],
+    // images['freenaturestock-405-768x512.jpeg'],
+    // images['freenaturestock-1794-768x512.jpg'],
+    // images['freenaturestock-1948-768x512.jpg'],
+    // images['freenaturestock-1969-768x512.jpg'],
+    // images['freenaturestock-2137-768x512.jpg'],
+    // images['freenaturestock-2147-768x512.jpg'],
       'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
       'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
       'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
@@ -29,7 +36,7 @@ export const getRandomImage = () => {
 
   const imageId = Math.floor(Math.random() * 100) % 7;
 
-  return images[imageId];
+  return localImages[imageId];
 }
 
 const createNewChallenge = (title: string, description: string, targetValue: number, image: string) => {
@@ -38,7 +45,12 @@ const createNewChallenge = (title: string, description: string, targetValue: num
       throw new Error("Title cannot be empty");
   }
 
-  if (targetValue === undefined || targetValue === 0) {
+  if (isNaN(targetValue)) {
+      Alert.alert("Target value numbe be a number");
+      throw new Error("Target value numbe be a number");
+  }
+
+  if (targetValue <= 0) {
       Alert.alert("Target value cannot be 0");
       throw new Error("Target value cannot be 0");
   }
@@ -70,11 +82,7 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const [targetValue, onChangeTargetValueText] = useState('');
   const [image] = useState(getRandomImage());
 
-  let screenHeight = windowHeight - headerHeight;
-
-  if (StatusBar.currentHeight !== undefined) {
-    screenHeight = screenHeight - StatusBar.currentHeight;
-  }
+  const screenHeight = windowHeight - headerHeight;
 
   return (
     <View style={{ ...styles.container, height: screenHeight }}>
@@ -133,7 +141,7 @@ const onSave = async (title: string, description: string, targetValue: string, i
   try {
     const targetValueInt = parseInt(targetValue, 10);
     const challenge = createNewChallenge(title, description, targetValueInt, image);
-    const result = await storeData(challenge);
+    const result = await challengesService.storeChallenge(challenge);
 
     if (result) {
       navigation.navigate('ChallengesScreen');

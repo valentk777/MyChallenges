@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
+import { ButtonProps, Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
 import { ThemeContext } from '../../contexts/themeContext';
 import { ButtonTypes } from '../../entities/buttonTypes';
@@ -15,7 +15,7 @@ export const CustomButton = (props: ExpandedButtonProps) => {
     const styles = createStyles(theme);
 
     return (
-        <Pressable
+        <TouchableOpacity
             style={
                 type == ButtonTypes.Primary
                     ? styles.buttonPrimary
@@ -30,7 +30,7 @@ export const CustomButton = (props: ExpandedButtonProps) => {
                 }>
                 {title}
             </Text>
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 

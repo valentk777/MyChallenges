@@ -5,10 +5,10 @@ import { customTheme } from '../../styles/customTheme';
 import { ThemeContext } from '../../contexts/themeContext';
 import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
+import challengesService from '../../services/challengesService';
 
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
 
@@ -45,7 +45,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
     if (filteringOptions === ChallengeFilteringOptions.OnlyFavorite) {
       return data.filter((item) => item.favorite);
     }
-    
+
     if (filteringOptions === ChallengeFilteringOptions.OnlyCompleted) {
       return data.filter((item) => item.status == ProgressStatus.Completed);
     }
@@ -55,17 +55,19 @@ export const ChallengesList = (props: ChallengesListProps) => {
 
   async function readData() {
     try {
-      const keys = await AsyncStorage.getAllKeys();
-      const result = await AsyncStorage.multiGet(keys);
-      const data = result.map((req) => JSON.parse(req[1]))
+      const challenges = await challengesService.getAllChalenges();
 
-      if (data !== null) {
+      if (challenges.length == 0) {
         setRefreshing(false);
-        const filteredData = filterData(data);
-        setDataSource(filteredData);
+        setDataSource([]);
+        return;
       }
+
+      const filteredData = filterData(challenges);
+      setDataSource(filteredData);
+      setRefreshing(false);
     } catch (error) {
-      Alert.alert(error)
+      Alert.alert(`${error}`)
     }
   }
 

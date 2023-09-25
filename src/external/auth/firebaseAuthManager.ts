@@ -106,7 +106,6 @@ const loginWithEmailAndPassword = (user: LoginUser) => {
           });
       })
       .catch(error => {
-        console.log('ciascisaci');
         var errorCode = ErrorCode.serverError;
 
         switch (error.code) {
