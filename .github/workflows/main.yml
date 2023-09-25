@@ -56,12 +56,14 @@ jobs:
           echo Product version:       ${{ steps.package-version.outputs.current-version }}
           node --version
 
-      - name: Decode Keystore
+      - name: Decode Keystore and google-services.json
         env:
           ANDROID_SIGNING_KEY_BASE64: ${{ secrets.ANDROID_SIGNING_KEY_BASE64 }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
           echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/my-upload-key.keystore
           echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
+          echo $GOOGLE_SERVICES_JSON | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/google-services.json
 
       # - name: Test signing
       #   env:

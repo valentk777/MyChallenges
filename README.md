@@ -43,7 +43,11 @@ npm run version:up -- --patch
 `git commit -m 'release 1.0.X: increase versions and build numbers'`
 <!-- `npm install -g react-native-version`
 change version in packages.json. then run command
-`react-native-version --never-amend` -->
+`react-native-version --never-amend` 
+
+# json to base64 in git bash
+cat google-services.json | base64
+-->
 
 ## Release
 
