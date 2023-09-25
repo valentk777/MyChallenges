@@ -1,17 +1,18 @@
 import { StyleSheet, View } from 'react-native'
 import LoginScreen from '../screens/loginScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useAuth } from '../hooks/useAuth'
+import RegisterScreen from '../screens/registerScreen';
+import { SingInScreen } from '../screens/signInScreen';
 
 export type AuthStackParamList = {
     LoginScreen: {};
+    RegisterScreen: {};
+    SingInScreen: {};
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>()
 
 const AuthStackNavigator = () => {
-    const { isSignedIn } = useAuth();
-
     return (
         <AuthStack.Navigator
             screenOptions={{
@@ -20,9 +21,16 @@ const AuthStackNavigator = () => {
             }}
             initialRouteName="LoginScreen">
             <AuthStack.Screen
-                // options={{ headerStyle: styles.headerStyle }}
                 name= "LoginScreen"
                 component={LoginScreen}
+            />
+            <AuthStack.Screen
+                name= "RegisterScreen"
+                component={RegisterScreen}
+            />
+            <AuthStack.Screen
+                name= "SingInScreen"
+                component={SingInScreen}
             />
         </AuthStack.Navigator>
     )

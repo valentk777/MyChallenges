@@ -1,32 +1,17 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { CustomButton } from '../components/ButtonWrapper/CustomButton';
-import { ButtonTypes } from '../entities/buttonTypes';
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
-import { useAuth } from '../hooks/useAuth';
+import { logo } from '../assets';
 
 type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
-const OnSignIn = (navigation, isSignedIn, signIn) => {
-
-  signIn();
-
-  if (isSignedIn === true) {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'MainStack' }],
-    })
-  }
-
-}
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  const { isSignedIn, signIn } = useAuth();
 
   return (
     <View style={styles.global}>
@@ -37,16 +22,25 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
         <View style={styles.section}>
           <Image
             style={styles.image}
-            source={require('../assets/logo/logo_500x500.png')}
+            source={logo['logo_500x500.png']}
           />
-          <Text style={styles.text}>Challenge tracker</Text>
+          <Text style={styles.text}>Challenge Tracker</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <CustomButton
-            type={ButtonTypes.Primary}
-            title="Show my challenges"
-            onPress={() => OnSignIn(navigation, isSignedIn, signIn)}
-          />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.register}
+            onPress={() => navigation.navigate('RegisterScreen', {})}
+          >
+            <Text style={styles.bottomText}>Register</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.signIn}
+            onPress={() => navigation.navigate('SingInScreen', {})}
+          >
+            <Text style={{ ...styles.bottomText, color: theme.colors.white }}>SignIn</Text>
+          </TouchableOpacity>
         </View>
       </LinearGradient>
     </View >
@@ -64,28 +58,55 @@ const createStyles = (theme: typeof customTheme) => {
       colors: [theme.colors.primary, theme.colors.secondary]
     },
     section: {
-      flex: 7,
       alignItems: 'center',
       justifyContent: 'center',
       height: '70%',
     },
+    buttonContainer: {
+      height: '8%',
+      marginLeft: '10%',
+      marginRight: '10%',
+      marginBottom: '20%',
+      flexDirection: 'row'
+    },
     image: {
       width: '40%',
       height: undefined,
-      aspectRatio: 0,
+      aspectRatio: 1,
     },
     text: {
-      fontSize: 25,
+      fontSize: 20,
       lineHeight: 30,
       fontFamily: theme.text.fontFamily,
       fontWeight: 'bold',
       color: theme.colors.text,
       marginTop: 30,
     },
-    buttonContainer: {
-      flex: 4,
-      margin: 40,
+    register: {
+      width: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 16,
+      backgroundColor: theme.colors.white,
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
     },
+    signIn: {
+      width: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 16,
+      backgroundColor: 'transparent',
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10,
+      borderWidth: 2,
+      borderColor: theme.colors.white,
+    },
+    bottomText: {
+      fontSize: 14,
+      color: theme.colors.black,
+      fontWeight: '600'
+    }
   });
 
   return styles;
