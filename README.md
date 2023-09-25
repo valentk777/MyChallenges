@@ -4,7 +4,9 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 
-This is a mobile app with ReactNative for creating and tracing your challenges.
+This is a mobile app with React Native for creating and tracking your challenges.
+
+![image info](./Design/feature graphic.jpg)
 
 ## Tech stack:
 
