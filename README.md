@@ -6,7 +6,14 @@
 
 This is a mobile app with React Native for creating and tracking your challenges.
 
-![image info](./Design/feature graphic.jpg)
+
+![Alt text](https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg)
+
+<!-- ## Screenshots
+// todo: make images look nice
+![Alt text](https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-08-03-08-43-14-75_c842596409d06730475eb0ccfc649252.jpg)
+![Alt text](https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-09-19-08-16-07-85_6af968251852f2a7cd0e17deb5472244.jpg)
+-->
 
 ## Tech stack:
 
