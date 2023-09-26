@@ -3,17 +3,26 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
+<!-- <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="100"  />-->
+<a href='https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+  <img alt='Get it on Google Play' src='https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg'/>
+</a>
 
-This is a mobile app with React Native for creating and tracking your challenges.
+## What is this?
+<div align="left">
+  <img alt='Logo' src='https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/logo_500x500.png' height="100"  />
+  This is a mobile app with React Native for creating and tracking your challenges.
+</div>
 
+## Screenshots
 
-![Alt text](https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg)
-
-<!-- ## Screenshots
-// todo: make images look nice
-![Alt text](https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-08-03-08-43-14-75_c842596409d06730475eb0ccfc649252.jpg)
-![Alt text](https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-09-19-08-16-07-85_6af968251852f2a7cd0e17deb5472244.jpg)
--->
+<div align="center">
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-08-03-08-43-14-75_c842596409d06730475eb0ccfc649252.jpg' height="420" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-09-19-08-16-07-85_6af968251852f2a7cd0e17deb5472244.jpg' height="420" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-16-15_6af968251852f2a7cd0e17deb5472244.jpg' height="420" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-21-75_6af968251852f2a7cd0e17deb5472244.jpg' height="420" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-40-32_6af968251852f2a7cd0e17deb5472244.jpg' height="420" />
+</div>
 
 ## Tech stack:
 
