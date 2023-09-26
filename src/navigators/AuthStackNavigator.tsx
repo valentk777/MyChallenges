@@ -1,4 +1,3 @@
-import { StyleSheet, View } from 'react-native'
 import LoginScreen from '../screens/loginScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import RegisterScreen from '../screens/registerScreen';
@@ -35,14 +34,5 @@ const AuthStackNavigator = () => {
         </AuthStack.Navigator>
     )
 }
-
-// const styles = StyleSheet.create({
-//     headerStyle: {
-//         // borderBottomWidth: 0,
-//         // shadowColor: 'transparent',
-//         // shadowOpacity: 0,
-//         // elevation: 0, // remove shadow on Android
-//     },
-// })
 
 export default AuthStackNavigator;
