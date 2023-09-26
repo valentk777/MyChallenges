@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ButtonProps, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { icons } from '../../assets'
 import { customTheme } from '../../styles/customTheme'
 import { ThemeContext } from '../../contexts/themeContext'
@@ -33,7 +33,6 @@ const createStyles = (theme: typeof customTheme) => {
     image: {
       width: 35,
       height: 35,
-
     },
     text: {
       color: theme.colors.black,

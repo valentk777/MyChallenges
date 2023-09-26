@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ButtonProps, Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ButtonProps, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
 import { ThemeContext } from '../../contexts/themeContext';
 import { ButtonTypes } from '../../entities/buttonTypes';

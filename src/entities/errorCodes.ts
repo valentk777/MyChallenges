@@ -1,5 +1,4 @@
 export const ErrorCode = {
-    passwordInUse: 'passwordInUse',
     badEmailFormat: 'badEmailFormat',
     emailInUse: 'emailInUse',
     phoneInUse: 'phoneInUse',

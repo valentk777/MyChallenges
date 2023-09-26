@@ -1,4 +1,4 @@
-import React, { ProviderProps, createContext, useContext, useEffect, useReducer, useState } from 'react'
+import React, { ProviderProps, createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { authManager } from '../external/auth/firebaseAuthManager';
 import userService from '../services/userService';
 import { Alert } from 'react-native';
@@ -30,14 +30,7 @@ export const AuthContext = createContext<IAuthorizationContext>({
     createUser: (user: LoginUser) => { },
     emailSignIn: (user: LoginUser) => { },
     signOut: (userId: string | null) => { },
-
     loginOrSignUpWithGoogle: () => { },
-
-    // retrievePersistedAuthUser: () => { },
-    // loginWithEmailAndPassword: (user: LoginUser) => { },
-    // logout: (user: UserAccount) => { },
-    // createAccountWithEmailAndPassword: (user: LoginUser) => { },
-    // onVerification: () => { },
 });
 
 export interface AppContextProviderProps
@@ -95,22 +88,10 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             state.isLoading = false;
             // NOTE: user != doaminUser
             // const doaminUser = {id: user.uid, email: user.email, isOnline: true } as UserAccount;
-            // console.warn(user);
-            // console.warn(doaminUser);
             // setUser(user);
         }
 
         const unsubscribe = authManager?.retrievePersistedAuthUser(onAuthStateChanged);
-        // .then(response => {
-        //     if (response.isSuccessfull) {
-        //         signIn(response.result);
-        //         // Keyboard.dismiss();
-
-        //     }
-        // })
-        // .catch(error => {
-        //     console.log(error.message);
-        // });
 
         callLoadAuthStateFromStorage();
 
@@ -193,33 +174,19 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
                 Alert.alert(error.message);
             });
     }
-    // authManager
-    //   ?.retrievePersistedAuthUser()
-    //   .then(response => {
-    //     if (response.isSuccessfull) {
-    //       signIn(response.result);
-    //       Keyboard.dismiss();
-    //     } else {
-    //       signOut();
-    //     }
 
-    //     setIsLoading(false);
-    //   })
-    //   .catch(error => {
-    //     Alert.alert(error.message);
-    //     signOut();
-    //   });
+    //NOTE: not sure if that okay. maybe we want to re-render every time?
+    const value = useMemo(() => ({
+        state,
+        createUser,
+        emailSignIn: signIn,
+        signOut,
+        loginOrSignUpWithGoogle,
+    }), []);
 
     return (
         <AuthContext.Provider
-            value={{
-                state,
-                createUser,
-                emailSignIn: signIn,
-                signOut,
-                loginOrSignUpWithGoogle,
-                // signInWithFacebook: authManager.signInWithFacebook,
-            }}>
+            value={value}>
             {children}
         </AuthContext.Provider>
     );

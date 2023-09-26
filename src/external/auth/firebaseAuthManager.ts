@@ -2,12 +2,9 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {AppResponse} from '../../entities/appResponse';
 import {LoginUser, UserAccount} from '../../entities/user';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {ErrorCode} from '../../entities/errorCodes';
 import userDbTable from '../database/userDbTable';
 import {Alert} from 'react-native';
-
-export const usersRef = firestore().collection('users');
 
 // TODO: rename, improve
 const getUnixTimeStamp = () => {

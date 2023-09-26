@@ -1,9 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import AuthStackNavigator from "./AuthStackNavigator"
 import MainStackNavigator from "./MainStackNavigator";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
-import SplashScreen from "../screens/splashScreen";
 import { Keyboard } from "react-native";
 
 export type RootStackParamList = {
@@ -28,12 +27,6 @@ const RootNavigator = () => {
   }
 
   const renderScreenChange = () => {
-    // if (state.isLoading) {
-    //   return (
-    //     <Root.Screen name="SplashScreen" component={SplashScreen} />
-    //   );
-    // }
-
     if (state?.isAuthenticated) {
       return (
         <Root.Screen name="MainStack" component={MainStackNavigator} />
@@ -51,7 +44,7 @@ const RootNavigator = () => {
     >
       {renderScreenChange()}
       {/* <Root.Screen name="LoadScreen" component={LoadScreen} /> */}
-      {/* // TODO: add hello screen with animations for loged in users or for the ones that already completed login */}
+      {/* // NOTE: add hello screen with animations for loged in users or for the ones that already completed login */}
       {/* <Root.Screen name="Walkthrough" component={WalkthroughScreen} />  */}
       {/* <Root.Screen name="AuthStack" component={AuthStackNavigator} />
       <Root.Screen name="MainStack" component={MainStackNavigator} /> */}

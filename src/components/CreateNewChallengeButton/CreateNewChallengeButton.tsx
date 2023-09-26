@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
 import { ChallengeTypes } from '../../entities/challengeTypes';
-import { Alert } from 'react-native';
 
 interface CreateNewChallengeButtonProps extends TouchableOpacityProps {
 }

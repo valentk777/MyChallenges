@@ -83,14 +83,10 @@ const removeChallenge = async (challengeId: string) => {
   }
 };
 
-const uploadChallengesToRemoteStorage = async () => {
-};
-
 const challengesService = {
   getAllChalenges,
   storeChallenge,
   removeChallenge,
-  uploadChallengesToRemoteStorage,
 };
 
 export default challengesService;
