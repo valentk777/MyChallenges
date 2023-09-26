@@ -35,9 +35,24 @@ const registerWithEmail = (user: LoginUser) => {
 
         var errorCode = ErrorCode.serverError;
 
-        if (error.code === 'auth/email-already-in-use') {
-          errorCode = ErrorCode.emailInUse;
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            errorCode = ErrorCode.emailInUse;
+            break;
+          case 'auth/invalid-email':
+              errorCode = ErrorCode.badEmailFormat;
+              break;
+          case 'auth/network-request-failed':
+            errorCode = ErrorCode.serverError;
+            break;
+          case 'auth/weak-password':
+            errorCode = ErrorCode.invalidPassword;
+            break;
+          default:
+            errorCode = ErrorCode.serverError;
         }
+
+        Alert.alert(errorCode);
 
         resolve({isSuccessfull: false, error: errorCode} as AppResponse);
       });
@@ -98,8 +113,8 @@ const loginWithEmailAndPassword = (user: LoginUser) => {
               } as AppResponse);
             }
           })
-          .catch(function (_error) {
-            console.log('_error:', _error);
+          .catch(function (error) {
+            console.log("_error", error);
             resolve({
               isSuccessfull: false,
               error: ErrorCode.serverError,
@@ -122,6 +137,8 @@ const loginWithEmailAndPassword = (user: LoginUser) => {
           default:
             errorCode = ErrorCode.serverError;
         }
+
+        Alert.alert(errorCode);
 
         resolve({isSuccessfull: false, error: errorCode} as AppResponse);
       });
@@ -147,8 +164,6 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
     auth()
       .signInWithCredential(credential)
       .then(async response => {
-        Alert.alert('3');
-
         const isNewUser = response.additionalUserInfo.isNewUser;
         // const { first_name, last_name, family_name, given_name } = response.additionalUserInfo.profile;
         const {uid, email, phoneNumber, photoURL} = response.user;
@@ -167,15 +182,10 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
 
         if (isNewUser) {
           // do not await here.
-
-          Alert.alert('4');
-
           userDbTable.addNewUser(userData);
 
           resolve({isSuccessfull: true, result: userData} as AppResponse);
         }
-
-        Alert.alert('5');
 
         userDbTable
           .getUserByID(uid)
@@ -185,6 +195,8 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
                 resolve(response as AppResponse);
               });
             } else {
+              Alert.alert(ErrorCode.noUser);
+
               resolve({
                 isSuccessfull: false,
                 error: ErrorCode.noUser,
@@ -229,8 +241,6 @@ const loginOrSignUpWithGoogle = () => {
       const {idToken} = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(idToken);
 
-      Alert.alert(`${idToken}`);
-
       signInWithCredential(credential, 'Google').then(async response => {
         if (response.isSuccessfull) {
           handleSuccessfulLogin(response.result as UserAccount).then(
@@ -239,6 +249,8 @@ const loginOrSignUpWithGoogle = () => {
             },
           );
         } else {
+          Alert.alert(ErrorCode.googleSigninFailed);
+
           resolve({
             isSuccessfull: false,
             error: ErrorCode.googleSigninFailed,
@@ -246,7 +258,8 @@ const loginOrSignUpWithGoogle = () => {
         }
       });
     } catch (error) {
-      console.log(error);
+      Alert.alert(ErrorCode.googleSigninFailed);
+
       resolve({
         isSuccessfull: false,
         error: ErrorCode.googleSigninFailed,

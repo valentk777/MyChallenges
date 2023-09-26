@@ -27,9 +27,19 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     }
 
     const handleRegisterButton = () => {
+        if (password === null || password === "") {
+            Alert.alert("Password cannot be empty");
+            return;
+        }
+
         const userCandidate = {} as LoginUser;
-        userCandidate.email = email;
+        userCandidate.email = email.toLowerCase().trim();
         userCandidate.password = password;
+
+        if (userCandidate.email === null || userCandidate.email === "") {
+            Alert.alert("Email cannot be empty");
+            return;
+        }
 
         createUser(userCandidate);
     }
