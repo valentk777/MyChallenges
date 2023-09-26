@@ -175,6 +175,24 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
         }
     };
 
+    const loginOrSignUpWithGoogle = async () => {
+        authManager
+            ?.loginOrSignUpWithGoogle()
+            .then(response => {
+                if (response.isSuccessfull) {
+                    const signedInUser = response.result as UserAccount;
+
+                    // do not await
+                    userService.updateUser(signedInUser);
+                    dispatch({ type: 'SIGN_IN', user: signedInUser });
+                } else {
+                    console.log(response.error);
+                }
+            })
+            .catch(error => {
+                Alert.alert(error.message);
+            });
+    }
     // authManager
     //   ?.retrievePersistedAuthUser()
     //   .then(response => {
@@ -199,7 +217,7 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
                 createUser,
                 emailSignIn: signIn,
                 signOut,
-                loginOrSignUpWithGoogle: authManager.loginOrSignUpWithGoogle,
+                loginOrSignUpWithGoogle,
                 // signInWithFacebook: authManager.signInWithFacebook,
             }}>
             {children}

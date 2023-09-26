@@ -22,9 +22,9 @@ const RootNavigator = () => {
   }, [state])
 
   const setAppState = async () => {
-    // if (state.isAuthenticated) {
-    //   Keyboard.dismiss();
-    // }
+    if (state.isAuthenticated) {
+      Keyboard.dismiss();
+    }
   }
 
   const renderScreenChange = () => {
@@ -34,15 +34,15 @@ const RootNavigator = () => {
     //   );
     // }
 
-    // if (state?.isAuthenticated) {
+    if (state?.isAuthenticated) {
       return (
         <Root.Screen name="MainStack" component={MainStackNavigator} />
       );
-    // } else {
-    //   return (
-    //     <Root.Screen name="AuthStack" component={AuthStackNavigator} />
-    //   );
-    // }
+    } else {
+      return (
+        <Root.Screen name="AuthStack" component={AuthStackNavigator} />
+      );
+    }
   };
 
   return (
