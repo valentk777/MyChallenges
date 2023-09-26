@@ -221,7 +221,7 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
 const loginOrSignUpWithGoogle = () => {
   GoogleSignin.configure({
     webClientId:
-      '270930206979-5g92jrri5aa6ef56t892diu9p5hgmi2o.apps.googleusercontent.com',
+      '270930206979-d65g9932hbh9v7p3ifrgmk2eeb0gvrnh.apps.googleusercontent.com',
   });
 
   return new Promise(async (resolve, _reject) => {
