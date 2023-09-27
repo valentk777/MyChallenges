@@ -1,5 +1,5 @@
 # ChallengeTracker
-[![Build Android app](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml)
+[![Build](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/valentk777/ChallengeTracker/actions/workflows/main.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
