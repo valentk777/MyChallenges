@@ -3,6 +3,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
+
 <a href='https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
   <img alt='Get it on Google Play' src='https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg'/>
 </a>
