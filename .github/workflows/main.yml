@@ -45,7 +45,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      - name: Get Product current version
+      - name: Get the current version of the product
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
