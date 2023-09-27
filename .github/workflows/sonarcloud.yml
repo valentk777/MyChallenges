@@ -11,20 +11,20 @@ permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
-  Analysis:
+  sonarcloud:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
+          # Disabling shallow clones is recommended for improving the relevancy of reporting
           fetch-depth: 0
           
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information
-          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN  }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN  }}   # Generate a token on Sonarcloud.io, and add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
           args:
             -Dsonar.projectKey=valentk777_ChallengeTracker
@@ -37,10 +37,10 @@ jobs:
           GATE_STATUS=$(curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=valentk777_ChallengeTracker --silent | jq .projectStatus.status)
           echo "Gate status: $GATE_STATUS"
 
-          # Will fail if equal to ERROR
+          # Will fail if equal to ERROR, pass if equal to OK
           if [[ $GATE_STATUS != "ERROR" ]]; then
+            echo "Quality gate passed"
+          else
             echo "Quality gate failed"
             exit 1 # Fail the pipeline
-          else
-            echo "Quality gate passed"
           fi
