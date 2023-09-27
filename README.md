@@ -3,7 +3,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
-<!-- <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="100"  />-->
 <a href='https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
   <img alt='Get it on Google Play' src='https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg'/>
 </a>
@@ -33,7 +32,7 @@
 ## Setting up environment:
 - `npx react-native info`
 - `git lfs install` (used for large files)
-- Install Node.Js v18.14.0
+- Install Node.Js v18.17.0
 - Install Android studio
 
 ## Start an app
@@ -61,8 +60,8 @@ cat google-services.json | base64
 ## Release
 
 ### Andoid Play Store
-To release an application run this command under androind folder
+To release an application run this command under 'android' folder
 `./gradlew bundleRelease`
-Bundle appear in ...\ChallengeTracker\android\app\build\outputs\bundle\release
+Bundle appears in ...\ChallengeTracker\android\app\build\outputs\bundle\release
 https://play.google.com/console/u/0/developers/6969098457648081136/app-list
 
