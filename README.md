@@ -27,7 +27,7 @@
 ## Tech stack:
 
 - Node.Js v18.14.0
-- npm 9.5.1
+- npm 9.8.1
 - Java 19.0.2
 
 ## Setting up environment:
