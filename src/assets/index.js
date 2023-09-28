@@ -3,6 +3,7 @@ export const icons = {
   'angle-right.png': require('./icons/angle-right.png'),
   'bars-staggered.png': require('./icons/bars-staggered.png'),
   'google-button.png': require('./icons/google-button.png'),
+  'facebook-button.png': require('./icons/facebook-button.png'),
   'heart-empty.png': require('./icons/heart-empty.png'),
   'heart-full.png': require('./icons/heart-full.png'),
   'list.png': require('./icons/list.png'),

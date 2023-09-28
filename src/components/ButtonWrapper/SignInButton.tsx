@@ -1,24 +1,24 @@
 import React, { useContext } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { icons } from '../../assets'
+import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { customTheme } from '../../styles/customTheme'
 import { ThemeContext } from '../../contexts/themeContext'
 
-interface GoogleSignInButtonProps {
+interface SignInButtonProps {
+  icon: ImageSourcePropType;
   text: string;
   onSignPress(): void;
 }
 
-export const GoogleSignInButton = (props: GoogleSignInButtonProps) => {
+export const SignInButton = (props: SignInButtonProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const { text, onSignPress } = props;
+  const { text, icon, onSignPress } = props;
 
   return (
     <TouchableOpacity onPress={onSignPress} style={styles.button}>
       <Image
-        source={icons['google-button.png']}
+        source={icon}
         style={styles.image}
       />
       <Text style={styles.text}>
@@ -44,7 +44,7 @@ const createStyles = (theme: typeof customTheme) => {
       width: '100%',
       height: 45,
       marginTop: 8,
-      borderRadius: 16,
+      borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
       flexDirection: "row",

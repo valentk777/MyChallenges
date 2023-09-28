@@ -1,21 +1,24 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
-import { Dimensions, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
 import { useAuth } from '../hooks/useAuth';
 import { LoginUser } from '../entities/user';
-import { GoogleSignInButton } from '../components/ButtonWrapper/GoogleSignInButton';
+import { icons, logo } from '../assets';
+import { SignInButton } from '../components/ButtonWrapper/SignInButton';
 
 type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScreen'>;
+
+const { height: ScreenHeight } = Dimensions.get("screen");
 
 export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const { emailSignIn, loginOrSignUpWithGoogle } = useAuth()
+  const { emailSignIn, signInAnonymously, loginOrSignUpWithGoogle } = useAuth()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,39 +28,63 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   }
 
   const handleSignInButton = () => {
+    if (password === null || password === "") {
+      Alert.alert("Password cannot be empty");
+      return;
+    }
+
     const userCandidate = {} as LoginUser;
-    userCandidate.email = email;
+    userCandidate.email = email.toLowerCase().trim();
     userCandidate.password = password;
+
+    if (userCandidate.email === null || userCandidate.email === "") {
+      Alert.alert("Email cannot be empty");
+      return;
+    }
 
     emailSignIn(userCandidate);
   }
 
-  const renderHeaderTextContainer = () => (
+  const renderHeaderContainer = () => (
     <View style={styles.headerContainer}>
+      <Image
+        style={styles.headerImage}
+        source={logo['logo_500x500.png']}
+      />
       <Text style={styles.titleTextStyle}>Welcome Back!</Text>
-      <View style={styles.descriptionContainer}>
+      {/* <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionTextStyle}>
           Please sign in to your account
         </Text>
-      </View>
+      </View> */}
     </View>
   );
 
   const renderInputContainer = () => (
     <View style={styles.textInputContainer}>
-      <TextInput
-        placeholder="Email"
-        placeholderTextColor="#6C6D72"
-        style={styles.textInputStyle}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        placeholder="Password"
-        placeholderTextColor="#6C6D72"
-        style={styles.textInputStyle}
-        secureTextEntry
-        onChangeText={setPassword}
-      />
+      <View style={styles.inputArea}>
+        <Text style={styles.inputText}>
+          Email
+        </Text>
+        <TextInput
+          placeholder="Enter your email..."
+          placeholderTextColor="#6C6D72"
+          style={styles.textInputStyle}
+          onChangeText={setEmail}
+        />
+      </View>
+      <View style={styles.inputArea}>
+        <Text style={styles.inputText}>
+          Password
+        </Text>
+        <TextInput
+          placeholder="Enter your password..."
+          placeholderTextColor="#6C6D72"
+          style={styles.textInputStyle}
+          secureTextEntry
+          onChangeText={setPassword}
+        />
+      </View>
       {/* <TouchableOpacity
         style={styles.forgotButtonStyle}
         onPress={handleForgotPassword}
@@ -68,17 +95,32 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
            Forgot Password?
         </Text>
       </TouchableOpacity> */}
-      <TouchableOpacity
-        style={styles.signInButtonStyle}
-        onPress={handleSignInButton}
-      >
-        <Text style={styles.signInButtonTextStyle}>
-          Sign In
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.signInButtonContainer}>
+        <TouchableOpacity
+          style={styles.signInButtonStyle}
+          onPress={handleSignInButton}
+        >
+          <Text style={styles.signInButtonTextStyle}>
+            Sign In
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
+  const renderExternalOptionsContainer = () => (
+    <View style={styles.externalOptionsContainer}>
+      <View style={styles.orTextArea}>
+        <View style={styles.horizontalLine} />
+        <View>
+          <Text style={styles.orTextStyle}>OR</Text>
+        </View>
+        <View style={styles.horizontalLine} />
+      </View>
+      <SignInButton text="Continue with Google" onSignPress={loginOrSignUpWithGoogle} icon={icons['google-button.png']} />
+      <SignInButton text="Continue without Login" onSignPress={signInAnonymously} icon={icons['user.png']} />
+    </View>
+  );
 
   const renderSignUpButtonContainer = () => (
     <View style={styles.signUpButtonContainer}>
@@ -102,186 +144,123 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <View style={styles.newAccountContainer}>
-          <KeyboardAvoidingView
-            enabled
-            behavior="padding"
-            style={styles.keyboardAvoidingViewStyle}
-          >
-            <SafeAreaView
-              style={{ alignItems: "center", justifyContent: "center" }}
-            >
-              {renderHeaderTextContainer()}
-              {renderInputContainer()}
-            </SafeAreaView>
-            <View
-              style={{
-                position: "absolute",
-                bottom: 8,
-              }}
-            >
-              <GoogleSignInButton text="Log In With Google" onGoogleSignPress={loginOrSignUpWithGoogle} />
-
-              {renderSignUpButtonContainer()}
-            </View>
-          </KeyboardAvoidingView>
+        <View style={styles.mainContainer}>
+          {renderHeaderContainer()}
+          {renderInputContainer()}
+          {renderExternalOptionsContainer()}
+          {renderSignUpButtonContainer()}
         </View>
       </LinearGradient>
     </View >
   );
 };
 
-const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get("window");
-
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
-
     container: {
-      flex: 1,
+      height: ScreenHeight
     },
     linearGradient: {
-      flex: 15,
-      colors: [theme.colors.primary, theme.colors.secondary]
-    },
-    section: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '70%',
-    },
-    text: {
-      fontSize: 20,
-      lineHeight: 21,
-      fontFamily: theme.text.fontFamily,
-      fontWeight: 'bold',
-      color: theme.colors.text,
-      marginTop: 30,
-    },
-
-
-    screenContainer: {
       flex: 1,
+      colors: [theme.colors.primary, theme.colors.secondary],
       alignItems: "center",
-      justifyContent: "center",
     },
     mainContainer: {
-      backgroundColor: "#181A1F",
-      alignItems: "center",
       flex: 1,
+      flexDirection: 'column',
+      width: '80%',
+      alignItems: "center",
     },
     headerContainer: {
-      marginTop: 16,
+      width: '100%',
+      flex: 4,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: 'space-evenly',
+    },
+    headerImage: {
+      width: '40%',
+      height: undefined,
+      aspectRatio: 1,
     },
     titleTextStyle: {
-      fontSize: 24,
-      color: "#fff",
+      fontSize: 30,
+      color: theme.colors.white,
       fontWeight: "600",
-    },
-    descriptionTextStyle: {
-      fontSize: 15,
-      color: "#696A6F",
     },
     textInputContainer: {
-      marginTop: 24,
-      justifyContent: "center",
-      width: ScreenWidth * 0.85,
+      flex: 3,
+      width: '100%',
+      justifyContent: 'space-evenly',
+      alignItems: "flex-start",
+    },
+    inputArea: {
+      flex: 1,
+      width: '100%',
+    },
+    inputText: {
+      color: theme.colors.white,
     },
     textInputStyle: {
-      height: 55,
-      marginBottom: 8,
-      fontSize: 16,
-      paddingLeft: 32,
-      backgroundColor: "#262A34",
-      color: "#fff",
-      borderRadius: 16,
+      padding: 0,
+      borderBottomColor: theme.colors.white,
+      borderBottomWidth: 1,
+      color: theme.colors.white,
     },
-    forgotPasswordTextStyle: {
-      color: "#6C6D72",
-    },
-    forgotButtonStyle: {
-      height: 30,
+    signInButtonContainer: {
+      flex: 1,
+      width: '100%',
       justifyContent: "center",
-      marginLeft: "auto",
+      alignItems: "center",
     },
     signInButtonStyle: {
-      marginTop: 24,
-      backgroundColor: "#5467FF",
-      width: ScreenWidth * 0.85,
-      height: 55,
-      borderRadius: 16,
+      height: '60%',
+      width: '80%',
       justifyContent: "center",
       alignItems: "center",
+      borderRadius: 10,
+      backgroundColor: theme.colors.input,
     },
     signInButtonTextStyle: {
-      color: "#fff",
+      color: theme.colors.white,
       fontWeight: "600",
     },
-    logoImageStyle: {
-      width: 32,
-      height: 32,
-      marginRight: 12,
-    },
-
-    facebookButtonStyle: {
-      backgroundColor: "#3A579B",
-      width: ScreenWidth * 0.85,
-      height: 55,
-      marginTop: 8,
-      borderRadius: 16,
-      justifyContent: "center",
+    externalOptionsContainer: {
+      flex: 2.5,
+      width: '100%',
       alignItems: "center",
-      flexDirection: "row",
     },
-    facebookButtonTextStyle: {
-      color: "#FFF",
-      fontWeight: "600",
+    orTextArea: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingBottom: 18,
+    },
+    horizontalLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: theme.colors.white,
+    },
+    orTextStyle: {
+      color: theme.colors.white,
+      paddingRight: 20,
+      paddingLeft: 20,
     },
     signUpButtonContainer: {
-      marginTop: 8,
-      width: ScreenWidth * 0.9,
+      flex: 1,
+      width: '100%',
       justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    signUpButtonStyle: {
-      height: 40,
-      justifyContent: "center",
-      marginLeft: 8,
+      flexDirection: 'row',
     },
     signUpTextStyle: {
+      color: theme.colors.white,
       fontSize: 14,
-      color: "#fff",
+    },
+    signUpButtonStyle: {
+      marginLeft: 20,
     },
     signUpButtonTextStyle: {
-      fontSize: 16,
+      fontSize: 15,
       fontWeight: "bold",
-      color: "#519bf4",
-    },
-    appleButtonStyle: {
-      backgroundColor: "#FFFFFF",
-      width: ScreenWidth * 0.85,
-      height: 55,
-      marginTop: 8,
-      borderRadius: 16,
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    appleButtonTextStyle: {
-      color: "#181A1F",
-      fontWeight: "600",
-    },
-    newAccountContainer: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    keyboardAvoidingViewStyle: {
-      flex: 1,
-    },
-    descriptionContainer: {
-      marginTop: 16,
+      color: theme.colors.input,
     },
   });
 

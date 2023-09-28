@@ -20,15 +20,15 @@ const AuthStackNavigator = () => {
             }}
             initialRouteName="LoginScreen">
             <AuthStack.Screen
-                name= "LoginScreen"
+                name="LoginScreen"
                 component={LoginScreen}
             />
             <AuthStack.Screen
-                name= "RegisterScreen"
+                name="RegisterScreen"
                 component={RegisterScreen}
             />
             <AuthStack.Screen
-                name= "SingInScreen"
+                name="SingInScreen"
                 component={SingInScreen}
             />
         </AuthStack.Navigator>

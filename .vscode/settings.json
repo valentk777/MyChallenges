@@ -2,5 +2,6 @@
     "sonarlint.connectedMode.project": {
         "connectionId": "valentk777",
         "projectKey": "valentk777_ChallengeTracker"
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

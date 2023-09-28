@@ -37,8 +37,8 @@ const registerWithEmail = (user: LoginUser) => {
             errorCode = ErrorCode.emailInUse;
             break;
           case 'auth/invalid-email':
-              errorCode = ErrorCode.badEmailFormat;
-              break;
+            errorCode = ErrorCode.badEmailFormat;
+            break;
           case 'auth/network-request-failed':
             errorCode = ErrorCode.serverError;
             break;
@@ -111,7 +111,7 @@ const loginWithEmailAndPassword = (user: LoginUser) => {
             }
           })
           .catch(function (error) {
-            console.log("_error", error);
+            console.log('_error', error);
             resolve({
               isSuccessfull: false,
               error: ErrorCode.serverError,
@@ -157,7 +157,7 @@ const retrievePersistedAuthUser = (listener: any): (() => void) => {
 };
 
 const signInWithCredential = (credential: any, socialAuthType: string) => {
-  return new Promise((resolve, _reject) => {
+  return new Promise(function (resolve, _reject) {
     auth()
       .signInWithCredential(credential)
       .then(async response => {
@@ -181,32 +181,34 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
           // do not await here.
           userDbTable.addNewUser(userData);
 
-          resolve({isSuccessfull: true, result: userData} as AppResponse);
-        }
+          handleSuccessfulLogin(userData).then(response => {
+            resolve(response as AppResponse);
+          });
+        } else {
+          userDbTable
+            .getUserByID(uid)
+            .then(function (firestoreUser) {
+              if (firestoreUser) {
+                handleSuccessfulLogin(firestoreUser).then(response => {
+                  resolve(response as AppResponse);
+                });
+              } else {
+                Alert.alert(ErrorCode.noUser);
 
-        userDbTable
-          .getUserByID(uid)
-          .then(function (firestoreUser) {
-            if (firestoreUser) {
-              handleSuccessfulLogin(firestoreUser).then(response => {
-                resolve(response as AppResponse);
-              });
-            } else {
-              Alert.alert(ErrorCode.noUser);
-
+                resolve({
+                  isSuccessfull: false,
+                  error: ErrorCode.noUser,
+                } as AppResponse);
+              }
+            })
+            .catch(function (_error) {
+              console.log('_error:', _error);
               resolve({
                 isSuccessfull: false,
-                error: ErrorCode.noUser,
+                error: ErrorCode.serverError,
               } as AppResponse);
-            }
-          })
-          .catch(function (_error) {
-            console.log('_error:', _error);
-            resolve({
-              isSuccessfull: false,
-              error: ErrorCode.serverError,
-            } as AppResponse);
-          });
+            });
+        }
       })
       .catch(_error => {
         console.log(_error);
@@ -215,25 +217,13 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
   });
 };
 
-// const loginWithFacebook = (accessToken, appIdentifier) => {
-//   const credential = auth.FacebookAuthProvider.credential(accessToken);
-
-//   return new Promise((resolve, _reject) => {
-//     signInWithCredential(credential, appIdentifier, 'Facebook').then(
-//       response => {
-//         resolve(response);
-//       },
-//     )
-//   })
-// }
-
 const loginOrSignUpWithGoogle = () => {
   GoogleSignin.configure({
     webClientId:
       '270930206979-d65g9932hbh9v7p3ifrgmk2eeb0gvrnh.apps.googleusercontent.com',
   });
 
-  return new Promise(async (resolve, _reject) => {
+  return new Promise(async function (resolve, _reject) {
     try {
       const {idToken} = await GoogleSignin.signIn();
       const credential = auth.GoogleAuthProvider.credential(idToken);
@@ -265,15 +255,131 @@ const loginOrSignUpWithGoogle = () => {
   });
 };
 
+const signInAnonymously = () => {
+  return new Promise(async function (resolve, _reject) {
+    try {
+      auth()
+        .signInAnonymously()
+        .then(response => {
+          const isNewUser = response.additionalUserInfo.isNewUser;
+          const {uid, email} = response.user;
+
+          const timestamp = getUnixTimeStamp();
+          const userData = {
+            id: uid,
+            email: email || '',
+            createdAt: timestamp,
+          } as UserAccount;
+
+          if (isNewUser) {
+            // do not await here.
+            userDbTable.addNewUser(userData);
+
+            handleSuccessfulLogin(userData).then(response => {
+              resolve(response as AppResponse);
+            });
+          } else {
+            userDbTable.getUserByID(uid).then(function (firestoreUser) {
+              if (firestoreUser) {
+                handleSuccessfulLogin(firestoreUser).then(response => {
+                  resolve(response as AppResponse);
+                });
+              } else {
+                Alert.alert(ErrorCode.noUser);
+
+                resolve({
+                  isSuccessfull: false,
+                  error: ErrorCode.noUser,
+                } as AppResponse);
+              }
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+
+          resolve({
+            isSuccessfull: false,
+            error: ErrorCode.anonymousSigninFailed,
+          } as AppResponse);
+        });
+    } catch (error) {
+      Alert.alert('cia');
+
+      Alert.alert(ErrorCode.anonymousSigninFailed);
+
+      resolve({
+        isSuccessfull: false,
+        error: ErrorCode.anonymousSigninFailed,
+      } as AppResponse);
+    }
+  });
+};
+
+// const loginWithFacebook = (accessToken, appIdentifier) => {
+//   const credential = auth.FacebookAuthProvider.credential(accessToken);
+
+//   return new Promise((resolve, _reject) => {
+//     signInWithCredential(credential, 'Facebook').then(
+//       response => {
+//         resolve(response);
+//       },
+//     )
+//   })
+// }
+
+// const loginOrSignUpWithFacebook = appConfig => {
+//   Facebook.initializeAsync(appConfig.facebookIdentifier)
+
+//   return new Promise(async (resolve, _reject) => {
+//     try {
+//       const { type, token, expires, permissions, declinedPermissions } =
+//         await Facebook.logInWithReadPermissionsAsync({
+//           permissions: ['public_profile', 'email'],
+//         })
+
+//       if (type === 'success') {
+//         // Get the user's name using Facebook's Graph API
+//         // const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+//         // Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+//         loginWithFacebook(token, appConfig.appIdentifier)
+//           .then(async response => {
+//             if (response?.user) {
+//               const newResponse = {
+//                 user: { ...response.user },
+//                 accountCreated: response.accountCreated,
+//               }
+//               handleSuccessfulLogin(
+//                 newResponse.user,
+//                 response.accountCreated,
+//               ).then(response => {
+//                 // resolve(response);
+//                 resolve({
+//                   ...response,
+//                 })
+//               })
+//             } else {
+//               resolve({ error: ErrorCode.fbAuthFailed })
+//             }
+//           })
+//       } else {
+//         resolve({ error: ErrorCode.fbAuthCancelled })
+//       }
+//     } catch (error) {
+//       resolve({ error: ErrorCode.fbAuthFailed })
+//     }
+//   })
+// }
+
+
 export interface IAuthManager {
   createAccountWithEmailAndPassword: (user: LoginUser) => Promise<AppResponse>;
   loginWithEmailAndPassword: (user: LoginUser) => Promise<AppResponse>;
   logout: (userId: string) => void;
   retrievePersistedAuthUser: (listener: any) => () => void;
-  loginOrSignUpWithGoogle: () => void;
-  // logout: (user: UserAccount) => void;
-
-  // onAuthStateChanged: (callback: any) => any;
+  loginOrSignUpWithGoogle: () => Promise<AppResponse>;
+  signInAnonymously: () => Promise<AppResponse>;
+  // loginOrSignUpWithFacebook: () => Promise<AppResponse>;
 }
 
 export const authManager: IAuthManager = {
@@ -281,9 +387,7 @@ export const authManager: IAuthManager = {
   loginWithEmailAndPassword,
   logout,
   retrievePersistedAuthUser,
-
   loginOrSignUpWithGoogle,
-  // validateUsernameFieldIfNeeded,
-  // sendPasswordResetEmail,
-  // deleteUser,
+  signInAnonymously,
+  // loginOrSignUpWithFacebook,
 };

@@ -9,12 +9,10 @@ import { MainStackParamList } from '../navigators/MainStackNavigator';
 import { Challenge } from '../entities/challenge';
 import { ProgressStatus } from '../entities/progressStatus';
 import uuid from 'react-native-uuid';
-import { useHeaderHeight } from '@react-navigation/elements';
 import challengesService from '../services/challengesService';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
-const windowHeight = Dimensions.get('window').height;
 
 export const getRandomImage = () => {
   const localImages = [
@@ -75,17 +73,15 @@ const createNewChallenge = (title: string, description: string, targetValue: num
 export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  const headerHeight = useHeaderHeight();
 
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [image] = useState(getRandomImage());
-
-  const screenHeight = windowHeight - headerHeight;
+  const windowHeight =  Dimensions.get('window').height;
 
   return (
-    <View style={{ ...styles.container, height: screenHeight }}>
+    <View style={{ ...styles.container, height: windowHeight }}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
@@ -151,6 +147,8 @@ const onSave = async (title: string, description: string, targetValue: string, i
     return false;
   }
 }
+
+const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get("screen");
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({

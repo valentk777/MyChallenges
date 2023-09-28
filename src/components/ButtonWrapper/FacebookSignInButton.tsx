@@ -4,12 +4,12 @@ import { icons } from '../../assets'
 import { customTheme } from '../../styles/customTheme'
 import { ThemeContext } from '../../contexts/themeContext'
 
-interface GoogleSignInButtonProps {
+interface FacebookSignInButtonProps {
   text: string;
   onSignPress(): void;
 }
 
-export const GoogleSignInButton = (props: GoogleSignInButtonProps) => {
+export const FacebookSignInButton = (props: FacebookSignInButtonProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -18,7 +18,7 @@ export const GoogleSignInButton = (props: GoogleSignInButtonProps) => {
   return (
     <TouchableOpacity onPress={onSignPress} style={styles.button}>
       <Image
-        source={icons['google-button.png']}
+        source={icons['facebook-button.png']}
         style={styles.image}
       />
       <Text style={styles.text}>

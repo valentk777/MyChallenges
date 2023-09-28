@@ -21,19 +21,22 @@ interface IAuthorizationContext {
     createUser: (user: LoginUser) => void;
     emailSignIn: (user: LoginUser) => void;
     signOut: (userId: string | null) => void;
-
     loginOrSignUpWithGoogle: () => void;
+    signInAnonymously: () => void;
+    // loginOrSignUpWithFacebook: () => void;
 }
 
-export const AuthContext = createContext<IAuthorizationContext>({
+const AuthContext = createContext<IAuthorizationContext>({
     state: initialState,
     createUser: (user: LoginUser) => { },
     emailSignIn: (user: LoginUser) => { },
     signOut: (userId: string | null) => { },
     loginOrSignUpWithGoogle: () => { },
+    signInAnonymously: () => { },
+    // loginOrSignUpWithFacebook: () => { },
 });
 
-export interface AppContextProviderProps
+interface AppContextProviderProps
     extends Omit<ProviderProps<IAuthorizationContext>, 'value'> {
 }
 
@@ -77,28 +80,28 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             }
         };
 
-        // this code will be updated on every 'onAuthStateChanged'. 
-        // So we can use this function to check if user should be logged in after closing an app
-        function onAuthStateChanged(user) {
-            if (user === null) {
-                state.isLoading = false;
-                return;
-            }
+        // // this code will be updated on every 'onAuthStateChanged'. 
+        // // So we can use this function to check if user should be logged in after closing an app
+        // function onAuthStateChanged(user) {
+        //     if (user === null) {
+        //         state.isLoading = false;
+        //         return;
+        //     }
 
-            state.isLoading = false;
-            // NOTE: user != doaminUser
-            // const doaminUser = {id: user.uid, email: user.email, isOnline: true } as UserAccount;
-            // setUser(user);
-        }
+        //     state.isLoading = false;
+        //     // NOTE: user != doaminUser
+        //     // const doaminUser = {id: user.uid, email: user.email, isOnline: true } as UserAccount;
+        //     // setUser(user);
+        // }
 
-        const unsubscribe = authManager?.retrievePersistedAuthUser(onAuthStateChanged);
+        // const unsubscribe = authManager?.retrievePersistedAuthUser(onAuthStateChanged);
 
         callLoadAuthStateFromStorage();
 
-        return () => {
-            // Unsubscribe from the retrievePersistedAuthUser subscription
-            unsubscribe();
-        };
+        // return () => {
+        //     // Unsubscribe from the retrievePersistedAuthUser subscription
+        //     unsubscribe();
+        // };
     }, []);
 
     const createUser = async (user: LoginUser) => {
@@ -121,7 +124,7 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             });
     }
 
-    const signIn = async (user: LoginUser) => {
+    const emailSignIn = async (user: LoginUser) => {
         authManager
             ?.loginWithEmailAndPassword(user)
             .then(response => {
@@ -175,21 +178,59 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
             });
     }
 
-    //NOTE: not sure if that okay. maybe we want to re-render every time?
-    const value = useMemo(() => ({
-        state,
-        createUser,
-        emailSignIn: signIn,
-        signOut,
-        loginOrSignUpWithGoogle,
-    }), []);
+    const signInAnonymously = async () => {     
+        authManager
+            ?.signInAnonymously()
+            .then(response => {
+                if (response.isSuccessfull) {
+                    const signedInUser = response.result as UserAccount;
 
+                    // do not await
+                    userService.updateUser(signedInUser);
+                    dispatch({ type: 'SIGN_IN', user: signedInUser });
+                } else {
+                    console.log(response.error);
+                }
+            })
+            .catch(error => {
+                Alert.alert(error.message);
+            });
+    }
+
+    // const loginOrSignUpWithFacebook = async () => {
+    //     authManager
+    //         ?.loginOrSignUpWithFacebook()
+    //         .then(response => {
+    //             if (response.isSuccessfull) {
+    //                 const signedInUser = response.result as UserAccount;
+
+    //                 // do not await
+    //                 userService.updateUser(signedInUser);
+    //                 dispatch({ type: 'SIGN_IN', user: signedInUser });
+    //             } else {
+    //                 console.log(response.error);
+    //             }
+    //         })
+    //         .catch(error => {
+    //             Alert.alert(error.message);
+    //         });
+    // }
+
+    //NOTE: DO NOT useMemo here. We WANT to re-render.
     return (
         <AuthContext.Provider
-            value={value}>
+            value={{
+                state,
+                createUser,
+                emailSignIn,
+                signOut,
+                loginOrSignUpWithGoogle,
+                signInAnonymously,
+                // loginOrSignUpWithFacebook
+            }}>
             {children}
         </AuthContext.Provider>
     );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);
