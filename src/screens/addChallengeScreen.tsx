@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, Alert, useWindowDimensions, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, Alert, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';

@@ -1,4 +1,4 @@
-import React, { ProviderProps, createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import React, { ProviderProps, createContext, useContext, useEffect, useReducer } from 'react'
 import { authManager } from '../external/auth/firebaseAuthManager';
 import userService from '../services/userService';
 import { Alert } from 'react-native';
@@ -87,21 +87,18 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
         //         state.isLoading = false;
         //         return;
         //     }
-
         //     state.isLoading = false;
         //     // NOTE: user != doaminUser
         //     // const doaminUser = {id: user.uid, email: user.email, isOnline: true } as UserAccount;
         //     // setUser(user);
         // }
-
         // const unsubscribe = authManager?.retrievePersistedAuthUser(onAuthStateChanged);
-
-        callLoadAuthStateFromStorage();
-
         // return () => {
         //     // Unsubscribe from the retrievePersistedAuthUser subscription
         //     unsubscribe();
         // };
+
+        callLoadAuthStateFromStorage();
     }, []);
 
     const createUser = async (user: LoginUser) => {
@@ -203,7 +200,6 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
     //         .then(response => {
     //             if (response.isSuccessfull) {
     //                 const signedInUser = response.result as UserAccount;
-
     //                 // do not await
     //                 userService.updateUser(signedInUser);
     //                 dispatch({ type: 'SIGN_IN', user: signedInUser });
