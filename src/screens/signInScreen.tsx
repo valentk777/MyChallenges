@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
-import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -12,9 +12,9 @@ import { SignInButton } from '../components/ButtonWrapper/SignInButton';
 
 type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScreen'>;
 
-const { height: ScreenHeight } = Dimensions.get("screen");
-
 export const SingInScreen = ({ navigation }: SingInScreenProps) => {
+  const window = useWindowDimensions();
+  
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -139,7 +139,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View  style={{...styles.container, height: window.height}}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
@@ -158,7 +158,6 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
-      height: ScreenHeight
     },
     linearGradient: {
       flex: 1,

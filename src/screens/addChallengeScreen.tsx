@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, Dimensions, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, Dimensions, Alert, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
@@ -10,6 +10,7 @@ import { Challenge } from '../entities/challenge';
 import { ProgressStatus } from '../entities/progressStatus';
 import uuid from 'react-native-uuid';
 import challengesService from '../services/challengesService';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
@@ -74,14 +75,16 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
+  const window = useWindowDimensions();
+  const headerHeight = useHeaderHeight();
+
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [image] = useState(getRandomImage());
-  const windowHeight =  Dimensions.get('window').height;
 
   return (
-    <View style={{ ...styles.container, height: windowHeight }}>
+    <View  style={{...styles.container, height: window.height - headerHeight}}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
@@ -147,8 +150,6 @@ const onSave = async (title: string, description: string, targetValue: string, i
     return false;
   }
 }
-
-const { width: ScreenWidth, height: ScreenHeight } = Dimensions.get("screen");
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({

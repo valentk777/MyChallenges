@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Dimensions, Text, TextInput, TouchableOpacity, View, Alert, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image, useWindowDimensions } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -12,9 +12,10 @@ import { SignInButton } from '../components/ButtonWrapper/SignInButton';
 
 type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'RegisterScreen'>;
 
-const { height: ScreenHeight } = Dimensions.get("screen");
 
 export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
+    const window = useWindowDimensions();
+    
     const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
 
@@ -139,7 +140,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     );
 
     return (
-        <View style={styles.container}>
+        <View  style={{...styles.container, height: window.height}}>
             <LinearGradient
                 colors={styles.linearGradient.colors}
                 style={styles.linearGradient}
@@ -151,19 +152,19 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
                     {renderSignInTextContainer()}
                 </View>
             </LinearGradient>
-        </View >
+        </View  >
     );
 };
 
 const createStyles = (theme: typeof customTheme) => {
     const styles = StyleSheet.create({
         container: {
-            height: ScreenHeight
         },
         linearGradient: {
             flex: 1,
             colors: [theme.colors.primary, theme.colors.secondary],
             alignItems: "center",
+            
         },
         mainContainer: {
             flex: 1,
