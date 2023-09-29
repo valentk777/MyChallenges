@@ -1,6 +1,7 @@
 import {Alert} from 'react-native';
 import {Challenge} from '../entities/challenge';
 import {getData, storeData} from './dataStorageService';
+import userService from './userService';
 
 const initChallengesList = async () => {
   const challenges = [] as Challenge[];
@@ -9,9 +10,19 @@ const initChallengesList = async () => {
   return challenges;
 };
 
+const getChallengesKey = (userId: string) => {
+  return `${userId}/challenges`;
+};
+
 const getAllChalenges = async () => {
   try {
-    const challenges = await getData('challenges');
+    const user = await userService.getCurrentUser();
+
+    if (user === null || user.id === '' || user.id === null) {
+      return [] as Challenge[];
+    }
+
+    const challenges = await getData(getChallengesKey(user.id));
 
     if (challenges === null) {
       return await initChallengesList();
@@ -46,6 +57,13 @@ const getChallengeById = (challenges: Challenge[], challengeId: string) => {
 
 const storeChallenge = async (challenge: Challenge) => {
   try {
+    const user = await userService.getCurrentUser();
+
+    if (user === null || user.id === '' || user.id === null) {
+      console.error('Cannot store challenge because user does not exist');
+      return false;
+    }
+
     let challenges = await getAllChalenges();
     const selectedChallenge = getChallengeById(challenges, challenge.id);
 
@@ -54,12 +72,12 @@ const storeChallenge = async (challenge: Challenge) => {
       challenges = challenges.filter(
         localChallenge => challenge.id !== localChallenge.id,
       );
-    } 
+    }
 
     challenges.push(challenge);
 
-    storeData('challenges', challenges);
-    
+    storeData(getChallengesKey(user.id), challenges);
+
     return true;
   } catch (error) {
     Alert.alert(`Issues adding new challenge: Error: ${error}`);
@@ -69,13 +87,20 @@ const storeChallenge = async (challenge: Challenge) => {
 
 const removeChallenge = async (challengeId: string) => {
   try {
+    const user = await userService.getCurrentUser();
+
+    if (user === null || user.id === '' || user.id === null) {
+      console.log('Cannot remove challenge because user does not exist');
+      return false;
+    }
+
     const challenges = await getAllChalenges();
 
     const updatedChallenges = challenges.filter(
       challenge => challenge.id !== challengeId,
     );
 
-    storeData('challenges', updatedChallenges);
+    storeData(getChallengesKey(user.id), updatedChallenges);
     return true;
   } catch (error) {
     Alert.alert(`Issues removing challenge: Error: ${error}`);
