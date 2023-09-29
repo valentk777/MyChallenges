@@ -40,7 +40,7 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
 
   return (
     <View
-      style={{ ...styles.container, ...styles.shadow }}
+      style={{ ...styles.container, ...theme.shadows.primary }}
     >
       <TouchableOpacity onPress={onShowPopup}>
         <View style={styles.childrenContainer}>
@@ -84,16 +84,6 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    shadow: {
-      shadowColor: theme.colors.input,
-      shadowOpacity: 0.25,
-      shadowRadius: 3.5,
-      elevation: 5,
-      shadowOffset: {
-        width: 0,
-        height: 10,
-      }
-    },
     childrenContainer: {
       width: 70,
       height: 70,
@@ -130,8 +120,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     menuText: {
       fontSize: 22,
-      fontFamily: theme.text.fontFamily,
-      fontWeight: 'bold',
+      fontFamily: theme.fonts.regular,
       color: theme.colors.black,
     }
   });

@@ -13,13 +13,10 @@ export type MainStackParamList = {
 const MainStack = createNativeStackNavigator<MainStackParamList>()
 
 const MainStackNavigator = () => {
-    //   const { localized } = useTranslations()
-
     return (
         <MainStack.Navigator
             screenOptions={{
-                // headerBackTitleVisible: false,
-                // headerBackTitle: localized('Back'),
+                headerShown: false,
             }}
             initialRouteName="HomeTab">
             <MainStack.Screen

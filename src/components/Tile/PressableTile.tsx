@@ -57,7 +57,7 @@ export const PressableTile = (props: TileProps) => {
   const timeCreated = convertUTCToLocalTime(challenge.timeCreated);
 
   return (
-    <Pressable style={[styles.container, styles.shadow]} onPress={onPress}>
+    <Pressable style={[styles.container, theme.shadows.primary]} onPress={onPress}>
       <Image
         style={styles.image}
         source={{ uri: challenge.image }}
@@ -75,12 +75,19 @@ export const PressableTile = (props: TileProps) => {
       >
         {renderIcon(styles, isFavorite)}
       </TouchableOpacity>
-      <Image
+      <View style={styles.arrowArea}>
+        <Image
+          source={icons['angle-right.png']}
+          resizeMode='contain'
+          style={styles.arrowIcon}
+        />
+      </View>
+      {/* <Image
         source={icons['angle-right.png']}
         resizeMode='contain'
         style={styles.arrowIcon}
-      />
-      <View style={styles.space} />
+      /> */}
+      {/* <View style={styles.space} /> */}
     </Pressable>
   );
 };
@@ -101,16 +108,6 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.white,
       borderRadius: 10,
     },
-    shadow: {
-      shadowColor: theme.colors.input,
-      shadowOpacity: 0.25,
-      shadowRadius: 3.5,
-      elevation: 5,
-      shadowOffset: {
-        width: 0,
-        height: 10,
-      }
-    },
     image: {
       flex: 3,
       width: 60,
@@ -126,35 +123,40 @@ const createStyles = (theme: typeof customTheme) => {
     },
     title: {
       flex: 2,
-      fontSize: 18,
-      fontFamily: theme.text.fontFamily,
+      fontSize: 16,
+      fontFamily: theme.fonts.medium,
       color: theme.colors.black,
       paddingLeft: 10,
     },
     description: {
       flex: 2,
       fontSize: 14,
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.regular,
       color: theme.colors.black,
       paddingLeft: 10,
     },
     time: {
       flex: 2,
       fontSize: 10,
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.light,
       color: theme.colors.black,
       paddingLeft: 10,
     },
     heart: {
-      flex: 2,
+      flex: 1.5,
+      alignItems: 'center',
     },
     hearIcon: {
       height: 30,
       width: 30,
-      tintColor: theme.colors.focused
+      tintColor: theme.colors.focused,
+    },
+    arrowArea: {
+      flex: 1.5,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     arrowIcon: {
-      flex: 1,
       height: 20,
       width: 30,
       tintColor: theme.colors.black,

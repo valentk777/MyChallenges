@@ -16,7 +16,7 @@ export const SignInButton = (props: SignInButtonProps) => {
   const { text, icon, onSignPress } = props;
 
   return (
-    <TouchableOpacity onPress={onSignPress} style={styles.button}>
+    <TouchableOpacity onPress={onSignPress} style={[styles.button, theme.shadows.medium]}>
       <Image
         source={icon}
         style={styles.image}
@@ -36,6 +36,7 @@ const createStyles = (theme: typeof customTheme) => {
       marginRight: 15,
     },
     text: {
+      fontFamily: theme.fonts.semiBold,
       color: theme.colors.black,
       fontWeight: "600",
     },

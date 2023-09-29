@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useContext, useState } from 'react';
-import { Alert, Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -182,7 +182,8 @@ const createStyles = (theme: typeof customTheme) => {
       aspectRatio: 1,
     },
     titleTextStyle: {
-      fontSize: 30,
+      fontFamily: theme.fonts.bold,
+      fontSize: 25,
       color: theme.colors.white,
       fontWeight: "600",
     },
@@ -197,9 +198,11 @@ const createStyles = (theme: typeof customTheme) => {
       width: '100%',
     },
     inputText: {
+      fontFamily: theme.fonts.medium,
       color: theme.colors.white,
     },
     textInputStyle: {
+      fontFamily: theme.fonts.light,
       padding: 0,
       borderBottomColor: theme.colors.white,
       borderBottomWidth: 1,
@@ -220,6 +223,7 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.input,
     },
     signInButtonTextStyle: {
+      fontFamily: theme.fonts.semiBold,
       color: theme.colors.white,
       fontWeight: "600",
     },
@@ -239,6 +243,8 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.white,
     },
     orTextStyle: {
+      fontSize: 12,
+      fontFamily: theme.fonts.light,
       color: theme.colors.white,
       paddingRight: 20,
       paddingLeft: 20,
@@ -250,6 +256,7 @@ const createStyles = (theme: typeof customTheme) => {
       flexDirection: 'row',
     },
     signUpTextStyle: {
+      fontFamily: theme.fonts.light,
       color: theme.colors.white,
       fontSize: 14,
     },
@@ -257,8 +264,8 @@ const createStyles = (theme: typeof customTheme) => {
       marginLeft: 20,
     },
     signUpButtonTextStyle: {
-      fontSize: 15,
-      fontWeight: "bold",
+      fontSize: 14,
+      fontFamily: theme.fonts.semiBold,
       color: theme.colors.input,
     },
   });

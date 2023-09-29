@@ -43,7 +43,7 @@ const createStyles = (theme: typeof customTheme) => {
     text: {
       fontSize: 20,
       lineHeight: 21,
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.light,
       fontWeight: 'bold',
       color: theme.colors.text,
       marginTop: 30,

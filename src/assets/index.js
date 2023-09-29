@@ -12,6 +12,7 @@ export const icons = {
   'trash.png': require('./icons/trash.png'),
   'user.png': require('./icons/user.png'),
   'logout.png': require('./icons/logout.png'),
+  'back-arrow.png': require('./icons/back-arrow.png'),
 }
 
 export const images = {

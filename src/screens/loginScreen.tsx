@@ -77,8 +77,7 @@ const createStyles = (theme: typeof customTheme) => {
     text: {
       fontSize: 20,
       lineHeight: 30,
-      fontFamily: theme.text.fontFamily,
-      fontWeight: 'bold',
+      fontFamily: theme.fonts.bold,
       color: theme.colors.text,
       marginTop: 30,
     },
@@ -105,6 +104,7 @@ const createStyles = (theme: typeof customTheme) => {
     bottomText: {
       fontSize: 14,
       color: theme.colors.black,
+      fontFamily: theme.fonts.medium,
       fontWeight: '600'
     }
   });

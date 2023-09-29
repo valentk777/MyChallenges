@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UserAccount } from '../entities/user';
 import { icons } from '../assets';
+import { CircleButton } from '../components/ButtonWrapper/CircleButton';
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -24,13 +25,11 @@ export const UserScreen = () => {
         style={styles.linearGradient}
       >
         <View style={styles.section}>
-          <TouchableOpacity style={styles.signOut} onPress={() => signOut(user.id)}>
-            <Image
-              source={icons['logout.png']}
-              resizeMode="contain"
-              style={styles.signOut}
-            />
-          </TouchableOpacity>
+          <CircleButton
+            imgUrl={icons["logout.png"]}
+            onPress={() => signOut(user.id)}
+            style={[styles.signOut, theme.shadows.dark]}
+          />
           <Text style={styles.text}>User information screen.</Text>
           <Text style={styles.text}>{user?.email}</Text>
           <Text style={styles.text}>{user?.createdAt}</Text>
@@ -52,10 +51,10 @@ const createStyles = (theme: typeof customTheme) => {
     signOut: {
       tintColor: theme.colors.white,
       position: 'absolute',
-      top: 15,
-      right: 15,
-      height: 30,
-      width: 30,
+      top: 30,
+      right: 30,
+      height: 50,
+      width: 50,
     },
     section: {
       alignItems: 'center',
@@ -65,7 +64,7 @@ const createStyles = (theme: typeof customTheme) => {
     text: {
       fontSize: 20,
       lineHeight: 21,
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.light,
       fontWeight: 'bold',
       color: theme.colors.text,
       marginTop: 30,

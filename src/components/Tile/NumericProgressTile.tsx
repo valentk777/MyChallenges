@@ -17,6 +17,10 @@ const getPercentage = (currentValue: number, targetValue: number) => {
   return percentage;
 }
 
+const getCroppedTest = (text: string, cropUntil: number) => {
+  return text.length < cropUntil ? text : text.substring(0, cropUntil) + "...";
+}
+
 export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const { newValue, challenge } = useContext(ChallengeContext);
   const { theme } = useContext(ThemeContext);
@@ -26,7 +30,7 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{challenge.title}</Text>
+      <Text style={styles.title}>{getCroppedTest(challenge.title, 15)}</Text>
       <View style={styles.progress}>
         <CircularProgress
           title={newValue + " / " + Number(challenge.targetValue)}
@@ -42,7 +46,9 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
           circleBackgroundColor={styles.progress.circleBackgroundColor}
         />
       </View>
-      <Text style={styles.description}>{challenge.description}</Text>
+      <View style={styles.descriptionArea}>
+        <Text style={styles.description}>{getCroppedTest(challenge.description, 90)}</Text>
+      </View>
     </View>
   );
 };
@@ -58,20 +64,26 @@ const createStyles = (theme: typeof customTheme) => {
       paddingTop: '5%',
       fontSize: 25,
       color: theme.colors.text,
-      fontWeight: 'bold',
       height: '21%',
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.semiBold,
     },
     progress: {
       activeStrokeColor: theme.colors.white,
       circleBackgroundColor: theme.colors.tile2,
       inActiveStrokeColor: theme.colors.black,
     },
+    descriptionArea: {
+      marginTop: '3%',
+      flex: 0.8,
+      width: '80%',
+      alignItems: 'center',
+    },
     description: {
-      paddingTop: '3%',
-      fontFamily: theme.text.fontFamily,
+      fontFamily: theme.fonts.light,
       fontSize: 18,
       color: theme.colors.text,
+      flexWrap: 'wrap',
+      flexShrink: 1,
     },
   });
 

@@ -32,7 +32,7 @@ const Menu = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           ...styles.menuBox,
-          ...styles.shadow,
+          ...theme.shadows.primary,
         }
       }}
     >
@@ -133,16 +133,6 @@ const createStyles = (theme: typeof customTheme) => {
       backgroundColor: theme.colors.white,
       borderRadius: 15,
       height: 90,
-    },
-    shadow: {
-      shadowColor: theme.colors.input,
-      shadowOpacity: 0.25,
-      shadowRadius: 3.5,
-      elevation: 5,
-      shadowOffset: {
-        width: 0,
-        height: 10,
-      }
     },
     menuBar: {
       alignItems: 'center',

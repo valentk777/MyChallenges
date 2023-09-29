@@ -1,6 +1,6 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext, createContext } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { Quantity } from '../components/Quantity/Quantity';
 import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
@@ -10,8 +10,8 @@ import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { ProgressStatus } from '../entities/progressStatus';
 import { MainStackParamList } from '../navigators/MainStackNavigator';
-import { icons } from '../assets';
 import challengesService from '../services/challengesService';
+import { ChallengeHeader } from '../components/Menu/ChallengeHeader';
 
 type ChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'ChallengeScreen'>;
 
@@ -27,7 +27,7 @@ export const ChallengeContext = createContext<ChallengeContextProvider>({
   updateValue: (value: number) => { },
 });
 
-const onSave = async (challenge: Challenge, newCount: number, props) => {
+const onSave = async (challenge: Challenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "ChallengeScreen", undefined>) => {
   challenge.currentValue = newCount;
   challenge.lastTimeUpdated = new Date().toISOString();
   challenge = updateChallengeStatus(challenge);
@@ -35,7 +35,7 @@ const onSave = async (challenge: Challenge, newCount: number, props) => {
   const result = await challengesService.storeChallenge(challenge);
 
   if (result) {
-    props.navigation.navigate('ChallengesScreen');
+    navigation.navigate('ChallengesScreen');
   }
 }
 
@@ -53,16 +53,14 @@ const updateChallengeStatus = (challenge: Challenge) => {
   return challenge;
 }
 
-const onDelete = async (challenge: Challenge, props) => {
-  const result = await challengesService.removeChallenge(challenge.id);
-
-  if (result) {
-    props.navigation.navigate('HomeTab');
-  }
+interface ChallengeContextProvider {
+  challenge: Challenge;
+  newValue: number;
+  updateValue: (value: number) => void;
 }
 
-export const ChallengeScreen = (props: ChallengeScreenProps) => {
-  const challenge = props.route.params.challenge;
+export const ChallengeScreen = ({ route, navigation }: ChallengeScreenProps) => {
+  const challenge = route.params.challenge;
 
   const [newCount, setCount] = useState(challenge.currentValue);
   const { theme } = useContext(ThemeContext);
@@ -87,16 +85,7 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
             locations={[0, 0.6, 1]}
             style={styles.linearGradient}
           >
-            <TouchableOpacity
-              style={styles.trashCan}
-              onPress={async () => onDelete(challenge, props)}
-            >
-              <Image
-                source={icons['trash.png']}
-                resizeMode="contain"
-                style={styles.trashCan}
-              />
-            </TouchableOpacity>
+            <ChallengeHeader challenge={challenge} navigation={navigation} />
             <NumericProgressTile />
           </LinearGradient>
         </View>
@@ -106,7 +95,7 @@ export const ChallengeScreen = (props: ChallengeScreenProps) => {
         <View style={styles.saveContainer}>
           <SaveButton
             title="Save"
-            onPress={async () => onSave(challenge, newCount, props)}
+            onPress={async () => onSave(challenge, newCount, navigation)}
           />
         </View>
       </ChallengeContext.Provider>
