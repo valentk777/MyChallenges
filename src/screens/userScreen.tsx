@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { useAuth } from '../hooks/useAuth';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UserAccount } from '../entities/user';
-import { icons } from '../assets';
+import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
+import timeService from '../services/timeService';
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -15,6 +16,22 @@ export const UserScreen = () => {
 
   const user = useCurrentUser() as UserAccount;
   const { signOut } = useAuth()
+
+  const renderHeaderContainer = () => (
+    <View style={styles.headerContainer}>
+      <Image
+        style={styles.headerImage}
+        source={logo['logo_500x500.png']}
+      />
+      <Text style={styles.titleTextStyle}>User information</Text>
+    </View>
+  );
+
+  const userEmail = user?.email === null || user.email === ""
+    ? "Login without email"
+    : user.email;
+
+  const userCreated = timeService.convertUTCToLocalTime(user.createdAt);
 
   return (
     <View style={styles.container}>
@@ -30,9 +47,13 @@ export const UserScreen = () => {
             onPress={() => signOut(user.id)}
             style={[styles.signOut, theme.shadows.dark]}
           />
-          <Text style={styles.text}>User information screen.</Text>
-          <Text style={styles.text}>{user?.email}</Text>
-          <Text style={styles.text}>{user?.createdAt}</Text>
+          {renderHeaderContainer()}
+          <View style={styles.userInfoContainer}>
+            <Text style={styles.textPrimary}>User email: </Text>
+            <Text style={styles.textSecondary}>    {userEmail}</Text>
+            <Text style={styles.textPrimary}>User created: </Text>
+            <Text style={styles.textSecondary}>    {userCreated}</Text>
+          </View>
         </View>
       </LinearGradient>
     </View >
@@ -45,7 +66,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
     },
     linearGradient: {
-      flex: 15,
+      flex: 1,
       colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary],
     },
     signOut: {
@@ -59,19 +80,44 @@ const createStyles = (theme: typeof customTheme) => {
     section: {
       alignItems: 'center',
       justifyContent: 'center',
-      height: '70%',
+      flex: 1,
     },
-    text: {
-      fontSize: 20,
+    headerContainer: {
+      width: '100%',
+      flex: 2,
+      alignItems: "center",
+      justifyContent: 'space-evenly',
+    },
+    headerImage: {
+      width: '30%',
+      height: undefined,
+      aspectRatio: 1,
+    },
+    titleTextStyle: {
+      fontFamily: theme.fonts.bold,
+      fontSize: 25,
+      color: theme.colors.white,
+      fontWeight: "600",
+    },
+    userInfoContainer: {
+      flex: 3,
+      width: "70%",
+      alignItems: "flex-start",
+    },
+    textPrimary: {
+      fontSize: 21,
       lineHeight: 21,
-      fontFamily: theme.fonts.light,
-      fontWeight: 'bold',
+      fontFamily: theme.fonts.semiBold,
       color: theme.colors.text,
-      marginTop: 30,
+      marginBottom: 10,
     },
-    buttonContainer: {
-      margin: 20,
-    },
+    textSecondary: {
+      fontSize: 18,
+      lineHeight: 18,
+      fontFamily: theme.fonts.light,
+      color: theme.colors.text,
+      marginBottom: 30,
+    }
   });
 
   return styles;

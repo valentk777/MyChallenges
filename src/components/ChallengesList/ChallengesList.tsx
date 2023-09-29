@@ -53,6 +53,21 @@ export const ChallengesList = (props: ChallengesListProps) => {
     return data;
   }
 
+  function toSorted(data: Challenge[]) {
+    const sortedData = data.slice();
+    sortedData.sort((a, b) => {
+      if (a.favorite && !b.favorite) {
+        return -1;
+      } else if (!a.favorite && b.favorite) {
+        return 1;
+      }
+
+      // descending order
+      return b.timeCreated.localeCompare(a.timeCreated);
+    });
+    return sortedData;
+  }
+
   async function readData() {
     try {
       const challenges = await challengesService.getAllChalenges();
@@ -63,7 +78,8 @@ export const ChallengesList = (props: ChallengesListProps) => {
         return;
       }
 
-      const filteredData = filterData(challenges);
+      let filteredData = filterData(challenges);
+      filteredData = toSorted(filteredData);
       setDataSource(filteredData);
       setRefreshing(false);
     } catch (error) {

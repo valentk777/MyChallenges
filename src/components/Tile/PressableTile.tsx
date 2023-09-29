@@ -5,6 +5,7 @@ import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { icons } from '../../assets';
 import challengesService from '../../services/challengesService';
+import timeService from '../../services/timeService';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -19,24 +20,7 @@ const renderIcon = (styles: any, isFavorite: boolean) => {
   );
 }
 
-const convertUTCToLocalTime = (utcTime: string) => {
-  if (utcTime == null) {
-    return "";
-  }
-
-  const date = new Date(utcTime);
-  const options = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  };
-
-  return date.toLocaleString('en-US', options);
-};
-
-const getCroppedTest = (text: string, cropUntil: number) => {
+const getCroppedText = (text: string, cropUntil: number) => {
   return text.length < cropUntil ? text : text.substring(0, cropUntil) + "...";
 }
 
@@ -52,9 +36,9 @@ export const PressableTile = (props: TileProps) => {
     onChangeFavorite(challenge.favorite);
   }
 
-  const title = getCroppedTest(challenge.title, 12);
-  const description = getCroppedTest(challenge.description, 16);
-  const timeCreated = convertUTCToLocalTime(challenge.timeCreated);
+  const title = getCroppedText(challenge.title, 12);
+  const description = getCroppedText(challenge.description, 16);
+  const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
 
   return (
     <Pressable style={[styles.container, theme.shadows.primary]} onPress={onPress}>
@@ -82,12 +66,6 @@ export const PressableTile = (props: TileProps) => {
           style={styles.arrowIcon}
         />
       </View>
-      {/* <Image
-        source={icons['angle-right.png']}
-        resizeMode='contain'
-        style={styles.arrowIcon}
-      /> */}
-      {/* <View style={styles.space} /> */}
     </Pressable>
   );
 };
