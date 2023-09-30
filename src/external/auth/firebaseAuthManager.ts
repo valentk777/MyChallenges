@@ -149,6 +149,8 @@ const logout = async (userId: string) => {
   } as UserAccount;
 
   await userDbTable.updateUser(userData);
+  // await GoogleSignin.revokeAccess();
+  await GoogleSignin.signOut();
   await auth().signOut();
 };
 
