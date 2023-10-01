@@ -6,6 +6,7 @@ import { customTheme } from '../../styles/customTheme';
 import { icons } from '../../assets';
 import challengesService from '../../services/challengesService';
 import timeService from '../../services/timeService';
+import { SvgFileNamesToComponentsMap } from '../../assets/svgIndex';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -39,13 +40,17 @@ export const PressableTile = (props: TileProps) => {
   const title = getCroppedText(challenge.title, 12);
   const description = getCroppedText(challenge.description, 16);
   const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
+  const ImageComponent = SvgFileNamesToComponentsMap[challenge.image];
 
   return (
     <Pressable style={[styles.container, theme.shadows.primary]} onPress={onPress}>
-      <Image
+      <View style={styles.image}>
+        <ImageComponent width={60} height={60} />
+        {/* <Image
         style={styles.image}
         source={{ uri: challenge.image }}
-        resizeMode='stretch' />
+        resizeMode='stretch' /> */}
+      </View>
       <View style={styles.textArea}>
         <View style={styles.space} />
         <Text style={styles.title}>{title}</Text>
@@ -87,7 +92,7 @@ const createStyles = (theme: typeof customTheme) => {
       borderRadius: 10,
     },
     image: {
-      flex: 3,
+      flex: 2,
       width: 60,
       height: 60,
       borderRadius: 100,

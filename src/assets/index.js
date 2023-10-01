@@ -16,13 +16,7 @@ export const icons = {
 }
 
 export const images = {
-  'freenaturestock-296-768x512.jpeg': require('./images/freenaturestock-296-768x512.jpeg'),
-  'freenaturestock-405-768x512.jpeg': require('./images/freenaturestock-405-768x512.jpeg'),
-  'freenaturestock-1794-768x512.jpg': require('./images/freenaturestock-1794-768x512.jpg'),
-  'freenaturestock-1948-768x512.jpg': require('./images/freenaturestock-1948-768x512.jpg'),
-  'freenaturestock-1969-768x512.jpg': require('./images/freenaturestock-1969-768x512.jpg'),
-  'freenaturestock-2137-768x512.jpg': require('./images/freenaturestock-2137-768x512.jpg'),
-  'freenaturestock-2147-768x512.jpg': require('./images/freenaturestock-2147-768x512.jpg'),
+  // 'freenaturestock-296-768x512.jpeg': require('./images/freenaturestock-296-768x512.jpeg'),
 }
 
 export const logo = {

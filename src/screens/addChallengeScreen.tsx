@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, Alert, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
@@ -13,63 +13,35 @@ import challengesService from '../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { icons } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
+import ImageSwapper from '../components/ImagesCarousel/ImageSwapper';
+import { SvgComponents } from '../assets/svgIndex';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
 
-export const getRandomImage = () => {
-  const localImages = [
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-296-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-405-768x512.jpeg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1794-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1948-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1969-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-1987-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2014-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2035-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2061-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2066-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2083-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2097-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2104-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2124-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2137-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2142-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2143-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2147-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2172-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2179-768x512.jpg',
-    'https://freenaturestock.com/wp-content/uploads/freenaturestock-2183-768x512.jpg',
-  ]
-
-  const imageId = Math.floor(Math.random() * 100) % localImages.length;
-
-  return localImages[imageId];
-}
-
-const createNewChallenge = (title: string, description: string, targetValue: number, image: string) => {
+const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
   if (title === "") {
     Alert.alert("Title cannot be empty");
-    throw new Error("Title cannot be empty");
+    return null;
   }
 
   if (title.length > 20) {
     Alert.alert("Title too long. Max 20 symbols allowed");
-    return;
+    return null;
   }
 
   if (description.length > 90) {
     Alert.alert("Description too long. Max 90 symbols allowed");
-    return;
+    return null;
   }
 
-  if (isNaN(targetValue)) {
-    Alert.alert("Target value numbe be a number");
-    return;
+  if (targetValue === null || isNaN(targetValue)) {
+    Alert.alert("Target value should be a number");
+    return null;
   }
 
   if (targetValue <= 0) {
     Alert.alert("Target value cannot be 0");
-    return;
+    return null;
   }
 
   const currentUtcTime = new Date().toISOString();
@@ -80,7 +52,7 @@ const createNewChallenge = (title: string, description: string, targetValue: num
   challengeCandidate.description = description;
   challengeCandidate.currentValue = 0;
   challengeCandidate.targetValue = targetValue;
-  challengeCandidate.image = image;
+  challengeCandidate.image = imageLocation;
   challengeCandidate.timeCreated = currentUtcTime;
   challengeCandidate.lastTimeUpdated = currentUtcTime;
   challengeCandidate.favorite = false;
@@ -99,7 +71,11 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
-  const [image] = useState(getRandomImage());
+  const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
+
+  const handleImageChange = newIndex => {
+    setCurrentImageLocation(newIndex);
+  };
 
   return (
     <View style={{ ...styles.container, height: window.height - headerHeight }}>
@@ -111,7 +87,7 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
           <View style={styles.inputBox}>
             <View style={[styles.inputContaine, theme.shadows.primary]}>
               <View style={styles.imageArea}>
-                <Image style={styles.image} source={{ uri: image }} />
+                <ImageSwapper onImageChange={handleImageChange} />
                 <CircleButton
                   imgUrl={icons["back-arrow.png"]}
                   onPress={() => navigation.goBack()}
@@ -156,7 +132,7 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
         <View style={styles.saveContainer}>
           <SaveButton
             title="Save"
-            onPress={async () => onSave(title, description, targetValue, image, navigation)}
+            onPress={async () => onSave(title, description, targetValue, imageLocation, navigation)}
           />
         </View>
       </LinearGradient>
@@ -164,10 +140,15 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
   );
 };
 
-const onSave = async (title: string, description: string, targetValue: string, image: string, navigation) => {
+const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, navigation) => {
   try {
     const targetValueInt = parseInt(targetValue, 10);
-    const challenge = createNewChallenge(title, description, targetValueInt, image);
+    const challenge = createNewChallenge(title, description, targetValueInt, imageLocation);
+
+    if (challenge === null) {
+      return false;
+    }
+
     const result = await challengesService.storeChallenge(challenge);
 
     if (result) {
@@ -188,6 +169,10 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       height: '100%',
       colors: [theme.colors.primary, theme.colors.secondary],
+    },
+    iconsStyle: {
+      height: 100,
+      width: 100,
     },
     mainScreen: {
       flex: 11,
