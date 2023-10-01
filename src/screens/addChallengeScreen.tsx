@@ -85,7 +85,7 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
       >
         <View style={styles.mainScreen}>
           <View style={styles.inputBox}>
-            <View style={[styles.inputContaine, theme.shadows.primary]}>
+            <View style={[styles.inputContaine]}>
               <View style={styles.imageArea}>
                 <View style={styles.imageSwapper}>
                   <ImageSwapper onImageChange={handleImageChange} />
@@ -93,7 +93,7 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
                 <CircleButton
                     imgUrl={icons["back-arrow.png"]}
                     onPress={() => navigation.goBack()}
-                    style={[styles.backCircle, theme.shadows.dark]}
+                    style={styles.backCircle}
                   />
               </View>
               <View style={styles.textArea}>
@@ -207,7 +207,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     imageSwapper: {
       flex: 1,
-      width: '60%'
+      width: '60%',
     },
     backCircle: {
       left: 15,

@@ -24,7 +24,7 @@ export const UserScreen = () => {
         onPress={() => signOut(user.id)}
         style={[styles.signOut, theme.shadows.dark]}
       />
-      <Image style={[styles.logo, theme.shadows.dark]} source={logo['logo_500x500.png']} />
+      <Image style={styles.logo} source={logo['logo_500x500.png']} />
     </View>
   );
 

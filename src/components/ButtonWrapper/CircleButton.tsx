@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, Image, ImageSourcePropType, StyleSheet } from "react-native";
 import { ThemeContext } from "../../contexts/themeContext";
 import { customTheme } from "../../styles/customTheme";
@@ -30,17 +30,15 @@ export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSign
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
-      container: {
-          width: 40,
-          height: 40,
-          backgroundColor: theme.colors.white,
-          position: "absolute",
-          borderRadius: 24,
-          alignItems: "center",
-          justifyContent: "center",
-          // ...SHADOWS.light,
-          
-      },
+    container: {
+      width: 40,
+      height: 40,
+      backgroundColor: theme.colors.white,
+      position: "absolute",
+      borderRadius: 24,
+      alignItems: "center",
+      justifyContent: "center",
+    },
   });
 
   return styles;
