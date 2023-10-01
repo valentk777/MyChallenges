@@ -13,7 +13,7 @@ import challengesService from '../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { icons } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
-import ImageSwapper from '../components/ImagesCarousel/ImageSwapper';
+import ImageSwapper from '../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../assets/svgIndex';
 
 type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
@@ -87,12 +87,14 @@ export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
           <View style={styles.inputBox}>
             <View style={[styles.inputContaine, theme.shadows.primary]}>
               <View style={styles.imageArea}>
-                <ImageSwapper onImageChange={handleImageChange} />
+                <View style={styles.imageSwapper}>
+                  <ImageSwapper onImageChange={handleImageChange} />
+                </View>
                 <CircleButton
-                  imgUrl={icons["back-arrow.png"]}
-                  onPress={() => navigation.goBack()}
-                  style={[styles.backCircle, theme.shadows.dark]}
-                />
+                    imgUrl={icons["back-arrow.png"]}
+                    onPress={() => navigation.goBack()}
+                    style={[styles.backCircle, theme.shadows.dark]}
+                  />
               </View>
               <View style={styles.textArea}>
                 <View style={styles.textImput}>
@@ -198,12 +200,14 @@ const createStyles = (theme: typeof customTheme) => {
     imageArea: {
       flex: 1,
       width: '100%',
-    },
-    image: {
-      height: '100%',
-      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
+    },
+    imageSwapper: {
+      flex: 1,
+      width: '60%'
     },
     backCircle: {
       left: 15,

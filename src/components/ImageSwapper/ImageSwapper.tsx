@@ -1,8 +1,13 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { SvgComponents } from '../../assets/svgIndex';
+import { customTheme } from '../../styles/customTheme';
+import { ThemeContext } from '../../contexts/themeContext';
 
 const ImageSwapper = ({ onImageChange }) => {
+    const { theme } = useContext(ThemeContext);
+    const styles = createStyles(theme);
+
     const [containerWidth, setContainerWidth] = useState(0);
     const currentIndex = 50;
     const flatListRef = useRef(null);
@@ -23,6 +28,7 @@ const ImageSwapper = ({ onImageChange }) => {
 
     const renderItem = ({ index }) => {
         const Component = SvgComponents[index % svgComponentsLenth].component;
+
         return (
             <TouchableOpacity
                 activeOpacity={0.9}
@@ -60,27 +66,16 @@ const ImageSwapper = ({ onImageChange }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    imageContainer: {
-        width: 60,
-        height: '100%',
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-    },
-    pagination: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
-        left: 0,
-        right: 0,
-    }
-});
+const createStyles = (theme: typeof customTheme) => {
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+        },
+        imageContainer: {
+        }
+    });
+
+    return styles;
+};
 
 export default ImageSwapper;

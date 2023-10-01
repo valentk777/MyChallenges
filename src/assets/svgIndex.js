@@ -17,21 +17,21 @@ import Wallet from './svg/Wallet';
 import Wardrobe from './svg/Wardrobe';
 
 export const SvgComponents = [
+    { 'location' : 'Trophy.js', 'component' : Trophy},
+    { 'location' : 'Money.js', 'component' : Money},
+    { 'location' : 'Movie.js', 'component' : Movie},
+    { 'location' : 'GamePad.js', 'component' : GamePad},
     { 'location' : 'AlarmClock.js', 'component' : AlarmClock},
     { 'location' : 'BedsideTable.js', 'component' : BedsideTable},
     { 'location' : 'Brush.js', 'component' : Brush},
     { 'location' : 'Camera.js', 'component' : Camera},
     { 'location' : 'DeskLamp.js', 'component' : DeskLamp},
     { 'location' : 'Earphones.js', 'component' : Earphones},
-    { 'location' : 'GamePad.js', 'component' : GamePad},
     { 'location' : 'Liquid.js', 'component' : Liquid},
     { 'location' : 'Magnifier.js', 'component' : Magnifier},
-    { 'location' : 'Money.js', 'component' : Money},
-    { 'location' : 'Movie.js', 'component' : Movie},
     { 'location' : 'PlanList.js', 'component' : PlanList},
     { 'location' : 'Stool.js', 'component' : Stool},
     { 'location' : 'Suitcase.js', 'component' : Suitcase},
-    { 'location' : 'Trophy.js', 'component' : Trophy},
     { 'location' : 'Wallet.js', 'component' : Wallet},
     { 'location' : 'Wardrobe.js', 'component' : Wardrobe},
 ];

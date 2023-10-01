@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image, useWindowDimensions } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image, useWindowDimensions, Animated } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -45,9 +45,19 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
 
         createUser(userCandidate);
     }
+    
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start();
+    }, [fadeAnim]);
 
     const renderHeaderContainer = () => (
-        <View style={styles.headerContainer}>
+        <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
             <Image
                 style={styles.headerImage}
                 source={logo['logo_500x500.png']}
@@ -58,7 +68,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
               Please fill in the form to continue
             </Text>
           </View> */}
-        </View>
+        </Animated.View>
     );
 
     const renderInputContainer = () => (

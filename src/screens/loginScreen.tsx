@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -13,19 +13,33 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
+  const renderHeaderContainer = () => (
+    <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
+          <Image
+            style={styles.image}
+            source={logo['logo_500x500.png']}
+          />
+          <Text style={styles.text}>Challenge Tracker</Text>
+    </Animated.View>
+  );
+
   return (
     <View style={styles.global}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <View style={styles.section}>
-          <Image
-            style={styles.image}
-            source={logo['logo_500x500.png']}
-          />
-          <Text style={styles.text}>Challenge Tracker</Text>
-        </View>
+      {renderHeaderContainer()}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             activeOpacity={0.8}
@@ -57,7 +71,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       colors: [theme.colors.primary, theme.colors.secondary]
     },
-    section: {
+    headerContainer: {
       alignItems: 'center',
       justifyContent: 'center',
       height: '70%',

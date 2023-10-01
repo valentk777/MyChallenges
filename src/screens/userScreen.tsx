@@ -1,36 +1,35 @@
-import React, { useContext } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { ThemeContext } from '../contexts/themeContext';
-import { customTheme } from '../styles/customTheme';
-import LinearGradient from 'react-native-linear-gradient'
+import React, { useContext, useRef, useEffect } from 'react';
+import { Image, StyleSheet, Text, View, Animated } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { useAuth } from '../hooks/useAuth';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UserAccount } from '../entities/user';
 import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
 import timeService from '../services/timeService';
+import { ThemeContext } from '../contexts/themeContext';
+import { customTheme } from '../styles/customTheme';
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
   const user = useCurrentUser() as UserAccount;
-  const { signOut } = useAuth()
+  const { signOut } = useAuth();
 
   const renderHeaderContainer = () => (
     <View style={styles.headerContainer}>
-      <Image
-        style={styles.headerImage}
-        source={logo['logo_500x500.png']}
+      <CircleButton
+        imgUrl={icons["logout.png"]}
+        onPress={() => signOut(user.id)}
+        style={[styles.signOut, theme.shadows.dark]}
       />
-      <Text style={styles.titleTextStyle}>User information</Text>
+      <Image style={[styles.logo, theme.shadows.dark]} source={logo['logo_500x500.png']} />
     </View>
   );
 
-  const userEmail = user?.email === null || user.email === ""
-    ? "Login without email"
-    : user.email;
-
+  const userEmail = user?.email === null || user.email === "" ? "Login without email" : user.email;
+  const userImageUrl = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
   const userCreated = timeService.convertUTCToLocalTime(user.createdAt);
 
   return (
@@ -41,22 +40,23 @@ export const UserScreen = () => {
         locations={[0, 0.6, 1]}
         style={styles.linearGradient}
       >
+        {renderHeaderContainer()}
         <View style={styles.section}>
-          <CircleButton
-            imgUrl={icons["logout.png"]}
-            onPress={() => signOut(user.id)}
-            style={[styles.signOut, theme.shadows.dark]}
-          />
-          {renderHeaderContainer()}
+          <View style={styles.userImageArea}>
+            <View style={[styles.userImageShadowArea, theme.shadows.primary]}>
+            <Image style={styles.userImage} source={{ uri: userImageUrl }} />
+            </View>
+          </View>
           <View style={styles.userInfoContainer}>
-            <Text style={styles.textPrimary}>User email: </Text>
+            <Text style={styles.textPrimary}>User email:</Text>
             <Text style={styles.textSecondary}>    {userEmail}</Text>
-            <Text style={styles.textPrimary}>User created: </Text>
+            <Text style={styles.textPrimary}>User created:</Text>
             <Text style={styles.textSecondary}>    {userCreated}</Text>
           </View>
+
         </View>
       </LinearGradient>
-    </View >
+    </View>
   );
 };
 
@@ -80,17 +80,20 @@ const createStyles = (theme: typeof customTheme) => {
     section: {
       alignItems: 'center',
       justifyContent: 'center',
-      flex: 1,
+      flex: 10,
     },
     headerContainer: {
       width: '100%',
-      flex: 2,
       alignItems: "center",
       justifyContent: 'space-evenly',
+      backgroundColor: 'green',
     },
-    headerImage: {
-      width: '30%',
-      height: undefined,
+    logo: {
+      position: 'absolute',
+      top: 30,
+      left: 30,
+      height: 55,
+      width: undefined,
       aspectRatio: 1,
     },
     titleTextStyle: {
@@ -100,7 +103,7 @@ const createStyles = (theme: typeof customTheme) => {
       fontWeight: "600",
     },
     userInfoContainer: {
-      flex: 3,
+      flex: 5,
       width: "70%",
       alignItems: "flex-start",
     },
@@ -117,7 +120,26 @@ const createStyles = (theme: typeof customTheme) => {
       fontFamily: theme.fonts.light,
       color: theme.colors.text,
       marginBottom: 30,
-    }
+    },
+    userImageArea: {
+      flex: 3,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    userImageShadowArea: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 145,
+      width: undefined,
+      aspectRatio: 1,
+      borderRadius: 500, // Make it round
+    },
+    userImage: {
+      width: undefined,
+      aspectRatio: 1,
+      height: 130,
+      borderRadius: 500, // Make it round
+    },
   });
 
   return styles;
