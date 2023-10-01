@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import React, { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Menu from "./MenuTabNavigator"
 import AddChallengeScreen from "../screens/addChallengeScreen"
 import ChallengeScreen from "../screens/challengeScreen"

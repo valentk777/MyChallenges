@@ -1,5 +1,5 @@
-import React, { useContext, useRef, useEffect } from 'react';
-import { Image, StyleSheet, Text, View, Animated } from 'react-native';
+import React, { useContext } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useAuth } from '../hooks/useAuth';
 import { useCurrentUser } from '../hooks/useCurrentUser';

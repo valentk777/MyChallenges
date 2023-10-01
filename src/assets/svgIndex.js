@@ -17,7 +17,6 @@ import Wallet from './svg/Wallet';
 import Wardrobe from './svg/Wardrobe';
 
 export const SvgComponents = [
-    { 'location' : 'Trophy.js', 'component' : Trophy},
     { 'location' : 'Money.js', 'component' : Money},
     { 'location' : 'Movie.js', 'component' : Movie},
     { 'location' : 'GamePad.js', 'component' : GamePad},
@@ -34,6 +33,7 @@ export const SvgComponents = [
     { 'location' : 'Suitcase.js', 'component' : Suitcase},
     { 'location' : 'Wallet.js', 'component' : Wallet},
     { 'location' : 'Wardrobe.js', 'component' : Wardrobe},
+    { 'location' : 'Trophy.js', 'component' : Trophy},
 ];
 
 // export const SvgComponents = [
