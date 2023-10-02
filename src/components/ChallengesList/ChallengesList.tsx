@@ -37,7 +37,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
       <PressableTile
         title={item.title}
         challenge={item}
-        onPress={() => navigation.navigate('ChallengeScreen', { challenge: item })} />
+        onPress={() => navigation.navigate('TotalCounterChallengeScreen', { challenge: item })} />
     );
   };
 

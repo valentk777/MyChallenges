@@ -1,22 +1,22 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions } from 'react-native';
-import { SaveButton } from '../components/ButtonWrapper/SaveButton';
-import { ThemeContext } from '../contexts/themeContext';
-import { customTheme } from '../styles/customTheme';
+import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
+import { ThemeContext } from '../../contexts/themeContext';
+import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { MainStackParamList } from '../navigators/MainStackNavigator';
-import { Challenge } from '../entities/challenge';
-import { ProgressStatus } from '../entities/progressStatus';
+import { MainStackParamList } from '../../navigators/MainStackNavigator';
+import { Challenge } from '../../entities/challenge';
+import { ProgressStatus } from '../../entities/progressStatus';
 import uuid from 'react-native-uuid';
-import challengesService from '../services/challengesService';
+import challengesService from '../../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { icons } from '../assets';
-import { CircleButton } from '../components/ButtonWrapper/CircleButton';
-import ImageSwapper from '../components/ImageSwapper/ImageSwapper';
-import { SvgComponents } from '../assets/svgIndex';
+import { icons } from '../../assets';
+import { CircleButton } from '../../components/ButtonWrapper/CircleButton';
+import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
+import { SvgComponents } from '../../assets/svgIndex';
 
-type AddChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'CreateNewChallengeScreen'>;
+type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
 
 const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
   if (title === "") {
@@ -61,7 +61,7 @@ const createNewChallenge = (title: string, description: string, targetValue: num
   return challengeCandidate;
 }
 
-export const AddChallengeScreen = ({ navigation }: AddChallengeScreenProps) => {
+export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -241,4 +241,4 @@ const createStyles = (theme: typeof customTheme) => {
   return styles;
 };
 
-export default AddChallengeScreen;
+export default AddTotalCounterChallengeScreen;

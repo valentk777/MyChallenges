@@ -1,19 +1,19 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext, createContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SaveButton } from '../components/ButtonWrapper/SaveButton';
-import { Quantity } from '../components/Quantity/Quantity';
-import { NumericProgressTile } from '../components/Tile/NumericProgressTile';
-import { ThemeContext } from '../contexts/themeContext';
-import { Challenge } from '../entities/challenge';
-import { customTheme } from '../styles/customTheme';
+import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
+import { Quantity } from '../../components/Quantity/Quantity';
+import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
+import { ThemeContext } from '../../contexts/themeContext';
+import { Challenge } from '../../entities/challenge';
+import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
-import { ProgressStatus } from '../entities/progressStatus';
-import { MainStackParamList } from '../navigators/MainStackNavigator';
-import challengesService from '../services/challengesService';
-import { ChallengeHeader } from '../components/Menu/ChallengeHeader';
+import { ProgressStatus } from '../../entities/progressStatus';
+import { MainStackParamList } from '../../navigators/MainStackNavigator';
+import challengesService from '../../services/challengesService';
+import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 
-type ChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'ChallengeScreen'>;
+type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
 interface ChallengeContextProvider {
   challenge: Challenge;
@@ -27,7 +27,7 @@ export const ChallengeContext = createContext<ChallengeContextProvider>({
   updateValue: (value: number) => { },
 });
 
-const onSave = async (challenge: Challenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "ChallengeScreen", undefined>) => {
+const onSave = async (challenge: Challenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
   challenge.currentValue = newCount;
   challenge.lastTimeUpdated = new Date().toISOString();
   challenge = updateChallengeStatus(challenge);
@@ -35,7 +35,7 @@ const onSave = async (challenge: Challenge, newCount: number, navigation: Native
   const result = await challengesService.storeChallenge(challenge);
 
   if (result) {
-    navigation.navigate('ChallengesScreen');
+    navigation.goBack();
   }
 }
 
@@ -59,7 +59,7 @@ interface ChallengeContextProvider {
   updateValue: (value: number) => void;
 }
 
-export const ChallengeScreen = ({ route, navigation }: ChallengeScreenProps) => {
+export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterChallengeScreenProps) => {
   const challenge = route.params.challenge;
 
   const [newCount, setCount] = useState(challenge.currentValue);
@@ -147,4 +147,4 @@ const createStyles = (theme: typeof customTheme) => {
   return styles;
 };
 
-export default ChallengeScreen;
+export default TotalCounterChallengeScreen;

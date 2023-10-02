@@ -28,11 +28,11 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
   const onSelectOption = (option: ChallengeTypes) => {
     onHidePopup();
 
-    if (option === ChallengeTypes.Counter) {
-      navigation.navigate('CreateNewChallengeScreen');
+    if (option === ChallengeTypes.TotalCount) {
+      navigation.navigate('AddTotalCounterChallengeScreen');
     }
-    else if (option === ChallengeTypes.Steps) {
-      navigation.navigate('CreateNewChallengeScreen');
+    else if (option === ChallengeTypes.DailyBolleanCalendar) {
+      navigation.navigate('AddTotalCounterChallengeScreen');
     } else {
       Alert.alert("Unknown challenge type")
     }
@@ -60,16 +60,27 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
         </TouchableWithoutFeedback >
         <View style={styles.modalContent}>
           <View style={styles.modalArea}>
-            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
+            <View style={styles.space} />
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalCount)}>
               <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Counter</Text>
+                <Text style={styles.menuText}>Total count</Text>
               </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Steps)}>
+            {/* <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
               <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Steps</Text>
+                <Text style={styles.menuText}>Number daily progress</Text>
+              </View>
+            </TouchableWithoutFeedback> */}
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.DailyBolleanCalendar)}>
+              <View style={styles.modalTile}>
+                <Text style={styles.menuText}>Calendar daily progress</Text>
               </View>
             </TouchableWithoutFeedback>
+            {/* <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Calendar)}>
+              <View style={styles.modalTile}>
+                <Text style={styles.menuText}>Longest streak</Text>
+              </View>
+            </TouchableWithoutFeedback> */}
           </View>
         </View>
       </Modal>
@@ -103,11 +114,17 @@ const createStyles = (theme: typeof customTheme) => {
       right: 0,
       backgroundColor: 'rgba(0,0,0,0.7)'
     },
+    space: {
+      // this space allow buttons to grow on a screen when I add new ones
+      flex: 6,
+    },
     modalArea: {
+      flex: 1,
+      flexDirection: 'column',
       width: '90%',
-      height: '20%',
       alignItems: 'center',
       marginBottom: '5%',
+      justifyContent: 'space-evenly'
     },
     modalTile: {
       flex: 1,

@@ -1,13 +1,13 @@
 import React, { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Menu from "./MenuTabNavigator"
-import AddChallengeScreen from "../screens/addChallengeScreen"
-import ChallengeScreen from "../screens/challengeScreen"
+import AddTotalCounterChallengeScreen from "../screens/challenges/addTotalCounterChallengeScreen"
+import TotalCounterChallengeScreen from "../screens/challenges/totalCounterChallengeScreen"
 import { Challenge } from "../entities/challenge";
 
 export type MainStackParamList = {
     HomeTab: {};
-    CreateNewChallengeScreen: {};
-    ChallengeScreen: { challenge: Challenge };
+    AddTotalCounterChallengeScreen: {};
+    TotalCounterChallengeScreen: { challenge: Challenge };
 };
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -27,13 +27,13 @@ const MainStackNavigator = () => {
                 }}
             />
             <MainStack.Screen
-                name="CreateNewChallengeScreen"
-                component={AddChallengeScreen}
+                name="AddTotalCounterChallengeScreen"
+                component={AddTotalCounterChallengeScreen}
                 options={{ title: 'Create new challenge' }}
             />
             <MainStack.Screen
-                name="ChallengeScreen"
-                component={ChallengeScreen}
+                name="TotalCounterChallengeScreen"
+                component={TotalCounterChallengeScreen}
                 options={{ title: 'Challenge' }}
             />
         </MainStack.Navigator>

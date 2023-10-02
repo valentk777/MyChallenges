@@ -11,7 +11,7 @@ import challengesService from "../../services/challengesService";
 
 interface ChallengeHeaderProps {
     challenge: Challenge;
-    navigation: NativeStackNavigationProp<MainStackParamList, "ChallengeScreen", undefined>;
+    navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>;
 }
 
 export const ChallengeHeader = ({ challenge, navigation }: ChallengeHeaderProps) => {
