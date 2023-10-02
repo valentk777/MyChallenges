@@ -26,6 +26,7 @@
     "npm": "^9.8.1",
     "react": "18.2.0",
     "react-native": "0.72.4",
+    "react-native-calendars": "^1.1301.0",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-health-connect": "^1.2.0",
     "react-native-image-picker": "^7.0.0",

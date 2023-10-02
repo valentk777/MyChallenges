@@ -2,12 +2,16 @@ import React, { createNativeStackNavigator } from "@react-navigation/native-stac
 import Menu from "./MenuTabNavigator"
 import AddTotalCounterChallengeScreen from "../screens/challenges/addTotalCounterChallengeScreen"
 import TotalCounterChallengeScreen from "../screens/challenges/totalCounterChallengeScreen"
-import { Challenge } from "../entities/challenge";
+import { DailyCalendarChallenge, TotalCounterChallenge } from "../entities/challenge";
+import AddDailyCalendarChallengeScreen from "../screens/challenges/addDailyCalendarChallengeScreen";
+import DailyCalendarChallengeScreen from "../screens/challenges/dailyCalendarChallengeScreen";
 
 export type MainStackParamList = {
     HomeTab: {};
     AddTotalCounterChallengeScreen: {};
-    TotalCounterChallengeScreen: { challenge: Challenge };
+    TotalCounterChallengeScreen: { challenge: TotalCounterChallenge };
+    AddDailyCalendarChallengeScreen: {};
+    DailyCalendarChallengeScreen: { challenge: DailyCalendarChallenge };
 };
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -29,12 +33,18 @@ const MainStackNavigator = () => {
             <MainStack.Screen
                 name="AddTotalCounterChallengeScreen"
                 component={AddTotalCounterChallengeScreen}
-                options={{ title: 'Create new challenge' }}
             />
             <MainStack.Screen
                 name="TotalCounterChallengeScreen"
                 component={TotalCounterChallengeScreen}
-                options={{ title: 'Challenge' }}
+            />
+            <MainStack.Screen
+                name="AddDailyCalendarChallengeScreen"
+                component={AddDailyCalendarChallengeScreen}
+            />
+            <MainStack.Screen
+                name="DailyCalendarChallengeScreen"
+                component={DailyCalendarChallengeScreen}
             />
         </MainStack.Navigator>
     )

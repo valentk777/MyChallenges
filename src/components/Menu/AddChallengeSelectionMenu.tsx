@@ -5,10 +5,10 @@ import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 
-interface CreateNewChallengeButtonProps extends TouchableOpacityProps {
+interface AddChallengeSelectionMenuProps extends TouchableOpacityProps {
 }
 
-export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) => {
+export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps) => {
   const { children } = props;
 
   const { theme } = useContext(ThemeContext);
@@ -32,7 +32,7 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
       navigation.navigate('AddTotalCounterChallengeScreen');
     }
     else if (option === ChallengeTypes.DailyBolleanCalendar) {
-      navigation.navigate('AddTotalCounterChallengeScreen');
+      navigation.navigate('AddDailyCalendarChallengeScreen');
     } else {
       Alert.alert("Unknown challenge type")
     }

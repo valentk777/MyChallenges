@@ -1,12 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
-import { TotalCounterChallenge } from '../../entities/challenge';
 import { ProgressStatus } from '../../entities/progressStatus';
 import uuid from 'react-native-uuid';
 import challengesService from '../../services/challengesService';
@@ -15,11 +14,13 @@ import { icons } from '../../assets';
 import { CircleButton } from '../../components/ButtonWrapper/CircleButton';
 import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
+import { Calendar } from 'react-native-calendars';
+import { DailyCalendarChallenge } from '../../entities/challenge';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 
-type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
+type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
-export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterChallengeScreenProps) => {
+export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -28,14 +29,29 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
 
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
+
+  const showCalendar = () => {
+    setIsModalVisible(true);
+  };
+
+  const hideCalendar = () => {
+    setIsModalVisible(false);
+  };
+
+  const onDayPress = (day) => {
+    setSelectedDate(day.dateString);
+    hideCalendar();
+  };
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
   };
 
-  const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
+  const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string, endDate: string) => {
     if (title === "") {
       Alert.alert("Title cannot be empty");
       return null;
@@ -61,8 +77,13 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
       return null;
     }
 
+    if (endDate === "") {
+      Alert.alert("End date cannot be empty");
+      return null;
+    }
+
     const currentUtcTime = new Date().toISOString();
-    const challengeCandidate = {} as TotalCounterChallenge;
+    const challengeCandidate = {} as DailyCalendarChallenge;
 
     challengeCandidate.id = uuid.v4().toString();
     challengeCandidate.title = title;
@@ -74,15 +95,16 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     challengeCandidate.lastTimeUpdated = currentUtcTime;
     challengeCandidate.favorite = false;
     challengeCandidate.status = ProgressStatus.NotStarted;
-    challengeCandidate.type = ChallengeTypes.TotalCounter;
+    challengeCandidate.type = ChallengeTypes.DailyBolleanCalendar;
+    challengeCandidate.endDate= endDate;
 
     return challengeCandidate;
   }
 
-  const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, navigation) => {
+  const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, selectedDate: string, navigation) => {
     try {
       const targetValueInt = parseInt(targetValue, 10);
-      const challenge = createNewChallenge(title, description, targetValueInt, imageLocation);
+      const challenge = createNewChallenge(title, description, targetValueInt, imageLocation, selectedDate);
 
       if (challenge === null) {
         return false;
@@ -111,6 +133,32 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
       />
     </View>
   );
+ 
+  const renderCalendarContainer = () => (
+    <View style={styles.calendarContainer}>
+      <Modal
+        transparent={true}
+        animationType='fade'
+        visible={isModalVisible}
+        onRequestClose={hideCalendar}
+      >
+        <TouchableWithoutFeedback onPress={hideCalendar}>
+          <View style={styles.modalContainer}>
+            <TouchableWithoutFeedback>
+              <Calendar
+                current={selectedDate === Date().toString() ? '' : selectedDate} // Set the initial date using the `current` prop
+                onDayPress={onDayPress}
+                hideExtraDays
+                markedDates={{
+                  [selectedDate]: { selected: true, disableTouchEvent: true, selectedColor: 'blue' },
+                }}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    </View>
+  );
 
   const renderInputContainer = () => (
     <View style={styles.textArea}>
@@ -123,8 +171,15 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           value={title}
         />
       </View>
+      {renderCalendarContainer()}
       <View style={styles.textImput}>
-        <Text style={styles.text}>Target numeric value</Text>
+        <Text style={styles.text}>End date: </Text>
+        <TouchableOpacity onPress={showCalendar} style={styles.textbox}>
+          <Text style={styles.dateText}>{selectedDate || 'Select goal end day'}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.textImput}>
+        <Text style={styles.text}>Number of days to success</Text>
         <TextInput
           style={styles.textbox}
           placeholder='Enter target value...'
@@ -150,7 +205,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     <View style={styles.saveContainer}>
       <SaveButton
         title="Save"
-        onPress={async () => onSave(title, description, targetValue, imageLocation, navigation)}
+        onPress={async () => onSave(title, description, targetValue, imageLocation, selectedDate, navigation)}
       />
     </View>
   );
@@ -180,6 +235,16 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme.colors.primary,
+    },
+    calendarContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     linearGradient: {
       flex: 1,
@@ -249,10 +314,16 @@ const createStyles = (theme: typeof customTheme) => {
       color: theme.colors.black,
       borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
+      justifyContent: 'flex-end',
+    },
+    dateText: {
+      padding: 0,
+      fontFamily: theme.fonts.light,
+      color: theme.colors.black,
     },
   });
 
   return styles;
 };
 
-export default AddTotalCounterChallengeScreen;
+export default AddDailyCalendarChallengeScreen;

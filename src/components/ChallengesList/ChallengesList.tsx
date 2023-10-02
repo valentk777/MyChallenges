@@ -9,6 +9,7 @@ import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
 import challengesService from '../../services/challengesService';
+import { ChallengeTypes } from '../../entities/challengeTypes';
 
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
 
@@ -32,12 +33,22 @@ export const ChallengesList = (props: ChallengesListProps) => {
     });
   }, [navigation]);
 
+  const OnPressNavigate = (challenge: Challenge) => {
+    if (challenge.type === ChallengeTypes.TotalCounter) {
+      navigation.navigate('TotalCounterChallengeScreen', { challenge: challenge })
+    }
+    else if (challenge.type === ChallengeTypes.DailyBolleanCalendar) {
+      console.log(challenge);
+      navigation.navigate('DailyCalendarChallengeScreen', { challenge: challenge })
+    }
+  }
+
   const renderItem = (item: Challenge, index: number) => {
     return (
       <PressableTile
         title={item.title}
         challenge={item}
-        onPress={() => navigation.navigate('TotalCounterChallengeScreen', { challenge: item })} />
+        onPress={() => OnPressNavigate(item)} />
     );
   };
 

@@ -38,7 +38,7 @@ export const PressableTile = (props: TileProps) => {
   }
 
   const title = getCroppedText(challenge.title, 12);
-  const description = getCroppedText(challenge.description, 16);
+  // const description = getCroppedText(challenge.description, 16);
   const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
   const ImageComponent = SvgFileNamesToComponentsMap[challenge.image];
 
@@ -54,7 +54,7 @@ export const PressableTile = (props: TileProps) => {
       <View style={styles.textArea}>
         <View style={styles.space} />
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        {/* <Text style={styles.description}>{description}</Text> */}
         <Text style={styles.time}>{timeCreated}</Text>
         <View style={styles.space} />
       </View>
@@ -106,7 +106,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     title: {
       flex: 2,
-      fontSize: 16,
+      fontSize: 18,
       fontFamily: theme.fonts.medium,
       color: theme.colors.black,
       paddingLeft: 10,

@@ -5,7 +5,7 @@ import { customTheme } from '../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../screens/challengesScreen';
 import { UserScreen } from '../screens/userScreen';
-import { CreateNewChallengeButton } from '../components/Menu/AddChallengeSelectionMenu';
+import { AddChallengeSelectionMenu } from '../components/Menu/AddChallengeSelectionMenu';
 import CompletedChallengesScreen from '../screens/completedChallengesScreen';
 import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
@@ -70,7 +70,7 @@ const Menu = () => {
       />
       <HomeTab.Screen
         name="CreateNewChallengeButton"
-        component={CreateNewChallengeButton}
+        component={AddChallengeSelectionMenu}
         options={{
           tabBarStyle: {
             display: "none"
@@ -83,7 +83,7 @@ const Menu = () => {
             />
           ),
           tabBarButton: (props) => (
-            <CreateNewChallengeButton {...props} />
+            <AddChallengeSelectionMenu {...props} />
           ),
           headerShown: true,
         }}
