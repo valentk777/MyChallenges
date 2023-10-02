@@ -18,49 +18,6 @@ import { SvgComponents } from '../../assets/svgIndex';
 
 type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
 
-const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
-  if (title === "") {
-    Alert.alert("Title cannot be empty");
-    return null;
-  }
-
-  if (title.length > 20) {
-    Alert.alert("Title too long. Max 20 symbols allowed");
-    return null;
-  }
-
-  if (description.length > 90) {
-    Alert.alert("Description too long. Max 90 symbols allowed");
-    return null;
-  }
-
-  if (targetValue === null || isNaN(targetValue)) {
-    Alert.alert("Target value should be a number");
-    return null;
-  }
-
-  if (targetValue <= 0) {
-    Alert.alert("Target value cannot be 0");
-    return null;
-  }
-
-  const currentUtcTime = new Date().toISOString();
-  const challengeCandidate = {} as Challenge;
-
-  challengeCandidate.id = uuid.v4().toString();
-  challengeCandidate.title = title;
-  challengeCandidate.description = description;
-  challengeCandidate.currentValue = 0;
-  challengeCandidate.targetValue = targetValue;
-  challengeCandidate.image = imageLocation;
-  challengeCandidate.timeCreated = currentUtcTime;
-  challengeCandidate.lastTimeUpdated = currentUtcTime;
-  challengeCandidate.favorite = false;
-  challengeCandidate.status = ProgressStatus.NotStarted;
-
-  return challengeCandidate;
-}
-
 export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -77,6 +34,125 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     setCurrentImageLocation(newIndex);
   };
 
+  const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
+    if (title === "") {
+      Alert.alert("Title cannot be empty");
+      return null;
+    }
+
+    if (title.length > 20) {
+      Alert.alert("Title too long. Max 20 symbols allowed");
+      return null;
+    }
+
+    if (description.length > 90) {
+      Alert.alert("Description too long. Max 90 symbols allowed");
+      return null;
+    }
+
+    if (targetValue === null || isNaN(targetValue)) {
+      Alert.alert("Target value should be a number");
+      return null;
+    }
+
+    if (targetValue <= 0) {
+      Alert.alert("Target value cannot be 0");
+      return null;
+    }
+
+    const currentUtcTime = new Date().toISOString();
+    const challengeCandidate = {} as Challenge;
+
+    challengeCandidate.id = uuid.v4().toString();
+    challengeCandidate.title = title;
+    challengeCandidate.description = description;
+    challengeCandidate.currentValue = 0;
+    challengeCandidate.targetValue = targetValue;
+    challengeCandidate.image = imageLocation;
+    challengeCandidate.timeCreated = currentUtcTime;
+    challengeCandidate.lastTimeUpdated = currentUtcTime;
+    challengeCandidate.favorite = false;
+    challengeCandidate.status = ProgressStatus.NotStarted;
+
+    return challengeCandidate;
+  }
+
+  const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, navigation) => {
+    try {
+      const targetValueInt = parseInt(targetValue, 10);
+      const challenge = createNewChallenge(title, description, targetValueInt, imageLocation);
+
+      if (challenge === null) {
+        return false;
+      }
+
+      const result = await challengesService.storeChallenge(challenge);
+
+      if (result) {
+        navigation.navigate('ChallengesScreen');
+      }
+    }
+    catch (exception) {
+      return false;
+    }
+  }
+
+  const renderHeaderContainer = () => (
+    <View style={styles.imageArea}>
+      <View style={styles.imageSwapper}>
+        <ImageSwapper onImageChange={handleImageChange} />
+      </View>
+      <CircleButton
+        imgUrl={icons["back-arrow.png"]}
+        onPress={() => navigation.goBack()}
+        style={styles.backCircle}
+      />
+    </View>
+  );
+
+  const renderInputContainer = () => (
+    <View style={styles.textArea}>
+      <View style={styles.textImput}>
+        <Text style={styles.text}>Displayed title</Text>
+        <TextInput
+          style={styles.textbox}
+          placeholder='Enter your challenge title...'
+          onChangeText={onChangeTitleText}
+          value={title}
+        />
+      </View>
+      <View style={styles.textImput}>
+        <Text style={styles.text}>Short description</Text>
+        <TextInput
+          style={styles.textbox}
+          placeholder='Enter a short description...'
+          onChangeText={onChangeDescriptionText}
+          value={description}
+        />
+      </View>
+      <View style={styles.textImput}>
+        <Text style={styles.text}>Target numeric value</Text>
+        <TextInput
+          style={styles.textbox}
+          placeholder='Enter target value...'
+          onChangeText={onChangeTargetValueText}
+          value={targetValue}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={styles.textImput} />
+    </View>
+  );
+
+  const renderSaveContainer = () => (
+    <View style={styles.saveContainer}>
+      <SaveButton
+        title="Save"
+        onPress={async () => onSave(title, description, targetValue, imageLocation, navigation)}
+      />
+    </View>
+  );
+
   return (
     <View style={{ ...styles.container, height: window.height - headerHeight }}>
       <LinearGradient
@@ -86,81 +162,17 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
         <View style={styles.mainScreen}>
           <View style={styles.inputBox}>
             <View style={[styles.inputContaine]}>
-              <View style={styles.imageArea}>
-                <View style={styles.imageSwapper}>
-                  <ImageSwapper onImageChange={handleImageChange} />
-                </View>
-                <CircleButton
-                    imgUrl={icons["back-arrow.png"]}
-                    onPress={() => navigation.goBack()}
-                    style={styles.backCircle}
-                  />
-              </View>
-              <View style={styles.textArea}>
-                <View style={styles.textImput}>
-                  <Text style={styles.text}>Displayed title</Text>
-                  <TextInput
-                    style={styles.textbox}
-                    placeholder='Enter your challenge title...'
-                    onChangeText={onChangeTitleText}
-                    value={title}
-                  />
-                </View>
-                <View style={styles.textImput}>
-                  <Text style={styles.text}>Short description</Text>
-                  <TextInput
-                    style={styles.textbox}
-                    placeholder='Enter a short description...'
-                    onChangeText={onChangeDescriptionText}
-                    value={description}
-                  />
-                </View>
-                <View style={styles.textImput}>
-                  <Text style={styles.text}>Target numeric value</Text>
-                  <TextInput
-                    style={styles.textbox}
-                    placeholder='Enter target value...'
-                    onChangeText={onChangeTargetValueText}
-                    value={targetValue}
-                    keyboardType="numeric"
-                  />
-                </View>
-                <View style={styles.textImput} />
-              </View>
+              {renderHeaderContainer()}
+              {renderInputContainer()}
             </View>
           </View>
           <View style={styles.empty} />
         </View>
-        <View style={styles.saveContainer}>
-          <SaveButton
-            title="Save"
-            onPress={async () => onSave(title, description, targetValue, imageLocation, navigation)}
-          />
-        </View>
+        {renderSaveContainer()}
       </LinearGradient>
     </View>
   );
 };
-
-const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, navigation) => {
-  try {
-    const targetValueInt = parseInt(targetValue, 10);
-    const challenge = createNewChallenge(title, description, targetValueInt, imageLocation);
-
-    if (challenge === null) {
-      return false;
-    }
-
-    const result = await challengesService.storeChallenge(challenge);
-
-    if (result) {
-      navigation.navigate('ChallengesScreen');
-    }
-  }
-  catch (exception) {
-    return false;
-  }
-}
 
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({

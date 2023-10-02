@@ -13,8 +13,7 @@ import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import challengesService from '../../services/challengesService';
 import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 
-type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
-
+// Maibe move to another file?
 interface ChallengeContextProvider {
   challenge: Challenge;
   newValue: number;
@@ -27,37 +26,7 @@ export const ChallengeContext = createContext<ChallengeContextProvider>({
   updateValue: (value: number) => { },
 });
 
-const onSave = async (challenge: Challenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
-  challenge.currentValue = newCount;
-  challenge.lastTimeUpdated = new Date().toISOString();
-  challenge = updateChallengeStatus(challenge);
-
-  const result = await challengesService.storeChallenge(challenge);
-
-  if (result) {
-    navigation.goBack();
-  }
-}
-
-const updateChallengeStatus = (challenge: Challenge) => {
-  if (challenge.currentValue >= challenge.targetValue) {
-    challenge.status = ProgressStatus.Completed;
-  }
-  else if (challenge.currentValue > 0) {
-    challenge.status = ProgressStatus.InProgress;
-  }
-  else {
-    challenge.status = ProgressStatus.NotStarted;
-  }
-
-  return challenge;
-}
-
-interface ChallengeContextProvider {
-  challenge: Challenge;
-  newValue: number;
-  updateValue: (value: number) => void;
-}
+type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
 export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterChallengeScreenProps) => {
   const challenge = route.params.challenge;
@@ -70,6 +39,61 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
     setCount(value);
   }
 
+  const updateChallengeStatus = (challenge: Challenge) => {
+    if (challenge.currentValue >= challenge.targetValue) {
+      challenge.status = ProgressStatus.Completed;
+    }
+    else if (challenge.currentValue > 0) {
+      challenge.status = ProgressStatus.InProgress;
+    }
+    else {
+      challenge.status = ProgressStatus.NotStarted;
+    }
+
+    return challenge;
+  }
+
+  const onSave = async (challenge: Challenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
+    challenge.currentValue = newCount;
+    challenge.lastTimeUpdated = new Date().toISOString();
+    challenge = updateChallengeStatus(challenge);
+
+    const result = await challengesService.storeChallenge(challenge);
+
+    if (result) {
+      navigation.goBack();
+    }
+  }
+
+  const renderProgressContainer = () => (
+    <View style={styles.animationContainer}>
+      <LinearGradient
+        start={{ x: 0.9, y: 0 }}
+        colors={styles.linearGradient.colors}
+        locations={[0, 0.6, 1]}
+        style={styles.linearGradient}
+      >
+        <ChallengeHeader challenge={challenge} navigation={navigation} />
+        <NumericProgressTile />
+      </LinearGradient>
+    </View>
+  );
+
+  const renderQuantityContainer = () => (
+    <View style={styles.dataContainer}>
+      <Quantity />
+    </View>
+  );
+
+  const renderSaveContainer = () => (
+    <View style={styles.saveContainer}>
+      <SaveButton
+        title="Save"
+        onPress={async () => onSave(challenge, newCount, navigation)}
+      />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <ChallengeContext.Provider
@@ -78,26 +102,9 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
           newValue: newCount,
           updateValue: updateValue,
         }}>
-        <View style={styles.animationContainer}>
-          <LinearGradient
-            start={{ x: 0.9, y: 0 }}
-            colors={styles.linearGradient.colors}
-            locations={[0, 0.6, 1]}
-            style={styles.linearGradient}
-          >
-            <ChallengeHeader challenge={challenge} navigation={navigation} />
-            <NumericProgressTile />
-          </LinearGradient>
-        </View>
-        <View style={styles.dataContainer}>
-          <Quantity />
-        </View>
-        <View style={styles.saveContainer}>
-          <SaveButton
-            title="Save"
-            onPress={async () => onSave(challenge, newCount, navigation)}
-          />
-        </View>
+        {renderProgressContainer()}
+        {renderQuantityContainer()}
+        {renderSaveContainer()}
       </ChallengeContext.Provider>
     </View >
   );

@@ -5,7 +5,7 @@ import { customTheme } from '../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../screens/challengesScreen';
 import { UserScreen } from '../screens/userScreen';
-import { CreateNewChallengeButton } from '../components/CreateNewChallengeButton/CreateNewChallengeButton';
+import { CreateNewChallengeButton } from '../components/Menu/AddChallengeSelectionMenu';
 import CompletedChallengesScreen from '../screens/completedChallengesScreen';
 import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';

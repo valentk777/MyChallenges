@@ -28,7 +28,7 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
   const onSelectOption = (option: ChallengeTypes) => {
     onHidePopup();
 
-    if (option === ChallengeTypes.TotalCount) {
+    if (option === ChallengeTypes.TotalCounter) {
       navigation.navigate('AddTotalCounterChallengeScreen');
     }
     else if (option === ChallengeTypes.DailyBolleanCalendar) {
@@ -61,7 +61,7 @@ export const CreateNewChallengeButton = (props: CreateNewChallengeButtonProps) =
         <View style={styles.modalContent}>
           <View style={styles.modalArea}>
             <View style={styles.space} />
-            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalCount)}>
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalCounter)}>
               <View style={styles.modalTile}>
                 <Text style={styles.menuText}>Total count</Text>
               </View>
