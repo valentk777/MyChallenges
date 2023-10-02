@@ -33,13 +33,12 @@ export const ChallengesList = (props: ChallengesListProps) => {
     });
   }, [navigation]);
 
-  const OnPressNavigate = (challenge: Challenge) => {
-    if (challenge.type === ChallengeTypes.TotalCounter) {
-      navigation.navigate('TotalCounterChallengeScreen', { challenge: challenge })
+  const OnPressNavigate = (item: Challenge) => {
+    if (item.type === ChallengeTypes.TotalCounter) {
+      navigation.navigate('TotalCounterChallengeScreen', { challenge: item })
     }
-    else if (challenge.type === ChallengeTypes.DailyBolleanCalendar) {
-      console.log(challenge);
-      navigation.navigate('DailyCalendarChallengeScreen', { challenge: challenge })
+    else if (item.type === ChallengeTypes.DailyBolleanCalendar) {
+      navigation.navigate('DailyCalendarChallengeScreen', { challenge: item })
     }
   }
 

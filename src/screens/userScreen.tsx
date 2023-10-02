@@ -46,7 +46,6 @@ export const UserScreen = () => {
   const handleCameraPress = () => {
     launchCamera({ mediaType: 'photo' }, (response) => {
       if (response.assets && response.assets.length > 0) {
-        console.log(response.assets[0].uri);
         user.profilePictureURL = response.assets[0].uri;
         userService.updateUserPicture(user);
         setForceUpdate(prev => prev + 1);
