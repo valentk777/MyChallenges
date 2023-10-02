@@ -121,6 +121,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           placeholder='Enter your challenge title...'
           onChangeText={onChangeTitleText}
           value={title}
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
       <View style={styles.textImput}>
@@ -131,6 +132,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           onChangeText={onChangeTargetValueText}
           value={targetValue}
           keyboardType="numeric"
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
       <View style={styles.textImput}>
@@ -140,6 +142,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           placeholder='Enter a short description...'
           onChangeText={onChangeDescriptionText}
           value={description}
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
       <View style={styles.textImput} />
@@ -246,7 +249,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 2,
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.black,
+      color: theme.colors.placeholder,
       borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
     },

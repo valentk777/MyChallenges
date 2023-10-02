@@ -20,6 +20,10 @@ import { ChallengeTypes } from '../../entities/challengeTypes';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
+function formatDate(date: Date) {
+  return date.toISOString().split('T')[0]
+}
+
 export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
@@ -29,29 +33,74 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
 
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [isStartModalVisible, setIsStartModalVisible] = useState(false);
+  const [isEndModalVisible, setIsEndModalVisible] = useState(false);
+  const [startDate, setStartDate] = useState(formatDate(new Date()));
+  const [endDate, setEndDate] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
+  const [numberOfDays, setNumberOfDays] = useState(0);
 
-  const showCalendar = () => {
-    setIsModalVisible(true);
+  const showStartCalendar = () => {
+    setIsStartModalVisible(true);
   };
 
-  const hideCalendar = () => {
-    setIsModalVisible(false);
+  const hideStartCalendar = () => {
+    setIsStartModalVisible(false);
   };
 
-  const onDayPress = (day) => {
-    setSelectedDate(day.dateString);
-    hideCalendar();
+  const showEndCalendar = () => {
+    setIsEndModalVisible(true);
+  };
+
+  const hideEndCalendar = () => {
+    setIsEndModalVisible(false);
+  };
+
+  const dateDiffInDays = (date1: Date, date2: Date) => {
+    const diffTime = Math.abs(date2 - date1);
+
+    if (isNaN(diffTime)) {
+      return 0;
+    }
+
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays + 1;
+  }
+
+  const onStartDayPress = (day) => {
+    const _startDate = new Date(day.dateString);
+    const _endDate = new Date(endDate);
+
+    if (endDate !== "" && _startDate > _endDate) {
+      return;
+    }
+
+    setStartDate(day.dateString);
+    setNumberOfDays(dateDiffInDays(_startDate, _endDate));
+    hideStartCalendar();
+  };
+
+  const onEndDayPress = (day) => {
+    const _startDate = new Date(startDate);
+    const _endDate = new Date(day.dateString);
+
+    if (_startDate > _endDate) {
+      return;
+    }
+
+    setEndDate(day.dateString);
+    setNumberOfDays(dateDiffInDays(_startDate, _endDate));
+    hideEndCalendar();
   };
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
   };
 
-  const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string, endDate: string) => {
+  const createNewChallenge = () => {
+    const targetValueInt = parseInt(targetValue, 10);
+
     if (title === "") {
       Alert.alert("Title cannot be empty");
       return null;
@@ -67,13 +116,18 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
       return null;
     }
 
-    if (targetValue === null || isNaN(targetValue)) {
+    if (targetValueInt === null || isNaN(targetValueInt)) {
       Alert.alert("Target value should be a number");
       return null;
     }
 
-    if (targetValue <= 0) {
+    if (targetValueInt <= 0) {
       Alert.alert("Target value cannot be 0");
+      return null;
+    }
+
+    if (targetValueInt > numberOfDays) {
+      Alert.alert("Target value cannot be bigger than number of days");
       return null;
     }
 
@@ -89,22 +143,22 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
     challengeCandidate.title = title;
     challengeCandidate.description = description;
     challengeCandidate.currentValue = 0;
-    challengeCandidate.targetValue = targetValue;
+    challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;
     challengeCandidate.timeCreated = currentUtcTime;
     challengeCandidate.lastTimeUpdated = currentUtcTime;
     challengeCandidate.favorite = false;
     challengeCandidate.status = ProgressStatus.NotStarted;
     challengeCandidate.type = ChallengeTypes.DailyBolleanCalendar;
-    challengeCandidate.endDate= endDate;
+    challengeCandidate.startDate = startDate;
+    challengeCandidate.endDate = endDate;
 
     return challengeCandidate;
   }
 
-  const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, selectedDate: string, navigation) => {
+  const onSave = async () => {
     try {
-      const targetValueInt = parseInt(targetValue, 10);
-      const challenge = createNewChallenge(title, description, targetValueInt, imageLocation, selectedDate);
+      const challenge = createNewChallenge();
 
       if (challenge === null) {
         return false;
@@ -133,8 +187,8 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
       />
     </View>
   );
- 
-  const renderCalendarContainer = () => (
+
+  const renderCalendarContainer = (onDayPress, hideCalendar, isModalVisible, currentDate, minDate) => (
     <View style={styles.calendarContainer}>
       <Modal
         transparent={true}
@@ -146,11 +200,14 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
           <View style={styles.modalContainer}>
             <TouchableWithoutFeedback>
               <Calendar
-                current={selectedDate === Date().toString() ? '' : selectedDate} // Set the initial date using the `current` prop
+                style={[styles.calendarStyles, { width: window.width * 0.8 }]}
+                theme={styles.calendarTheme}
+                minDate={minDate}
+                current={currentDate === Date().toString() ? '' : currentDate}
+                enableSwipeMonths={true}
                 onDayPress={onDayPress}
-                hideExtraDays
                 markedDates={{
-                  [selectedDate]: { selected: true, disableTouchEvent: true, selectedColor: 'blue' },
+                  [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.calendarDay },
                 }}
               />
             </TouchableWithoutFeedback>
@@ -169,23 +226,32 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
           placeholder='Enter your challenge title...'
           onChangeText={onChangeTitleText}
           value={title}
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
-      {renderCalendarContainer()}
+      {renderCalendarContainer(onStartDayPress, hideStartCalendar, isStartModalVisible, startDate, undefined)}
+      {renderCalendarContainer(onEndDayPress, hideEndCalendar, isEndModalVisible, endDate, startDate)}
       <View style={styles.textImput}>
-        <Text style={styles.text}>End date: </Text>
-        <TouchableOpacity onPress={showCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{selectedDate || 'Select goal end day'}</Text>
+        <Text style={styles.text}>Start date: </Text>
+        <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>
+          <Text style={styles.dateText}>{startDate || 'Select challenge start day'}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Number of days to success</Text>
+        <Text style={styles.text}>End date: </Text>
+        <TouchableOpacity onPress={showEndCalendar} style={styles.textbox}>
+          <Text style={styles.dateText}>{endDate || 'Select challenge end day'}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.textImput}>
+        <Text style={styles.text}>Number of days to success   ({numberOfDays} days)</Text>
         <TextInput
           style={styles.textbox}
           placeholder='Enter target value...'
           onChangeText={onChangeTargetValueText}
           value={targetValue}
           keyboardType="numeric"
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
       <View style={styles.textImput}>
@@ -195,6 +261,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
           placeholder='Enter a short description...'
           onChangeText={onChangeDescriptionText}
           value={description}
+          placeholderTextColor={theme.colors.placeholder}
         />
       </View>
       <View style={styles.textImput} />
@@ -205,7 +272,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
     <View style={styles.saveContainer}>
       <SaveButton
         title="Save"
-        onPress={async () => onSave(title, description, targetValue, imageLocation, selectedDate, navigation)}
+        onPress={async () => onSave()}
       />
     </View>
   );
@@ -245,6 +312,16 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    calendarStyles: {
+      justifyContent: 'center',
+    },
+    calendarTheme: {
+      arrowColor: theme.colors.black,
+      textDayFontFamily: theme.fonts.light,
+      textMonthFontFamily: theme.fonts.bold,
+      textDayHeaderFontFamily: theme.fonts.medium,
+      todayTextColor: theme.colors.calendarDay,
     },
     linearGradient: {
       flex: 1,
@@ -312,14 +389,14 @@ const createStyles = (theme: typeof customTheme) => {
       padding: 0,
       fontFamily: theme.fonts.light,
       color: theme.colors.black,
-      borderBottomColor: theme.colors.black,
+      borderBottomColor: theme.colors.placeholder,
       borderBottomWidth: 1,
       justifyContent: 'flex-end',
     },
     dateText: {
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.black,
+      color: theme.colors.placeholder,
     },
   });
 

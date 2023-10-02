@@ -32,6 +32,7 @@ export const customTheme = {
     menuNotFocused: palette.gray,
     heart: palette.darkRed,
     calendarDay: palette.blue1,
+    placeholder: palette.black,
   },
   sizes: {
     base: 8,

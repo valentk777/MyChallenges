@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState, useContext, createContext } from 'react';
-import { Modal, Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Modal, Text, StyleSheet, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { Quantity } from '../../components/Quantity/Quantity';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
@@ -27,6 +27,8 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     challenge.datesCompleted = [] as string[];
   }
 
+  const window = useWindowDimensions();
+  
   const stringDatesWithStyling = (dates: string[]) => {
     let datesDict = {}
 
@@ -102,9 +104,11 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     <View style={styles.calendarContainer}>
       <View style={styles.modalContainer}>
         <Calendar
-          style={styles.calendarStyles}
+          style={[styles.calendarStyles, {width: window.width * 0.8}]}
           theme={styles.calendarTheme}
-          current={Date().toString()}
+          minDate={challenge.startDate}
+          // maxDate={new Date().getDate()}
+          current={new Date().toString()}
           markedDates={selectedDates}
           // hideArrows={true}
           enableSwipeMonths={true}
@@ -170,7 +174,6 @@ const createStyles = (theme: typeof customTheme) => {
     },
     calendarStyles: {
       flex: 1,
-      width: 330,
       height: '100%',
       justifyContent: 'center',
     },

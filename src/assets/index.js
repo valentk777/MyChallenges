@@ -15,6 +15,8 @@ export const icons = {
   'back-arrow.png': require('./icons/back-arrow.png'),
   'camera.png': require('./icons/camera.png'),
   'file.png': require('./icons/file.png'),
+  'calendar.png': require('./icons/calendar.png'),
+  'number-blocks.png': require('./icons/number-blocks.png'),
 }
 
 export const images = {

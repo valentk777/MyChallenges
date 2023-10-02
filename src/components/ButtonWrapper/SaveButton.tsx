@@ -29,10 +29,10 @@ export const SaveButton = (props: ButtonProps) => {
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     textPrimary: {
-      fontSize: 16,
+      fontSize: 18,
       lineHeight: 35,
-      fontWeight: 'bold',
       color: theme.colors.text,
+      fontFamily: theme.fonts.bold,
     },
     buttonSave: {
       height: '100%',

@@ -7,6 +7,7 @@ import { icons } from '../../assets';
 import challengesService from '../../services/challengesService';
 import timeService from '../../services/timeService';
 import { SvgFileNamesToComponentsMap } from '../../assets/svgIndex';
+import { ChallengeTypes } from '../../entities/challengeTypes';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -27,8 +28,10 @@ const getCroppedText = (text: string, cropUntil: number) => {
 
 export const PressableTile = (props: TileProps) => {
   const { onPress, challenge } = props;
+
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+  
   const [isFavorite, onChangeFavorite] = useState(challenge.favorite);
 
   const onPressFavorite = async () => {
@@ -42,6 +45,15 @@ export const PressableTile = (props: TileProps) => {
   const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
   const ImageComponent = SvgFileNamesToComponentsMap[challenge.image];
 
+  let icon = icons['calendar.png'];
+
+  if (challenge.type === ChallengeTypes.TotalCounter) {
+    icon = icons['number-blocks.png'];
+  } else if (challenge.type === ChallengeTypes.DailyBolleanCalendar) {
+    icon = icons['calendar.png'];
+  }
+
+
   return (
     <Pressable style={[styles.container, theme.shadows.primary]} onPress={onPress}>
       <View style={styles.image}>
@@ -53,7 +65,16 @@ export const PressableTile = (props: TileProps) => {
       </View>
       <View style={styles.textArea}>
         <View style={styles.space} />
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleArea}>
+          <View style={styles.titleRow}>
+            <Image
+              source={icon}
+              resizeMode='contain'
+              style={styles.textIcon}
+            />
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        </View>
         {/* <Text style={styles.description}>{description}</Text> */}
         <Text style={styles.time}>{timeCreated}</Text>
         <View style={styles.space} />
@@ -104,12 +125,29 @@ const createStyles = (theme: typeof customTheme) => {
     space: {
       flex: 1,
     },
-    title: {
+    titleArea: {
       flex: 2,
+      paddingLeft: 10,
+    },
+    titleRow: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    textIcon: {
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      flex: 1.5,
+      height: 23,
+      width: 23,
+      tintColor: theme.colors.card,
+    },
+    title: {
+      flex: 5,
       fontSize: 18,
       fontFamily: theme.fonts.medium,
       color: theme.colors.black,
-      paddingLeft: 10,
     },
     description: {
       flex: 2,

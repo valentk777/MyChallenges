@@ -20,6 +20,7 @@ export interface TotalCounterChallenge extends Challenge {
 }
 
 export interface DailyCalendarChallenge extends Challenge {
+  startDate: string;
   endDate: string;
   datesCompleted: string[];
 }
