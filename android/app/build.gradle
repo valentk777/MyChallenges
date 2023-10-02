@@ -82,13 +82,18 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
     namespace "com.baitupasaulis.challengetracker"
     defaultConfig {
         applicationId "com.baitupasaulis.challengetracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "1.0.24"
+        versionCode 27
+        versionName "1.0.27"
     }
     signingConfigs {
         release {
