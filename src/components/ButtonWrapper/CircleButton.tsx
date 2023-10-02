@@ -27,7 +27,6 @@ export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSign
   );
 };
 
-
 const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {

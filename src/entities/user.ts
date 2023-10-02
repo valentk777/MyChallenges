@@ -11,6 +11,7 @@ export interface UserAccount extends User {
   id: string;
   // username: string;
   createdAt: string | null;
+  profilePictureURL: string | null;
   isOnline: boolean;
   lastOnlineTimestamp: string | null;
 }

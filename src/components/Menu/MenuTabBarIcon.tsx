@@ -1,3 +1,4 @@
+import React from "react";
 import { ImageSourcePropType, View, Image, Text } from "react-native";
 
 interface MenuTabBarIconProps {

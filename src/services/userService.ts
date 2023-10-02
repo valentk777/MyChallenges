@@ -16,6 +16,15 @@ const updateUser = async (user: UserAccount | null) => {
     });
 };
 
+const updateUserPicture = async (user: UserAccount | null) => {
+  await storeData('current_user', user)
+    .catch(error => {
+      Alert.alert(error.message);
+    });
+
+
+};
+
 const deleteUser = async () => {
   await removeData('current_user')
     .catch(error => {
@@ -26,6 +35,7 @@ const deleteUser = async () => {
 const userService = {
   getCurrentUser,
   updateUser,
+  updateUserPicture,
   deleteUser,
 };
 

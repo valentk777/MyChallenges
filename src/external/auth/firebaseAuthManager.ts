@@ -6,6 +6,8 @@ import {ErrorCode} from '../../entities/errorCodes';
 import userDbTable from '../database/userDbTable';
 import {Alert} from 'react-native';
 
+const defaultProfilePhotoURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
+
 // TODO: rename, improve
 const getUnixTimeStamp = () => {
   return new Date().toISOString();
@@ -20,6 +22,7 @@ const registerWithEmail = (user: LoginUser) => {
           id: response.user.uid,
           email: user.email,
           createdAt: getUnixTimeStamp(),
+          profilePictureURL: defaultProfilePhotoURL
         } as UserAccount;
 
         // Store user info to database. We do not await here.
@@ -149,7 +152,6 @@ const logout = async (userId: string) => {
   } as UserAccount;
 
   await userDbTable.updateUser(userData);
-  // await GoogleSignin.revokeAccess();
   await GoogleSignin.signOut();
   await auth().signOut();
 };
@@ -164,19 +166,14 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
       .signInWithCredential(credential)
       .then(async response => {
         const isNewUser = response.additionalUserInfo.isNewUser;
-        // const { first_name, last_name, family_name, given_name } = response.additionalUserInfo.profile;
-        const {uid, email, phoneNumber, photoURL} = response.user;
+        const {uid, email, photoURL} = response.user;
 
         const timestamp = getUnixTimeStamp();
         const userData = {
           id: uid,
           email: email || '',
-          // firstName: first_name || given_name || socialAuthType || '',
-          // lastName: last_name || family_name || 'User',
-          // phone: phoneNumber || '',
-          // profilePictureURL: photoURL || defaultProfilePhotoURL,
+          profilePictureURL: photoURL || defaultProfilePhotoURL,
           createdAt: timestamp,
-          // ...(socialAuthType ? { socialAuthType } : {}),
         } as UserAccount;
 
         if (isNewUser) {

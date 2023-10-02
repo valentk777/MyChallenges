@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { View, StatusBar, StyleSheet } from "react-native";
 import { ThemeContext } from "../../contexts/themeContext";
 import { Challenge } from "../../entities/challenge";
