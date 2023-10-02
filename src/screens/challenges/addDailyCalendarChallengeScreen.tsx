@@ -17,12 +17,9 @@ import { SvgComponents } from '../../assets/svgIndex';
 import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import { ChallengeTypes } from '../../entities/challengeTypes';
+import timeService from '../../services/timeService';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
-
-function formatDate(date: Date) {
-  return date.toISOString().split('T')[0]
-}
 
 export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
@@ -35,7 +32,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
   const [description, onChangeDescriptionText] = useState('');
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
-  const [startDate, setStartDate] = useState(formatDate(new Date()));
+  const [startDate, setStartDate] = useState(timeService.getCurrentDate());
   const [endDate, setEndDate] = useState('');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);

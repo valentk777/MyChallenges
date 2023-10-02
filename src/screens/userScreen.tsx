@@ -177,7 +177,7 @@ const createStyles = (theme: typeof customTheme) => {
       marginBottom: 10,
     },
     textSecondary: {
-      fontSize: 18,
+      fontSize: 15,
       lineHeight: 18,
       fontFamily: theme.fonts.light,
       color: theme.colors.text,

@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import {AppResponse} from '../../entities/appResponse';
-import {UserAccount} from '../../entities/user';
+import {Challenge} from '../../entities/challenge';
 
 export const challengesRef = firestore().collection('challenges');
 
@@ -9,69 +9,86 @@ const getUnixTimeStamp = () => {
   return new Date().toISOString();
 };
 
-export const addNewUser = async (user: UserAccount) => {
-  const dataWithOnlineStatus = {
-    ...user,
-    lastOnlineTimestamp: getUnixTimeStamp(),
-  };
-
+export const getChallenges = async (userId: string) => {
   try {
-    await challengesRef.doc(user.id).set(dataWithOnlineStatus, {merge: true});
-    return {isSuccessfull: true} as AppResponse;
-  } catch (error) {
-    console.log(error);
-    return {isSuccessfull: false, error: error} as AppResponse;
-  }
-};
+    let response = await challengesRef.doc(userId).get();
 
-export const updateUser = async (user: UserAccount) => {
-  const dataWithOnlineStatus = {
-    ...user,
-    lastOnlineTimestamp: getUnixTimeStamp(),
-  };
+    if (response.exists) {
+      const challeges = response.data()?.challenges;
 
-  try {
-    await challengesRef.doc(user.id).update(dataWithOnlineStatus);
-    return {isSuccessfull: true} as AppResponse;
-  } catch (error) {
-    console.log(error);
-    return {isSuccessfull: false, error: error} as AppResponse;
-  }
-};
+      if (challeges === undefined) {
+        return {isSuccessfull: true, result: [] as Challenge[]} as AppResponse;
+      }
 
-export const getUserByID = async (userID: string) => {
-  try {
-    const document = await challengesRef.doc(userID).get();
-
-    if (document?.exists) {
-      return document.data() as UserAccount;
+      return {
+        isSuccessfull: true,
+        result: challeges as Challenge[],
+      } as AppResponse;
+    } else {
+      await addNewDbChallenges(userId);
+      return {isSuccessfull: true, result: [] as Challenge[]} as AppResponse;
     }
-
-    return null;
   } catch (error) {
-    console.log('getUserByID', error);
-    return null;
+    console.error(error);
+    return {isSuccessfull: false, error: error} as AppResponse;
   }
 };
 
-export const updateProfilePhoto = async (
-  userID: string,
-  profilePictureURL: string,
-) => {
+export const addNewDbChallenges = async (userId: string) => {
   try {
-    await challengesRef.doc(userID).update({profilePictureURL: profilePictureURL});
-    return {success: true};
+    const dataWithOnlineStatus = {
+      challenges: [] as Challenge[],
+      lastTimeUpdated: getUnixTimeStamp(),
+    };
+
+    await challengesRef.doc(userId).set(dataWithOnlineStatus, {merge: true});
+    return {isSuccessfull: true} as AppResponse;
   } catch (error) {
     console.log(error);
-    return {error: error};
+    return {isSuccessfull: false, error: error} as AppResponse;
   }
 };
+
+export const updateDbStoredChallenges = async (
+  userId: string,
+  challenges: Challenge[],
+) => {
+  if (userId == undefined || userId === '' || userId == null) {
+    console.log('Cannot save to remote database');
+    return;
+  }
+
+  const dataWithOnlineStatus = {
+    challenges: challenges,
+    lastTimeUpdated: getUnixTimeStamp(),
+  };
+
+  try {
+    await challengesRef.doc(userId).update(dataWithOnlineStatus);
+    return {isSuccessfull: true} as AppResponse;
+  } catch (error) {
+    console.log(error);
+    return {isSuccessfull: false, error: error} as AppResponse;
+  }
+};
+
+// export const updateProfilePhoto = async (
+//   userID: string,
+//   profilePictureURL: string,
+// ) => {
+//   try {
+//     await challengesRef.doc(userID).update({profilePictureURL: profilePictureURL});
+//     return {success: true};
+//   } catch (error) {
+//     console.log(error);
+//     return {error: error};
+//   }
+// };
 
 const challengesDbTable = {
-  addNewUser,
-  updateUser,
-  getUserByID,
-  updateProfilePhoto,
+  getChallenges,
+  addNewDbChallenges,
+  updateDbStoredChallenges,
 };
 
 export default challengesDbTable;

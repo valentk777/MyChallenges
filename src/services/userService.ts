@@ -21,8 +21,6 @@ const updateUserPicture = async (user: UserAccount | null) => {
     .catch(error => {
       Alert.alert(error.message);
     });
-
-
 };
 
 const deleteUser = async () => {

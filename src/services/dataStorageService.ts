@@ -3,7 +3,6 @@ import {Alert} from 'react-native';
 
 export const getData = async (key: string) => {
   try {
-
     const data = await AsyncStorage.getItem(key);
 
     if (data) {

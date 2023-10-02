@@ -14,6 +14,7 @@ import challengesService from '../../services/challengesService';
 import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 import { Calendar } from 'react-native-calendars';
 import { ChallengeContext } from '../../hooks/useChallenge';
+import timeService from '../../services/timeService';
 
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
 
@@ -28,7 +29,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   }
 
   const window = useWindowDimensions();
-  
+
   const stringDatesWithStyling = (dates: string[]) => {
     let datesDict = {}
 
@@ -104,11 +105,11 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     <View style={styles.calendarContainer}>
       <View style={styles.modalContainer}>
         <Calendar
-          style={[styles.calendarStyles, {width: window.width * 0.8}]}
+          style={[styles.calendarStyles, { width: window.width * 0.8 }]}
           theme={styles.calendarTheme}
           minDate={challenge.startDate}
-          // maxDate={new Date().getDate()}
-          current={new Date().toString()}
+          maxDate={timeService.getCurrentDate()}
+          current={timeService.getCurrentDate()}
           markedDates={selectedDates}
           // hideArrows={true}
           enableSwipeMonths={true}

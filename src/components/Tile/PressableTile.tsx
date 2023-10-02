@@ -31,7 +31,7 @@ export const PressableTile = (props: TileProps) => {
 
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  
+
   const [isFavorite, onChangeFavorite] = useState(challenge.favorite);
 
   const onPressFavorite = async () => {
@@ -53,31 +53,23 @@ export const PressableTile = (props: TileProps) => {
     icon = icons['calendar.png'];
   }
 
-
   return (
-    <Pressable style={[styles.container, theme.shadows.primary]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, theme.shadows.primary]} onPress={onPress}>
       <View style={styles.image}>
         <ImageComponent width={60} height={60} />
-        {/* <Image
-        style={styles.image}
-        source={{ uri: challenge.image }}
-        resizeMode='stretch' /> */}
       </View>
       <View style={styles.textArea}>
-        <View style={styles.space} />
         <View style={styles.titleArea}>
-          <View style={styles.titleRow}>
-            <Image
-              source={icon}
-              resizeMode='contain'
-              style={styles.textIcon}
-            />
-            <Text style={styles.title}>{title}</Text>
-          </View>
+          <Image
+            source={icon}
+            resizeMode='contain'
+            style={styles.textIcon}
+          />
+          <Text style={styles.title}>{title}</Text>
         </View>
-        {/* <Text style={styles.description}>{description}</Text> */}
-        <Text style={styles.time}>{timeCreated}</Text>
-        <View style={styles.space} />
+        <View style={styles.timeArea}>
+          <Text style={styles.time}>{timeCreated}</Text>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.heart}
@@ -92,7 +84,7 @@ export const PressableTile = (props: TileProps) => {
           style={styles.arrowIcon}
         />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
@@ -113,58 +105,46 @@ const createStyles = (theme: typeof customTheme) => {
       borderRadius: 10,
     },
     image: {
-      flex: 2,
+      flex: 3,
       width: 60,
       height: 60,
       borderRadius: 100,
       margin: 10,
     },
     textArea: {
-      flex: 5,
-    },
-    space: {
-      flex: 1,
+      flex: 7,
+      flexDirection: 'column',
     },
     titleArea: {
-      flex: 2,
-      paddingLeft: 10,
-    },
-    titleRow: {
       flex: 1,
+      alignItems: 'flex-end',
+      justifyContent: 'center',
       flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
     },
     textIcon: {
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      flex: 1.5,
-      height: 23,
-      width: 23,
+      flex: 1,
+      height: '60%',
       tintColor: theme.colors.card,
     },
     title: {
-      flex: 5,
+      flex: 4,
       fontSize: 18,
+      paddingLeft: 10,
       fontFamily: theme.fonts.medium,
       color: theme.colors.black,
     },
-    description: {
-      flex: 2,
-      fontSize: 14,
-      fontFamily: theme.fonts.regular,
-      color: theme.colors.black,
-      paddingLeft: 10,
+    timeArea: {
+      flex: 1,
+      marginTop: 5,
+      justifyContent: 'flex-start',
     },
     time: {
-      flex: 2,
       fontSize: 10,
       fontFamily: theme.fonts.light,
       color: theme.colors.black,
-      paddingLeft: 10,
     },
     heart: {
-      flex: 1.5,
+      flex: 2,
       alignItems: 'center',
     },
     hearIcon: {
@@ -173,13 +153,13 @@ const createStyles = (theme: typeof customTheme) => {
       tintColor: theme.colors.focused,
     },
     arrowArea: {
-      flex: 1.5,
+      flex: 2,
       justifyContent: 'center',
       alignItems: 'center',
     },
     arrowIcon: {
-      height: 20,
-      width: 30,
+      height: '25%',
+      aspectRatio: 1,
       tintColor: theme.colors.black,
     },
   });

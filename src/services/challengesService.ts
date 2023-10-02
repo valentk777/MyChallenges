@@ -2,16 +2,23 @@ import {Alert} from 'react-native';
 import {Challenge} from '../entities/challenge';
 import {getData, storeData} from './dataStorageService';
 import userService from './userService';
+import challengesDbTable from '../external/database/challengesDbTable';
 
-const initChallengesList = async () => {
-  const challenges = [] as Challenge[];
+const initChallengesList = async (userId: string) => {
+  const response = await challengesDbTable.getChallenges(userId);
+  let challenges = [] as Challenge[];
+
+  if (response.isSuccessfull) {
+    challenges = response.result as Challenge[];
+  }
+
   await storeData('challenges', challenges);
 
   return challenges;
 };
 
 const getChallengesKey = (userId: string) => {
-  return `${userId}/challenges`;
+  return `challenges/${userId}`;
 };
 
 const getAllChalenges = async () => {
@@ -25,7 +32,7 @@ const getAllChalenges = async () => {
     const challenges = await getData(getChallengesKey(user.id));
 
     if (challenges === null) {
-      return await initChallengesList();
+      return await initChallengesList(user.id);
     }
 
     return challenges as Challenge[];
@@ -77,6 +84,7 @@ const storeChallenge = async (challenge: Challenge) => {
     challenges.push(challenge);
 
     storeData(getChallengesKey(user.id), challenges);
+    challengesDbTable.updateDbStoredChallenges(user.id, challenges);
 
     return true;
   } catch (error) {
@@ -101,6 +109,8 @@ const removeChallenge = async (challengeId: string) => {
     );
 
     storeData(getChallengesKey(user.id), updatedChallenges);
+    challengesDbTable.updateDbStoredChallenges(user.id, updatedChallenges);
+
     return true;
   } catch (error) {
     Alert.alert(`Issues removing challenge: Error: ${error}`);
