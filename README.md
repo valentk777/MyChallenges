@@ -5,7 +5,7 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_ChallengeTracker&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_ChallengeTracker)
 
 <a href='https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
-  <img alt='Get it on Google Play' src='https://github.com/valentk777/ChallengeTracker/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/feature%20graphic.jpg'/>
+  <img alt='Get it on Google Play' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/feature%20graphic.jpg'/>
 </a>
 
 ## What is this?
@@ -17,11 +17,11 @@
 ## Screenshots
 
 <div align="center">
-  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-08-03-08-43-14-75_c842596409d06730475eb0ccfc649252.jpg' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7a5cba7e6994335c3e4f4cfc6a82e00f8557778f/Design/Screenshots/Screenshot_2023-09-19-08-16-07-85_6af968251852f2a7cd0e17deb5472244.jpg' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-16-15_6af968251852f2a7cd0e17deb5472244.jpg' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-21-75_6af968251852f2a7cd0e17deb5472244.jpg' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/7671806dd33c7c8b9eee9444dc4e82691b324bbb/Design/Screenshots/Screenshot_2023-09-19-08-16-40-32_6af968251852f2a7cd0e17deb5472244.jpg' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347994.png' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347478.png' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347449.png' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347622.png' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/ChallengeTracker/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347280.png' height="400" />
 </div>
 
 ## Tech stack:
