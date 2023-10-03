@@ -29,10 +29,12 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   }
 
   const updateChallengeStatus = (challenge: TotalCounterChallenge) => {
-    if (challenge.currentValue >= challenge.targetValue) {
+    const percentage = challengesService.getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue);
+
+    if (percentage >= 100) {
       challenge.status = ProgressStatus.Completed;
     }
-    else if (challenge.currentValue > 0) {
+    else if (percentage > 0) {
       challenge.status = ProgressStatus.InProgress;
     }
     else {

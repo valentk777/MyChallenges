@@ -45,13 +45,13 @@ export const Quantity = (props: QuantityProps) => {
 
   const onShortDecreasePress = () => {
     let value = newLocalValue - (isDetailedCount() ? 0.1 : 1);
-    value = parseFloat(value.toLocaleString(undefined, {maximumFractionDigits:2}));
+    value = parseFloat(value.toLocaleString(undefined, { maximumFractionDigits: 2 }));
     updateValue(value);
   }
 
   const onShortIncreasePress = () => {
     let value = newLocalValue + (isDetailedCount() ? 0.1 : 1);
-    value = parseFloat(value.toLocaleString(undefined, {maximumFractionDigits:2}));
+    value = parseFloat(value.toLocaleString(undefined, { maximumFractionDigits: 2 }));
     updateValue(value);
   }
 

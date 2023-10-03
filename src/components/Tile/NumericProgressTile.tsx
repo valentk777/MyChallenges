@@ -4,17 +4,9 @@ import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { ChallengeContext } from '../../hooks/useChallenge';
+import challengesService from '../../services/challengesService';
 
 interface NumericProgressTileProps {
-}
-
-const getPercentage = (currentValue: number, initialValue: number, targetValue: number) => {
-  let percentage = (currentValue - initialValue) / Math.abs(targetValue - initialValue) * 100;
-  percentage = Number(targetValue) === 0 || targetValue === undefined ? 0 : percentage;
-  percentage = percentage > 100 ? 100 : percentage;
-  percentage = Math.floor(percentage);
-
-  return percentage;
 }
 
 const getCroppedTest = (text: string, cropUntil: number) => {
@@ -25,12 +17,12 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const { newValue, challenge } = useContext(ChallengeContext);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  const percentage = getPercentage(newValue, challenge.initalValue, challenge.targetValue);
-  const initialPercentage = getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue)
+  const percentage = challengesService.getPercentage(newValue, challenge.initalValue, challenge.targetValue);
+  const initialPercentage = challengesService.getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue)
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{getCroppedTest(challenge.title, 15)}</Text>
+      <Text style={styles.title}>{getCroppedTest(challenge.title, 17)}</Text>
       <View style={styles.progress}>
         <CircularProgress
           title={newValue + " / " + Number(challenge.targetValue)}
@@ -62,7 +54,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     title: {
       paddingTop: '5%',
-      fontSize: 25,
+      fontSize: 23,
       color: theme.colors.text,
       height: '21%',
       fontFamily: theme.fonts.semiBold,
@@ -74,16 +66,16 @@ const createStyles = (theme: typeof customTheme) => {
     },
     descriptionArea: {
       marginTop: '3%',
-      flex: 0.8,
       width: '80%',
       alignItems: 'center',
+      justifyContent: 'center',
     },
     description: {
       fontFamily: theme.fonts.light,
-      fontSize: 18,
+      fontSize: 15,
       color: theme.colors.text,
-      flexWrap: 'wrap',
-      flexShrink: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 

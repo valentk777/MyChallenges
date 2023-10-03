@@ -118,10 +118,31 @@ const removeChallenge = async (challengeId: string) => {
   }
 };
 
+const getPercentage = (
+  currentValue: number,
+  initialValue: number,
+  targetValue: number,
+) => {
+  const isPositiveCounting = initialValue <= targetValue;
+  
+  const currentDiff = isPositiveCounting
+    ? currentValue - initialValue
+    : initialValue - currentValue;
+
+  let percentage = (currentDiff / Math.abs(targetValue - initialValue)) * 100;
+  percentage =
+    Number(targetValue) === 0 || targetValue === undefined ? 0 : percentage;
+  percentage = percentage > 100 ? 100 : percentage;
+  percentage = Math.floor(percentage);
+
+  return percentage;
+};
+
 const challengesService = {
   getAllChalenges,
   storeChallenge,
   removeChallenge,
+  getPercentage,
 };
 
 export default challengesService;

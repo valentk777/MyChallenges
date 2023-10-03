@@ -243,15 +243,15 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
       {renderCalendarContainer(onStartDayPress, hideStartCalendar, isStartModalVisible, startDate, undefined)}
       {renderCalendarContainer(onEndDayPress, hideEndCalendar, isEndModalVisible, endDate, startDate)}
       <View style={styles.textImput}>
-        <Text style={styles.text}>Start date: </Text>
+        <Text style={styles.text}>Start date</Text>
         <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{startDate || 'Select challenge start day'}</Text>
+          <Text style={styles.dateText}>{startDate || 'Select challenge start day...'}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>End date: </Text>
+        <Text style={styles.text}>End date</Text>
         <TouchableOpacity onPress={showEndCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{endDate || 'Select challenge end day'}</Text>
+          <Text style={styles.dateText}>{endDate || 'Select challenge end day...'}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
@@ -400,8 +400,8 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 2,
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.black,
-      borderBottomColor: theme.colors.placeholder,
+      color: theme.colors.placeholder,
+      borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
       justifyContent: 'flex-end',
     },

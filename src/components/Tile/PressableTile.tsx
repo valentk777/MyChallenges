@@ -23,7 +23,7 @@ const renderIcon = (styles: any, isFavorite: boolean) => {
 }
 
 const getCroppedText = (text: string, cropUntil: number) => {
-  return text.length < cropUntil ? text : text.substring(0, cropUntil) + "...";
+  return text.length <= cropUntil ? text : text.substring(0, cropUntil) + "...";
 }
 
 export const PressableTile = (props: TileProps) => {
@@ -40,7 +40,7 @@ export const PressableTile = (props: TileProps) => {
     onChangeFavorite(challenge.favorite);
   }
 
-  const title = getCroppedText(challenge.title, 12);
+  const title = getCroppedText(challenge.title, 25);
   // const description = getCroppedText(challenge.description, 16);
   const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
   const ImageComponent = SvgFileNamesToComponentsMap[challenge.image];
@@ -109,7 +109,7 @@ const createStyles = (theme: typeof customTheme) => {
       borderRadius: 10,
     },
     image: {
-      flex: 3,
+      flex: 2.5,
       width: 60,
       height: 60,
       borderRadius: 100,
@@ -120,7 +120,7 @@ const createStyles = (theme: typeof customTheme) => {
       flexDirection: 'column',
     },
     titleArea: {
-      flex: 1,
+      flex: 3,
       alignItems: 'flex-end',
       justifyContent: 'center',
       flexDirection: 'row',
@@ -132,13 +132,13 @@ const createStyles = (theme: typeof customTheme) => {
     },
     title: {
       flex: 4,
-      fontSize: 18,
-      paddingLeft: 10,
+      fontSize: 15,
+      paddingLeft: 5,
       fontFamily: theme.fonts.medium,
       color: theme.colors.black,
     },
     timeArea: {
-      flex: 1,
+      flex: 2,
       marginTop: 5,
       justifyContent: 'flex-start',
     },

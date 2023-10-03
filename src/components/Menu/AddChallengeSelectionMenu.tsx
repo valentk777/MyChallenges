@@ -75,9 +75,9 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   resizeMode='contain'
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
-                <View style={styles.titleArea}>
-                  <Text style={styles.menuTitle}>Simple Total Count</Text>
-                </View>
+                  <View style={styles.titleArea}>
+                    <Text style={styles.menuTitle}>Simple Total Count</Text>
+                  </View>
                   <Text style={styles.menuComment}>Attendance, event, travel, and item counting</Text>
                 </View>
               </View>
@@ -90,7 +90,7 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
                   <View style={styles.titleArea}>
-                  <Text style={styles.menuTitle}>Total Detailed Count</Text>
+                    <Text style={styles.menuTitle}>Total Detailed Count</Text>
                   </View>
                   <Text style={styles.menuComment}>Weight gain / loss, height counting</Text>
                 </View>
@@ -104,9 +104,9 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   resizeMode='contain'
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
-                <View style={styles.titleArea}>
-                  <Text style={styles.menuTitle}>Daily Progress</Text>
-                </View>
+                  <View style={styles.titleArea}>
+                    <Text style={styles.menuTitle}>Daily Progress</Text>
+                  </View>
                   <Text style={styles.menuComment}>Daily routine, health, and reading habits</Text>
                 </View>
               </View>
