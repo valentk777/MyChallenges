@@ -34,11 +34,14 @@ export const ChallengesList = (props: ChallengesListProps) => {
   }, [navigation]);
 
   const OnPressNavigate = (item: Challenge) => {
-    if (item.type === ChallengeTypes.TotalCounter) {
+    if (item.type === ChallengeTypes.TotalSimpleCounter || item.type === ChallengeTypes.TotalDetailedCounter) {
       navigation.navigate('TotalCounterChallengeScreen', { challenge: item })
     }
     else if (item.type === ChallengeTypes.DailyBolleanCalendar) {
       navigation.navigate('DailyCalendarChallengeScreen', { challenge: item })
+    }
+    else {
+      console.log(item.type);
     }
   }
 

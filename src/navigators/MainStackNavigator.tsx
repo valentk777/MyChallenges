@@ -5,12 +5,13 @@ import TotalCounterChallengeScreen from "../screens/challenges/totalCounterChall
 import { DailyCalendarChallenge, TotalCounterChallenge } from "../entities/challenge";
 import AddDailyCalendarChallengeScreen from "../screens/challenges/addDailyCalendarChallengeScreen";
 import DailyCalendarChallengeScreen from "../screens/challenges/dailyCalendarChallengeScreen";
+import { ChallengeTypes } from "../entities/challengeTypes";
 
 export type MainStackParamList = {
     HomeTab: {};
-    AddTotalCounterChallengeScreen: {};
+    AddTotalCounterChallengeScreen: { challengeType: ChallengeTypes, isDetailedCount: boolean };
     TotalCounterChallengeScreen: { challenge: TotalCounterChallenge };
-    AddDailyCalendarChallengeScreen: {};
+    AddDailyCalendarChallengeScreen: { challengeType: ChallengeTypes, };
     DailyCalendarChallengeScreen: { challenge: DailyCalendarChallenge };
 };
 

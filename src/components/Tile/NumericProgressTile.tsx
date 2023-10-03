@@ -8,8 +8,8 @@ import { ChallengeContext } from '../../hooks/useChallenge';
 interface NumericProgressTileProps {
 }
 
-const getPercentage = (currentValue: number, targetValue: number) => {
-  let percentage = currentValue / targetValue * 100;
+const getPercentage = (currentValue: number, initialValue: number, targetValue: number) => {
+  let percentage = (currentValue - initialValue) / Math.abs(targetValue - initialValue) * 100;
   percentage = Number(targetValue) === 0 || targetValue === undefined ? 0 : percentage;
   percentage = percentage > 100 ? 100 : percentage;
   percentage = Math.floor(percentage);
@@ -25,8 +25,8 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const { newValue, challenge } = useContext(ChallengeContext);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  const percentage = getPercentage(newValue, challenge.targetValue);
-  const initialPercentage = getPercentage(challenge.currentValue, challenge.targetValue)
+  const percentage = getPercentage(newValue, challenge.initalValue, challenge.targetValue);
+  const initialPercentage = getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue)
 
   return (
     <View style={styles.container}>

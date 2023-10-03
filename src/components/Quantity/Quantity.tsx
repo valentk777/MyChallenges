@@ -9,32 +9,57 @@ interface QuantityProps {
 }
 
 export const Quantity = (props: QuantityProps) => {
-  const { newValue, updateValue } = useContext(ChallengeContext);
+  const { challenge, newValue, updateValue } = useContext(ChallengeContext);
   let newLocalValue = newValue;
 
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
 
+  const isDetailedCount = () => {
+    let isDetailedCount = challenge?.isDetailedCount;
+
+    if (isDetailedCount == undefined) {
+      return false;
+    }
+
+    return isDetailedCount;
+  }
   const decreaseInterval = () => {
+    const interval = isDetailedCount() ? 1 : 5;
+
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue - 5;
+      newLocalValue = newLocalValue - interval;
       updateValue(newLocalValue);
     }, 250);
   };
 
   const increaseInterval = () => {
+    const interval = isDetailedCount() ? 1 : 5;
+
     intervalRef.current = setInterval(() => {
-      newLocalValue = newLocalValue + 5;
+      newLocalValue = newLocalValue + interval;
       updateValue(newLocalValue);
     }, 250);
   };
+
+  const onShortDecreasePress = () => {
+    let value = newLocalValue - (isDetailedCount() ? 0.1 : 1);
+    value = parseFloat(value.toLocaleString(undefined, {maximumFractionDigits:2}));
+    updateValue(value);
+  }
+
+  const onShortIncreasePress = () => {
+    let value = newLocalValue + (isDetailedCount() ? 0.1 : 1);
+    value = parseFloat(value.toLocaleString(undefined, {maximumFractionDigits:2}));
+    updateValue(value);
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.left}>
         <TouchableWithoutFeedback
-          onPress={() => updateValue(newLocalValue - 1)}
+          onPress={onShortDecreasePress}
           onPressIn={decreaseInterval}
           onPressOut={() => clearInterval(intervalRef.current)}
           disabled={newValue <= 0}>
@@ -48,7 +73,7 @@ export const Quantity = (props: QuantityProps) => {
       <View style={styles.verticleLine}></View>
       <View style={styles.right}>
         <TouchableWithoutFeedback
-          onPress={() => updateValue(newLocalValue + 1)}
+          onPress={onShortIncreasePress}
           onPressIn={increaseInterval}
           onPressOut={() => clearInterval(intervalRef.current)}>
           <Image

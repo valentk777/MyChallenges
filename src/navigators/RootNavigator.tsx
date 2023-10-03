@@ -1,7 +1,7 @@
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import AuthStackNavigator from "./AuthStackNavigator"
 import MainStackNavigator from "./MainStackNavigator";
-import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { Keyboard } from "react-native";
 

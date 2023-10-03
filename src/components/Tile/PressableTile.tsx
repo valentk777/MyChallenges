@@ -47,10 +47,14 @@ export const PressableTile = (props: TileProps) => {
 
   let icon = icons['calendar.png'];
 
-  if (challenge.type === ChallengeTypes.TotalCounter) {
+  if (challenge.type === ChallengeTypes.TotalSimpleCounter) {
     icon = icons['number-blocks.png'];
+  } else if (challenge.type === ChallengeTypes.TotalDetailedCounter) {
+    icon = icons['precision.png'];
   } else if (challenge.type === ChallengeTypes.DailyBolleanCalendar) {
     icon = icons['calendar.png'];
+  } else if (challenge.type === ChallengeTypes.EventLog) {
+    icon = icons['logs.png'];
   }
 
   return (

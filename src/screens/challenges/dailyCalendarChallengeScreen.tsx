@@ -1,8 +1,7 @@
-import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useContext, createContext } from 'react';
-import { Modal, Text, StyleSheet, TouchableOpacity, View, useWindowDimensions } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
-import { Quantity } from '../../components/Quantity/Quantity';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
 import { ThemeContext } from '../../contexts/themeContext';
 import { DailyCalendarChallenge } from '../../entities/challenge';

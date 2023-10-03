@@ -21,9 +21,11 @@ import timeService from '../../services/timeService';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
-export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendarChallengeScreenProps) => {
+export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+
+  const { challengeType } = route.params;
 
   const window = useWindowDimensions();
   const headerHeight = useHeaderHeight();
@@ -139,6 +141,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
     challengeCandidate.id = uuid.v4().toString();
     challengeCandidate.title = title;
     challengeCandidate.description = description;
+    challengeCandidate.initalValue = 0;
     challengeCandidate.currentValue = 0;
     challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;
@@ -146,7 +149,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
     challengeCandidate.lastTimeUpdated = currentUtcTime;
     challengeCandidate.favorite = false;
     challengeCandidate.status = ProgressStatus.NotStarted;
-    challengeCandidate.type = ChallengeTypes.DailyBolleanCalendar;
+    challengeCandidate.type = challengeType;
     challengeCandidate.startDate = startDate;
     challengeCandidate.endDate = endDate;
 
@@ -172,6 +175,17 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
     }
   }
 
+  const setNumericValueOrDefault = (value: string, setValueFunction) => {
+    const defaultNumbericValue = '0';
+    const numericValue = parseInt(value, 10);
+
+    if (!isNaN(numericValue)) {
+      setValueFunction(numericValue.toString());
+    } else {
+      setValueFunction(defaultNumbericValue);
+    }
+  }
+  
   const renderHeaderContainer = () => (
     <View style={styles.imageArea}>
       <View style={styles.imageSwapper}>
@@ -246,6 +260,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation }: AddDailyCalendar
           style={styles.textbox}
           placeholder='Enter target value...'
           onChangeText={onChangeTargetValueText}
+          onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
           keyboardType="numeric"
           placeholderTextColor={theme.colors.placeholder}

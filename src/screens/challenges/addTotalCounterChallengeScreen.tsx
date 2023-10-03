@@ -15,27 +15,46 @@ import { icons } from '../../assets';
 import { CircleButton } from '../../components/ButtonWrapper/CircleButton';
 import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
-import { ChallengeTypes } from '../../entities/challengeTypes';
 
 type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
 
-export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterChallengeScreenProps) => {
+export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCounterChallengeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
+
+  const { isDetailedCount, challengeType } = route.params;
 
   const window = useWindowDimensions();
   const headerHeight = useHeaderHeight();
 
   const [title, onChangeTitleText] = useState('');
   const [description, onChangeDescriptionText] = useState('');
+  const [initialValue, onChangeInitialValueText] = useState('0');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
+  // const [isDetailedCount, setIsDetailedCount] = useState(false);
+
+  // const toggleSwitch = () => {
+  //   setIsDetailedCount((previousState) => !previousState);
+  // };
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
   };
 
-  const createNewChallenge = (title: string, description: string, targetValue: number, imageLocation: string) => {
+  const stringToNumber = (isDetailedCount: boolean, value: string) => {
+    let valueInt = 0;
+
+    if (isDetailedCount) {
+      valueInt = parseFloat(value);
+    } else {
+      valueInt = parseInt(value, 10);
+    }
+
+    return valueInt
+  }
+
+  const createNewChallenge = () => {
     if (title === "") {
       Alert.alert("Title cannot be empty");
       return null;
@@ -51,13 +70,27 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
       return null;
     }
 
-    if (targetValue === null || isNaN(targetValue)) {
+    const initialValueInt = stringToNumber(isDetailedCount, initialValue);
+
+    if (isNaN(initialValueInt)) {
+      Alert.alert("Initial value should be a number");
+      return null;
+    }
+
+    if (initialValueInt < 0) {
+      Alert.alert("Initial value should be positive");
+      return null;
+    }
+
+    const targetValueInt = stringToNumber(isDetailedCount, targetValue);
+
+    if (isNaN(targetValueInt)) {
       Alert.alert("Target value should be a number");
       return null;
     }
 
-    if (targetValue <= 0) {
-      Alert.alert("Target value cannot be 0");
+    if (targetValueInt <= 0) {
+      Alert.alert("Target value should be positive");
       return null;
     }
 
@@ -67,22 +100,23 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     challengeCandidate.id = uuid.v4().toString();
     challengeCandidate.title = title;
     challengeCandidate.description = description;
-    challengeCandidate.currentValue = 0;
-    challengeCandidate.targetValue = targetValue;
+    challengeCandidate.initalValue = initialValueInt;
+    challengeCandidate.currentValue = initialValueInt;
+    challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;
     challengeCandidate.timeCreated = currentUtcTime;
     challengeCandidate.lastTimeUpdated = currentUtcTime;
     challengeCandidate.favorite = false;
     challengeCandidate.status = ProgressStatus.NotStarted;
-    challengeCandidate.type = ChallengeTypes.TotalCounter;
+    challengeCandidate.type = challengeType;
+    challengeCandidate.isDetailedCount = isDetailedCount;
 
     return challengeCandidate;
   }
 
-  const onSave = async (title: string, description: string, targetValue: string, imageLocation: string, navigation) => {
+  const onSave = async () => {
     try {
-      const targetValueInt = parseInt(targetValue, 10);
-      const challenge = createNewChallenge(title, description, targetValueInt, imageLocation);
+      const challenge = createNewChallenge();
 
       if (challenge === null) {
         return false;
@@ -91,7 +125,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
       const result = await challengesService.storeChallenge(challenge);
 
       if (result) {
-        navigation.navigate('ChallengesScreen');
+        navigation.goBack();
       }
     }
     catch (exception) {
@@ -112,6 +146,18 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     </View>
   );
 
+  const setNumericValueOrDefault = (value: string, setValueFunction) => {
+    const defaultNumbericValue = '0';
+
+    const numericValue = stringToNumber(isDetailedCount, value);
+
+    if (!isNaN(numericValue)) {
+      setValueFunction(numericValue.toString());
+    } else {
+      setValueFunction(defaultNumbericValue);
+    }
+  }
+
   const renderInputContainer = () => (
     <View style={styles.textArea}>
       <View style={styles.textImput}>
@@ -124,12 +170,36 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           placeholderTextColor={theme.colors.placeholder}
         />
       </View>
+      {/* <View style={styles.switchImput}>
+        <Text style={styles.text}>Use detailed counting?</Text>
+        <Switch
+        style={styles.switchBox}
+        trackColor={{ false: theme.colors.menuNotFocused, true: theme.colors.tile2 }}
+        thumbColor={theme.colors.secondaryButton}
+        onValueChange={toggleSwitch}
+        value={isDetailedCount}
+      />
+      </View> */}
+      {isDetailedCount &&
+        <View style={styles.textImput}>
+          <Text style={styles.text}>Initial value</Text>
+          <TextInput
+            style={styles.textbox}
+            placeholder='Enter initial numeric value...'
+            onChangeText={onChangeInitialValueText}
+            onBlur={() => setNumericValueOrDefault(initialValue, onChangeInitialValueText)}
+            value={initialValue}
+            keyboardType="numeric"
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>}
       <View style={styles.textImput}>
-        <Text style={styles.text}>Target numeric value</Text>
+        <Text style={styles.text}>Target value</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter target value...'
+          placeholder='Enter target numeric value...'
           onChangeText={onChangeTargetValueText}
+          onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
           keyboardType="numeric"
           placeholderTextColor={theme.colors.placeholder}
@@ -145,6 +215,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
           placeholderTextColor={theme.colors.placeholder}
         />
       </View>
+
       <View style={styles.textImput} />
     </View>
   );
@@ -153,7 +224,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation }: AddTotalCounterCh
     <View style={styles.saveContainer}>
       <SaveButton
         title="Save"
-        onPress={async () => onSave(title, description, targetValue, imageLocation, navigation)}
+        onPress={async () => onSave()}
       />
     </View>
   );
@@ -239,6 +310,11 @@ const createStyles = (theme: typeof customTheme) => {
     textImput: {
       flex: 1,
     },
+    // switchImput: {
+    //   flex: 1,
+    //   alignItems: 'flex-start',
+    //   justifyContent: 'flex-start',
+    // },
     text: {
       flex: 3,
       textAlignVertical: 'bottom',
@@ -253,6 +329,11 @@ const createStyles = (theme: typeof customTheme) => {
       borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
     },
+    // switchBox: {
+    //   flex: 2,
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    // },
   });
 
   return styles;

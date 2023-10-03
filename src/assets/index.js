@@ -17,6 +17,8 @@ export const icons = {
   'file.png': require('./icons/file.png'),
   'calendar.png': require('./icons/calendar.png'),
   'number-blocks.png': require('./icons/number-blocks.png'),
+  'logs.png': require('./icons/logs.png'),
+  'precision.png': require('./icons/precision.png'),
 }
 
 export const images = {

@@ -9,6 +9,7 @@ export interface Challenge {
   timeCreated: string;
   lastTimeUpdated: string;
   currentValue: number;
+  initalValue: number;
   targetValue: number;
   favorite: boolean;
   status: ProgressStatus;
@@ -16,7 +17,7 @@ export interface Challenge {
 }
 
 export interface TotalCounterChallenge extends Challenge {
-
+  isDetailedCount: boolean
 }
 
 export interface DailyCalendarChallenge extends Challenge {

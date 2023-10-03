@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
+import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
-import { ChallengeTypes } from '../../entities/challengeTypes';
+import { ChallengeTypes as ChallengeTypes } from '../../entities/challengeTypes';
+import { icons } from '../../assets';
 
 interface AddChallengeSelectionMenuProps extends TouchableOpacityProps {
 }
@@ -25,14 +26,20 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
     setShowPopup(false);
   }
 
-  const onSelectOption = (option: ChallengeTypes) => {
+  const onSelectOption = (challengeType: ChallengeTypes) => {
     onHidePopup();
 
-    if (option === ChallengeTypes.TotalCounter) {
-      navigation.navigate('AddTotalCounterChallengeScreen');
+    if (challengeType === ChallengeTypes.TotalSimpleCounter) {
+      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: false });
     }
-    else if (option === ChallengeTypes.DailyBolleanCalendar) {
-      navigation.navigate('AddDailyCalendarChallengeScreen');
+    else if (challengeType === ChallengeTypes.TotalDetailedCounter) {
+      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: true });
+    }
+    else if (challengeType === ChallengeTypes.DailyBolleanCalendar) {
+      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType });
+    }
+    else if (challengeType === ChallengeTypes.EventLog) {
+      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType });
     } else {
       Alert.alert("Unknown challenge type")
     }
@@ -61,26 +68,64 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
         <View style={styles.modalContent}>
           <View style={styles.modalArea}>
             <View style={styles.space} />
-            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalCounter)}>
-              <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Total count</Text>
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalSimpleCounter)}>
+              <View style={styles.buttonArea}>
+                <Image
+                  source={icons['number-blocks.png']}
+                  resizeMode='contain'
+                  style={styles.menuIcon} />
+                <View style={styles.modalTextArea}>
+                <View style={styles.titleArea}>
+                  <Text style={styles.menuTitle}>Simple Total Count</Text>
+                </View>
+                  <Text style={styles.menuComment}>Attendance, event, travel, and item counting</Text>
+                </View>
               </View>
             </TouchableWithoutFeedback>
-            {/* <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Counter)}>
-              <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Number daily progress</Text>
+            <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.TotalDetailedCounter)}>
+              <View style={styles.buttonArea}>
+                <Image
+                  source={icons['precision.png']}
+                  resizeMode='contain'
+                  style={styles.menuIcon} />
+                <View style={styles.modalTextArea}>
+                  <View style={styles.titleArea}>
+                  <Text style={styles.menuTitle}>Total Detailed Count</Text>
+                  </View>
+                  <Text style={styles.menuComment}>Weight gain / loss, height counting</Text>
+                </View>
               </View>
-            </TouchableWithoutFeedback> */}
+            </TouchableWithoutFeedback>
+            {/* Number daily progress */}
             <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.DailyBolleanCalendar)}>
-              <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Calendar daily progress</Text>
+              <View style={styles.buttonArea}>
+                <Image
+                  source={icons['calendar.png']}
+                  resizeMode='contain'
+                  style={styles.menuIcon} />
+                <View style={styles.modalTextArea}>
+                <View style={styles.titleArea}>
+                  <Text style={styles.menuTitle}>Daily Progress</Text>
+                </View>
+                  <Text style={styles.menuComment}>Daily routine, health, and reading habits</Text>
+                </View>
               </View>
             </TouchableWithoutFeedback>
-            {/* <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.Calendar)}>
-              <View style={styles.modalTile}>
-                <Text style={styles.menuText}>Longest streak</Text>
+            {/* <TouchableWithoutFeedback onPress={() => onSelectOption(ChallengeTypes.EventLog)}>
+              <View style={styles.buttonArea}>
+                <Image
+                  source={icons['logs.png']}
+                  resizeMode='contain'
+                  style={styles.menuIcon} />
+                <View style={styles.modalTextArea}>
+                <View style={styles.titleArea}>
+                  <Text style={styles.menuTitle}>Detailed Event Log</Text>
+                </View>
+                  <Text style={styles.menuComment}>Sleep duration, savings, screen time tracking</Text>
+                </View>
               </View>
             </TouchableWithoutFeedback> */}
+            {/* Longest streak */}
           </View>
         </View>
       </Modal>
@@ -118,15 +163,7 @@ const createStyles = (theme: typeof customTheme) => {
       // this space allow buttons to grow on a screen when I add new ones
       flex: 6,
     },
-    modalArea: {
-      flex: 1,
-      flexDirection: 'column',
-      width: '90%',
-      alignItems: 'center',
-      marginBottom: '5%',
-      justifyContent: 'space-evenly'
-    },
-    modalTile: {
+    buttonArea: {
       flex: 1,
       backgroundColor: theme.colors.white,
       borderRadius: 10,
@@ -134,10 +171,37 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
+      flexDirection: 'row',
     },
-    menuText: {
-      fontSize: 22,
+    modalArea: {
+      flex: 1,
+      width: '90%',
+      alignItems: 'center',
+      marginBottom: '5%',
+      justifyContent: 'space-evenly'
+    },
+    modalTextArea: {
+      flex: 1,
+      width: '80%',
+      flexDirection: 'column',
+    },
+    titleArea: {
+      flex: 3,
+      justifyContent: 'flex-end',
+    },
+    menuTitle: {
+      fontSize: 20,
       fontFamily: theme.fonts.regular,
+      color: theme.colors.black,
+    },
+    menuIcon: {
+      height: '35%',
+      tintColor: theme.colors.primary,
+    },
+    menuComment: {
+      flex: 2,
+      fontSize: 12,
+      fontFamily: theme.fonts.light,
       color: theme.colors.black,
     }
   });

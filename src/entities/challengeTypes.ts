@@ -1,4 +1,6 @@
 export enum ChallengeTypes {
-  TotalCounter,
+  TotalSimpleCounter,
+  TotalDetailedCounter,
   DailyBolleanCalendar,
+  EventLog,
 }
