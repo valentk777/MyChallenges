@@ -23,8 +23,8 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
     const Component = item.component;
 
     return (
-      <TouchableOpacity onPress={() => onClose(item.location)} style={item.location == currentIndexLocation ? styles.selectedImage : styles.image}>
-        <Component />
+      <TouchableOpacity onPress={() => onClose(item.location)} style={styles.image}>
+        <Component style={item.location == currentIndexLocation ? styles.selectedImage : {}} />
       </TouchableOpacity>
     )
   };
@@ -76,11 +76,8 @@ const createStyles = (theme: typeof customTheme) => {
       resizeMode: 'contain',
     },
     selectedImage: {
-      width: '33.3%',
-      aspectRatio: 1,
-      resizeMode: 'contain',
-      backgroundColor: 'blue'
-      // ...theme.shadows.dark
+      // borderRadius: 10,
+      // backgroundColor: 'rgba(0, 0, 0, 0.15)',
     },
   });
 
