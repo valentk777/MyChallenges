@@ -12,9 +12,10 @@ import challengesService from "../../services/challengesService";
 interface ChallengeHeaderProps {
   challenge: Challenge;
   navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>;
+  onEdit: () => void;
 }
 
-export const ChallengeHeader = ({ challenge, navigation }: ChallengeHeaderProps) => {
+export const ChallengeHeader = ({ challenge, navigation, onEdit }: ChallengeHeaderProps) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -22,7 +23,7 @@ export const ChallengeHeader = ({ challenge, navigation }: ChallengeHeaderProps)
     const result = await challengesService.removeChallenge(challenge.id);
 
     if (result) {
-      navigation.navigate('HomeTab');
+      navigation.goBack();
     }
   }
 
@@ -31,12 +32,17 @@ export const ChallengeHeader = ({ challenge, navigation }: ChallengeHeaderProps)
       <CircleButton
         imgUrl={icons["back-arrow.png"]}
         onPress={() => navigation.goBack()}
-        style={[styles.left, theme.shadows.dark]}
+        style={[styles.back, theme.shadows.dark]}
+      />
+      <CircleButton
+        imgUrl={icons['editing.png']}
+        onPress={onEdit}
+        style={[styles.edit, theme.shadows.dark]}
       />
       <CircleButton
         imgUrl={icons['trash.png']}
-        onPress={async () => onDelete(challenge, navigation)}
-        style={[styles.right, theme.shadows.dark]}
+        onPress={onDelete}
+        style={[styles.trash, theme.shadows.dark]}
       />
     </View>
   )
@@ -46,11 +52,15 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
     },
-    left: {
+    back: {
       left: 15,
       top: StatusBar.currentHeight / 2
     },
-    right: {
+    edit: {
+      right: 65,
+      top: StatusBar.currentHeight / 2
+    },
+    trash: {
       right: 15,
       top: StatusBar.currentHeight / 2
     },

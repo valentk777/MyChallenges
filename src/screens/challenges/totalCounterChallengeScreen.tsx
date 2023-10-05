@@ -13,6 +13,7 @@ import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import challengesService from '../../services/challengesService';
 import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 import { ChallengeContext } from '../../hooks/useChallenge';
+import { ChallengeTypes } from '../../entities/challengeTypes';
 
 type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
@@ -29,7 +30,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   }
 
   const updateChallengeStatus = (challenge: TotalCounterChallenge) => {
-    const percentage = challengesService.getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue);
+    const percentage = challengesService.getPercentage(challenge.currentValue, challenge.initialValue, challenge.targetValue);
 
     if (percentage >= 100) {
       challenge.status = ProgressStatus.Completed;
@@ -56,6 +57,14 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
     }
   }
 
+  const onEdit = () => {
+    navigation.navigate('AddTotalCounterChallengeScreen', { 
+      challengeType: challenge.isDetailedCount ? ChallengeTypes.TotalDetailedCounter : ChallengeTypes.TotalSimpleCounter, 
+      isDetailedCount: challenge.isDetailedCount, 
+      originalChallenge: challenge 
+    });
+  }
+
   const renderProgressContainer = () => (
     <View style={styles.animationContainer}>
       <LinearGradient
@@ -64,7 +73,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
         locations={[0, 0.6, 1]}
         style={styles.linearGradient}
       >
-        <ChallengeHeader challenge={challenge} navigation={navigation} />
+        <ChallengeHeader challenge={challenge} navigation={navigation} onEdit={onEdit} />
         <NumericProgressTile />
       </LinearGradient>
     </View>

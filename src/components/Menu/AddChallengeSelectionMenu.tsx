@@ -30,16 +30,16 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
     onHidePopup();
 
     if (challengeType === ChallengeTypes.TotalSimpleCounter) {
-      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: false });
+      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: false, originalChallenge: null });
     }
     else if (challengeType === ChallengeTypes.TotalDetailedCounter) {
-      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: true });
+      navigation.navigate('AddTotalCounterChallengeScreen', { challengeType: challengeType, isDetailedCount: true, originalChallenge: null });
     }
     else if (challengeType === ChallengeTypes.DailyBolleanCalendar) {
-      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType });
+      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType, originalChallenge: null });
     }
     else if (challengeType === ChallengeTypes.EventLog) {
-      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType });
+      navigation.navigate('AddDailyCalendarChallengeScreen', { challengeType: challengeType, originalChallenge: null });
     } else {
       Alert.alert("Unknown challenge type")
     }

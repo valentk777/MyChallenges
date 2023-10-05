@@ -9,7 +9,7 @@ export interface Challenge {
   timeCreated: string;
   lastTimeUpdated: string;
   currentValue: number;
-  initalValue: number;
+  initialValue: number;
   targetValue: number;
   favorite: boolean;
   status: ProgressStatus;

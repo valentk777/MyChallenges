@@ -22,16 +22,16 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const { isDetailedCount, challengeType } = route.params;
+  const { isDetailedCount, challengeType, originalChallenge } = route.params;
 
   const window = useWindowDimensions();
   const headerHeight = useHeaderHeight();
 
-  const [title, onChangeTitleText] = useState('');
-  const [description, onChangeDescriptionText] = useState('');
-  const [initialValue, onChangeInitialValueText] = useState('0');
-  const [targetValue, onChangeTargetValueText] = useState('');
-  const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
+  const [title, onChangeTitleText] = useState(originalChallenge?.title != null ? originalChallenge.title : '');
+  const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
+  const [initialValue, onChangeInitialValueText] = useState(originalChallenge?.initialValue != null ? originalChallenge.initialValue.toString() : '0');
+  const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
+  const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
@@ -92,17 +92,18 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
     const currentUtcTime = new Date().toISOString();
     const challengeCandidate = {} as TotalCounterChallenge;
 
-    challengeCandidate.id = uuid.v4().toString();
+    challengeCandidate.id = originalChallenge?.id != null ? originalChallenge.id : uuid.v4().toString();
     challengeCandidate.title = title;
     challengeCandidate.description = description;
-    challengeCandidate.initalValue = initialValueInt;
-    challengeCandidate.currentValue = initialValueInt;
+    challengeCandidate.initialValue = originalChallenge?.initialValue != null ? originalChallenge.initialValue : 0;
+    challengeCandidate.currentValue = originalChallenge?.currentValue != null ? originalChallenge.currentValue : 0;
     challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;
+    challengeCandidate.timeCreated = originalChallenge?.timeCreated != null ? originalChallenge.timeCreated : currentUtcTime;
     challengeCandidate.timeCreated = currentUtcTime;
     challengeCandidate.lastTimeUpdated = currentUtcTime;
-    challengeCandidate.favorite = false;
-    challengeCandidate.status = ProgressStatus.NotStarted;
+    challengeCandidate.favorite = originalChallenge?.favorite != null ? originalChallenge.favorite : false;
+    challengeCandidate.status = originalChallenge?.status != null ? originalChallenge.status : ProgressStatus.NotStarted;
     challengeCandidate.type = challengeType;
     challengeCandidate.isDetailedCount = isDetailedCount;
 
@@ -120,7 +121,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
       const result = await challengesService.storeChallenge(challenge);
 
       if (result) {
-        navigation.goBack();
+        navigation.navigate('ChallengesScreen');
       }
     }
     catch (exception) {
@@ -131,11 +132,11 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   const renderHeaderContainer = () => (
     <View style={styles.imageArea}>
       <View style={styles.imageSwapper}>
-        <ImageSwapper onImageChange={handleImageChange} />
+        <ImageSwapper initialImageLocation={imageLocation} onImageChange={handleImageChange} />
       </View>
       <CircleButton
         imgUrl={icons["back-arrow.png"]}
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('ChallengesScreen')}
         style={styles.backCircle}
       />
     </View>

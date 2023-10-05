@@ -14,6 +14,7 @@ import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 import { Calendar } from 'react-native-calendars';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import timeService from '../../services/timeService';
+import { ChallengeTypes } from '../../entities/challengeTypes';
 
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
 
@@ -86,6 +87,13 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     }
   }
 
+  const onEdit = () => {
+    navigation.navigate('AddDailyCalendarChallengeScreen', { 
+      challengeType: ChallengeTypes.DailyBolleanCalendar, 
+      originalChallenge: challenge 
+    });
+  }
+
   const renderProgressContainer = () => (
     <View style={styles.animationContainer}>
       <LinearGradient
@@ -94,7 +102,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
         locations={[0, 0.6, 1]}
         style={styles.linearGradient}
       >
-        <ChallengeHeader challenge={challenge} navigation={navigation} />
+        <ChallengeHeader challenge={challenge} navigation={navigation} onEdit={onEdit} />
         <NumericProgressTile />
       </LinearGradient>
     </View>

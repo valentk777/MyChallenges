@@ -5,7 +5,12 @@ import { customTheme } from '../../styles/customTheme';
 import { ThemeContext } from '../../contexts/themeContext';
 import ImageGalleryModal from '../ImageGrid/ImageGrid';
 
-const ImageSwapper = ({ onImageChange }) => {
+interface ImageSwapperProps {
+    onImageChange : (string) => void;
+    initialImageLocation : string;
+}
+
+const ImageSwapper = ({ onImageChange, initialImageLocation } : ImageSwapperProps) => {
     const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
 
@@ -13,8 +18,10 @@ const ImageSwapper = ({ onImageChange }) => {
     const flatListRef = useRef(null);
 
     const [containerWidth, setContainerWidth] = useState(0);
-    const [currentIndex, setCurrentIndex] = useState(svgComponentsLenth * 2);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const initialImageIndex = SvgComponents.findIndex((item) => item.location === initialImageLocation) + svgComponentsLenth * 2;
+    const [currentIndex, setCurrentIndex] = useState(initialImageIndex);
 
     const onLayout = event => {
         // return current object layout, not the screen
@@ -82,7 +89,7 @@ const ImageSwapper = ({ onImageChange }) => {
                 keyExtractor={(_, index) => index.toString()}
                 getItemLayout={getItemLayout}
                 decelerationRate="fast"
-                initialScrollIndex={currentIndex} // Scroll to a middle point for infinite scroll effect
+                initialScrollIndex={currentIndex}
                 onMomentumScrollEnd={handleMomentumScrollEnd}
             />
         </View>

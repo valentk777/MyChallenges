@@ -20,24 +20,36 @@ import timeService from '../../services/timeService';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
-export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyCalendarChallengeScreenProps) => {
+const dateDiffInDays = (date1: Date, date2: Date) => {
+  const diffTime = Math.abs(date2 - date1);
+
+  if (isNaN(diffTime)) {
+    return 0;
+  }
+
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays + 1;
+}
+
+export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
-  const { challengeType } = route.params;
+  const { challengeType, originalChallenge } = route.params;
 
   const window = useWindowDimensions();
   const headerHeight = useHeaderHeight();
 
-  const [title, onChangeTitleText] = useState('');
-  const [description, onChangeDescriptionText] = useState('');
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
-  const [startDate, setStartDate] = useState(timeService.getCurrentDate());
-  const [endDate, setEndDate] = useState('');
-  const [targetValue, onChangeTargetValueText] = useState('');
-  const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
-  const [numberOfDays, setNumberOfDays] = useState(0);
+
+  const [title, onChangeTitleText] = useState(originalChallenge?.title != null ? originalChallenge.title : '');
+  const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
+  const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDate());
+  const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
+  const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
+  const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
+  const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
 
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
@@ -54,17 +66,6 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const hideEndCalendar = () => {
     setIsEndModalVisible(false);
   };
-
-  const dateDiffInDays = (date1: Date, date2: Date) => {
-    const diffTime = Math.abs(date2 - date1);
-
-    if (isNaN(diffTime)) {
-      return 0;
-    }
-
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays + 1;
-  }
 
   const onStartDayPress = (day) => {
     const _startDate = new Date(day.dateString);
@@ -137,17 +138,17 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     const currentUtcTime = new Date().toISOString();
     const challengeCandidate = {} as DailyCalendarChallenge;
 
-    challengeCandidate.id = uuid.v4().toString();
+    challengeCandidate.id = originalChallenge?.id != null ? originalChallenge.id : uuid.v4().toString();
     challengeCandidate.title = title;
     challengeCandidate.description = description;
-    challengeCandidate.initalValue = 0;
-    challengeCandidate.currentValue = 0;
+    challengeCandidate.initialValue = originalChallenge?.initialValue != null ? originalChallenge.initialValue : 0;
+    challengeCandidate.currentValue = originalChallenge?.currentValue != null ? originalChallenge.currentValue : 0;
     challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;
-    challengeCandidate.timeCreated = currentUtcTime;
+    challengeCandidate.timeCreated = originalChallenge?.timeCreated != null ? originalChallenge.timeCreated : currentUtcTime;
     challengeCandidate.lastTimeUpdated = currentUtcTime;
-    challengeCandidate.favorite = false;
-    challengeCandidate.status = ProgressStatus.NotStarted;
+    challengeCandidate.favorite = originalChallenge?.favorite != null ? originalChallenge.favorite : false;
+    challengeCandidate.status = originalChallenge?.status != null ? originalChallenge.status : ProgressStatus.NotStarted;
     challengeCandidate.type = challengeType;
     challengeCandidate.startDate = startDate;
     challengeCandidate.endDate = endDate;
@@ -188,11 +189,11 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const renderHeaderContainer = () => (
     <View style={styles.imageArea}>
       <View style={styles.imageSwapper}>
-        <ImageSwapper onImageChange={handleImageChange} />
+        <ImageSwapper onImageChange={handleImageChange} initialImageLocation={imageLocation} />
       </View>
       <CircleButton
         imgUrl={icons["back-arrow.png"]}
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('ChallengesScreen')}
         style={styles.backCircle}
       />
     </View>

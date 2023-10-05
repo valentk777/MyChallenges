@@ -17,8 +17,8 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const { newValue, challenge } = useContext(ChallengeContext);
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
-  const percentage = challengesService.getPercentage(newValue, challenge.initalValue, challenge.targetValue);
-  const initialPercentage = challengesService.getPercentage(challenge.currentValue, challenge.initalValue, challenge.targetValue)
+  const percentage = challengesService.getPercentage(newValue, challenge.initialValue, challenge.targetValue);
+  const initialPercentage = challengesService.getPercentage(challenge.currentValue, challenge.initialValue, challenge.targetValue)
 
   return (
     <View style={styles.container}>

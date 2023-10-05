@@ -9,9 +9,9 @@ import { ChallengeTypes } from "../entities/challengeTypes";
 
 export type MainStackParamList = {
   HomeTab: {};
-  AddTotalCounterChallengeScreen: { challengeType: ChallengeTypes, isDetailedCount: boolean };
+  AddTotalCounterChallengeScreen: { challengeType: ChallengeTypes, isDetailedCount: boolean, originalChallenge: TotalCounterChallenge | null };
   TotalCounterChallengeScreen: { challenge: TotalCounterChallenge };
-  AddDailyCalendarChallengeScreen: { challengeType: ChallengeTypes, };
+  AddDailyCalendarChallengeScreen: { challengeType: ChallengeTypes, originalChallenge: DailyCalendarChallenge | null };
   DailyCalendarChallengeScreen: { challenge: DailyCalendarChallenge };
 };
 
