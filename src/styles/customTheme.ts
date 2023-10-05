@@ -8,7 +8,7 @@ const palette = {
   black: '#000000',
   red: '#e32f45',
   darkRed: '#80211b',
-  gray: "#74858C",
+  gray: '#74858C',
 };
 
 export const customTheme = {
@@ -42,11 +42,11 @@ export const customTheme = {
     extraLarge: 24,
   },
   fonts: {
-    bold: "Inter-Bold",
-    semiBold: "Inter-SemiBold",
-    medium: "Inter-Medium",
-    regular: "Inter-Regular",
-    light: "Inter-Light",
+    bold: 'Inter-Bold',
+    semiBold: 'Inter-SemiBold',
+    medium: 'Inter-Medium',
+    regular: 'Inter-Regular',
+    light: 'Inter-Light',
   },
   shadows: {
     light: {
@@ -57,7 +57,7 @@ export const customTheme = {
       },
       shadowOpacity: 0.22,
       shadowRadius: 2.22,
-  
+
       elevation: 3,
     },
     medium: {
@@ -68,7 +68,7 @@ export const customTheme = {
       },
       shadowOpacity: 0.29,
       shadowRadius: 4.65,
-  
+
       elevation: 7,
     },
     dark: {
@@ -79,7 +79,7 @@ export const customTheme = {
       },
       shadowOpacity: 0.41,
       shadowRadius: 9.11,
-  
+
       elevation: 14,
     },
     primary: {
@@ -90,9 +90,9 @@ export const customTheme = {
       shadowOffset: {
         width: 0,
         height: 10,
-      }
+      },
     },
-  }
+  },
 };
 
 export const customDarkTheme = {

@@ -10,8 +10,8 @@ export const ThemeContext = createContext<ContextProvider>({
 });
 
 export const ThemeProvider = ({ children }) => {
-  const currentTheme = useMemo(() => ({theme: customTheme}), []); // value is cached by useMemo
-  
+  const currentTheme = useMemo(() => ({ theme: customTheme }), []); // value is cached by useMemo
+
   return (
     <ThemeContext.Provider
       value={currentTheme}>

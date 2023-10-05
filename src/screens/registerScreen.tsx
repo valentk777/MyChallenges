@@ -15,7 +15,7 @@ type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'RegisterS
 
 export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const window = useWindowDimensions();
-    
+
     const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
 
@@ -45,15 +45,15 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
 
         createUser(userCandidate);
     }
-    
+
     const fadeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start();
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
     }, [fadeAnim]);
 
     const renderHeaderContainer = () => (
@@ -150,7 +150,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     );
 
     return (
-        <View  style={{...styles.container, height: window.height}}>
+        <View style={{ ...styles.container, height: window.height }}>
             <LinearGradient
                 colors={styles.linearGradient.colors}
                 style={styles.linearGradient}
@@ -174,7 +174,7 @@ const createStyles = (theme: typeof customTheme) => {
             flex: 1,
             colors: [theme.colors.primary, theme.colors.secondary],
             alignItems: "center",
-            
+
         },
         mainContainer: {
             flex: 1,

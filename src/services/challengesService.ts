@@ -124,7 +124,7 @@ const getPercentage = (
   targetValue: number,
 ) => {
   const isPositiveCounting = initialValue <= targetValue;
-  
+
   const currentDiff = isPositiveCounting
     ? currentValue - initialValue
     : initialValue - currentValue;

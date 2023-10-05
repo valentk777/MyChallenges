@@ -17,13 +17,13 @@ export const UserScreen = () => {
   const styles = createStyles(theme);
 
   const [forceUpdate, setForceUpdate] = useState<number>(0);
-  
+
   const user = useCurrentUser() as UserAccount;
   const { signOut } = useAuth();
 
   const userEmail = user?.email === null || user.email === "" ? "Login without email" : user.email;
   const userCreated = timeService.convertUTCToLocalTime(user.createdAt);
-  
+
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
     user.profilePictureURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
   }
@@ -31,7 +31,7 @@ export const UserScreen = () => {
   // useEffect(() => {
   //   // Use the effect to re-render the component when the profilePicture state changes
   // }, [user]);
-  
+
   const renderHeaderContainer = () => (
     <View style={styles.headerContainer}>
       <CircleButton
@@ -195,13 +195,13 @@ const createStyles = (theme: typeof customTheme) => {
       height: 145,
       width: undefined,
       aspectRatio: 1,
-      borderRadius: 500, // Make it round
+      borderRadius: 500,
     },
     userImage: {
       width: undefined,
       aspectRatio: 1,
       height: 130,
-      borderRadius: 500, // Make it round
+      borderRadius: 500,
     },
   });
 

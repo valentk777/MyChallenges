@@ -16,7 +16,6 @@ import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
 import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
-import { ChallengeTypes } from '../../entities/challengeTypes';
 import timeService from '../../services/timeService';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
@@ -185,7 +184,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
       setValueFunction(defaultNumbericValue);
     }
   }
-  
+
   const renderHeaderContainer = () => (
     <View style={styles.imageArea}>
       <View style={styles.imageSwapper}>

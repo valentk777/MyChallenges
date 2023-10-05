@@ -1,18 +1,14 @@
 import firestore from '@react-native-firebase/firestore';
 import {AppResponse} from '../../entities/appResponse';
 import {UserAccount} from '../../entities/user';
+import timeService from '../../services/timeService';
 
 export const usersRef = firestore().collection('users');
-
-// TODO: rename, improve
-const getUnixTimeStamp = () => {
-  return new Date().toISOString();
-};
 
 export const addNewUser = async (user: UserAccount) => {
   const dataWithOnlineStatus = {
     ...user,
-    lastOnlineTimestamp: getUnixTimeStamp(),
+    lastOnlineTimestamp: timeService.getCurrentDateString(),
   };
 
   try {
@@ -27,7 +23,7 @@ export const addNewUser = async (user: UserAccount) => {
 export const updateUser = async (user: UserAccount) => {
   const dataWithOnlineStatus = {
     ...user,
-    lastOnlineTimestamp: getUnixTimeStamp(),
+    lastOnlineTimestamp: timeService.getCurrentDateString(),
   };
 
   try {

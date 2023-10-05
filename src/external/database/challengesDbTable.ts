@@ -1,13 +1,9 @@
 import firestore from '@react-native-firebase/firestore';
 import {AppResponse} from '../../entities/appResponse';
 import {Challenge} from '../../entities/challenge';
+import timeService from '../../services/timeService';
 
 export const challengesRef = firestore().collection('challenges');
-
-// TODO: rename, improve
-const getUnixTimeStamp = () => {
-  return new Date().toISOString();
-};
 
 export const getChallenges = async (userId: string) => {
   try {
@@ -38,7 +34,7 @@ export const addNewDbChallenges = async (userId: string) => {
   try {
     const dataWithOnlineStatus = {
       challenges: [] as Challenge[],
-      lastTimeUpdated: getUnixTimeStamp(),
+      lastTimeUpdated: timeService.getCurrentDateString(),
     };
 
     await challengesRef.doc(userId).set(dataWithOnlineStatus, {merge: true});
@@ -60,7 +56,7 @@ export const updateDbStoredChallenges = async (
 
   const dataWithOnlineStatus = {
     challenges: challenges,
-    lastTimeUpdated: getUnixTimeStamp(),
+    lastTimeUpdated: timeService.getCurrentDateString(),
   };
 
   try {

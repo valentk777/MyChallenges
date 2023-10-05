@@ -9,7 +9,6 @@ const ImageSwapper = ({ onImageChange }) => {
     const { theme } = useContext(ThemeContext);
     const styles = createStyles(theme);
 
-
     const svgComponentsLenth = SvgComponents.length;
     const flatListRef = useRef(null);
 
@@ -39,7 +38,7 @@ const ImageSwapper = ({ onImageChange }) => {
 
         return (
             <TouchableOpacity
-            onPress={onPressIcon}
+                onPress={() => onPressIcon(index)}
                 activeOpacity={0.9}
                 style={{ ...styles.imageContainer, width: containerWidth }}
             >
@@ -53,7 +52,6 @@ const ImageSwapper = ({ onImageChange }) => {
         const visibleIndex = Math.floor((contentOffset + containerWidth / 2) / containerWidth);
         const currentComponentFileName = getSvgFileName(visibleIndex);
 
-        setCurrentIndex(visibleIndex);
         onImageChange(currentComponentFileName);
     }, [containerWidth]);
 
@@ -65,7 +63,8 @@ const ImageSwapper = ({ onImageChange }) => {
         setModalVisible(false);
     }
 
-    const onPressIcon = () => {
+    const onPressIcon = (index) => {
+        setCurrentIndex(index);
         setModalVisible(true);
     }
 

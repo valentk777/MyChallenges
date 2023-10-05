@@ -32,11 +32,6 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   const [initialValue, onChangeInitialValueText] = useState('0');
   const [targetValue, onChangeTargetValueText] = useState('');
   const [imageLocation, setCurrentImageLocation] = useState(SvgComponents[50 % SvgComponents.length].location);
-  // const [isDetailedCount, setIsDetailedCount] = useState(false);
-
-  // const toggleSwitch = () => {
-  //   setIsDetailedCount((previousState) => !previousState);
-  // };
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
@@ -170,16 +165,6 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
           placeholderTextColor={theme.colors.placeholder}
         />
       </View>
-      {/* <View style={styles.switchImput}>
-        <Text style={styles.text}>Use detailed counting?</Text>
-        <Switch
-        style={styles.switchBox}
-        trackColor={{ false: theme.colors.menuNotFocused, true: theme.colors.tile2 }}
-        thumbColor={theme.colors.secondaryButton}
-        onValueChange={toggleSwitch}
-        value={isDetailedCount}
-      />
-      </View> */}
       {isDetailedCount &&
         <View style={styles.textImput}>
           <Text style={styles.text}>Initial value</Text>
@@ -310,11 +295,6 @@ const createStyles = (theme: typeof customTheme) => {
     textImput: {
       flex: 1,
     },
-    // switchImput: {
-    //   flex: 1,
-    //   alignItems: 'flex-start',
-    //   justifyContent: 'flex-start',
-    // },
     text: {
       flex: 3,
       textAlignVertical: 'bottom',
@@ -329,11 +309,6 @@ const createStyles = (theme: typeof customTheme) => {
       borderBottomColor: theme.colors.black,
       borderBottomWidth: 1,
     },
-    // switchBox: {
-    //   flex: 2,
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    // },
   });
 
   return styles;

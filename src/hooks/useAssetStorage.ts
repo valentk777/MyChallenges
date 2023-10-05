@@ -4,10 +4,10 @@ import {useEffect, useState} from 'react';
 const useAssets = () => {
   const [sportImages, setSportImages] = useState([] as string[]);
 
-  const readSportAssets= async () => {
+  const readSportAssets = async () => {
     // const assets = assetsStorage.getPicturesForChallenges();
     setSportImages([]);
-  }
+  };
 
   useEffect(() => {
     readSportAssets();

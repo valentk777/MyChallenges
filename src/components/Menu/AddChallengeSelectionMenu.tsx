@@ -3,7 +3,7 @@ import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpaci
 import { ThemeContext } from '../../contexts/themeContext';
 import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
-import { ChallengeTypes as ChallengeTypes } from '../../entities/challengeTypes';
+import { ChallengeTypes } from '../../entities/challengeTypes';
 import { icons } from '../../assets';
 
 interface AddChallengeSelectionMenuProps extends TouchableOpacityProps {

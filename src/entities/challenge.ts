@@ -1,4 +1,4 @@
-import { ChallengeTypes } from './challengeTypes';
+import {ChallengeTypes} from './challengeTypes';
 import {ProgressStatus} from './progressStatus';
 
 export interface Challenge {
@@ -17,7 +17,7 @@ export interface Challenge {
 }
 
 export interface TotalCounterChallenge extends Challenge {
-  isDetailedCount: boolean
+  isDetailedCount: boolean;
 }
 
 export interface DailyCalendarChallenge extends Challenge {

@@ -5,13 +5,10 @@ import auth from '@react-native-firebase/auth';
 import {ErrorCode} from '../../entities/errorCodes';
 import userDbTable from '../database/userDbTable';
 import {Alert} from 'react-native';
+import timeService from '../../services/timeService';
 
-const defaultProfilePhotoURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
-
-// TODO: rename, improve
-const getUnixTimeStamp = () => {
-  return new Date().toISOString();
-};
+const defaultProfilePhotoURL =
+  'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
 
 const registerWithEmail = (user: LoginUser) => {
   return new Promise(function (resolve, _reject) {
@@ -21,8 +18,8 @@ const registerWithEmail = (user: LoginUser) => {
         const newUser = {
           id: response.user.uid,
           email: user.email,
-          createdAt: getUnixTimeStamp(),
-          profilePictureURL: defaultProfilePhotoURL
+          createdAt: timeService.getCurrentDateString(),
+          profilePictureURL: defaultProfilePhotoURL,
         } as UserAccount;
 
         // Store user info to database. We do not await here.
@@ -87,7 +84,8 @@ const createAccountWithEmailAndPassword = (loginUser: LoginUser) => {
         }
       })
       .catch(error => {
-        resolve(response as AppResponse);
+        console.log(error);
+        resolve({isSuccessfull: false, error: error.message} as AppResponse);
       });
   });
 };
@@ -168,7 +166,7 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
         const isNewUser = response.additionalUserInfo.isNewUser;
         const {uid, email, photoURL} = response.user;
 
-        const timestamp = getUnixTimeStamp();
+        const timestamp = timeService.getCurrentDateString();
         const userData = {
           id: uid,
           email: email || '',
@@ -263,7 +261,7 @@ const signInAnonymously = () => {
           const isNewUser = response.additionalUserInfo.isNewUser;
           const {uid, email} = response.user;
 
-          const timestamp = getUnixTimeStamp();
+          const timestamp = timeService.getCurrentDateString();
           const userData = {
             id: uid,
             email: email || '',
@@ -369,7 +367,6 @@ const signInAnonymously = () => {
 //     }
 //   })
 // }
-
 
 export interface IAuthManager {
   createAccountWithEmailAndPassword: (user: LoginUser) => Promise<AppResponse>;

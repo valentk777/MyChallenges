@@ -25,11 +25,11 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
   const renderHeaderContainer = () => (
     <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
-          <Image
-            style={styles.image}
-            source={logo['logo_500x500.png']}
-          />
-          <Text style={styles.text}>Challenge Tracker</Text>
+      <Image
+        style={styles.image}
+        source={logo['logo_500x500.png']}
+      />
+      <Text style={styles.text}>Challenge Tracker</Text>
     </Animated.View>
   );
 
@@ -39,7 +39,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-      {renderHeaderContainer()}
+        {renderHeaderContainer()}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             activeOpacity={0.8}

@@ -14,7 +14,7 @@ type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScree
 
 export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   const window = useWindowDimensions();
-  
+
   const { theme } = useContext(ThemeContext);
   const styles = createStyles(theme);
 
@@ -55,7 +55,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   }, [fadeAnim]);
 
   const renderHeaderContainer = () => (
-      <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
       <Image
         style={styles.headerImage}
         source={logo['logo_500x500.png']}
@@ -66,7 +66,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
           Please sign in to your account
         </Text>
       </View> */}
-      </Animated.View>
+    </Animated.View>
   );
 
   const renderInputContainer = () => (
@@ -148,7 +148,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   );
 
   return (
-    <View  style={{...styles.container, height: window.height}}>
+    <View style={{ ...styles.container, height: window.height }}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}

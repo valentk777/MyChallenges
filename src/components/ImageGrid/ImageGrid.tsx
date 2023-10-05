@@ -24,7 +24,7 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
 
     return (
       <TouchableOpacity onPress={() => onClose(item.location)} style={item.location == currentIndexLocation ? styles.selectedImage : styles.image}>
-        <Component/>
+        <Component />
       </TouchableOpacity>
     )
   };
