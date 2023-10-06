@@ -88,9 +88,9 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   }
 
   const onEdit = () => {
-    navigation.navigate('AddDailyCalendarChallengeScreen', { 
-      challengeType: ChallengeTypes.DailyBolleanCalendar, 
-      originalChallenge: challenge 
+    navigation.navigate('AddDailyCalendarChallengeScreen', {
+      challengeType: ChallengeTypes.DailyBolleanCalendar,
+      originalChallenge: challenge
     });
   }
 

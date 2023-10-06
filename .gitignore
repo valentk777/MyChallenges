@@ -410,3 +410,4 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 keystore.properties
+google-services.json
