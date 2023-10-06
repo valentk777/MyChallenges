@@ -61,9 +61,9 @@ jobs:
           ANDROID_SIGNING_KEY_BASE64: ${{ secrets.ANDROID_SIGNING_KEY_BASE64 }}
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/my-upload-key.keystore
-          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/my-upload-key.keystore
-          echo $GOOGLE_SERVICES_JSON | base64 --decode > /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/google-services.json
+          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/MyChallenges/MyChallenges/android/my-upload-key.keystore
+          echo $ANDROID_SIGNING_KEY_BASE64 | base64 --decode > /home/runner/work/MyChallenges/MyChallenges/android/app/my-upload-key.keystore
+          echo $GOOGLE_SERVICES_JSON | base64 --decode > /home/runner/work/MyChallenges/MyChallenges/android/app/google-services.json
 
       # - name: Test signing
       #   env:
@@ -84,19 +84,19 @@ jobs:
           cd android
           chmod +x ./gradlew
           ./gradlew bundleRelease --no-daemon
-          cp /home/runner/work/ChallengeTracker/ChallengeTracker/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          cp /home/runner/work/MyChallenges/MyChallenges/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/MyChallenges/MyChallenges/app-release.aab
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Signed Simple Challenge Tracker v-${{ steps.package-version.outputs.current-version }}
-          path: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          name: Signed MyChallenges v-${{ steps.package-version.outputs.current-version }}
+          path: /home/runner/work/MyChallenges/MyChallenges/app-release.aab
 
       - name: Upload App to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.baitupasaulis.challengetracker
-          releaseFiles: /home/runner/work/ChallengeTracker/ChallengeTracker/app-release.aab
+          releaseFiles: /home/runner/work/MyChallenges/MyChallenges/app-release.aab
           track: production
           status: completed

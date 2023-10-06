@@ -29,7 +29,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
         style={styles.image}
         source={logo['logo_500x500.png']}
       />
-      <Text style={styles.text}>Challenge Tracker</Text>
+      <Text style={styles.text}>My Challenges</Text>
     </Animated.View>
   );
 
