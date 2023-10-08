@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, Image, ButtonProps, View, TouchableOpacity } from 'react-native';
 import { Challenge } from '../../entities/challenge';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import { icons } from '../../assets';
 import challengesService from '../../services/challengesService';
@@ -29,7 +29,7 @@ const getCroppedText = (text: string, cropUntil: number) => {
 export const PressableTile = (props: TileProps) => {
   const { onPress, challenge } = props;
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const [isFavorite, onChangeFavorite] = useState(challenge.favorite);

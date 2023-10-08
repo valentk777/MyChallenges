@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image, useWindowDimensions, Animated } from 'react-native';
-import { ThemeContext } from '../contexts/themeContext';
+import { useTheme } from '../hooks/useTheme';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
@@ -15,7 +15,7 @@ type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'RegisterS
 export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const window = useWindowDimensions();
 
-    const { theme } = useContext(ThemeContext);
+    const { theme } = useTheme();
     const styles = createStyles(theme);
 
     const { createUser, signInAnonymously, loginOrSignUpWithGoogle } = useAuth()

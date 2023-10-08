@@ -1,10 +1,9 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { Quantity } from '../../components/Quantity/Quantity';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
-import { ThemeContext } from '../../contexts/themeContext';
 import { TotalCounterChallenge } from '../../entities/challenge';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -14,11 +13,12 @@ import challengesService from '../../services/challengesService';
 import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import { ChallengeTypes } from '../../entities/challengeTypes';
+import { useTheme } from '../../hooks/useTheme';
 
 type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
 export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterChallengeScreenProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const challenge = route.params.challenge;

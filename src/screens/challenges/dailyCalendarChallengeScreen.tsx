@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -19,7 +19,7 @@ import { ChallengeTypes } from '../../entities/challengeTypes';
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
 
 export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalendarChallengeScreenProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const challenge = route.params.challenge;

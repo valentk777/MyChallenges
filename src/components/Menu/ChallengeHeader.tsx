@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useContext } from "react";
+import React from "react";
 import { View, StatusBar, StyleSheet } from "react-native";
-import { ThemeContext } from "../../contexts/themeContext";
+import { useTheme } from '../../hooks/useTheme';
 import { Challenge } from "../../entities/challenge";
 import { MainStackParamList } from "../../navigators/MainStackNavigator";
 import { icons } from "../../assets";
@@ -16,7 +16,7 @@ interface ChallengeHeaderProps {
 }
 
 export const ChallengeHeader = ({ challenge, navigation, onEdit }: ChallengeHeaderProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const onDelete = async () => {

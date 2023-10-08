@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
 export const SaveButton = (props: ButtonProps) => {
   const { onPress, title } = props;
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (

@@ -1,7 +1,7 @@
 // import { NativeStackScreenProps } from '@react-navigation/native-stack';
 // import React, { Component, useContext, useEffect, useState } from 'react';
 // import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-// import { ThemeContext } from '../contexts/themeContext';
+// import { useTheme } from '../hooks/useTheme';
 // import { customTheme } from '../styles/customTheme';
 // import LinearGradient from 'react-native-linear-gradient'
 // import { HomeStackParamList } from '../navigators/MenuTabNavigator';
@@ -16,7 +16,7 @@
 // // }
 
 // export const StatusCalendarScreen = ({ navigation }: StatusCalendarScreenProps) => {
-//   const { theme } = useContext(ThemeContext);
+//   const { theme } = useTheme();
 //   const styles = createStyles(theme);
 
 

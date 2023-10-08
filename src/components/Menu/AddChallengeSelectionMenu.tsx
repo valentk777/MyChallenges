@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import { useNavigation } from '@react-navigation/native';
 import { ChallengeTypes } from '../../entities/challengeTypes';
@@ -12,7 +12,7 @@ interface AddChallengeSelectionMenuProps extends TouchableOpacityProps {
 export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps) => {
   const { children } = props;
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const navigation = useNavigation();

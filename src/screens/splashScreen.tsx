@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { ThemeContext } from '../contexts/themeContext';
+import { useTheme } from '../hooks/useTheme';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { RootStackParamList } from '../navigators/RootNavigator';
@@ -9,7 +9,7 @@ import { RootStackParamList } from '../navigators/RootNavigator';
 type SplashScreenProps = NativeStackScreenProps<RootStackParamList, 'SplashScreen'>;
 
 export const SplashScreen = ({ navigation }: SplashScreenProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (

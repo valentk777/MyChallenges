@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Image } from 'react-native';
-import { ThemeContext } from '../contexts/themeContext';
+import { useTheme } from '../hooks/useTheme';
 import { customTheme } from '../styles/customTheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../screens/challengesScreen';
@@ -22,7 +22,7 @@ export type HomeStackParamList = {
 const HomeTab = createBottomTabNavigator<HomeStackParamList>();
 
 const Menu = () => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (

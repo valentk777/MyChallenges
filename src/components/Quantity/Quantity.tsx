@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import { icons } from '../../assets';
 import { ChallengeContext } from '../../hooks/useChallenge';
@@ -12,7 +12,7 @@ export const Quantity = (props: QuantityProps) => {
   const { challenge, newValue, updateValue } = useContext(ChallengeContext);
   let newLocalValue = newValue;
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
 

@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ThemeContext } from '../contexts/themeContext';
+import { useTheme } from '../hooks/useTheme';
 import { customTheme } from '../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
@@ -11,7 +11,7 @@ import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
 
 const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (

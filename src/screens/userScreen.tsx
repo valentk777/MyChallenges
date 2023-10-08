@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useAuth } from '../hooks/useAuth';
@@ -6,7 +6,7 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UserAccount } from '../entities/user';
 import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
-import { ThemeContext } from '../contexts/themeContext';
+import { useTheme } from '../hooks/useTheme';
 import { customTheme } from '../styles/customTheme';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useTranslations } from '../hooks/useTranslations';
 
 export const UserScreen = () => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const [forceUpdate, setForceUpdate] = useState<number>(0);

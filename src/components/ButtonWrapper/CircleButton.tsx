@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { TouchableOpacity, Image, ImageSourcePropType, StyleSheet } from "react-native";
-import { ThemeContext } from "../../contexts/themeContext";
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from "../../styles/customTheme";
 
 interface AnonymousSignInButtonProps {
@@ -10,7 +10,7 @@ interface AnonymousSignInButtonProps {
 }
 
 export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSignInButtonProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (

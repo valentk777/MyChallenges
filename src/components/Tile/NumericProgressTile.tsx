@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { ChallengeContext } from '../../hooks/useChallenge';
@@ -15,7 +15,7 @@ const getCroppedTest = (text: string, cropUntil: number) => {
 
 export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const { newValue, challenge } = useContext(ChallengeContext);
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
   const percentage = challengesService.getPercentage(newValue, challenge.initialValue, challenge.targetValue);
   const initialPercentage = challengesService.getPercentage(challenge.currentValue, challenge.initialValue, challenge.targetValue)

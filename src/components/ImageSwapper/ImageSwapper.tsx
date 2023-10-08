@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { SvgComponents } from '../../assets/svgIndex';
 import { customTheme } from '../../styles/customTheme';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import ImageGalleryModal from '../ImageGrid/ImageGrid';
 
 interface ImageSwapperProps {
@@ -11,7 +11,7 @@ interface ImageSwapperProps {
 }
 
 const ImageSwapper = ({ onImageChange, initialImageLocation } : ImageSwapperProps) => {
-    const { theme } = useContext(ThemeContext);
+    const { theme } = useTheme();
     const styles = createStyles(theme);
 
     const svgComponentsLenth = SvgComponents.length;

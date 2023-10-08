@@ -1,3 +1,5 @@
+import { baseTheme } from "./baseTheme";
+
 const palette = {
   darkBlue: '#0d132b',
   darkBlue2: '#1f4063',
@@ -12,6 +14,7 @@ const palette = {
 };
 
 export const customTheme = {
+  ...baseTheme,
   colors: {
     primary: palette.darkBlue,
     secondary: palette.darkBlue2,
@@ -40,13 +43,6 @@ export const customTheme = {
     medium: 16,
     large: 18,
     extraLarge: 24,
-  },
-  fonts: {
-    bold: 'Inter-Bold',
-    semiBold: 'Inter-SemiBold',
-    medium: 'Inter-Medium',
-    regular: 'Inter-Regular',
-    light: 'Inter-Light',
   },
   shadows: {
     light: {

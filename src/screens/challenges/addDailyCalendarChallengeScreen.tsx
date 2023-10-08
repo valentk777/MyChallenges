@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
@@ -32,7 +32,7 @@ const dateDiffInDays = (date1: Date, date2: Date) => {
 }
 
 export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const { challengeType, originalChallenge } = route.params;

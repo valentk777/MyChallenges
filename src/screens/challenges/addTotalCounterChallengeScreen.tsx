@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
@@ -19,7 +19,7 @@ import { SvgComponents } from '../../assets/svgIndex';
 type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
 
 export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCounterChallengeScreenProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const { isDetailedCount, challengeType, originalChallenge } = route.params;

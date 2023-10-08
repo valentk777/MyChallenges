@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { customTheme } from '../../styles/customTheme'
-import { ThemeContext } from '../../contexts/themeContext'
+import { useTheme } from '../../hooks/useTheme';
 
 interface SignInButtonProps {
   icon: ImageSourcePropType;
@@ -10,7 +10,7 @@ interface SignInButtonProps {
 }
 
 export const SignInButton = (props: SignInButtonProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const { text, icon, onSignPress } = props;

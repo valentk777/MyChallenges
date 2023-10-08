@@ -1,8 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ActivityIndicator, Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
-import { ThemeContext } from '../../contexts/themeContext';
 import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
 import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
@@ -10,6 +9,7 @@ import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
 import challengesService from '../../services/challengesService';
 import { ChallengeTypes } from '../../entities/challengeTypes';
+import { useTheme } from '../../hooks/useTheme';
 
 type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
 
@@ -21,7 +21,7 @@ interface ChallengesListProps {
 export const ChallengesList = (props: ChallengesListProps) => {
   const { navigation, filteringOptions } = props;
 
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const [challengesFromStorage, setDataSource] = useState([] as Challenge[]);

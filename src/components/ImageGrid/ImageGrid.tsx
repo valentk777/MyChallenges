@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { customTheme } from '../../styles/customTheme';
-import { ThemeContext } from '../../contexts/themeContext';
+import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
 interface ChallengesListProps {
@@ -12,7 +12,7 @@ interface ChallengesListProps {
 }
 
 const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: ChallengesListProps) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useTheme();
   const styles = createStyles(theme);
 
   const imagesToDisplayLenght = imagesToDisplay.length;
