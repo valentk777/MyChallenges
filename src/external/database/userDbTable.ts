@@ -28,9 +28,11 @@ export const updateUser = async (user: UserAccount) => {
 
   try {
     await usersRef.doc(user.id).update(dataWithOnlineStatus);
+
     return {isSuccessfull: true} as AppResponse;
   } catch (error) {
     console.log(error);
+    
     return {isSuccessfull: false, error: error} as AppResponse;
   }
 };

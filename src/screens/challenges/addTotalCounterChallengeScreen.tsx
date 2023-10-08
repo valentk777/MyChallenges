@@ -95,7 +95,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
     challengeCandidate.id = originalChallenge?.id != null ? originalChallenge.id : uuid.v4().toString();
     challengeCandidate.title = title;
     challengeCandidate.description = description;
-    challengeCandidate.initialValue = originalChallenge?.initialValue != null ? originalChallenge.initialValue : 0;
+    challengeCandidate.initialValue = initialValueInt;
     challengeCandidate.currentValue = originalChallenge?.currentValue != null ? originalChallenge.currentValue : 0;
     challengeCandidate.targetValue = targetValueInt;
     challengeCandidate.image = imageLocation;

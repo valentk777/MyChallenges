@@ -57,6 +57,10 @@ change version in packages.json. then run command
 
 # json to base64 in git bash
 cat google-services.json | base64
+
+Icons:
+https://www.svgrepo.com/
+https://developers.facebook.com/apps/1681157749072450/dashboard/
 -->
 
 ## Release

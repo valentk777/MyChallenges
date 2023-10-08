@@ -150,8 +150,13 @@ const logout = async (userId: string) => {
   } as UserAccount;
 
   await userDbTable.updateUser(userData);
-  await GoogleSignin.signOut();
   await auth().signOut();
+
+  try{
+    await GoogleSignin?.signOut();
+  } catch (error) {
+    // do nothing. Maybe not a google loggin.
+  }
 };
 
 const retrievePersistedAuthUser = (listener: any): (() => void) => {
