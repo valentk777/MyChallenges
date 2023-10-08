@@ -31,7 +31,7 @@ const createStyles = (theme: typeof customTheme) => {
     textPrimary: {
       fontSize: 18,
       lineHeight: 35,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       fontFamily: theme.fonts.bold,
     },
     buttonSave: {

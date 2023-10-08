@@ -144,7 +144,7 @@ const createStyles = (theme: typeof customTheme) => {
       width: 70,
       height: 70,
       borderRadius: 35,
-      backgroundColor: theme.colors.input,
+      backgroundColor: theme.colors.tertiary,
     },
     modalContent: {
       flex: 1,
@@ -165,7 +165,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     buttonArea: {
       flex: 1,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       borderRadius: 10,
       margin: '1%',
       justifyContent: 'center',
@@ -192,17 +192,17 @@ const createStyles = (theme: typeof customTheme) => {
     menuTitle: {
       fontSize: 20,
       fontFamily: theme.fonts.regular,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     },
     menuIcon: {
       height: '35%',
-      tintColor: theme.colors.primary,
+      tintColor: theme.colors.tertiary,
     },
     menuComment: {
       flex: 2,
       fontSize: 12,
       fontFamily: theme.fonts.light,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     }
   });
 

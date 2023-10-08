@@ -218,7 +218,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
                 enableSwipeMonths={true}
                 onDayPress={onDayPress}
                 markedDates={{
-                  [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.calendarDay },
+                  [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.tertiary },
                 }}
               />
             </TouchableWithoutFeedback>
@@ -237,7 +237,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
           placeholder='Enter your challenge title...'
           onChangeText={onChangeTitleText}
           value={title}
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
       {renderCalendarContainer(onStartDayPress, hideStartCalendar, isStartModalVisible, startDate, undefined)}
@@ -263,7 +263,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
           onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
           keyboardType="numeric"
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
       <View style={styles.textImput}>
@@ -273,7 +273,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
           placeholder='Enter a short description...'
           onChangeText={onChangeDescriptionText}
           value={description}
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
       <View style={styles.textImput} />
@@ -329,11 +329,11 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
     },
     calendarTheme: {
-      arrowColor: theme.colors.black,
+      arrowColor: theme.colors.canvasInverted,
       textDayFontFamily: theme.fonts.light,
       textMonthFontFamily: theme.fonts.bold,
       textDayHeaderFontFamily: theme.fonts.medium,
-      todayTextColor: theme.colors.calendarDay,
+      todayTextColor: theme.colors.tertiary,
     },
     linearGradient: {
       flex: 1,
@@ -363,7 +363,7 @@ const createStyles = (theme: typeof customTheme) => {
       height: '80%',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      backgroundColor: theme.colors.white
+      backgroundColor: theme.colors.canvas
     },
     imageArea: {
       flex: 1,
@@ -394,21 +394,21 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 3,
       textAlignVertical: 'bottom',
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     },
     textbox: {
       flex: 2,
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.placeholder,
-      borderBottomColor: theme.colors.black,
+      color: theme.colors.secondary,
+      borderBottomColor: theme.colors.canvasInverted,
       borderBottomWidth: 1,
       justifyContent: 'flex-end',
     },
     dateText: {
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.placeholder,
+      color: theme.colors.secondary,
     },
   });
 

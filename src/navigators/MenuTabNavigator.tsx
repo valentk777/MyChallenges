@@ -130,7 +130,7 @@ const createStyles = (theme: typeof customTheme) => {
       left: 20,
       right: 20,
       elevation: 0,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       borderRadius: 15,
       height: 90,
     },
@@ -147,7 +147,7 @@ const createStyles = (theme: typeof customTheme) => {
     createNewIcon: {
       width: 30,
       height: 30,
-      tintColor: theme.colors.white,
+      tintColor: theme.colors.canvas,
     },
     menuText: {
       fontSize: 10,

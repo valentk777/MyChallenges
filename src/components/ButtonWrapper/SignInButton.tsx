@@ -37,11 +37,11 @@ const createStyles = (theme: typeof customTheme) => {
     },
     text: {
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.black,
+      color: theme.colors.primary,
       fontWeight: "600",
     },
     button: {
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       width: '100%',
       height: 45,
       marginTop: 8,

@@ -163,7 +163,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
           placeholder='Enter your challenge title...'
           onChangeText={onChangeTitleText}
           value={title}
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
       {isDetailedCount &&
@@ -176,7 +176,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
             onBlur={() => setNumericValueOrDefault(initialValue, onChangeInitialValueText)}
             value={initialValue}
             keyboardType="numeric"
-            placeholderTextColor={theme.colors.placeholder}
+            placeholderTextColor={theme.colors.secondary}
           />
         </View>}
       <View style={styles.textImput}>
@@ -188,7 +188,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
           onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
           keyboardType="numeric"
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
       <View style={styles.textImput}>
@@ -198,7 +198,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
           placeholder='Enter a short description...'
           onChangeText={onChangeDescriptionText}
           value={description}
-          placeholderTextColor={theme.colors.placeholder}
+          placeholderTextColor={theme.colors.secondary}
         />
       </View>
 
@@ -269,7 +269,7 @@ const createStyles = (theme: typeof customTheme) => {
       height: '80%',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      backgroundColor: theme.colors.white
+      backgroundColor: theme.colors.canvas
     },
     imageArea: {
       flex: 1,
@@ -300,14 +300,14 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 3,
       textAlignVertical: 'bottom',
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     },
     textbox: {
       flex: 2,
       padding: 0,
       fontFamily: theme.fonts.light,
-      color: theme.colors.placeholder,
-      borderBottomColor: theme.colors.black,
+      color: theme.colors.secondary,
+      borderBottomColor: theme.colors.canvasInverted,
       borderBottomWidth: 1,
     },
   });

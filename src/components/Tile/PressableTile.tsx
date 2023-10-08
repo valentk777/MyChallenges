@@ -99,13 +99,13 @@ const createStyles = (theme: typeof customTheme) => {
       flexDirection: 'row',
       height: 90,
       marginTop: 10,
-      borderTopColor: theme.colors.black,
+      borderTopColor: theme.colors.canvasInverted,
       borderTopWidth: 1,
-      borderBottomColor: theme.colors.black,
+      borderBottomColor: theme.colors.canvasInverted,
       borderBottomWidth: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       borderRadius: 10,
     },
     image: {
@@ -128,14 +128,14 @@ const createStyles = (theme: typeof customTheme) => {
     textIcon: {
       flex: 1,
       height: '60%',
-      tintColor: theme.colors.card,
+      tintColor: theme.colors.tertiary,
     },
     title: {
       flex: 4,
       fontSize: 15,
       paddingLeft: 5,
       fontFamily: theme.fonts.medium,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     },
     timeArea: {
       flex: 2,
@@ -145,7 +145,7 @@ const createStyles = (theme: typeof customTheme) => {
     time: {
       fontSize: 10,
       fontFamily: theme.fonts.light,
-      color: theme.colors.black,
+      color: theme.colors.primary,
     },
     heart: {
       flex: 2,
@@ -154,7 +154,7 @@ const createStyles = (theme: typeof customTheme) => {
     hearIcon: {
       height: 30,
       width: 30,
-      tintColor: theme.colors.focused,
+      tintColor: theme.colors.xxxxxx,
     },
     arrowArea: {
       flex: 2,
@@ -164,7 +164,7 @@ const createStyles = (theme: typeof customTheme) => {
     arrowIcon: {
       height: '25%',
       aspectRatio: 1,
-      tintColor: theme.colors.black,
+      tintColor: theme.colors.canvasInverted,
     },
   });
 

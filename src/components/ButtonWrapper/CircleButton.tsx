@@ -21,7 +21,7 @@ export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSign
       <Image
         source={imgUrl}
         resizeMode="contain"
-        style={{ width: 24, height: 24 }}
+        style={styles.image}
       />
     </TouchableOpacity>
   );
@@ -32,12 +32,16 @@ const createStyles = (theme: typeof customTheme) => {
     container: {
       width: 40,
       height: 40,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       position: "absolute",
-      borderRadius: 24,
+      borderRadius: theme.sizes.extraLarge,
       alignItems: "center",
       justifyContent: "center",
     },
+    image: {
+      width: theme.sizes.large,
+      height: theme.sizes.large,
+    }
   });
 
   return styles;

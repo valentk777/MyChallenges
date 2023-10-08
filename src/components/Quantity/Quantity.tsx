@@ -99,23 +99,21 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.3,
     },
     right: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.3,
     },
     verticleLine: {
       height: '70%',
       width: 1,
-      backgroundColor: theme.colors.tile3,
+      backgroundColor: theme.colors.canvasInverted,
     },
     icon: {
       flex: 1,
       width: 60,
-      tintColor: theme.colors.black,
+      tintColor: theme.colors.canvasInverted,
     },
   });
 

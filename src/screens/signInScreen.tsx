@@ -77,7 +77,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
         </Text>
         <TextInput
           placeholder="Enter your email..."
-          placeholderTextColor="#6C6D72"
+          placeholderTextColor={theme.colors.canvasInverted}
           style={styles.textInputStyle}
           onChangeText={setEmail}
         />
@@ -88,7 +88,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
         </Text>
         <TextInput
           placeholder="Enter your password..."
-          placeholderTextColor="#6C6D72"
+          placeholderTextColor={theme.colors.canvasInverted}
           style={styles.textInputStyle}
           secureTextEntry
           onChangeText={setPassword}
@@ -193,7 +193,7 @@ const createStyles = (theme: typeof customTheme) => {
     titleTextStyle: {
       fontFamily: theme.fonts.bold,
       fontSize: 25,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
       fontWeight: "600",
     },
     textInputContainer: {
@@ -208,14 +208,14 @@ const createStyles = (theme: typeof customTheme) => {
     },
     inputText: {
       fontFamily: theme.fonts.medium,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
     },
     textInputStyle: {
       fontFamily: theme.fonts.light,
       padding: 0,
-      borderBottomColor: theme.colors.white,
+      borderBottomColor: theme.colors.canvas,
       borderBottomWidth: 1,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
     },
     signInButtonContainer: {
       flex: 1,
@@ -229,11 +229,11 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 10,
-      backgroundColor: theme.colors.input,
+      backgroundColor: theme.colors.tertiary,
     },
     signInButtonTextStyle: {
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
       fontWeight: "600",
     },
     externalOptionsContainer: {
@@ -249,12 +249,12 @@ const createStyles = (theme: typeof customTheme) => {
     horizontalLine: {
       flex: 1,
       height: 1,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
     },
     orTextStyle: {
       fontSize: 12,
       fontFamily: theme.fonts.light,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
       paddingRight: 20,
       paddingLeft: 20,
     },
@@ -266,7 +266,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     signUpTextStyle: {
       fontFamily: theme.fonts.light,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
       fontSize: 14,
     },
     signUpButtonStyle: {
@@ -275,7 +275,7 @@ const createStyles = (theme: typeof customTheme) => {
     signUpButtonTextStyle: {
       fontSize: 14,
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.input,
+      color: theme.colors.tertiary,
     },
   });
 

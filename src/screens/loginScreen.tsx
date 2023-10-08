@@ -53,7 +53,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
             style={styles.signIn}
             onPress={() => navigation.navigate('SingInScreen', {})}
           >
-            <Text style={{ ...styles.bottomText, color: theme.colors.white }}>SignIn</Text>
+            <Text style={{ ...styles.bottomText, color: theme.colors.canvas }}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -92,7 +92,7 @@ const createStyles = (theme: typeof customTheme) => {
       fontSize: 20,
       lineHeight: 30,
       fontFamily: theme.fonts.bold,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       marginTop: 30,
     },
     register: {
@@ -100,7 +100,7 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
       alignItems: 'center',
       paddingVertical: 16,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       borderTopLeftRadius: 10,
       borderBottomLeftRadius: 10,
     },
@@ -113,11 +113,11 @@ const createStyles = (theme: typeof customTheme) => {
       borderTopRightRadius: 10,
       borderBottomRightRadius: 10,
       borderWidth: 2,
-      borderColor: theme.colors.white,
+      borderColor: theme.colors.canvas,
     },
     bottomText: {
       fontSize: 14,
-      color: theme.colors.black,
+      color: theme.colors.primary,
       fontFamily: theme.fonts.medium,
       fontWeight: '600'
     }

@@ -45,7 +45,7 @@ const createStyles = (theme: typeof customTheme) => {
       lineHeight: 21,
       fontFamily: theme.fonts.light,
       fontWeight: 'bold',
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       marginTop: 30,
     },
   });

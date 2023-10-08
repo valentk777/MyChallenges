@@ -114,7 +114,7 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
     },
     animationContainer: {
       alignItems: 'center',
@@ -142,7 +142,7 @@ const createStyles = (theme: typeof customTheme) => {
       flex: 1
     },
     trashCan: {
-      tintColor: theme.colors.white,
+      tintColor: theme.colors.canvas,
       position: 'absolute',
       top: 15,
       right: 15,

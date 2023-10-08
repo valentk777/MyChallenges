@@ -66,7 +66,7 @@ const createStyles = (theme: typeof customTheme) => {
     modalContent: {
       width: '80%',
       height: '90%',
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       borderRadius: 10,
       overflow: 'hidden',
     },

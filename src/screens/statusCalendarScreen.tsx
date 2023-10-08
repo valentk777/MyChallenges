@@ -196,11 +196,11 @@
 //       calendarBackground: 'red', 
 //       agendaKnobColor: 'green',
 
-//       // arrowColor: theme.colors.black,
+//       // arrowColor: theme.colors.canvasInverted,
 //       textDayFontFamily: theme.fonts.light,
 //       textMonthFontFamily: theme.fonts.bold,
 //       textDayHeaderFontFamily: theme.fonts.medium,
-//       todayTextColor: theme.colors.calendarDay,
+//       todayTextColor: theme.colors.tertiary,
 //     }
 //   });
 //   //   container: {
@@ -220,7 +220,7 @@
 //   //     lineHeight: 21,
 //   //     fontFamily: theme.fonts.light,
 //   //     fontWeight: 'bold',
-//   //     color: theme.colors.text,
+//   //     color: theme.colors.canvas,
 //   //     marginTop: 30,
 //   //   },
 //   // });

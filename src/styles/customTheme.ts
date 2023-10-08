@@ -4,45 +4,49 @@ const palette = {
   darkBlue: '#0d132b',
   darkBlue2: '#1f4063',
   blue1: '#079aa4',
-  electric: '#035471',
+
+  
   darkBlue3: '#242c50',
+
   white: '#FFFFFF',
-  black: '#000000',
+
+
+  electric: '#035471',
   red: '#e32f45',
-  darkRed: '#80211b',
   gray: '#74858C',
 };
+
+
+
+
+
+
+
+
 
 export const customTheme = {
   ...baseTheme,
   colors: {
+    canvas: palette.white,
+    canvasInverted: palette.gray,
+
     primary: palette.darkBlue,
     secondary: palette.darkBlue2,
-    background: palette.darkBlue,
-    primaryButton: palette.darkBlue2,
-    secondaryButton: palette.blue1,
-    border: palette.darkBlue2,
-    card: palette.blue1,
-    text: palette.white,
-    notification: palette.blue1,
-    input: palette.blue1,
-    tile1: palette.blue1,
+    tertiary: palette.blue1,
+
+    xxxxxx: palette.red,
+
+
+
     tile2: palette.electric,
     tile3: palette.darkBlue3,
-    white: palette.white,
-    black: palette.black,
-    focused: palette.red,
-    menuNotFocused: palette.gray,
-    heart: palette.darkRed,
-    calendarDay: palette.blue1,
-    placeholder: palette.darkBlue2,
+
   },
   sizes: {
-    base: 8,
     small: 8,
     medium: 16,
-    large: 18,
-    extraLarge: 24,
+    large: 24,
+    extraLarge: 30,
   },
   shadows: {
     light: {

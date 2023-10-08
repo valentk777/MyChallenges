@@ -55,14 +55,14 @@ const createStyles = (theme: typeof customTheme) => {
     title: {
       paddingTop: '5%',
       fontSize: 23,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       height: '21%',
       fontFamily: theme.fonts.semiBold,
     },
     progress: {
-      activeStrokeColor: theme.colors.white,
-      circleBackgroundColor: theme.colors.tile2,
-      inActiveStrokeColor: theme.colors.black,
+      activeStrokeColor: theme.colors.canvas,
+      circleBackgroundColor: theme.colors.secondary,
+      inActiveStrokeColor: theme.colors.primary,
     },
     descriptionArea: {
       marginTop: '3%',
@@ -73,7 +73,7 @@ const createStyles = (theme: typeof customTheme) => {
     description: {
       fontFamily: theme.fonts.light,
       fontSize: 15,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       alignItems: 'center',
       justifyContent: 'center',
     },

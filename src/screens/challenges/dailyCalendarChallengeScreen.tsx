@@ -34,7 +34,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     let datesDict = {}
 
     dates.forEach(date => {
-      datesDict[date] = { selected: true, selectedColor: theme.colors.calendarDay }
+      datesDict[date] = { selected: true, selectedColor: theme.colors.tertiary }
     });
 
     return datesDict;
@@ -53,7 +53,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     if (selected[day.dateString]) {
       delete selected[day.dateString];
     } else {
-      selected[day.dateString] = { selected: true, selectedColor: theme.colors.calendarDay };
+      selected[day.dateString] = { selected: true, selectedColor: theme.colors.tertiary };
     }
 
     setSelectedDates(selected);
@@ -157,7 +157,7 @@ const createStyles = (theme: typeof customTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
     },
     animationContainer: {
       alignItems: 'center',
@@ -186,11 +186,11 @@ const createStyles = (theme: typeof customTheme) => {
       justifyContent: 'center',
     },
     calendarTheme: {
-      arrowColor: theme.colors.black,
+      arrowColor: theme.colors.canvasInverted,
       textDayFontFamily: theme.fonts.light,
       textMonthFontFamily: theme.fonts.bold,
       textDayHeaderFontFamily: theme.fonts.medium,
-      todayTextColor: theme.colors.calendarDay,
+      todayTextColor: theme.colors.tertiary,
     },
     saveContainer: {
       flex: 1,

@@ -78,7 +78,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
                 </Text>
                 <TextInput
                     placeholder="Enter your email..."
-                    placeholderTextColor="#6C6D72"
+                    placeholderTextColor={theme.colors.canvasInverted}
                     style={styles.textInputStyle}
                     onChangeText={setEmail}
                 />
@@ -89,7 +89,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
                 </Text>
                 <TextInput
                     placeholder="Enter your password..."
-                    placeholderTextColor="#6C6D72"
+                    placeholderTextColor={theme.colors.canvasInverted}
                     style={styles.textInputStyle}
                     secureTextEntry
                     onChangeText={setPassword}
@@ -173,7 +173,6 @@ const createStyles = (theme: typeof customTheme) => {
             flex: 1,
             colors: [theme.colors.primary, theme.colors.secondary],
             alignItems: "center",
-
         },
         mainContainer: {
             flex: 1,
@@ -195,7 +194,7 @@ const createStyles = (theme: typeof customTheme) => {
         titleTextStyle: {
             fontFamily: theme.fonts.bold,
             fontSize: 25,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
             fontWeight: "600",
         },
         textInputContainer: {
@@ -210,14 +209,14 @@ const createStyles = (theme: typeof customTheme) => {
         },
         inputText: {
             fontFamily: theme.fonts.medium,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
         },
         textInputStyle: {
             fontFamily: theme.fonts.light,
             padding: 0,
-            borderBottomColor: theme.colors.white,
+            borderBottomColor: theme.colors.canvas,
             borderBottomWidth: 1,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
         },
         registerButtonContainer: {
             flex: 1,
@@ -231,11 +230,11 @@ const createStyles = (theme: typeof customTheme) => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-            backgroundColor: theme.colors.input,
+            backgroundColor: theme.colors.tertiary,
         },
         registerButtonTextStyle: {
             fontFamily: theme.fonts.semiBold,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
             fontWeight: "600",
         },
         externalOptionsContainer: {
@@ -251,12 +250,12 @@ const createStyles = (theme: typeof customTheme) => {
         horizontalLine: {
             flex: 1,
             height: 1,
-            backgroundColor: theme.colors.white,
+            backgroundColor: theme.colors.canvas,
         },
         orTextStyle: {
             fontSize: 12,
             fontFamily: theme.fonts.light,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
             paddingRight: 20,
             paddingLeft: 20,
         },
@@ -268,7 +267,7 @@ const createStyles = (theme: typeof customTheme) => {
         },
         signInQuestionTextStyle: {
             fontFamily: theme.fonts.light,
-            color: theme.colors.white,
+            color: theme.colors.canvas,
             fontSize: 14,
         },
         signInButtonStyle: {
@@ -277,7 +276,7 @@ const createStyles = (theme: typeof customTheme) => {
         signInButtonTextStyle: {
             fontFamily: theme.fonts.semiBold,
             fontSize: 14,
-            color: theme.colors.input,
+            color: theme.colors.tertiary,
         },
     });
 

@@ -135,7 +135,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     button: {
       position: "absolute",
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.canvas,
       padding: 5,
       borderRadius: 500,
       height: 45,
@@ -147,10 +147,10 @@ const createStyles = (theme: typeof customTheme) => {
     icon: {
       width: 30,
       height: 30,
-      tintColor: theme.colors.black,
+      tintColor: theme.colors.canvasInverted,
     },
     signOut: {
-      tintColor: theme.colors.white,
+      tintColor: theme.colors.canvas,
       top: 30,
       right: 30,
       height: 50,
@@ -177,7 +177,7 @@ const createStyles = (theme: typeof customTheme) => {
     titleTextStyle: {
       fontFamily: theme.fonts.bold,
       fontSize: 25,
-      color: theme.colors.white,
+      color: theme.colors.canvas,
       fontWeight: "600",
     },
     userInfoContainer: {
@@ -189,14 +189,14 @@ const createStyles = (theme: typeof customTheme) => {
       fontSize: 21,
       lineHeight: 21,
       fontFamily: theme.fonts.semiBold,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       marginBottom: 10,
     },
     textSecondary: {
       fontSize: 15,
       lineHeight: 18,
       fontFamily: theme.fonts.light,
-      color: theme.colors.text,
+      color: theme.colors.canvas,
       marginBottom: 30,
     },
     userImageArea: {
