@@ -22,6 +22,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "@types/react": "^18.2.17",
+    "date-fns": "^2.30.0",
     "i18next": "^23.5.1",
     "metro-config": "^0.78.0",
     "npm": "^9.8.1",

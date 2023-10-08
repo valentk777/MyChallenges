@@ -6,12 +6,21 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { UserAccount } from '../entities/user';
 import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
-import timeService from '../services/timeService';
 import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
 import { useTranslation } from 'react-i18next';
+import { USER_PREFERRED_LANGUAGE } from '../external/i18next';
+
+import { format } from 'date-fns'
+import { lt, enUS } from 'date-fns/locale'
+
+// const LOCALE = USER_PREFERRED_LANGUAGE === 'lt' ? 'lt' : 'en'
+const LOCALES = {
+  lt,
+  en: enUS,
+}
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -23,15 +32,17 @@ export const UserScreen = () => {
   const { signOut } = useAuth();
   const { t, i18n } = useTranslation('user-screen')
 
+  const [currentLanguage, setCurrentLanguage ] = useState(USER_PREFERRED_LANGUAGE)
   const userEmail = user?.email === null || user.email === "" ? t("default-user-email") : user.email;
-  const userCreated = timeService.convertUTCToLocalTime(user.createdAt);
+  const userCreated = format(new Date(user.createdAt), 'PPPP', {locale:LOCALES[currentLanguage] });
 
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
     user.profilePictureURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
   }
 
   const changeLanguageHandler = (lang) => {
-    i18n.changeLanguage(lang)
+    i18n.changeLanguage(lang);
+    setCurrentLanguage(lang);
   }
 
   // useEffect(() => {
