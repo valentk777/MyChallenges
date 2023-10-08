@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useAuth } from '../hooks/useAuth';
 import { useCurrentUser } from '../hooks/useCurrentUser';
@@ -11,6 +11,7 @@ import { ThemeContext } from '../contexts/themeContext';
 import { customTheme } from '../styles/customTheme';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
+import { useTranslation } from 'react-i18next';
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -20,12 +21,17 @@ export const UserScreen = () => {
 
   const user = useCurrentUser() as UserAccount;
   const { signOut } = useAuth();
+  const { t, i18n } = useTranslation('user-screen')
 
-  const userEmail = user?.email === null || user.email === "" ? "Login without email" : user.email;
+  const userEmail = user?.email === null || user.email === "" ? t("default-user-email") : user.email;
   const userCreated = timeService.convertUTCToLocalTime(user.createdAt);
 
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
     user.profilePictureURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
+  }
+
+  const changeLanguageHandler = (lang) => {
+    i18n.changeLanguage(lang)
   }
 
   // useEffect(() => {
@@ -97,9 +103,22 @@ export const UserScreen = () => {
             </TouchableOpacity> */}
           </View>
           <View style={styles.userInfoContainer}>
-            <Text style={styles.textPrimary}>User email:</Text>
+            <Text style={styles.textPrimary}>{t("user-language")}</Text>
+            <View style={styles.languages}>
+              <TouchableOpacity
+                onPress={() => changeLanguageHandler("en")}
+                style={styles.languageButton}>
+                <Text style={styles.textPrimary}>EN</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => changeLanguageHandler("lt")}
+                style={styles.languageButton}>
+                <Text style={styles.textPrimary}>LT</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.textPrimary}>{t("user-email")}</Text>
             <Text style={styles.textSecondary}>    {userEmail}</Text>
-            <Text style={styles.textPrimary}>User created:</Text>
+            <Text style={styles.textPrimary}>{t("user-created")}</Text>
             <Text style={styles.textSecondary}>    {userCreated}</Text>
           </View>
         </View>
@@ -203,9 +222,20 @@ const createStyles = (theme: typeof customTheme) => {
       height: 130,
       borderRadius: 500,
     },
+    languages: {
+      flexDirection: 'row',
+    },
+    languageButton: {
+      marginRight: 20,
+      marginLeft: 20,
+    },
+    languageSelected: {
+
+    }
   });
 
   return styles;
 };
 
 export default UserScreen;
+

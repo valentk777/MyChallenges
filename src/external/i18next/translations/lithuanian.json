@@ -1,0 +1,9 @@
+{
+  "user-screen": {
+    "empty-screen-message": "Oops! Something went wrong :(.\nTry again {{userLastName}}, please.",
+    "default-user-email": "Prisijungimas be el. pašto adreso",
+    "user-language": "Vartojo kalba:",
+    "user-email": "Vartojo el. paštas:",
+    "user-created": "Vartojo sukūtimo laikas:"
+  }
+}
