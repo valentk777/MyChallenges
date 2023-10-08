@@ -3,6 +3,9 @@ import {Challenge} from '../entities/challenge';
 import {getData, storeData} from './dataStorageService';
 import userService from './userService';
 import challengesDbTable from '../external/database/challengesDbTable';
+import uuid from 'react-native-uuid';
+import { ProgressStatus } from '../entities/progressStatus';
+import { ChallengeTypes } from '../entities/challengeTypes';
 
 const initChallengesList = async (userId: string) => {
   const response = await challengesDbTable.getChallenges(userId);
@@ -138,11 +141,74 @@ const getPercentage = (
   return percentage;
 };
 
+const createNewChallenge = (
+  title: string,
+  description: string,
+  initial: number,
+  target: number,
+  imageLocation: string,
+  challengeType: ChallengeTypes,
+) => {
+  if (title === '') {
+    Alert.alert('Title cannot be empty');
+    return null;
+  }
+
+  if (title.length > 20) {
+    Alert.alert('Title too long. Max 20 symbols allowed');
+    return null;
+  }
+
+  if (description.length > 90) {
+    Alert.alert('Description too long. Max 90 symbols allowed');
+    return null;
+  }
+
+  if (isNaN(initial)) {
+    Alert.alert('Initial value should be a number');
+    return null;
+  }
+
+  if (initial < 0) {
+    Alert.alert('Initial value should be positive');
+    return null;
+  }
+
+  if (isNaN(target)) {
+    Alert.alert('Target value should be a number');
+    return null;
+  }
+
+  if (target <= 0) {
+    Alert.alert('Target value should be positive');
+    return null;
+  }
+
+  const currentUtcTime = new Date().toISOString();
+  const challengeCandidate = {} as Challenge;
+
+  challengeCandidate.id = uuid.v4().toString();
+  challengeCandidate.title = title;
+  challengeCandidate.description = description;
+  challengeCandidate.initialValue = initial;
+  challengeCandidate.currentValue = initial;
+  challengeCandidate.targetValue = target;
+  challengeCandidate.image = imageLocation;
+  challengeCandidate.timeCreated = currentUtcTime;
+  challengeCandidate.lastTimeUpdated = currentUtcTime;
+  challengeCandidate.favorite = false;
+  challengeCandidate.status = ProgressStatus.NotStarted;
+  challengeCandidate.type = challengeType;
+
+  return challengeCandidate;
+};
+
 const challengesService = {
   getAllChalenges,
   storeChallenge,
   removeChallenge,
   getPercentage,
+  createNewChallenge,
 };
 
 export default challengesService;

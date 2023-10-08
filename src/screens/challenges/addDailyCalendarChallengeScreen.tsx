@@ -45,11 +45,12 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
 
   const [title, onChangeTitleText] = useState(originalChallenge?.title != null ? originalChallenge.title : '');
   const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
+  const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
+  const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
+  
   const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDate());
   const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
-  const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
   const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
-  const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
 
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
@@ -97,32 +98,21 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
     setCurrentImageLocation(newIndex);
   };
 
-  const createNewChallenge = () => {
+  const createOrUpdateChallenge = () => {
+
     const targetValueInt = parseInt(targetValue, 10);
 
-    if (title === "") {
-      Alert.alert("Title cannot be empty");
+    const challengeCandidate = challengesService.createNewChallenge(title, description, 0, targetValueInt, imageLocation, challengeType) as DailyCalendarChallenge;
+
+    if (challengeCandidate == null) {
       return null;
     }
 
-    if (title.length > 20) {
-      Alert.alert("Title too long. Max 20 symbols allowed");
-      return null;
-    }
-
-    if (description.length > 90) {
-      Alert.alert("Description too long. Max 90 symbols allowed");
-      return null;
-    }
-
-    if (targetValueInt === null || isNaN(targetValueInt)) {
-      Alert.alert("Target value should be a number");
-      return null;
-    }
-
-    if (targetValueInt <= 0) {
-      Alert.alert("Target value cannot be 0");
-      return null;
+    if (originalChallenge != null) {
+      challengeCandidate.id = originalChallenge.id;
+      challengeCandidate.timeCreated = originalChallenge.timeCreated;
+      challengeCandidate.favorite = originalChallenge.favorite;
+      challengeCandidate.status = originalChallenge.status;
     }
 
     if (targetValueInt > numberOfDays) {
@@ -135,30 +125,24 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
       return null;
     }
 
-    const currentUtcTime = new Date().toISOString();
-    const challengeCandidate = {} as DailyCalendarChallenge;
-
-    challengeCandidate.id = originalChallenge?.id != null ? originalChallenge.id : uuid.v4().toString();
-    challengeCandidate.title = title;
-    challengeCandidate.description = description;
-    challengeCandidate.initialValue = originalChallenge?.initialValue != null ? originalChallenge.initialValue : 0;
-    challengeCandidate.currentValue = originalChallenge?.currentValue != null ? originalChallenge.currentValue : 0;
-    challengeCandidate.targetValue = targetValueInt;
-    challengeCandidate.image = imageLocation;
-    challengeCandidate.timeCreated = originalChallenge?.timeCreated != null ? originalChallenge.timeCreated : currentUtcTime;
-    challengeCandidate.lastTimeUpdated = currentUtcTime;
-    challengeCandidate.favorite = originalChallenge?.favorite != null ? originalChallenge.favorite : false;
-    challengeCandidate.status = originalChallenge?.status != null ? originalChallenge.status : ProgressStatus.NotStarted;
-    challengeCandidate.type = challengeType;
     challengeCandidate.startDate = startDate;
     challengeCandidate.endDate = endDate;
+
+    let datesCompleted = originalChallenge?.datesCompleted != null ? originalChallenge.datesCompleted : [];
+
+    datesCompleted = datesCompleted.filter(
+      date => startDate <= date &&  date <= endDate,
+    );
+
+    challengeCandidate.datesCompleted = datesCompleted;
+    challengeCandidate.currentValue = datesCompleted.length;
 
     return challengeCandidate;
   }
 
   const onSave = async () => {
     try {
-      const challenge = createNewChallenge();
+      const challenge = createOrUpdateChallenge();
 
       if (challenge === null) {
         return false;

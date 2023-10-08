@@ -1,14 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { useTheme } from '../../hooks/useTheme';
 import { customTheme } from '../../styles/customTheme';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import { TotalCounterChallenge } from '../../entities/challenge';
-import { ProgressStatus } from '../../entities/progressStatus';
-import uuid from 'react-native-uuid';
 import challengesService from '../../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { icons } from '../../assets';
@@ -29,9 +27,10 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
 
   const [title, onChangeTitleText] = useState(originalChallenge?.title != null ? originalChallenge.title : '');
   const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
-  const [initialValue, onChangeInitialValueText] = useState(originalChallenge?.initialValue != null ? originalChallenge.initialValue.toString() : '0');
   const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
   const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
+  
+  const [initialValue, onChangeInitialValueText] = useState(originalChallenge?.initialValue != null ? originalChallenge.initialValue.toString() : '0');
 
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
@@ -49,62 +48,25 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
     return valueInt
   }
 
-  const createNewChallenge = () => {
-    if (title === "") {
-      Alert.alert("Title cannot be empty");
-      return null;
-    }
-
-    if (title.length > 20) {
-      Alert.alert("Title too long. Max 20 symbols allowed");
-      return null;
-    }
-
-    if (description.length > 90) {
-      Alert.alert("Description too long. Max 90 symbols allowed");
-      return null;
-    }
+  const createOrUpdateChallenge = () => {
 
     const initialValueInt = stringToNumber(isDetailedCount, initialValue);
-
-    if (isNaN(initialValueInt)) {
-      Alert.alert("Initial value should be a number");
-      return null;
-    }
-
-    if (initialValueInt < 0) {
-      Alert.alert("Initial value should be positive");
-      return null;
-    }
-
     const targetValueInt = stringToNumber(isDetailedCount, targetValue);
 
-    if (isNaN(targetValueInt)) {
-      Alert.alert("Target value should be a number");
+    const challengeCandidate = challengesService.createNewChallenge(title, description, initialValueInt, targetValueInt, imageLocation, challengeType) as TotalCounterChallenge;
+
+    if (challengeCandidate == null) {
       return null;
     }
 
-    if (targetValueInt <= 0) {
-      Alert.alert("Target value should be positive");
-      return null;
+    if (originalChallenge != null) {
+      challengeCandidate.id = originalChallenge.id;
+      challengeCandidate.currentValue = originalChallenge.currentValue;
+      challengeCandidate.timeCreated = originalChallenge.timeCreated;
+      challengeCandidate.favorite = originalChallenge.favorite;
+      challengeCandidate.status = originalChallenge.status;
     }
 
-    const currentUtcTime = new Date().toISOString();
-    const challengeCandidate = {} as TotalCounterChallenge;
-
-    challengeCandidate.id = originalChallenge?.id != null ? originalChallenge.id : uuid.v4().toString();
-    challengeCandidate.title = title;
-    challengeCandidate.description = description;
-    challengeCandidate.initialValue = initialValueInt;
-    challengeCandidate.currentValue = originalChallenge?.currentValue != null ? originalChallenge.currentValue : 0;
-    challengeCandidate.targetValue = targetValueInt;
-    challengeCandidate.image = imageLocation;
-    challengeCandidate.timeCreated = originalChallenge?.timeCreated != null ? originalChallenge.timeCreated : currentUtcTime;
-    challengeCandidate.timeCreated = currentUtcTime;
-    challengeCandidate.lastTimeUpdated = currentUtcTime;
-    challengeCandidate.favorite = originalChallenge?.favorite != null ? originalChallenge.favorite : false;
-    challengeCandidate.status = originalChallenge?.status != null ? originalChallenge.status : ProgressStatus.NotStarted;
-    challengeCandidate.type = challengeType;
     challengeCandidate.isDetailedCount = isDetailedCount;
 
     return challengeCandidate;
@@ -112,7 +74,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
 
   const onSave = async () => {
     try {
-      const challenge = createNewChallenge();
+      const challenge = createOrUpdateChallenge();
 
       if (challenge === null) {
         return false;
