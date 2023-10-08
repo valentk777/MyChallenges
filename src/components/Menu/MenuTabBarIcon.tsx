@@ -18,12 +18,12 @@ export const MenuTabBarIcon = (props: MenuTabBarIconProps) => {
         source={iconUrl}
         resizeMode="contain"
         style={{
-          tintColor: focused ? theme.colors.xxxxxx : theme.colors.canvasInverted,
+          tintColor: focused ? theme.colors.exceptional : theme.colors.canvasInverted,
           ...styles.menuIcon
         }}
       />
       <Text style={{
-        color: focused ? theme.colors.xxxxxx : theme.colors.canvasInverted,
+        color: focused ? theme.colors.exceptional : theme.colors.canvasInverted,
         ...styles.menuText,
       }}>
         {text}

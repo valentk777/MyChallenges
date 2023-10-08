@@ -1,46 +1,20 @@
 import { baseTheme } from "./baseTheme";
 
 const palette = {
-  darkBlue: '#0d132b',
-  darkBlue2: '#1f4063',
-  blue1: '#079aa4',
+  canvas: '#FFFFFF',
+  canvasInverted: '#74858C',
 
-  
-  darkBlue3: '#242c50',
+  primary: '#0d132b',
+  secondary: '#1f4063',
+  tertiary: '#079aa4',
 
-  white: '#FFFFFF',
-
-
-  electric: '#035471',
-  red: '#e32f45',
-  gray: '#74858C',
+  exceptional: '#e32f45',
 };
-
-
-
-
-
-
-
-
 
 export const customTheme = {
   ...baseTheme,
   colors: {
-    canvas: palette.white,
-    canvasInverted: palette.gray,
-
-    primary: palette.darkBlue,
-    secondary: palette.darkBlue2,
-    tertiary: palette.blue1,
-
-    xxxxxx: palette.red,
-
-
-
-    tile2: palette.electric,
-    tile3: palette.darkBlue3,
-
+    ...palette
   },
   sizes: {
     small: 8,
@@ -50,7 +24,7 @@ export const customTheme = {
   },
   shadows: {
     light: {
-      shadowColor: palette.gray,
+      shadowColor: palette.canvasInverted,
       shadowOffset: {
         width: 0,
         height: 1,
@@ -61,7 +35,7 @@ export const customTheme = {
       elevation: 3,
     },
     medium: {
-      shadowColor: palette.gray,
+      shadowColor: palette.canvasInverted,
       shadowOffset: {
         width: 0,
         height: 3,
@@ -72,7 +46,7 @@ export const customTheme = {
       elevation: 7,
     },
     dark: {
-      shadowColor: palette.gray,
+      shadowColor: palette.canvasInverted,
       shadowOffset: {
         width: 0,
         height: 7,
@@ -83,7 +57,7 @@ export const customTheme = {
       elevation: 14,
     },
     primary: {
-      shadowColor: palette.blue1,
+      shadowColor: palette.tertiary,
       shadowOpacity: 0.25,
       shadowRadius: 3.5,
       elevation: 5,

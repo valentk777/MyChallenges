@@ -154,7 +154,7 @@ const createStyles = (theme: typeof customTheme) => {
     hearIcon: {
       height: 30,
       width: 30,
-      tintColor: theme.colors.xxxxxx,
+      tintColor: theme.colors.exceptional,
     },
     arrowArea: {
       flex: 2,
