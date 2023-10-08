@@ -11,16 +11,7 @@ import { customTheme } from '../styles/customTheme';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
 import { useTranslation } from 'react-i18next';
-import { USER_PREFERRED_LANGUAGE } from '../external/i18next';
-
-import { format } from 'date-fns'
-import { lt, enUS } from 'date-fns/locale'
-
-// const LOCALE = USER_PREFERRED_LANGUAGE === 'lt' ? 'lt' : 'en'
-const LOCALES = {
-  lt,
-  en: enUS,
-}
+import { useTranslations } from '../hooks/useTranslations';
 
 export const UserScreen = () => {
   const { theme } = useContext(ThemeContext);
@@ -30,19 +21,14 @@ export const UserScreen = () => {
 
   const user = useCurrentUser() as UserAccount;
   const { signOut } = useAuth();
-  const { t, i18n } = useTranslation('user-screen')
+  const { t } = useTranslation('user-screen')
+  const { changeLanguage, tTime } = useTranslations();
 
-  const [currentLanguage, setCurrentLanguage ] = useState(USER_PREFERRED_LANGUAGE)
   const userEmail = user?.email === null || user.email === "" ? t("default-user-email") : user.email;
-  const userCreated = format(new Date(user.createdAt), 'PPPP', {locale:LOCALES[currentLanguage] });
+  const userCreated = tTime(user.createdAt);
 
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
     user.profilePictureURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';
-  }
-
-  const changeLanguageHandler = (lang) => {
-    i18n.changeLanguage(lang);
-    setCurrentLanguage(lang);
   }
 
   // useEffect(() => {
@@ -117,12 +103,12 @@ export const UserScreen = () => {
             <Text style={styles.textPrimary}>{t("user-language")}</Text>
             <View style={styles.languages}>
               <TouchableOpacity
-                onPress={() => changeLanguageHandler("en")}
+                onPress={() => changeLanguage("en")}
                 style={styles.languageButton}>
                 <Text style={styles.textPrimary}>EN</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => changeLanguageHandler("lt")}
+                onPress={() => changeLanguage("lt")}
                 style={styles.languageButton}>
                 <Text style={styles.textPrimary}>LT</Text>
               </TouchableOpacity>
@@ -240,9 +226,6 @@ const createStyles = (theme: typeof customTheme) => {
       marginRight: 20,
       marginLeft: 20,
     },
-    languageSelected: {
-
-    }
   });
 
   return styles;

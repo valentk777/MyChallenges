@@ -12,7 +12,6 @@ import { SignInButton } from '../components/ButtonWrapper/SignInButton';
 
 type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'RegisterScreen'>;
 
-
 export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const window = useWindowDimensions();
 

@@ -20,6 +20,7 @@ const registerWithEmail = (user: LoginUser) => {
           email: user.email,
           createdAt: timeService.getCurrentDateString(),
           profilePictureURL: defaultProfilePhotoURL,
+          language: 'en'
         } as UserAccount;
 
         // Store user info to database. We do not await here.
@@ -177,6 +178,7 @@ const signInWithCredential = (credential: any, socialAuthType: string) => {
           email: email || '',
           profilePictureURL: photoURL || defaultProfilePhotoURL,
           createdAt: timestamp,
+          language: 'en'
         } as UserAccount;
 
         if (isNewUser) {

@@ -14,4 +14,5 @@ export interface UserAccount extends User {
   profilePictureURL: string | null;
   isOnline: boolean;
   lastOnlineTimestamp: string | null;
+  language: string | null;
 }
