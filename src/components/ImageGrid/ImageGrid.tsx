@@ -24,9 +24,12 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
 
     return (
       <TouchableOpacity onPress={() => onClose(item.location)} style={styles.image}>
-        <Component style={item.location == currentIndexLocation ? styles.selectedImage : {}}  
-        backgroundColor={theme.colors.tertiary}
-         mainColor={theme.colors.tertiary}/>
+        <Component
+          backgroundColor={item.location == currentIndexLocation ? theme.colors.secondary : theme.colors.tertiary}
+          primaryColor={theme.colors.tertiary}
+          secondaryColor={theme.colors.canvas}
+          borderColor={theme.colors.primary}
+        />
       </TouchableOpacity>
     )
   };
@@ -79,7 +82,7 @@ const createStyles = (theme: typeof customTheme) => {
     },
     selectedImage: {
       // borderRadius: 10,
-      // backgroundColor: 'rgba(0, 0, 0, 0.15)',
+      backgroundColor: 'rgba(0, 0, 0, 0.15)',
     },
   });
 
