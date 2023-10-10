@@ -15,4 +15,5 @@ export interface UserAccount extends User {
   isOnline: boolean;
   lastOnlineTimestamp: string | null;
   language: string | null;
+  theme: string | null;
 }
