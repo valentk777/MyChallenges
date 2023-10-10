@@ -1,0 +1,53 @@
+{
+  "user-screen": {
+    "default-email": "Inicio de sesión sin correo electrónico",
+    "language": "Idioma:",
+    "email": "Correo electrónico:",
+    "created": "Cuenta creada:",
+    "theme": "Seleccionar tema:"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Conteo simple",
+    "simple-total-count-description": "Realizar seguimiento de la asistencia, eventos, viajes y más",
+    "total-detailed-count-title": "Conteo detallado",
+    "total-detailed-count-description": "Controlar el peso, la altura y más",
+    "daily-progress-title": "Progreso diario",
+    "daily-progress-description": "Seguir rutinas, salud y hábitos de lectura"
+  },
+  "menu-tab-navigator": {
+    "active": "ACTIVO",
+    "top": "PRINCIPAL",
+    "done": "HECHO",
+    "user": "USUARIO"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Guardar",
+    "title": "Título del desafío",
+    "title-placeholder": "Ingrese el título de su desafío...",
+    "start-date": "Fecha de inicio",
+    "start-date-placeholder": "Seleccione el primer día del desafío...",
+    "end-date": "Fecha de fin",
+    "end-date-placeholder": "Seleccione el último día del desafío...",
+    "target-value": "Días para completar (máx: {{numberOfDays}} días)",
+    "target-value-placeholder": "Ingrese el número de días...",
+    "description": "Comentario",
+    "description-placeholder": "Agregue una breve descripción, comentario o nota..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Guardar"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Guardar",
+    "title": "Título del desafío",
+    "title-placeholder": "Ingrese el título de su desafío...",
+    "initial-value": "Valor inicial",
+    "initial-value-placeholder": "Ingrese un valor numérico inicial...",
+    "target-value": "Valor objetivo",
+    "target-value-placeholder": "Ingrese el número objetivo...",
+    "description": "Comentario",
+    "description-placeholder": "Agregue una breve descripción, comentario o nota..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Guardar"
+  }
+}

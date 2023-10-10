@@ -101,12 +101,32 @@ export const UserScreen = () => {
         <TouchableOpacity
           onPress={async () => await changeLanguage("en")}
           style={styles.languageButton}>
-          <Text style={styles.textPrimary}>EN</Text>
+          <Text style={styles.textLanguage}>EN</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={async () => await changeLanguage("lt")}
           style={styles.languageButton}>
-          <Text style={styles.textPrimary}>LT</Text>
+          <Text style={styles.textLanguage}>LT</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => await changeLanguage("lv")}
+          style={styles.languageButton}>
+          <Text style={styles.textLanguage}>LV</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => await changeLanguage("fr")}
+          style={styles.languageButton}>
+          <Text style={styles.textLanguage}>FR</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => await changeLanguage("es")}
+          style={styles.languageButton}>
+          <Text style={styles.textLanguage}>ES</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={async () => await changeLanguage("pt")}
+          style={styles.languageButton}>
+          <Text style={styles.textLanguage}>PT</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.textPrimary}>{t("email")}</Text>
@@ -211,6 +231,11 @@ const createStyles = (theme: AppTheme) => {
       color: theme.colors.canvas,
       marginBottom: 10,
     },
+    textLanguage: {
+      fontSize: 18,
+      fontFamily: theme.fonts.semiBold,
+      color: theme.colors.canvas,
+    },
     textSecondary: {
       fontSize: 15,
       lineHeight: 18,
@@ -242,8 +267,16 @@ const createStyles = (theme: AppTheme) => {
       flexDirection: 'row',
     },
     languageButton: {
-      marginRight: 20,
-      marginLeft: 20,
+      marginLeft: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      borderColor: theme.colors.canvasInverted,
+      backgroundColor: theme.colors.primary,
+      borderWidth: 2,
+      width: 35,
+      aspectRatio: 1,
+      marginBottom: 10,
     },
     themeContainer: {
       flex: 2,

@@ -5,6 +5,10 @@ import * as RNLocalize from 'react-native-localize';
 
 import english from './translations/english.json';
 import lithuanian from './translations/lithuanian.json';
+import france from './translations/france.json';
+import latvian from './translations/latvian.json';
+import portuguese from './translations/portuguese.json';
+import spanish from './translations/spanish.json';
 
 export const USER_PREFERRED_LANGUAGE = RNLocalize.getLocales()[0].languageCode;
 
@@ -23,6 +27,10 @@ const LANGUAGE_DETECTOR = {
 const RESOURCES = {
   en: english,
   lt: lithuanian,
+  pt: portuguese,
+  es: spanish,
+  fr: france,
+  lv: latvian,
 };
 
 i18n

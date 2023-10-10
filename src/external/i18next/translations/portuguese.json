@@ -1,0 +1,53 @@
+{
+  "user-screen": {
+    "default-email": "Login sem email",
+    "language": "Idioma:",
+    "email": "Email:",
+    "created": "Conta criada:",
+    "theme": "Selecione o tema:"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Contagem simples",
+    "simple-total-count-description": "Acompanhe presença, eventos, viagens e mais",
+    "total-detailed-count-title": "Contagem detalhada",
+    "total-detailed-count-description": "Monitore peso, altura e mais",
+    "daily-progress-title": "Progresso diário",
+    "daily-progress-description": "Acompanhe rotinas, saúde e hábitos de leitura"
+  },
+  "menu-tab-navigator": {
+    "active": "ATIVO",
+    "top": "TOPO",
+    "done": "CONCLUÍDO",
+    "user": "USUÁRIO"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Salvar",
+    "title": "Título do desafio",
+    "title-placeholder": "Digite o título do seu desafio...",
+    "start-date": "Data de início",
+    "start-date-placeholder": "Escolha o primeiro dia do desafio...",
+    "end-date": "Data de término",
+    "end-date-placeholder": "Escolha o último dia do desafio...",
+    "target-value": "Dias para completar (máx: {{numberOfDays}} dias)",
+    "target-value-placeholder": "Digite o número de dias...",
+    "description": "Comentário",
+    "description-placeholder": "Adicione uma breve descrição, comentário ou nota..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Salvar"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Salvar",
+    "title": "Título do desafio",
+    "title-placeholder": "Digite o título do seu desafio...",
+    "initial-value": "Valor inicial",
+    "initial-value-placeholder": "Digite um valor numérico inicial...",
+    "target-value": "Valor alvo",
+    "target-value-placeholder": "Digite o número alvo...",
+    "description": "Comentário",
+    "description-placeholder": "Adicione uma breve descrição, comentário ou nota..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Salvar"
+  }
+}

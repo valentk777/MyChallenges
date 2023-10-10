@@ -1,0 +1,53 @@
+{
+  "user-screen": {
+    "default-email": "Pieslēgties bez e-pasta",
+    "language": "Valoda:",
+    "email": "E-pasts:",
+    "created": "Konta izveidota:",
+    "theme": "Izvēlieties tēmu:"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Vienkāršs skaitītājs",
+    "simple-total-count-description": "Uzraudzīt dalību, pasākumus, ceļojumus un citu informāciju",
+    "total-detailed-count-title": "Detalizēts skaitītājs",
+    "total-detailed-count-description": "Uzraudzīt svaru, augstumu un citu informāciju",
+    "daily-progress-title": "Dienas progres",
+    "daily-progress-description": "Uzraudzīt ikdienu, veselību un lasīšanas ieradumus"
+  },
+  "menu-tab-navigator": {
+    "active": "AKTĪVS",
+    "top": "TOPS",
+    "done": "DARĪTS",
+    "user": "LIETOTĀJS"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Saglabāt",
+    "title": "Izzaukuma nosaukums",
+    "title-placeholder": "Ievadiet savu izzaukuma nosaukumu...",
+    "start-date": "Sākuma datums",
+    "start-date-placeholder": "Izvēlieties izzaukuma sākuma dienu...",
+    "end-date": "Beigu datums",
+    "end-date-placeholder": "Izvēlieties izzaukuma beigu dienu...",
+    "target-value": "Dienas līdz pabeigšanai   (maks.: {{numberOfDays}} dienas)",
+    "target-value-placeholder": "Ievadiet dienu skaitu...",
+    "description": "Komentārs",
+    "description-placeholder": "Pievienojiet īsu aprakstu, komentāru vai piezīmi..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Saglabāt"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Saglabāt",
+    "title": "Izzaukuma nosaukums",
+    "title-placeholder": "Ievadiet savu izzaukuma nosaukumu...",
+    "initial-value": "Sākotnējā vērtība",
+    "initial-value-placeholder": "Ievadiet sākotnējo skaitlisko vērtību...",
+    "target-value": "Mērķa vērtība",
+    "target-value-placeholder": "Ievadiet mērķa skaitlisko vērtību...",
+    "description": "Komentārs",
+    "description-placeholder": "Pievienojiet īsu aprakstu, komentāru vai piezīmi..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Saglabāt"
+  }
+}

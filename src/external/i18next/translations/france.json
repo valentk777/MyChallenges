@@ -1,0 +1,53 @@
+{
+  "user-screen": {
+    "default-email": "Connexion sans email",
+    "language": "Langue :",
+    "email": "Email :",
+    "created": "Compte créé :",
+    "theme": "Sélectionnez le thème :"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Comptage simple",
+    "simple-total-count-description": "Suivi de la présence, des événements, des voyages et plus",
+    "total-detailed-count-title": "Comptage détaillé",
+    "total-detailed-count-description": "Surveillance du poids, de la taille et plus",
+    "daily-progress-title": "Progrès quotidien",
+    "daily-progress-description": "Suivi des routines, de la santé et des habitudes de lecture"
+  },
+  "menu-tab-navigator": {
+    "active": "ACTIF",
+    "top": "HAUT",
+    "done": "TERMINÉ",
+    "user": "UTILISATEUR"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Enregistrer",
+    "title": "Titre du défi",
+    "title-placeholder": "Entrez le titre de votre défi...",
+    "start-date": "Date de début",
+    "start-date-placeholder": "Choisissez le premier jour du défi...",
+    "end-date": "Date de fin",
+    "end-date-placeholder": "Choisissez le dernier jour du défi...",
+    "target-value": "Jours pour terminer (max : {{numberOfDays}} jours)",
+    "target-value-placeholder": "Entrez le nombre de jours...",
+    "description": "Commentaire",
+    "description-placeholder": "Ajoutez une brève description, un commentaire ou une note..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Enregistrer"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Enregistrer",
+    "title": "Titre du défi",
+    "title-placeholder": "Entrez le titre de votre défi...",
+    "initial-value": "Valeur initiale",
+    "initial-value-placeholder": "Entrez une valeur numérique initiale...",
+    "target-value": "Valeur cible",
+    "target-value-placeholder": "Entrez le nombre cible...",
+    "description": "Commentaire",
+    "description-placeholder": "Ajoutez une brève description, un commentaire ou une note..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Enregistrer"
+  }
+}

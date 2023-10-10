@@ -1,7 +1,7 @@
 import React, { ProviderProps, createContext, useContext, useEffect, useState } from 'react';
 import i18n, { USER_PREFERRED_LANGUAGE } from '../external/i18next';
 import { format } from 'date-fns'
-import { lt, enUS } from 'date-fns/locale'
+import { lt, enUS, lv, pt, es, fr } from 'date-fns/locale'
 import userService from '../services/userService';
 import { useCurrentUser } from './useCurrentUser';
 import { LocaleConfig } from 'react-native-calendars';
@@ -10,6 +10,10 @@ import { hourPickerLocales } from '../external/i18next/translations/hourPickerLo
 const LOCALES = {
   lt,
   en: enUS,
+  lv,
+  pt,
+  es,
+  fr,
 }
 
 interface ITranslationContext {
@@ -31,9 +35,10 @@ interface TranslationContextProviderProps
 const changeDatesInCalendar = (language: string) => {
   LocaleConfig.locales['en'] = hourPickerLocales['en'];
   LocaleConfig.locales['lt'] = hourPickerLocales['lt'];
-  // LocaleConfig.locales['pt'] = hourPickerLocales['pt'];
-  // LocaleConfig.locales['es'] = hourPickerLocales['es'];
-  // LocaleConfig.locales['fr'] = hourPickerLocales['fr'];
+  LocaleConfig.locales['pt'] = hourPickerLocales['pt'];
+  LocaleConfig.locales['es'] = hourPickerLocales['es'];
+  LocaleConfig.locales['fr'] = hourPickerLocales['fr'];
+  LocaleConfig.locales['lv'] = hourPickerLocales['lv'];
 
   LocaleConfig.defaultLocale = language;
 }
