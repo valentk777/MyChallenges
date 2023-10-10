@@ -60,7 +60,7 @@ export const PressableTile = (props: TileProps) => {
   return (
     <TouchableOpacity style={[styles.container, theme.shadows.primary]} onPress={onPress}>
       <View style={styles.image}>
-        <ImageComponent width={60} height={60} />
+        <ImageComponent width={60} height={60} backgroundColor={theme.colors.tertiary} mainColor={theme.colors.tertiary}/>
       </View>
       <View style={styles.textArea}>
         <View style={styles.titleArea}>

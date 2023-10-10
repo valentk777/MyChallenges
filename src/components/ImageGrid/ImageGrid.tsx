@@ -24,7 +24,9 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
 
     return (
       <TouchableOpacity onPress={() => onClose(item.location)} style={styles.image}>
-        <Component style={item.location == currentIndexLocation ? styles.selectedImage : {}} />
+        <Component style={item.location == currentIndexLocation ? styles.selectedImage : {}}  
+        backgroundColor={theme.colors.tertiary}
+         mainColor={theme.colors.tertiary}/>
       </TouchableOpacity>
     )
   };

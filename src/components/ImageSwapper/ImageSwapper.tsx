@@ -49,7 +49,7 @@ const ImageSwapper = ({ onImageChange, initialImageLocation } : ImageSwapperProp
                 activeOpacity={0.9}
                 style={{ ...styles.imageContainer, width: containerWidth }}
             >
-                <Component />
+                <Component backgroundColor={theme.colors.tertiary} mainColor={theme.colors.tertiary}/>
             </TouchableOpacity>
         );
     };

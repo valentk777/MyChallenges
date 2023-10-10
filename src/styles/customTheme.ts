@@ -4,11 +4,11 @@ const palette = {
   canvas: '#FFFFFF',
   canvasInverted: '#74858C',
 
-  primary: '#0d132b',
-  secondary: '#1f4063',
-  tertiary: '#079aa4',
+  primary: '#0d132B',
+  secondary: '#1F4063',
+  tertiary: '#079AA4',
 
-  exceptional: '#e32f45',
+  exceptional: '#E32F45',
 };
 
 export const customTheme = {
