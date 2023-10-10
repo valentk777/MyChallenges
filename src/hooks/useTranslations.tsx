@@ -1,7 +1,9 @@
-import React, { ProviderProps, createContext, useContext, useState } from 'react';
+import React, { ProviderProps, createContext, useContext, useEffect, useState } from 'react';
 import i18n, { USER_PREFERRED_LANGUAGE } from '../external/i18next';
 import { format } from 'date-fns'
 import { lt, enUS } from 'date-fns/locale'
+import userService from '../services/userService';
+import { useCurrentUser } from './useCurrentUser';
 
 const LOCALES = {
   lt,
@@ -10,7 +12,7 @@ const LOCALES = {
 
 interface ITranslationContext {
   currentLanguage: string;
-  changeLanguage: (language: string) => void;
+  changeLanguage: (language: string) => Promise<void>;
   tTime: (date: string) => string;
 };
 
@@ -25,11 +27,26 @@ interface TranslationContextProviderProps
 }
 
 export const TranslationProvider = ({ children }: TranslationContextProviderProps) => {
+  const user = useCurrentUser();
   const [currentLanguage, setCurrentLanguage] = useState(USER_PREFERRED_LANGUAGE)
 
-  const changeLanguage = (language) => {
+  useEffect(() => {
+    const getCurrentLanguageOrDefault = () => {
+      if (user?.language == null || user?.language == undefined) {
+        return USER_PREFERRED_LANGUAGE;
+      }
+
+      setCurrentLanguage(user.language);
+    }
+
+    getCurrentLanguageOrDefault();
+  }, [user]);
+
+  const changeLanguage = async (language) => {
     i18n.changeLanguage(language);
     setCurrentLanguage(language);
+
+    await userService.updateUserLanguage(language);
   }
 
   const tTime = (date: string) => {

@@ -3,7 +3,7 @@ import {getData, removeData, storeData} from './dataStorageService';
 import {UserAccount} from '../entities/user';
 import userDbTable from '../external/database/userDbTable';
 
-const getCurrentUser = async () => {
+const getCurrentUser = async (): Promise<UserAccount> => {
   return await getData('current_user').catch(error => {
     Alert.alert(error.message);
   });
@@ -16,7 +16,7 @@ const updateUser = async (user: UserAccount | null) => {
 };
 
 const updateUserPicture = async (userPicture: string) => {
-  const user = await getData('current_user');
+  const user = await getCurrentUser();
   user.profilePictureURL = userPicture;
 
   // TODO: uploade image to assets and asing new url from here.
@@ -32,8 +32,21 @@ const updateUserPicture = async (userPicture: string) => {
 };
 
 const updateUserTheme = async (theme: string) => {
-  const user = await getData('current_user');
+  const user = await getCurrentUser();
   user.theme = theme;
+
+  await storeData('current_user', user).catch(error => {
+    Alert.alert(error.message);
+  });
+
+  await userDbTable.updateUser(user).catch(error => {
+    Alert.alert(error.message);
+  });
+};
+
+const updateUserLanguage = async (language: string) => {
+  const user = await getCurrentUser();
+  user.language = language;
 
   await storeData('current_user', user).catch(error => {
     Alert.alert(error.message);
@@ -55,6 +68,7 @@ const userService = {
   updateUser,
   updateUserPicture,
   updateUserTheme,
+  updateUserLanguage,
   deleteUser,
 };
 

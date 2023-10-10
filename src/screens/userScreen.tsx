@@ -99,12 +99,12 @@ export const UserScreen = () => {
       <Text style={styles.textPrimary}>{t("user-language")}</Text>
       <View style={styles.languages}>
         <TouchableOpacity
-          onPress={() => changeLanguage("en")}
+          onPress={async () => await changeLanguage("en")}
           style={styles.languageButton}>
           <Text style={styles.textPrimary}>EN</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => changeLanguage("lt")}
+          onPress={async () => await changeLanguage("lt")}
           style={styles.languageButton}>
           <Text style={styles.textPrimary}>LT</Text>
         </TouchableOpacity>
