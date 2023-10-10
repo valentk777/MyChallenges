@@ -267,7 +267,6 @@ const signInAnonymously = () => {
         .then(response => {
           const isNewUser = response.additionalUserInfo.isNewUser;
           const {uid, email} = response.user;
-
           const timestamp = timeService.getCurrentDateString();
           const userData = {
             id: uid,

@@ -43,14 +43,17 @@ export const ThemeProvider = ({ children }: ThemeContextProviderProps) => {
 
   useEffect(() => {
     const getCurrentThemeOrDefault = () => {
-      if (user?.theme == null || user?.theme == undefined) {
-        return darkBlueTheme;
+
+      if (user?.theme == null || user?.theme == undefined || !user.isOnline) {
+        setCurrentTheme(darkBlueTheme);
+        return;
       }
 
       const selected = themesMap.filter(x => x.name == user?.theme);
 
       if (selected.length == 0) {
-        return darkBlueTheme;
+        setCurrentTheme(darkBlueTheme);
+        return;
       }
 
       setCurrentTheme(selected[0].theme);
