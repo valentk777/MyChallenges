@@ -4,14 +4,14 @@ import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
-interface ChallengesListProps {
+interface ImageGalleryModalProps {
   visible: boolean;
   imagesToDisplay: any[];
   onClose: (imageLocation: string) => void;
   currentIndex: number;
 }
 
-const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: ChallengesListProps) => {
+const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: ImageGalleryModalProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 

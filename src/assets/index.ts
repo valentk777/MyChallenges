@@ -20,6 +20,9 @@ export const icons = {
   'read.png': require('./icons/read.png'),
   'trash.png': require('./icons/trash.png'),
   'user.png': require('./icons/user.png'),
+  'light-mode.png': require('./icons/light-mode.png'),
+  'night-mode.png': require('./icons/night-mode.png'),
+  'halloween.png': require('./icons/halloween.png'),
 }
 
 export const images = {

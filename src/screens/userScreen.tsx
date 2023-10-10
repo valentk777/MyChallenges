@@ -12,7 +12,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
 import { useTranslation } from 'react-i18next';
 import { useTranslations } from '../hooks/useTranslations';
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
+import ThemesList from '../components/ThemesList/ThemesList';
 
 export const UserScreen = () => {
   const { theme } = useTheme();
@@ -119,16 +119,7 @@ export const UserScreen = () => {
   const renderUserThemeContainer = () => (
     <View style={styles.themeContainer}>
       <Text style={styles.textPrimary}>{t("user-theme")}</Text>
-      <View style={styles.themeContainer}>
-        {/* <FlatList
-          data={imagesToDisplay}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.location}
-          horizontal={true}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        /> */}
-      </View>
+      <ThemesList />
     </View>
   );
 
@@ -255,11 +246,8 @@ const createStyles = (theme: AppTheme) => {
       marginLeft: 20,
     },
     themeContainer: {
-      backgroundColor: 'green',
       flex: 2,
       width: "70%",
-      alignItems: "flex-start",
-      flexDirection: 'row',
     },
     empty: {
       flex: 2
