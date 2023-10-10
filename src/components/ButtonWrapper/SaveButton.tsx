@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -26,7 +26,7 @@ export const SaveButton = (props: ButtonProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     textPrimary: {
       fontSize: 18,
@@ -37,7 +37,7 @@ const createStyles = (theme: typeof customTheme) => {
     buttonSave: {
       height: '100%',
       width: '100%',
-      colors: [theme.colors.primary, '#242c50', theme.colors.secondary],
+      colors: [theme.colors.primary, theme.colors.secondary],
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 5,

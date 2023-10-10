@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Animated, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
 import { useAuth } from '../hooks/useAuth';
@@ -164,7 +164,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
     },

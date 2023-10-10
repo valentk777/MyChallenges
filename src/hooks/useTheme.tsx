@@ -1,12 +1,15 @@
 import React, { ProviderProps, createContext, useContext, useMemo, useState } from 'react';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 
 interface IThemeContext {
-  theme: typeof customTheme;
+  theme: AppTheme;
+
+  getAllThemes: () => void;
 }
 
 export const ThemeContext = createContext<IThemeContext>({
   theme: customTheme,
+  getAllThemes: () => {}
 });
 
 interface ThemeContextProviderProps
@@ -14,6 +17,13 @@ interface ThemeContextProviderProps
 }
 
 export const ThemeProvider = ({ children }: ThemeContextProviderProps) => {
+  const data = [
+    { name: 'darkBlue', theme: customTheme },
+    { key: 'item2', text: 'Item 2' },
+    { key: 'item3', text: 'Item 3' },
+    // Add more items as needed
+  ];
+
   const [currentTheme, setCurrentTheme] = useState(customTheme)
 
   const values = useMemo(() => ({ theme: currentTheme }), []);

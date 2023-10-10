@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, TouchableWithoutFeedback, View } from 'react-native';
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import { useNavigation } from '@react-navigation/native';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { icons } from '../../assets';
@@ -133,7 +133,7 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       top: -30,

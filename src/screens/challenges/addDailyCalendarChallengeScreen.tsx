@@ -3,11 +3,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
-import { ProgressStatus } from '../../entities/progressStatus';
-import uuid from 'react-native-uuid';
 import challengesService from '../../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { icons } from '../../assets';
@@ -17,6 +15,7 @@ import { SvgComponents } from '../../assets/svgIndex';
 import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
+import { Theme } from 'react-native-calendars/src/types';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
@@ -31,7 +30,7 @@ const dateDiffInDays = (date1: Date, date2: Date) => {
   return diffDays + 1;
 }
 
-export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
+export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -294,7 +293,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme.colors.primary,
@@ -318,7 +317,7 @@ const createStyles = (theme: typeof customTheme) => {
       textMonthFontFamily: theme.fonts.bold,
       textDayHeaderFontFamily: theme.fonts.medium,
       todayTextColor: theme.colors.tertiary,
-    },
+    } as Theme,
     linearGradient: {
       flex: 1,
       height: '100%',

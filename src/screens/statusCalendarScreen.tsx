@@ -2,7 +2,7 @@
 // import React, { Component, useContext, useEffect, useState } from 'react';
 // import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 // import { useTheme } from '../hooks/useTheme';
-// import { customTheme } from '../styles/customTheme';
+// import { AppTheme } from '../styles/themeModels';
 // import LinearGradient from 'react-native-linear-gradient'
 // import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 // import { AgendaSchedule, Agenda, DateData, AgendaEntry } from 'react-native-calendars';
@@ -169,7 +169,7 @@
 // //   </View >
 // // );
 
-// const createStyles = (theme: typeof customTheme) => {
+// const createStyles = (theme: AppTheme) => {
 //   const styles = StyleSheet.create({
 //     item: {
 //       backgroundColor: 'blue',

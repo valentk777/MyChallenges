@@ -1,7 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import { icons } from '../../assets';
 import { ChallengeContext } from '../../hooks/useChallenge';
 
@@ -87,7 +87,7 @@ export const Quantity = (props: QuantityProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

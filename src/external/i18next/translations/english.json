@@ -4,6 +4,7 @@
     "default-user-email": "Login without email",
     "user-language": "User language:",
     "user-email": "User email:",
-    "user-created": "User created:"
+    "user-created": "User created:",
+    "user-theme": "Select theme:"
   }
 }

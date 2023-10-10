@@ -7,11 +7,12 @@ import { UserAccount } from '../entities/user';
 import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
 import { useTheme } from '../hooks/useTheme';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import userService from '../services/userService';
 import { useTranslation } from 'react-i18next';
 import { useTranslations } from '../hooks/useTranslations';
+import { FlatList } from 'react-native-reanimated/lib/typescript/Animated';
 
 export const UserScreen = () => {
   const { theme } = useTheme();
@@ -35,16 +36,6 @@ export const UserScreen = () => {
   //   // Use the effect to re-render the component when the profilePicture state changes
   // }, [user]);
 
-  const renderHeaderContainer = () => (
-    <View style={styles.headerContainer}>
-      <CircleButton
-        imgUrl={icons["logout.png"]}
-        onPress={() => signOut(user.id)}
-        style={[styles.signOut, theme.shadows.dark]}
-      />
-      <Image style={styles.logo} source={logo['logo_500x500.png']} />
-    </View>
-  );
 
   const handleCameraPress = () => {
     launchCamera({ mediaType: 'photo' }, (response) => {
@@ -66,6 +57,81 @@ export const UserScreen = () => {
     });
   };
 
+  const renderHeaderContainer = () => (
+    <View style={styles.headerContainer}>
+      <Image style={styles.logo} source={logo['logo_500x500.png']} />
+      <CircleButton
+        imgUrl={icons["logout.png"]}
+        onPress={() => signOut(user.id)}
+        style={[styles.signOut, theme.shadows.dark]}
+      />
+    </View>
+  );
+
+  const renderUserImageContainer = () => (
+    <View style={styles.userImageArea}>
+      <View style={[styles.userImageShadowArea, theme.shadows.primary]}>
+        <Image key={forceUpdate} style={styles.userImage} source={{ uri: user.profilePictureURL }} />
+      </View>
+      {/* <TouchableOpacity
+      onPress={handleCameraPress}
+      style={[styles.button, { left: 30 }]}
+    >
+      <Image
+        style={styles.icon}
+        resizeMode="contain"
+        source={icons['camera.png']} />
+    </TouchableOpacity>
+    <TouchableOpacity
+      onPress={handleGalleryPress}
+      style={[styles.button, { right: 30 }]}
+    >
+      <Image
+        style={styles.icon}
+        resizeMode="contain"
+        source={icons['file.png']} />
+    </TouchableOpacity> */}
+    </View>
+  );
+
+  const renderUserInfoContainer = () => (
+    <View style={styles.userInfoContainer}>
+      <Text style={styles.textPrimary}>{t("user-language")}</Text>
+      <View style={styles.languages}>
+        <TouchableOpacity
+          onPress={() => changeLanguage("en")}
+          style={styles.languageButton}>
+          <Text style={styles.textPrimary}>EN</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => changeLanguage("lt")}
+          style={styles.languageButton}>
+          <Text style={styles.textPrimary}>LT</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.textPrimary}>{t("user-email")}</Text>
+      <Text style={styles.textSecondary}>    {userEmail}</Text>
+      <Text style={styles.textPrimary}>{t("user-created")}</Text>
+      <Text style={styles.textSecondary}>    {userCreated}</Text>
+    </View>
+  );
+
+  const renderUserThemeContainer = () => (
+    <View style={styles.themeContainer}>
+      <Text style={styles.textPrimary}>{t("user-theme")}</Text>
+      <View style={styles.themeContainer}>
+        {/* <FlatList
+          data={imagesToDisplay}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.location}
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        /> */}
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -76,55 +142,17 @@ export const UserScreen = () => {
       >
         {renderHeaderContainer()}
         <View style={styles.section}>
-          <View style={styles.userImageArea}>
-            <View style={[styles.userImageShadowArea, theme.shadows.primary]}>
-              <Image key={forceUpdate} style={styles.userImage} source={{ uri: user.profilePictureURL }} />
-            </View>
-            {/* <TouchableOpacity
-              onPress={handleCameraPress}
-              style={[styles.button, { left: 30 }]}
-            >
-              <Image
-                style={styles.icon}
-                resizeMode="contain"
-                source={icons['camera.png']} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleGalleryPress}
-              style={[styles.button, { right: 30 }]}
-            >
-              <Image
-                style={styles.icon}
-                resizeMode="contain"
-                source={icons['file.png']} />
-            </TouchableOpacity> */}
-          </View>
-          <View style={styles.userInfoContainer}>
-            <Text style={styles.textPrimary}>{t("user-language")}</Text>
-            <View style={styles.languages}>
-              <TouchableOpacity
-                onPress={() => changeLanguage("en")}
-                style={styles.languageButton}>
-                <Text style={styles.textPrimary}>EN</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => changeLanguage("lt")}
-                style={styles.languageButton}>
-                <Text style={styles.textPrimary}>LT</Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.textPrimary}>{t("user-email")}</Text>
-            <Text style={styles.textSecondary}>    {userEmail}</Text>
-            <Text style={styles.textPrimary}>{t("user-created")}</Text>
-            <Text style={styles.textSecondary}>    {userCreated}</Text>
-          </View>
+          {renderUserImageContainer()}
+          {renderUserInfoContainer()}
+          {renderUserThemeContainer()}
         </View>
+        <View style={styles.empty} />
       </LinearGradient>
     </View>
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -181,7 +209,7 @@ const createStyles = (theme: typeof customTheme) => {
       fontWeight: "600",
     },
     userInfoContainer: {
-      flex: 5,
+      flex: 3,
       width: "70%",
       alignItems: "flex-start",
     },
@@ -226,6 +254,16 @@ const createStyles = (theme: typeof customTheme) => {
       marginRight: 20,
       marginLeft: 20,
     },
+    themeContainer: {
+      backgroundColor: 'green',
+      flex: 2,
+      width: "70%",
+      alignItems: "flex-start",
+      flexDirection: 'row',
+    },
+    empty: {
+      flex: 2
+    }
   });
 
   return styles;

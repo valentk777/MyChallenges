@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ActivityIndicator, Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
 import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
@@ -126,7 +126,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,

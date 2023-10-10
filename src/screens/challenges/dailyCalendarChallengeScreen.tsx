@@ -5,7 +5,7 @@ import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
 import { useTheme } from '../../hooks/useTheme';
 import { DailyCalendarChallenge } from '../../entities/challenge';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { ProgressStatus } from '../../entities/progressStatus';
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
@@ -153,7 +153,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,

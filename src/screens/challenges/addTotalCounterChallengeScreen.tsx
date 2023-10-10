@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, useWindowDimensions } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import { TotalCounterChallenge } from '../../entities/challenge';
@@ -198,7 +198,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: theme.colors.primary,

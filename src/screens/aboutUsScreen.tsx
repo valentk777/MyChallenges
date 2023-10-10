@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 
@@ -26,7 +26,7 @@ export const AboutUsScreen = ({ navigation }: AboutUsScreenProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,

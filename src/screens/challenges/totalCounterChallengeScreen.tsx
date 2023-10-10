@@ -5,7 +5,7 @@ import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { Quantity } from '../../components/Quantity/Quantity';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
 import { TotalCounterChallenge } from '../../entities/challenge';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { ProgressStatus } from '../../entities/progressStatus';
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
@@ -110,7 +110,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,

@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { AuthStackParamList } from '../navigators/AuthStackNavigator';
 import { logo } from '../assets';
@@ -61,7 +61,7 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     global: {
       flex: 1,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../screens/challengesScreen';
 import { UserScreen } from '../screens/userScreen';
@@ -122,7 +122,7 @@ const Menu = () => {
   );
 }
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     menuBox: {
       position: 'absolute',

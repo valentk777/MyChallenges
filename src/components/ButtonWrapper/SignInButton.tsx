@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { customTheme } from '../../styles/customTheme'
 import { useTheme } from '../../hooks/useTheme';
+import { AppTheme } from '../../styles/themeModels';
 
 interface SignInButtonProps {
   icon: ImageSourcePropType;
@@ -28,7 +28,7 @@ export const SignInButton = (props: SignInButtonProps) => {
   )
 }
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     image: {
       width: 25,

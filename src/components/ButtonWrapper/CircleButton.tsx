@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Image, ImageSourcePropType, StyleSheet } from "react-native";
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from "../../styles/customTheme";
+import { AppTheme } from "../../styles/themeModels";
 
 interface AnonymousSignInButtonProps {
   imgUrl: ImageSourcePropType;
@@ -27,7 +27,7 @@ export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSign
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       width: 40,

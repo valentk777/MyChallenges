@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../hooks/useTheme';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import challengesService from '../../services/challengesService';
@@ -47,7 +47,7 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       height: '100%',

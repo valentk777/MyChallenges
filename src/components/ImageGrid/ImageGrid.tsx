@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { customTheme } from '../../styles/customTheme';
+import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -57,7 +57,7 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,

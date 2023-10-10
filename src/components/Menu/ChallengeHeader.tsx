@@ -6,7 +6,7 @@ import { Challenge } from "../../entities/challenge";
 import { MainStackParamList } from "../../navigators/MainStackNavigator";
 import { icons } from "../../assets";
 import { CircleButton } from "../ButtonWrapper/CircleButton";
-import { customTheme } from "../../styles/customTheme";
+import { AppTheme } from "../../styles/themeModels";
 import challengesService from "../../services/challengesService";
 
 interface ChallengeHeaderProps {
@@ -48,7 +48,7 @@ export const ChallengeHeader = ({ challenge, navigation, onEdit }: ChallengeHead
   )
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
     },

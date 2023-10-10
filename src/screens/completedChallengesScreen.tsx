@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
-import { customTheme } from '../styles/customTheme';
+import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import { ChallengesList } from '../components/ChallengesList/ChallengesList';
@@ -28,7 +28,7 @@ const CompletedChallengesScreen = ({ navigation }: CompletedChallengesScreenProp
   );
 };
 
-const createStyles = (theme: typeof customTheme) => {
+const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
