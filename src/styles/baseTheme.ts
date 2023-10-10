@@ -15,7 +15,7 @@ const fonts: Fonts = {
   light: 'Inter-Light',
 };
 
-const shadows: Shadows = {
+const shadows = {
   light: {
     shadowOffset: {
       width: 0,
@@ -25,7 +25,7 @@ const shadows: Shadows = {
     shadowRadius: 2.22,
 
     elevation: 3,
-  } as Shadow,
+  },
   medium: {
     shadowOffset: {
       width: 0,
@@ -35,7 +35,7 @@ const shadows: Shadows = {
     shadowRadius: 4.65,
 
     elevation: 7,
-  } as Shadow,
+  },
   dark: {
     shadowOffset: {
       width: 0,
@@ -45,7 +45,7 @@ const shadows: Shadows = {
     shadowRadius: 9.11,
 
     elevation: 14,
-  } as Shadow,
+  },
   primary: {
     shadowOffset: {
       width: 0,
@@ -55,7 +55,7 @@ const shadows: Shadows = {
     shadowRadius: 3.5,
 
     elevation: 5,
-  } as Shadow,
+  },
 };
 
 export const baseTheme = {

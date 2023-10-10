@@ -13,23 +13,24 @@ const palette: Palette = {
 const shadows: Shadows = {
   light: {
     shadowColor: palette.canvasInverted,
+    ...baseTheme.shadows.light,
   } as Shadow,
   medium: {
     shadowColor: palette.canvasInverted,
+    ...baseTheme.shadows.medium,
   } as Shadow,
   dark: {
     shadowColor: palette.canvasInverted,
+    ...baseTheme.shadows.dark,
   } as Shadow,
   primary: {
     shadowColor: palette.tertiary,
+    ...baseTheme.shadows.primary,
   } as Shadow,
 };
 
 export const darkBlueTheme: AppTheme = {
   ...baseTheme,
   colors: palette,
-  shadows: {
-    ...baseTheme.shadows,
-    ...shadows
-  },
+  shadows: shadows,
 };

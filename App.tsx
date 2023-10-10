@@ -2,17 +2,17 @@ import React from 'react';
 import AppContent from './src/AppContent';
 import { AuthProvider } from './src/hooks/useAuth';
 import { TranslationProvider } from './src/hooks/useTranslations';
-import { ThemeProvider} from './src/hooks/useTheme';
+import { ThemeProvider } from './src/hooks/useTheme';
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <ThemeProvider>
         <TranslationProvider>
-        <AppContent />
+          <AppContent />
         </TranslationProvider>
-      </AuthProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 };
 

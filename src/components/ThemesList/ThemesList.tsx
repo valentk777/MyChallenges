@@ -8,14 +8,14 @@ interface ThemesListProps {
 }
 
 const ThemesList = (props: ThemesListProps) => {
-  const { theme, getAllThemes, setCurrentTheme } = useTheme();
+  const { theme, getAllThemes, setTheme } = useTheme();
   const styles = createStyles(theme);
 
   const renderItem = ({ item }) => {
 
     return (
       <TouchableOpacity
-        onPress={() => setCurrentTheme(item.theme)}
+        onPress={async () => await setTheme(item)}
         style={{ ...styles.button, backgroundColor: item.color }}
       >
         <Image
