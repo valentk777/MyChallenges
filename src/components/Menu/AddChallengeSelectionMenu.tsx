@@ -5,6 +5,7 @@ import { AppTheme } from '../../styles/themeModels';
 import { useNavigation } from '@react-navigation/native';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { icons } from '../../assets';
+import { useTranslation } from 'react-i18next';
 
 interface AddChallengeSelectionMenuProps extends TouchableOpacityProps {
 }
@@ -17,6 +18,7 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
 
   const navigation = useNavigation();
   const [showPopup, setShowPopup] = useState(false);
+  const { t } = useTranslation('add-new-challenge-menu')
 
   const onShowPopup = () => {
     setShowPopup(true);
@@ -76,9 +78,9 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
                   <View style={styles.titleArea}>
-                    <Text style={styles.menuTitle}>Simple Total Count</Text>
+                    <Text style={styles.menuTitle}>{t('simple-total-count-title')}</Text>
                   </View>
-                  <Text style={styles.menuComment}>Attendance, event, travel, and item counting</Text>
+                  <Text style={styles.menuComment}>{t('simple-total-count-description')}</Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>
@@ -90,9 +92,9 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
                   <View style={styles.titleArea}>
-                    <Text style={styles.menuTitle}>Total Detailed Count</Text>
+                    <Text style={styles.menuTitle}>{t('total-detailed-count-title')}</Text>
                   </View>
-                  <Text style={styles.menuComment}>Weight gain / loss, height counting</Text>
+                  <Text style={styles.menuComment}>{t('total-detailed-count-description')}</Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>
@@ -105,9 +107,9 @@ export const AddChallengeSelectionMenu = (props: AddChallengeSelectionMenuProps)
                   style={styles.menuIcon} />
                 <View style={styles.modalTextArea}>
                   <View style={styles.titleArea}>
-                    <Text style={styles.menuTitle}>Daily Progress</Text>
+                    <Text style={styles.menuTitle}>{t('daily-progress-title')}</Text>
                   </View>
-                  <Text style={styles.menuComment}>Daily routine, health, and reading habits</Text>
+                  <Text style={styles.menuComment}>{t('daily-progress-description')}</Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>

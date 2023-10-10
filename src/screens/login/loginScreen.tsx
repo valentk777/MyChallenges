@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
-import { AppTheme } from '../styles/themeModels';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
-import { AuthStackParamList } from '../navigators/AuthStackNavigator';
-import { logo } from '../assets';
-import { useTheme } from '../hooks/useTheme';
+import { AuthStackParamList } from '../../navigators/AuthStackNavigator';
+import { logo } from '../../assets';
+import { useTheme } from '../../hooks/useTheme';
 
 type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 

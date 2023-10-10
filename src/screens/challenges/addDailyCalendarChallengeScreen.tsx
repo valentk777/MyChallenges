@@ -16,6 +16,8 @@ import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
 import { Theme } from 'react-native-calendars/src/types';
+import { useTranslations } from '../../hooks/useTranslations';
+import { useTranslation } from 'react-i18next';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
@@ -51,6 +53,9 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
   const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
   const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
 
+  const { tTime } = useTranslations();
+  const { t } = useTranslation('add-daily-calendar-challenge-screen')
+  
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
   };
@@ -214,10 +219,10 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
   const renderInputContainer = () => (
     <View style={styles.textArea}>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Title</Text>
+        <Text style={styles.text}>{t("title")}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter your challenge title...'
+          placeholder={t("title-placeholder")}
           onChangeText={onChangeTitleText}
           value={title}
           placeholderTextColor={theme.colors.secondary}
@@ -226,22 +231,22 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
       {renderCalendarContainer(onStartDayPress, hideStartCalendar, isStartModalVisible, startDate, undefined)}
       {renderCalendarContainer(onEndDayPress, hideEndCalendar, isEndModalVisible, endDate, startDate)}
       <View style={styles.textImput}>
-        <Text style={styles.text}>Start date</Text>
+        <Text style={styles.text}>{t("start-date")}</Text>
         <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{startDate || 'Select challenge start day...'}</Text>
+          <Text style={styles.dateText}>{startDate || t("start-date-placeholder")}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>End date</Text>
+        <Text style={styles.text}>{t("end-date")}</Text>
         <TouchableOpacity onPress={showEndCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{endDate || 'Select challenge end day...'}</Text>
+          <Text style={styles.dateText}>{endDate || t("end-date-placeholder")}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Number of days to success   ({numberOfDays} days)</Text>
+        <Text style={styles.text}>{t("target-value", {numberOfDays: numberOfDays})}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter target value...'
+          placeholder={t("target-value-placeholder")}
           onChangeText={onChangeTargetValueText}
           onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
@@ -250,10 +255,10 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
         />
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Short description</Text>
+        <Text style={styles.text}>{t("description")}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter a short description...'
+          placeholder={t("description-placeholder")}
           onChangeText={onChangeDescriptionText}
           value={description}
           placeholderTextColor={theme.colors.secondary}
@@ -266,7 +271,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        title="Save"
+        title={t("save")}
         onPress={async () => onSave()}
       />
     </View>

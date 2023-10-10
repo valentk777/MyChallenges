@@ -14,6 +14,7 @@ import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { useTheme } from '../../hooks/useTheme';
+import { useTranslation } from 'react-i18next';
 
 type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
@@ -24,7 +25,8 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   const challenge = route.params.challenge;
 
   const [newCount, setCount] = useState(challenge.currentValue);
-
+  const { t } = useTranslation('total-counter-challenge-screen')
+  
   const updateValue = (value: number) => {
     setCount(value);
   }
@@ -88,7 +90,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        title="Save"
+        title={t("save")}
         onPress={async () => onSave(challenge, newCount, navigation)}
       />
     </View>

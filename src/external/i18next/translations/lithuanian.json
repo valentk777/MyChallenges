@@ -1,10 +1,53 @@
 {
   "user-screen": {
-    "empty-screen-message": "Oops! Something went wrong :(.\nTry again {{userLastName}}, please.",
-    "default-user-email": "Prisijungimas be el. pašto adreso",
-    "user-language": "Vartojo kalba:",
-    "user-email": "Vartojo el. paštas:",
-    "user-created": "Vartojo sukūtimo laikas:",
-    "user-theme": "Pasirinkite temą:"
+    "default-email": "Prisijungimas be el. pašto",
+    "language": "Kalba:",
+    "email": "El. paštas:",
+    "created": "Sukūrimo data:",
+    "theme": "Pasirinkite temą:"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Paprastas skaičiavimas",
+    "simple-total-count-description": "Įvykiai, kelionės, daiktai",
+    "total-detailed-count-title": "Detalus skaičiavimas",
+    "total-detailed-count-description": "Svorio ar ūgis pokyčiai",
+    "daily-progress-title": "Kasdieninė pažanga",
+    "daily-progress-description": "Kasdieninė rutina, sveikata ar skaitymo įpročiai"
+  },
+  "menu-tab-navigator": {
+    "active": "AKTYVŪS",
+    "top": "PAMĖGTI",
+    "done": "BAIGTI",
+    "user": "AŠ"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Išsaugoti",
+    "title": "Pavadinimas",
+    "title-placeholder": "Įveskite iššūkio pavadinimą...",
+    "start-date": "Pirmoji iššūkio diena",
+    "start-date-placeholder": "Pasirinkite pirmąją iššūkio dieną...",
+    "end-date": "Finišavimo diena",
+    "end-date-placeholder": "Pasirinkite paskutinę iššūkio dieną...",
+    "target-value": "Sėkmingų dienų skaičius    (maks. {{numberOfDays}})",
+    "target-value-placeholder": "Įveskite norimą pasiekti dienų skaičių...",
+    "description": "Komentaras",
+    "description-placeholder": "Įveskite trumpą aprašymą ar pastabas..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Išsaugoti"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Išsaugoti",
+    "title": "Pavadinimas",
+    "title-placeholder": "Įveskite iššūkio pavadinimą...",
+    "initial-value": "Pradinė reikšmė",
+    "initial-value-placeholder": "Įveskite pradinę reikšmę...",
+    "target-value": "Norima pasiekti reikšmė",
+    "target-value-placeholder": "Įveskite norimą pasiekti skaitinę reikšmę...",
+    "description": "Komentaras",
+    "description-placeholder": "Įveskite trumpą aprašymą ar pastabas..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Išsaugoti"
   }
 }

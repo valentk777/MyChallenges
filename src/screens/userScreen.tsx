@@ -25,7 +25,7 @@ export const UserScreen = () => {
   const { t } = useTranslation('user-screen')
   const { changeLanguage, tTime } = useTranslations();
 
-  const userEmail = user?.email === null || user.email === "" ? t("default-user-email") : user.email;
+  const userEmail = user?.email === null || user.email === "" ? t("default-email") : user.email;
   const userCreated = tTime(user.createdAt);
 
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
@@ -96,7 +96,7 @@ export const UserScreen = () => {
 
   const renderUserInfoContainer = () => (
     <View style={styles.userInfoContainer}>
-      <Text style={styles.textPrimary}>{t("user-language")}</Text>
+      <Text style={styles.textPrimary}>{t("language")}</Text>
       <View style={styles.languages}>
         <TouchableOpacity
           onPress={async () => await changeLanguage("en")}
@@ -109,16 +109,16 @@ export const UserScreen = () => {
           <Text style={styles.textPrimary}>LT</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.textPrimary}>{t("user-email")}</Text>
+      <Text style={styles.textPrimary}>{t("email")}</Text>
       <Text style={styles.textSecondary}>    {userEmail}</Text>
-      <Text style={styles.textPrimary}>{t("user-created")}</Text>
+      <Text style={styles.textPrimary}>{t("created")}</Text>
       <Text style={styles.textSecondary}>    {userCreated}</Text>
     </View>
   );
 
   const renderUserThemeContainer = () => (
     <View style={styles.themeContainer}>
-      <Text style={styles.textPrimary}>{t("user-theme")}</Text>
+      <Text style={styles.textPrimary}>{t("theme")}</Text>
       <ThemesList />
     </View>
   );

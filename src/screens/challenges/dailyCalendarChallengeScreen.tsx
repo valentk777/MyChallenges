@@ -15,12 +15,17 @@ import { Calendar } from 'react-native-calendars';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import timeService from '../../services/timeService';
 import { ChallengeTypes } from '../../entities/challengeTypes';
+import { useTranslations } from '../../hooks/useTranslations';
+import { useTranslation } from 'react-i18next';
 
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
 
 export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  
+  const { tTime } = useTranslations();
+  const { t } = useTranslation('daily-calendar-challenge-screen')
 
   const challenge = route.params.challenge;
 
@@ -131,7 +136,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        title="Save"
+        title={t("save")}
         onPress={async () => onSave()}
       />
     </View>

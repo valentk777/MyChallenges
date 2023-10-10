@@ -1,14 +1,14 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Animated, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, useWindowDimensions } from 'react-native';
-import { useTheme } from '../hooks/useTheme';
-import { AppTheme } from '../styles/themeModels';
+import { useTheme } from '../../hooks/useTheme';
+import { AppTheme } from '../../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
-import { AuthStackParamList } from '../navigators/AuthStackNavigator';
-import { useAuth } from '../hooks/useAuth';
-import { LoginUser } from '../entities/user';
-import { icons, logo } from '../assets';
-import { SignInButton } from '../components/ButtonWrapper/SignInButton';
+import { AuthStackParamList } from '../../navigators/AuthStackNavigator';
+import { useAuth } from '../../hooks/useAuth';
+import { LoginUser } from '../../entities/user';
+import { icons, logo } from '../../assets';
+import { SignInButton } from '../../components/ButtonWrapper/SignInButton';
 
 type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScreen'>;
 

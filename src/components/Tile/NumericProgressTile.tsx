@@ -20,8 +20,6 @@ export const NumericProgressTile = (props: NumericProgressTileProps) => {
   const percentage = challengesService.getPercentage(newValue, challenge.initialValue, challenge.targetValue);
   const initialPercentage = challengesService.getPercentage(challenge.currentValue, challenge.initialValue, challenge.targetValue)
 
-  console.log(JSON.stringify(challenge));
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{getCroppedTest(challenge.title, 17)}</Text>

@@ -13,6 +13,7 @@ import { icons } from '../../assets';
 import { CircleButton } from '../../components/ButtonWrapper/CircleButton';
 import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
+import { useTranslation } from 'react-i18next';
 
 type AddTotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddTotalCounterChallengeScreen'>;
 
@@ -32,6 +33,8 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   
   const [initialValue, onChangeInitialValueText] = useState(originalChallenge?.initialValue != null ? originalChallenge.initialValue.toString() : '0');
 
+  const { t } = useTranslation('add-total-counter-challenge-screen')
+  
   const handleImageChange = newIndex => {
     setCurrentImageLocation(newIndex);
   };
@@ -119,10 +122,10 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   const renderInputContainer = () => (
     <View style={styles.textArea}>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Title</Text>
+        <Text style={styles.text}>{t("title")}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter your challenge title...'
+          placeholder={t("title-placeholder")}
           onChangeText={onChangeTitleText}
           value={title}
           placeholderTextColor={theme.colors.secondary}
@@ -130,10 +133,10 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
       </View>
       {isDetailedCount &&
         <View style={styles.textImput}>
-          <Text style={styles.text}>Initial value</Text>
+          <Text style={styles.text}>{t("initial-value")}</Text>
           <TextInput
             style={styles.textbox}
-            placeholder='Enter initial numeric value...'
+            placeholder={t("initial-value-placeholder")}
             onChangeText={onChangeInitialValueText}
             onBlur={() => setNumericValueOrDefault(initialValue, onChangeInitialValueText)}
             value={initialValue}
@@ -142,10 +145,10 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
           />
         </View>}
       <View style={styles.textImput}>
-        <Text style={styles.text}>Target value</Text>
+        <Text style={styles.text}>{t("target-value")}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter target numeric value...'
+          placeholder={t("target-value-placeholder")}
           onChangeText={onChangeTargetValueText}
           onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
           value={targetValue}
@@ -154,10 +157,10 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
         />
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>Short description</Text>
+        <Text style={styles.text}>{t("description")}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder='Enter a short description...'
+          placeholder={t("description-placeholder")}
           onChangeText={onChangeDescriptionText}
           value={description}
           placeholderTextColor={theme.colors.secondary}
@@ -171,7 +174,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        title="Save"
+        title={t("save")}
         onPress={async () => onSave()}
       />
     </View>

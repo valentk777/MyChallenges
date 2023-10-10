@@ -27,9 +27,6 @@ const MainStackNavigator = () => {
       <MainStack.Screen
         name="HomeTab"
         component={Menu}
-        options={{
-          headerShown: false,
-        }}
       />
       <MainStack.Screen
         name="AddTotalCounterChallengeScreen"

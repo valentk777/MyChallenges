@@ -1,10 +1,53 @@
 {
   "user-screen": {
-    "empty-screen-message": "Oops! Something went wrong :(.\nTry again {{userLastName}}, please.",
-    "default-user-email": "Login without email",
-    "user-language": "User language:",
-    "user-email": "User email:",
-    "user-created": "User created:",
-    "user-theme": "Select theme:"
+    "default-email": "Login without email",
+    "language": "Language:",
+    "email": "Email:",
+    "created": "Account created:",
+    "theme": "Select theme:"
+  },
+  "add-new-challenge-menu": {
+    "simple-total-count-title": "Simple Count",
+    "simple-total-count-description": "Track attendance, events, travel, and more",
+    "total-detailed-count-title": "Detailed Count",
+    "total-detailed-count-description": "Monitor weight, height, and more",
+    "daily-progress-title": "Daily Progress",
+    "daily-progress-description": "Track routines, health, and reading habits"
+  },
+  "menu-tab-navigator": {
+    "active": "ACTIVE",
+    "top": "TOP",
+    "done": "DONE",
+    "user": "USER"
+  },
+  "add-daily-calendar-challenge-screen": {
+    "save": "Save",
+    "title": "Challenge Title",
+    "title-placeholder": "Enter your challenge title...",
+    "start-date": "Start Date",
+    "start-date-placeholder": "Pick the first day of the challenge...",
+    "end-date": "End Date",
+    "end-date-placeholder": "Pick the last day of the challenge...",
+    "target-value": "Days to Complete   (max: {{numberOfDays}} days)",
+    "target-value-placeholder": "Enter the number of days...",
+    "description": "Comment",
+    "description-placeholder": "Add a short description, comment, or note..."
+  },
+  "daily-calendar-challenge-screen": {
+    "save": "Save"
+  },
+  "add-total-counter-challenge-screen": {
+    "save": "Save",
+    "title": "Challenge Title",
+    "title-placeholder": "Enter your challenge title...",
+    "initial-value": "Initial Value",
+    "initial-value-placeholder": "Enter initial numeric value...",
+    "target-value": "Target Value",
+    "target-value-placeholder": "Enter the target number...",
+    "description": "Comment",
+    "description-placeholder": "Add a short description, comment, or note..."
+  },
+  "total-counter-challenge-screen": {
+    "save": "Save"
   }
 }

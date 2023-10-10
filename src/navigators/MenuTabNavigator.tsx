@@ -10,6 +10,7 @@ import CompletedChallengesScreen from '../screens/completedChallengesScreen';
 import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
 import { icons } from '../assets';
+import { useTranslation } from 'react-i18next';
 
 export type HomeStackParamList = {
   ChallengesScreen: {};
@@ -24,7 +25,8 @@ const HomeTab = createBottomTabNavigator<HomeStackParamList>();
 const Menu = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-
+  const { t } = useTranslation('menu-tab-navigator')
+  
   return (
     <HomeTab.Navigator
       screenOptions={{
@@ -45,7 +47,7 @@ const Menu = () => {
               focused={focused}
               styles={styles}
               theme={theme}
-              text={"ACTIVE"}
+              text={t("active")}
               iconUrl={icons['bars-staggered.png']}
             />
           ),
@@ -62,7 +64,7 @@ const Menu = () => {
               focused={focused}
               styles={styles}
               theme={theme}
-              text={"TOP"}
+              text={t("top")}
               iconUrl={icons['heart-full.png']}
             />
           ),
@@ -97,7 +99,7 @@ const Menu = () => {
               focused={focused}
               styles={styles}
               theme={theme}
-              text={"DONE"}
+              text={t("done")}
               iconUrl={icons['read.png']}
             />
           ),
@@ -112,7 +114,7 @@ const Menu = () => {
               focused={focused}
               styles={styles}
               theme={theme}
-              text={"USER"}
+              text={t("user")}
               iconUrl={icons['user.png']}
             />
           ),
@@ -151,6 +153,7 @@ const createStyles = (theme: AppTheme) => {
     },
     menuText: {
       fontSize: 10,
+      fontFamily: theme.fonts.medium,
     },
   });
 

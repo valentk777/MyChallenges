@@ -8,6 +8,7 @@ import challengesService from '../../services/challengesService';
 import timeService from '../../services/timeService';
 import { SvgFileNamesToComponentsMap } from '../../assets/svgIndex';
 import { ChallengeTypes } from '../../entities/challengeTypes';
+import { useTranslations } from '../../hooks/useTranslations';
 
 interface TileProps extends ButtonProps {
   challenge: Challenge;
@@ -31,6 +32,7 @@ export const PressableTile = (props: TileProps) => {
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const { tTime } = useTranslations();
 
   const [isFavorite, onChangeFavorite] = useState(challenge.favorite);
 
@@ -60,14 +62,14 @@ export const PressableTile = (props: TileProps) => {
   return (
     <TouchableOpacity style={[styles.container, theme.shadows.primary]} onPress={onPress}>
       <View style={styles.image}>
-        <ImageComponent 
-        width={60} 
-        height={60}
-        backgroundColor={theme.colors.tertiary}
-        primaryColor={theme.colors.tertiary}
-        secondaryColor={theme.colors.canvas}
-        borderColor={theme.colors.primary}
-         />
+        <ImageComponent
+          width={60}
+          height={60}
+          backgroundColor={theme.colors.tertiary}
+          primaryColor={theme.colors.tertiary}
+          secondaryColor={theme.colors.canvas}
+          borderColor={theme.colors.primary}
+        />
       </View>
       <View style={styles.textArea}>
         <View style={styles.titleArea}>
@@ -79,7 +81,7 @@ export const PressableTile = (props: TileProps) => {
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.timeArea}>
-          <Text style={styles.time}>{timeCreated}</Text>
+          <Text style={styles.time}>{tTime(timeCreated)}</Text>
         </View>
       </View>
       <TouchableOpacity
