@@ -211,6 +211,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
         currentDate={endDate}
         minDate={startDate}
       />
+
       <View style={styles.textImput}>
         <Text style={styles.text}>{t("start-date")}</Text>
         <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>

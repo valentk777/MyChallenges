@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Modal, TouchableWithoutFeedback, StyleSheet, useWindowDimensions } from "react-native";
 import { Calendar } from "react-native-calendars";
 import timeService from "../../services/timeService";
 import { AppTheme } from "../../styles/themeModels";
 import { useTheme } from "../../hooks/useTheme";
 import { Theme } from "react-native-calendars/src/types";
+import MyModal from "../Modals/MyModal";
 
 interface PickerCalendarProps {
   onDayPress: (day) => void;
@@ -15,7 +16,7 @@ interface PickerCalendarProps {
 }
 
 const PickerCalendar = (props: PickerCalendarProps) => {
-  const { onDayPress, hideCalendar, isModalVisible, currentDate, minDate } = props;
+  const { isModalVisible, hideCalendar, onDayPress, currentDate, minDate } = props;
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -24,30 +25,19 @@ const PickerCalendar = (props: PickerCalendarProps) => {
 
   return (
     <View style={styles.calendarContainer}>
-      <Modal
-        transparent={true}
-        animationType='fade'
-        visible={isModalVisible}
-        onRequestClose={hideCalendar}
-      >
-        <TouchableWithoutFeedback onPress={hideCalendar}>
-          <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback>
-              <Calendar
-                style={[styles.calendarStyles, { width: window.width * 0.8 }]}
-                theme={styles.calendarTheme}
-                minDate={minDate}
-                current={timeService.getCurrentDateString()}
-                enableSwipeMonths={true}
-                onDayPress={onDayPress}
-                markedDates={{
-                  [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.tertiary },
-                }}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+      <MyModal isModalVisible={isModalVisible} hideModal={hideCalendar} >
+        <Calendar
+          style={[styles.calendarStyles, { width: window.width * 0.8 }]}
+          theme={styles.calendarTheme}
+          minDate={minDate}
+          current={timeService.getCurrentDateString()}
+          enableSwipeMonths={true}
+          onDayPress={onDayPress}
+          markedDates={{
+            [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.tertiary },
+          }}
+        />
+      </MyModal>
     </View>
   )
 }

@@ -25,7 +25,7 @@ const getChallengesKey = (userId: string) => {
   return `challenges/${userId}`;
 };
 
-const getAllChalenges = async () => {
+const getAllChallenges = async () => {
   try {
     const user = await userService.getCurrentUser();
 
@@ -75,7 +75,7 @@ const storeChallenge = async (challenge: Challenge) => {
       return false;
     }
 
-    let challenges = await getAllChalenges();
+    let challenges = await getAllChallenges();
     const selectedChallenge = getChallengeById(challenges, challenge.id);
 
     if (selectedChallenge != null) {
@@ -106,7 +106,7 @@ const removeChallenge = async (challengeId: string) => {
       return false;
     }
 
-    const challenges = await getAllChalenges();
+    const challenges = await getAllChallenges();
 
     const updatedChallenges = challenges.filter(
       challenge => challenge.id !== challengeId,
@@ -205,7 +205,7 @@ const createNewChallenge = (
 };
 
 const challengesService = {
-  getAllChalenges,
+  getAllChallenges,
   storeChallenge,
   removeChallenge,
   getPercentage,

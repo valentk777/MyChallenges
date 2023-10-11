@@ -11,12 +11,13 @@ import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen'
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
 import { icons } from '../assets';
 import { useTranslation } from 'react-i18next';
+import CalendarStatusScreen from '../screens/calendarStatusScreen';
 
 export type HomeStackParamList = {
   ChallengesScreen: {};
   FavoriteChallengesScreen: {};
   CreateNewChallengeButton: {};
-  CompletedChallengesScreen: {};
+  CalendarStatusScreen: {};
   UserScreen: {};
 };
 
@@ -91,8 +92,8 @@ const Menu = () => {
         }}
       />
       <HomeTab.Screen
-        name="CompletedChallengesScreen"
-        component={CompletedChallengesScreen}
+        name="CalendarStatusScreen"
+        component={CalendarStatusScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <MenuTabBarIcon

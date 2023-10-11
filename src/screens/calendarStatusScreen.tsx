@@ -1,14 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
+import StatusAndNotesCalendar from '../components/CalendarWrapper/StatusAndNotesCalendar';
 
-type AboutUsScreenProps = NativeStackScreenProps<HomeStackParamList, 'AboutUsScreen'>;
+type CalendarStatusScreenProps = NativeStackScreenProps<HomeStackParamList, 'CalendarStatusScreen'>;
 
-export const AboutUsScreen = ({ navigation }: AboutUsScreenProps) => {
+export const CalendarStatusScreen = ({ navigation }: CalendarStatusScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -19,7 +20,7 @@ export const AboutUsScreen = ({ navigation }: AboutUsScreenProps) => {
         style={styles.linearGradient}
       >
         <View style={styles.section}>
-          <Text style={styles.text}>AboutUs information screen.</Text>
+          <StatusAndNotesCalendar/>
         </View>
       </LinearGradient>
     </View >
@@ -32,13 +33,14 @@ const createStyles = (theme: AppTheme) => {
       flex: 1,
     },
     linearGradient: {
-      flex: 15,
+      flex: 1,
       colors: [theme.colors.primary, theme.colors.secondary]
     },
     section: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '70%',
+      flex: 1,
+      // alignItems: 'center',
+      // justifyContent: 'center',
+      // height: '70%',
     },
     text: {
       fontSize: 20,
@@ -53,4 +55,4 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export default AboutUsScreen;
+export default CalendarStatusScreen;

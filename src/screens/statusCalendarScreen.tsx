@@ -36,7 +36,7 @@
 
 //   async function readData() {
 //     try {
-//       const challenges = await challengesService.getAllChalenges();
+//       const challenges = await challengesService.getAllChallenges();
 
 //       if (challenges.length == 0) {
 //         // setRefreshing(false);
