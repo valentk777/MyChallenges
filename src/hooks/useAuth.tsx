@@ -1,4 +1,4 @@
-import React, { ProviderProps, createContext, useContext, useEffect, useReducer } from 'react'
+import React, { ProviderProps, createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { authManager } from '../external/auth/firebaseAuthManager';
 import userService from '../services/userService';
 import { Alert } from 'react-native';
@@ -212,18 +212,17 @@ export const AuthProvider = ({ children }: AppContextProviderProps) => {
   //         });
   // }
 
-  //NOTE: DO NOT useMemo here. We WANT to re-render.
+  const values = useMemo(() => ({
+    state,
+    createUser,
+    emailSignIn,
+    signOut,
+    loginOrSignUpWithGoogle,
+    signInAnonymously,
+  }), [state]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        state,
-        createUser,
-        emailSignIn,
-        signOut,
-        loginOrSignUpWithGoogle,
-        signInAnonymously,
-        // loginOrSignUpWithFacebook
-      }}>
+    <AuthContext.Provider value={values}>
       {children}
     </AuthContext.Provider>
   );

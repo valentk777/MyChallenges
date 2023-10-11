@@ -1,4 +1,4 @@
-import React, { ProviderProps, createContext, useContext, useEffect, useState } from 'react';
+import React, { ProviderProps, createContext, useContext, useEffect, useMemo, useState } from 'react';
 import i18n, { USER_PREFERRED_LANGUAGE } from '../external/i18next';
 import { format } from 'date-fns'
 import { lt, enUS, lv, pt, es, fr } from 'date-fns/locale'
@@ -48,22 +48,23 @@ export const TranslationProvider = ({ children }: TranslationContextProviderProp
   const [currentLanguage, setCurrentLanguage] = useState(USER_PREFERRED_LANGUAGE)
 
   useEffect(() => {
-    const getCurrentLanguageOrDefault = () => {
-      if (user?.language == null || user?.language == undefined) {
-        return;
-      }
+    let currentLanguage = USER_PREFERRED_LANGUAGE;
 
-      i18n.changeLanguage(user.language);
-      setCurrentLanguage(user.language);
-      changeDatesInCalendar(user.language);
+    if (user?.language != null && user?.language != undefined) {
+      currentLanguage = user.language;
     }
 
-    getCurrentLanguageOrDefault();
+    setLanguage(currentLanguage);
   }, [user]);
 
-  const changeLanguage = async (language) => {
+  const setLanguage = (language: string) => {
     i18n.changeLanguage(language);
     setCurrentLanguage(language);
+    changeDatesInCalendar(language);
+  }
+
+  const changeLanguage = async (language: string) => {
+    setLanguage(language);
 
     await userService.updateUserLanguage(language);
   }
@@ -72,8 +73,10 @@ export const TranslationProvider = ({ children }: TranslationContextProviderProp
     return format(new Date(date), 'PPPP', { locale: LOCALES[currentLanguage] });
   }
 
+  const values = useMemo(() => ({ currentLanguage, changeLanguage, tTime }), [currentLanguage]);
+
   return (
-    <TranslationContext.Provider value={{ currentLanguage, changeLanguage, tTime }}>
+    <TranslationContext.Provider value={values}>
       {children}
     </TranslationContext.Provider>
   );

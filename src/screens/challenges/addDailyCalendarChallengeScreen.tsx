@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, TouchableOpacity } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { useTheme } from '../../hooks/useTheme';
 import { AppTheme } from '../../styles/themeModels';
@@ -12,12 +12,11 @@ import { icons } from '../../assets';
 import { CircleButton } from '../../components/ButtonWrapper/CircleButton';
 import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
-import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
 import { Theme } from 'react-native-calendars/src/types';
 import { useTranslation } from 'react-i18next';
-import { useTranslations } from '../../hooks/useTranslations';
+import PickerCalendar from '../../components/CalendarWrapper/PickerCalendar';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
@@ -54,7 +53,6 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
 
   const { t } = useTranslation('add-daily-calendar-challenge-screen')
-  const { tTime } = useTranslations();
 
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
@@ -187,35 +185,6 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     </View>
   );
 
-  const renderCalendarContainer = (onDayPress, hideCalendar, isModalVisible, currentDate, minDate) => (
-    <View style={styles.calendarContainer}>
-      <Modal
-        transparent={true}
-        animationType='fade'
-        visible={isModalVisible}
-        onRequestClose={hideCalendar}
-      >
-        <TouchableWithoutFeedback onPress={hideCalendar}>
-          <View style={styles.modalContainer}>
-            <TouchableWithoutFeedback>
-              <Calendar
-                style={[styles.calendarStyles, { width: window.width * 0.8 }]}
-                theme={styles.calendarTheme}
-                minDate={minDate}
-                current={timeService.getCurrentDateString()}
-                enableSwipeMonths={true}
-                onDayPress={onDayPress}
-                markedDates={{
-                  [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.tertiary },
-                }}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-    </View>
-  );
-
   const renderInputContainer = () => (
     <View style={styles.textArea}>
       <View style={styles.textImput}>
@@ -228,8 +197,20 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
           placeholderTextColor={theme.colors.secondary}
         />
       </View>
-      {renderCalendarContainer(onStartDayPress, hideStartCalendar, isStartModalVisible, startDate, undefined)}
-      {renderCalendarContainer(onEndDayPress, hideEndCalendar, isEndModalVisible, endDate, startDate)}
+      <PickerCalendar
+        onDayPress={onStartDayPress}
+        hideCalendar={hideStartCalendar}
+        isModalVisible={isStartModalVisible}
+        currentDate={startDate}
+        minDate={undefined}
+      />
+      <PickerCalendar
+        onDayPress={onEndDayPress}
+        hideCalendar={hideEndCalendar}
+        isModalVisible={isEndModalVisible}
+        currentDate={endDate}
+        minDate={startDate}
+      />
       <View style={styles.textImput}>
         <Text style={styles.text}>{t("start-date")}</Text>
         <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>
@@ -303,26 +284,6 @@ const createStyles = (theme: AppTheme) => {
     container: {
       backgroundColor: theme.colors.primary,
     },
-    calendarContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    calendarStyles: {
-      justifyContent: 'center',
-    },
-    calendarTheme: {
-      arrowColor: theme.colors.canvasInverted,
-      textDayFontFamily: theme.fonts.light,
-      textMonthFontFamily: theme.fonts.bold,
-      textDayHeaderFontFamily: theme.fonts.medium,
-      todayTextColor: theme.colors.tertiary,
-    } as Theme,
     linearGradient: {
       flex: 1,
       height: '100%',

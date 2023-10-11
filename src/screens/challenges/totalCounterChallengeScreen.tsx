@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { Quantity } from '../../components/Quantity/Quantity';
@@ -27,7 +27,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
 
   const [newCount, setCount] = useState(challenge.currentValue);
   const { t } = useTranslation('total-counter-challenge-screen')
-  
+
   const updateValue = (value: number) => {
     setCount(value);
   }
@@ -61,10 +61,10 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
   }
 
   const onEdit = () => {
-    navigation.navigate('AddTotalCounterChallengeScreen', { 
-      challengeType: challenge.isDetailedCount ? ChallengeTypes.TotalDetailedCounter : ChallengeTypes.TotalSimpleCounter, 
-      isDetailedCount: challenge.isDetailedCount, 
-      originalChallenge: challenge 
+    navigation.navigate('AddTotalCounterChallengeScreen', {
+      challengeType: challenge.isDetailedCount ? ChallengeTypes.TotalDetailedCounter : ChallengeTypes.TotalSimpleCounter,
+      isDetailedCount: challenge.isDetailedCount,
+      originalChallenge: challenge
     });
   }
 
@@ -97,14 +97,11 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
     </View>
   );
 
+  const values = useMemo(() => ({ challenge: challenge, newValue: newCount, updateValue: updateValue }), [newCount]);
+
   return (
     <View style={styles.container}>
-      <ChallengeContext.Provider
-        value={{
-          challenge: challenge,
-          newValue: newCount,
-          updateValue: updateValue,
-        }}>
+      <ChallengeContext.Provider value={values}>
         {renderProgressContainer()}
         {renderQuantityContainer()}
         {renderSaveContainer()}

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { NumericProgressTile } from '../../components/Tile/NumericProgressTile';
 import { useTheme } from '../../hooks/useTheme';
@@ -11,18 +11,18 @@ import { ProgressStatus } from '../../entities/progressStatus';
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import challengesService from '../../services/challengesService';
 import { ChallengeHeader } from '../../components/Menu/ChallengeHeader';
-import { Calendar } from 'react-native-calendars';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import timeService from '../../services/timeService';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { useTranslation } from 'react-i18next';
+import BooleanStatusCalendar from '../../components/CalendarWrapper/BooleanStatusCalendar';
 
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
 
 export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  
+
   const { t } = useTranslation('daily-calendar-challenge-screen')
 
   const challenge = route.params.challenge;
@@ -30,8 +30,6 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   if (challenge.datesCompleted === undefined) {
     challenge.datesCompleted = [] as string[];
   }
-
-  const window = useWindowDimensions();
 
   const stringDatesWithStyling = (dates: string[]) => {
     let datesDict = {}
@@ -111,26 +109,6 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     </View>
   );
 
-  const renderCalendarContainer = () => (
-    <View style={styles.calendarContainer}>
-      <View style={styles.modalContainer}>
-        <Calendar
-          style={[styles.calendarStyles, { width: window.width * 0.8 }]}
-          theme={styles.calendarTheme}
-          minDate={challenge.startDate}
-          maxDate={timeService.getCurrentDateString()}
-          current={timeService.getCurrentDateString()}
-          markedDates={selectedDates}
-          // hideArrows={true}
-          enableSwipeMonths={true}
-          onDayPress={(day) => {
-            handleDateSelect(day);
-          }}
-        />
-      </View>
-    </View>
-  );
-
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
@@ -140,16 +118,13 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
     </View>
   );
 
+  const values = useMemo(() => ({ challenge: challenge, newValue: newCount, updateValue: updateValue }), [newCount]);
+
   return (
     <View style={styles.container}>
-      <ChallengeContext.Provider
-        value={{
-          challenge: challenge,
-          newValue: newCount,
-          updateValue: updateValue,
-        }}>
+      <ChallengeContext.Provider value={values}>
         {renderProgressContainer()}
-        {renderCalendarContainer()}
+        <BooleanStatusCalendar markedDates={selectedDates} minDate={challenge.startDate} onDayPress={(day) => handleDateSelect(day)} />
         {renderSaveContainer()}
       </ChallengeContext.Provider>
     </View >
@@ -173,27 +148,6 @@ const createStyles = (theme: AppTheme) => {
       borderBottomLeftRadius: 30,
       borderBottomRightRadius: 30,
       colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary],
-    },
-    calendarContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      flex: 6,
-    },
-    modalContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    calendarStyles: {
-      flex: 1,
-      height: '100%',
-      justifyContent: 'center',
-    },
-    calendarTheme: {
-      arrowColor: theme.colors.canvasInverted,
-      textDayFontFamily: theme.fonts.light,
-      textMonthFontFamily: theme.fonts.bold,
-      textDayHeaderFontFamily: theme.fonts.medium,
-      todayTextColor: theme.colors.tertiary,
     },
     saveContainer: {
       flex: 1,

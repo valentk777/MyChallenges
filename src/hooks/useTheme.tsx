@@ -74,8 +74,7 @@ export const ThemeProvider = ({ children }: ThemeContextProviderProps) => {
   const values = useMemo(() => ({ theme: currentTheme, getAllThemes, setTheme }), [currentTheme]);
 
   return (
-    <ThemeContext.Provider
-      value={values}>
+    <ThemeContext.Provider value={values}>
       {children}
     </ThemeContext.Provider>
   );
