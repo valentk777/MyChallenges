@@ -31,7 +31,7 @@
     "target-value": "Days to Complete   (max: {{numberOfDays}} days)",
     "target-value-placeholder": "Enter the number of days...",
     "description": "Comment",
-    "description-placeholder": "Add a short description, comment, or note..."
+    "description-placeholder": "Add a description, comment, or note..."
   },
   "daily-calendar-challenge-screen": {
     "save": "Save"
@@ -45,7 +45,7 @@
     "target-value": "Target Value",
     "target-value-placeholder": "Enter the target number...",
     "description": "Comment",
-    "description-placeholder": "Add a short description, comment, or note..."
+    "description-placeholder": "Add a description, comment, or note..."
   },
   "total-counter-challenge-screen": {
     "save": "Save"

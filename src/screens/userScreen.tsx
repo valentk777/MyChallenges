@@ -26,7 +26,7 @@ export const UserScreen = () => {
   const { changeLanguage, tTime } = useTranslations();
 
   const userEmail = user?.email === null || user.email === "" ? t("default-email") : user.email;
-  const userCreated = tTime(user.createdAt);
+  const userCreated = user?.createdAt === null || user.createdAt === "" ? "" : tTime(user.createdAt);
 
   if (user?.profilePictureURL === undefined || user?.profilePictureURL === null || user.profilePictureURL === "") {
     user.profilePictureURL = 'https://www.iosapptemplates.com/wp-content/uploads/2019/06/empty-avatar.jpg';

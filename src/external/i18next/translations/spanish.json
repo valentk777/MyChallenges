@@ -8,7 +8,7 @@
   },
   "add-new-challenge-menu": {
     "simple-total-count-title": "Conteo simple",
-    "simple-total-count-description": "Realizar seguimiento de la asistencia, eventos, viajes y más",
+    "simple-total-count-description": "Seguimiento de asistencia, eventos y viajes",
     "total-detailed-count-title": "Conteo detallado",
     "total-detailed-count-description": "Controlar el peso, la altura y más",
     "daily-progress-title": "Progreso diario",
@@ -18,7 +18,7 @@
     "active": "ACTIVO",
     "top": "PRINCIPAL",
     "done": "HECHO",
-    "user": "USUARIO"
+    "user": "YO"
   },
   "add-daily-calendar-challenge-screen": {
     "save": "Guardar",
@@ -31,7 +31,7 @@
     "target-value": "Días para completar (máx: {{numberOfDays}} días)",
     "target-value-placeholder": "Ingrese el número de días...",
     "description": "Comentario",
-    "description-placeholder": "Agregue una breve descripción, comentario o nota..."
+    "description-placeholder": "Agregue breve descripción o comentario..."
   },
   "daily-calendar-challenge-screen": {
     "save": "Guardar"
@@ -45,7 +45,7 @@
     "target-value": "Valor objetivo",
     "target-value-placeholder": "Ingrese el número objetivo...",
     "description": "Comentario",
-    "description-placeholder": "Agregue una breve descripción, comentario o nota..."
+    "description-placeholder": "Agregue breve descripción o comentario..."
   },
   "total-counter-challenge-screen": {
     "save": "Guardar"

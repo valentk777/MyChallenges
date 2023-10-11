@@ -8,17 +8,17 @@
   },
   "add-new-challenge-menu": {
     "simple-total-count-title": "Vienkāršs skaitītājs",
-    "simple-total-count-description": "Uzraudzīt dalību, pasākumus, ceļojumus un citu informāciju",
+    "simple-total-count-description": "Uzraudzīt pasākumus un ceļojumus",
     "total-detailed-count-title": "Detalizēts skaitītājs",
     "total-detailed-count-description": "Uzraudzīt svaru, augstumu un citu informāciju",
     "daily-progress-title": "Dienas progres",
-    "daily-progress-description": "Uzraudzīt ikdienu, veselību un lasīšanas ieradumus"
+    "daily-progress-description": "Uzraudzīt ikdienu, veselību un lasīšanu"
   },
   "menu-tab-navigator": {
     "active": "AKTĪVS",
     "top": "TOPS",
     "done": "DARĪTS",
-    "user": "LIETOTĀJS"
+    "user": "ES"
   },
   "add-daily-calendar-challenge-screen": {
     "save": "Saglabāt",
@@ -31,7 +31,7 @@
     "target-value": "Dienas līdz pabeigšanai   (maks.: {{numberOfDays}} dienas)",
     "target-value-placeholder": "Ievadiet dienu skaitu...",
     "description": "Komentārs",
-    "description-placeholder": "Pievienojiet īsu aprakstu, komentāru vai piezīmi..."
+    "description-placeholder": "Pievienojiet īsu aprakstu vai piezīmi..."
   },
   "daily-calendar-challenge-screen": {
     "save": "Saglabāt"
@@ -45,7 +45,7 @@
     "target-value": "Mērķa vērtība",
     "target-value-placeholder": "Ievadiet mērķa skaitlisko vērtību...",
     "description": "Komentārs",
-    "description-placeholder": "Pievienojiet īsu aprakstu, komentāru vai piezīmi..."
+    "description-placeholder": "Pievienojiet īsu aprakstu vai piezīmi..."
   },
   "total-counter-challenge-screen": {
     "save": "Saglabāt"

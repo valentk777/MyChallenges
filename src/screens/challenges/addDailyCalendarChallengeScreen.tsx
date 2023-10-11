@@ -16,8 +16,8 @@ import { Calendar } from 'react-native-calendars';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
 import { Theme } from 'react-native-calendars/src/types';
-import { useTranslations } from '../../hooks/useTranslations';
 import { useTranslation } from 'react-i18next';
+import { useTranslations } from '../../hooks/useTranslations';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
@@ -32,7 +32,7 @@ const dateDiffInDays = (date1: Date, date2: Date) => {
   return diffDays + 1;
 }
 
-export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDailyCalendarChallengeScreenProps) => {
+export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -48,14 +48,14 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
   const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
   const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
   const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
-  
-  const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDate());
+
+  const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDayString());
   const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
   const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
 
-  const { tTime } = useTranslations();
   const { t } = useTranslation('add-daily-calendar-challenge-screen')
-  
+  const { tTime } = useTranslations();
+
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
   };
@@ -135,7 +135,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
     let datesCompleted = originalChallenge?.datesCompleted != null ? originalChallenge.datesCompleted : [];
 
     datesCompleted = datesCompleted.filter(
-      date => startDate <= date &&  date <= endDate,
+      date => startDate <= date && date <= endDate,
     );
 
     challengeCandidate.datesCompleted = datesCompleted;
@@ -202,7 +202,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
                 style={[styles.calendarStyles, { width: window.width * 0.8 }]}
                 theme={styles.calendarTheme}
                 minDate={minDate}
-                current={currentDate === Date().toString() ? '' : currentDate}
+                current={timeService.getCurrentDateString()}
                 enableSwipeMonths={true}
                 onDayPress={onDayPress}
                 markedDates={{
@@ -243,7 +243,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route } : AddDaily
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("target-value", {numberOfDays: numberOfDays})}</Text>
+        <Text style={styles.text}>{t("target-value", { numberOfDays: numberOfDays })}</Text>
         <TextInput
           style={styles.textbox}
           placeholder={t("target-value-placeholder")}

@@ -14,6 +14,7 @@ export const SaveButton = (props: ButtonProps) => {
     <Pressable
       onPress={onPress}>
       <LinearGradient
+        locations={[0.2, 1]}
         colors={styles.buttonSave.colors}
         style={styles.buttonSave}
       >

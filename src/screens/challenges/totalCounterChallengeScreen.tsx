@@ -15,6 +15,7 @@ import { ChallengeContext } from '../../hooks/useChallenge';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from 'react-i18next';
+import timeService from '../../services/timeService';
 
 type TotalCounterChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'TotalCounterChallengeScreen'>;
 
@@ -49,7 +50,7 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
 
   const onSave = async (challenge: TotalCounterChallenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
     challenge.currentValue = newCount;
-    challenge.lastTimeUpdated = new Date().toISOString();
+    challenge.lastTimeUpdated = timeService.getCurrentDateString();
     challenge = updateChallengeStatus(challenge);
 
     const result = await challengesService.storeChallenge(challenge);

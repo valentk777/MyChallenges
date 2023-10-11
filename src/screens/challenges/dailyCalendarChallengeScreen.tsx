@@ -15,7 +15,6 @@ import { Calendar } from 'react-native-calendars';
 import { ChallengeContext } from '../../hooks/useChallenge';
 import timeService from '../../services/timeService';
 import { ChallengeTypes } from '../../entities/challengeTypes';
-import { useTranslations } from '../../hooks/useTranslations';
 import { useTranslation } from 'react-i18next';
 
 type DailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'DailyCalendarChallengeScreen'>;
@@ -24,7 +23,6 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
   const { theme } = useTheme();
   const styles = createStyles(theme);
   
-  const { tTime } = useTranslations();
   const { t } = useTranslation('daily-calendar-challenge-screen')
 
   const challenge = route.params.challenge;
@@ -82,7 +80,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
 
     newChallenge.currentValue = newCount;
     newChallenge.datesCompleted = Object.keys(selectedDates);
-    newChallenge.lastTimeUpdated = new Date().toISOString();
+    newChallenge.lastTimeUpdated = timeService.getCurrentDateString();
     newChallenge.status = getChallengeStatus(newChallenge.currentValue, newChallenge.targetValue);
 
     const result = await challengesService.storeChallenge(newChallenge);
@@ -120,8 +118,8 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
           style={[styles.calendarStyles, { width: window.width * 0.8 }]}
           theme={styles.calendarTheme}
           minDate={challenge.startDate}
-          maxDate={timeService.getCurrentDate()}
-          current={timeService.getCurrentDate()}
+          maxDate={timeService.getCurrentDateString()}
+          current={timeService.getCurrentDateString()}
           markedDates={selectedDates}
           // hideArrows={true}
           enableSwipeMonths={true}

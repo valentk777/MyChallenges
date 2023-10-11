@@ -15,7 +15,7 @@ const convertUTCToLocalTime = (utcTime: string) => {
   return date.toLocaleString('en-US', options);
 };
 
-const getCurrentDate = () => {
+const getCurrentDayString = () => {
   return formatDate(new Date());
 };
 
@@ -29,7 +29,7 @@ const getCurrentDateString = () => {
 
 const timeService = {
   convertUTCToLocalTime,
-  getCurrentDate,
+  getCurrentDayString,
   formatDate,
   getCurrentDateString,
 };

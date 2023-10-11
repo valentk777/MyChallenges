@@ -6,6 +6,7 @@ import challengesDbTable from '../external/database/challengesDbTable';
 import uuid from 'react-native-uuid';
 import { ProgressStatus } from '../entities/progressStatus';
 import { ChallengeTypes } from '../entities/challengeTypes';
+import timeService from './timeService';
 
 const initChallengesList = async (userId: string) => {
   const response = await challengesDbTable.getChallenges(userId);
@@ -184,7 +185,7 @@ const createNewChallenge = (
     return null;
   }
 
-  const currentUtcTime = new Date().toISOString();
+  const currentUtcTime = timeService.getCurrentDateString();
   const challengeCandidate = {} as Challenge;
 
   challengeCandidate.id = uuid.v4().toString();

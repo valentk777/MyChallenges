@@ -17,8 +17,8 @@
   "menu-tab-navigator": {
     "active": "ATIVO",
     "top": "TOPO",
-    "done": "CONCLUÍDO",
-    "user": "USUÁRIO"
+    "done": "FEITO",
+    "user": "MIM"
   },
   "add-daily-calendar-challenge-screen": {
     "save": "Salvar",
@@ -31,7 +31,7 @@
     "target-value": "Dias para completar (máx: {{numberOfDays}} dias)",
     "target-value-placeholder": "Digite o número de dias...",
     "description": "Comentário",
-    "description-placeholder": "Adicione uma breve descrição, comentário ou nota..."
+    "description-placeholder": "Adicione breve descrição ou comentário..."
   },
   "daily-calendar-challenge-screen": {
     "save": "Salvar"
@@ -45,7 +45,7 @@
     "target-value": "Valor alvo",
     "target-value-placeholder": "Digite o número alvo...",
     "description": "Comentário",
-    "description-placeholder": "Adicione uma breve descrição, comentário ou nota..."
+    "description-placeholder": "Adicione breve descrição ou comentário..."
   },
   "total-counter-challenge-screen": {
     "save": "Salvar"

@@ -5,7 +5,6 @@ import { useTheme } from '../../hooks/useTheme';
 import { AppTheme } from '../../styles/themeModels';
 import { icons } from '../../assets';
 import challengesService from '../../services/challengesService';
-import timeService from '../../services/timeService';
 import { SvgFileNamesToComponentsMap } from '../../assets/svgIndex';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { useTranslations } from '../../hooks/useTranslations';
@@ -43,8 +42,7 @@ export const PressableTile = (props: TileProps) => {
   }
 
   const title = getCroppedText(challenge.title, 25);
-  // const description = getCroppedText(challenge.description, 16);
-  const timeCreated = timeService.convertUTCToLocalTime(challenge.timeCreated);
+  const timeCreated = challenge.timeCreated;
   const ImageComponent = SvgFileNamesToComponentsMap[challenge.image];
 
   let icon = icons['calendar.png'];

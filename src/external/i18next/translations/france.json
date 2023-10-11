@@ -8,17 +8,17 @@
   },
   "add-new-challenge-menu": {
     "simple-total-count-title": "Comptage simple",
-    "simple-total-count-description": "Suivi de la présence, des événements, des voyages et plus",
+    "simple-total-count-description": "Suivi des événements et voyages",
     "total-detailed-count-title": "Comptage détaillé",
     "total-detailed-count-description": "Surveillance du poids, de la taille et plus",
     "daily-progress-title": "Progrès quotidien",
-    "daily-progress-description": "Suivi des routines, de la santé et des habitudes de lecture"
+    "daily-progress-description": "Suivi des routines, santé, et lectures"
   },
   "menu-tab-navigator": {
     "active": "ACTIF",
     "top": "HAUT",
     "done": "TERMINÉ",
-    "user": "UTILISATEUR"
+    "user": "MOI"
   },
   "add-daily-calendar-challenge-screen": {
     "save": "Enregistrer",
@@ -31,7 +31,7 @@
     "target-value": "Jours pour terminer (max : {{numberOfDays}} jours)",
     "target-value-placeholder": "Entrez le nombre de jours...",
     "description": "Commentaire",
-    "description-placeholder": "Ajoutez une brève description, un commentaire ou une note..."
+    "description-placeholder": "Ajoutez une courte description ou note..."
   },
   "daily-calendar-challenge-screen": {
     "save": "Enregistrer"
@@ -45,7 +45,7 @@
     "target-value": "Valeur cible",
     "target-value-placeholder": "Entrez le nombre cible...",
     "description": "Commentaire",
-    "description-placeholder": "Ajoutez une brève description, un commentaire ou une note..."
+    "description-placeholder": "Ajoutez une courte description ou note..."
   },
   "total-counter-challenge-screen": {
     "save": "Enregistrer"
