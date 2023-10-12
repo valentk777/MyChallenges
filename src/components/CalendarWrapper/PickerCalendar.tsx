@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Modal, TouchableWithoutFeedback, StyleSheet, useWindowDimensions } from "react-native";
+import React from "react";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { Calendar } from "react-native-calendars";
 import timeService from "../../services/timeService";
 import { AppTheme } from "../../styles/themeModels";
@@ -13,10 +13,11 @@ interface PickerCalendarProps {
   isModalVisible: boolean;
   currentDate: string;
   minDate: string | undefined;
+  maxDate?: string | undefined;
 }
 
 const PickerCalendar = (props: PickerCalendarProps) => {
-  const { isModalVisible, hideCalendar, onDayPress, currentDate, minDate } = props;
+  const { isModalVisible, hideCalendar, onDayPress, currentDate, minDate, maxDate } = props;
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -29,6 +30,7 @@ const PickerCalendar = (props: PickerCalendarProps) => {
         <Calendar
           style={[styles.calendarStyles, { width: window.width * 0.8 }]}
           theme={styles.calendarTheme}
+          maxDate={maxDate}
           minDate={minDate}
           current={timeService.getCurrentDateString()}
           enableSwipeMonths={true}
@@ -47,12 +49,6 @@ const createStyles = (theme: AppTheme) => {
     calendarContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     calendarStyles: {
       justifyContent: 'center',

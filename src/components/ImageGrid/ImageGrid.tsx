@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
-import LinearGradient from 'react-native-linear-gradient'
 import MyModal from '../Modals/MyModal';
 
 interface ImageGalleryModalProps {
@@ -37,23 +36,18 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
 
   return (
     <MyModal isModalVisible={visible} hideModal={() => onClose(currentIndexLocation)} >
-      {/* <LinearGradient
-        colors={styles.linearGradient.colors}
-        style={styles.linearGradient}
-      > */}
-        <View style={styles.container}>
-          <View style={styles.modalContent}>
-            <FlatList
-              data={imagesToDisplay}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.location}
-              numColumns={3}
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
+      <View style={styles.container}>
+        <View style={styles.modalContent}>
+          <FlatList
+            data={imagesToDisplay}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.location}
+            numColumns={3}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
-      {/* </LinearGradient> */}
+      </View>
     </MyModal>
   );
 };
@@ -61,23 +55,19 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
 const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
     },
-    linearGradient: {
-      flex: 1,
-      colors: [theme.colors.primary, theme.colors.secondary]
-    },
     modalContent: {
       width: '90%',
-      height: '85%',
+      height: '90%',
       backgroundColor: theme.colors.canvas,
       borderRadius: 10,
       overflow: 'hidden',
     },
     image: {
       width: '33.33%',
+      padding: 5,
       aspectRatio: 1,
       resizeMode: 'contain',
     },

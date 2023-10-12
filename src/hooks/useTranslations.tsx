@@ -19,13 +19,13 @@ const LOCALES = {
 interface ITranslationContext {
   currentLanguage: string;
   changeLanguage: (language: string) => Promise<void>;
-  tTime: (date: string) => string;
+  tTime: (date: string, timeFormat?: string) => string;
 };
 
 const TranslationContext = createContext<ITranslationContext>({
   currentLanguage: USER_PREFERRED_LANGUAGE,
   changeLanguage: (language: string) => { },
-  tTime: (date: string) => ""
+  tTime: (date: string, timeFormat = 'PPPP') => ""
 });
 
 interface TranslationContextProviderProps
@@ -69,8 +69,8 @@ export const TranslationProvider = ({ children }: TranslationContextProviderProp
     await userService.updateUserLanguage(language);
   }
 
-  const tTime = (date: string) => {
-    return format(new Date(date), 'PPPP', { locale: LOCALES[currentLanguage] });
+  const tTime = (date: string, timeFormat = 'PPPP') => {
+    return format(new Date(date), timeFormat, { locale: LOCALES[currentLanguage] });
   }
 
   const values = useMemo(() => ({ currentLanguage, changeLanguage, tTime }), [currentLanguage]);

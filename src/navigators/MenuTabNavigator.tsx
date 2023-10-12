@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, useWindowDimensions, View } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -25,10 +25,13 @@ const HomeTab = createBottomTabNavigator<HomeStackParamList>();
 
 const Menu = () => {
   const { theme } = useTheme();
+  const window = useWindowDimensions();
   const styles = createStyles(theme);
   const { t } = useTranslation('menu-tab-navigator')
   
   return (
+    <View style={{height: window.height}}>
+
     <HomeTab.Navigator
       screenOptions={{
         headerShown: false,
@@ -122,6 +125,7 @@ const Menu = () => {
         }}
       />
     </HomeTab.Navigator>
+    </View>
   );
 }
 

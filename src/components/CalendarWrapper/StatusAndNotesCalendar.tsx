@@ -3,24 +3,30 @@ import filter from 'lodash/filter';
 import find from 'lodash/find';
 
 import React, { Component, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View, Text, StyleSheet, TextInput } from 'react-native';
 import {
   ExpandableCalendar,
   TimelineEventProps,
   TimelineList,
   CalendarProvider,
   TimelineProps,
-  CalendarUtils
+  CalendarUtils,
 } from 'react-native-calendars';
 import challengesService from '../../services/challengesService';
 import { Challenge, DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
+import MyModal from '../Modals/MyModal';
+import { AppTheme } from '../../styles/themeModels';
+import { useTheme } from '../../hooks/useTheme';
+import TimePicker from '../TimePickers/TimePicker';
+import AddEventInputArea from './AddEventInputArea';
+import { Theme } from "react-native-calendars/src/types";
 
+// ------------ TODO: DELETE
 const EVENT_COLOR = '#e6add8';
 const today = new Date();
-export const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
-
-export const timelineEvents: TimelineEventProps[] = [
+const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
+const timelineEvents: TimelineEventProps[] = [
   {
     start: `${getDate(-1)} 09:20:00`,
     end: `${getDate(-1)} 12:00:00`,
@@ -42,14 +48,23 @@ export const timelineEvents: TimelineEventProps[] = [
     color: EVENT_COLOR
   },
 ];
-
 const INITIAL_TIME = { hour: 9, minutes: 0 };
 const EVENTS: TimelineEventProps[] = timelineEvents;
+// ------------ TODO: DELETE
+
+
+
 
 const StatusAndNotesCalendar = () => {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   // const [challenges, setChallenges] = useState([] as Challenge[]);
   const [eventsByDate, setEventsByDate] = useState({} as { [key: string]: TimelineEventProps[] });
   const [currentDate] = useState(timeService.getCurrentDateString());
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+
 
   // useEffect(() => {
   //   challengesService.getAllChallenges().then((challenges) => {
@@ -134,6 +149,9 @@ const StatusAndNotesCalendar = () => {
 
   const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
     console.log('TimelineProps onBackgroundLongPress: ', timeString, timeObject);
+
+    setIsModalVisible(true);
+
     // const { eventsByDate } = this.state;
     // const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
     // const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
@@ -214,30 +232,84 @@ const StatusAndNotesCalendar = () => {
   // const { currentDate, eventsByDate } = this.state;
 
   return (
-    <CalendarProvider
-      date={currentDate}
-      // onDateChanged={this.onDateChanged}
-      // onMonthChange={this.onMonthChange}
-      disabledOpacity={1}
-      numberOfDays={1}
-    >
-      <ExpandableCalendar
-        firstDay={1}
-      // markingType={'multi-period'}
-      // leftArrowImageSource={require('../img/previous.png')}
-      // rightArrowImageSource={require('../img/next.png')}
-      // markedDates={marked} // todo: change to state data
-      />
-      <TimelineList
-        events={eventsByDate}
-        timelineProps={timelineProps}
-        showNowIndicator
-        scrollToNow
-      // scrollToFirst
-      // initialTime={INITIAL_TIME}
-      />
-    </CalendarProvider>
+    <View style={styles.container}>
+      <CalendarProvider
+        date={currentDate}
+        onDateChanged={onDateChanged}
+        onMonthChange={onMonthChange}
+        disabledOpacity={0}
+        numberOfDays={1}
+        style={styles.calendarContainer}
+        theme={styles.calendarTheme}
+        showTodayButton={false}
+      >
+        <ExpandableCalendar
+          firstDay={1}
+          theme={styles.calendarTheme}
+          allowShadow={true}
+        // style={styles.calendarContainer}
+        showScrollIndicator={true}
+
+        // markingType={'multi-period'}
+        // leftArrowImageSource={require('../img/previous.png')}
+        // rightArrowImageSource={require('../img/next.png')}
+        // markedDates={marked} // todo: change to state data
+        />
+        {/* <View 
+        style={styles.calendarContainer}
+        > */}
+        <TimelineList
+          events={eventsByDate}
+          timelineProps={timelineProps}
+          showNowIndicator
+          scrollToNow
+
+        // scrollToFirst
+        // initialTime={INITIAL_TIME}
+        />
+        {/* </View> */}
+      </CalendarProvider>
+      <View style={styles.modalContainer}>
+        <MyModal isModalVisible={isModalVisible} hideModal={() => setIsModalVisible(false)}>
+          <View style={styles.eventInputArea}>
+          <AddEventInputArea />
+          </View>
+        </MyModal>
+      </View>
+    </View>
   );
 }
+
+const createStyles = (theme: AppTheme) => {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    calendarContainer: {
+      flex: 4,
+    },
+    modalContainer: {
+      flex: 1,
+    },
+    calendarTheme: {
+      arrowColor: theme.colors.canvasInverted,
+      textDayFontFamily: theme.fonts.light,
+      textMonthFontFamily: theme.fonts.bold,
+      textDayHeaderFontFamily: theme.fonts.medium,
+      todayTextColor: theme.colors.tertiary,
+    } as Theme,
+    eventInputArea: {
+      top: 0,
+      height: '50%',
+      width: '100%',
+      position: 'absolute',
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      // backgroundColor: 'green'
+    }
+  });
+
+  return styles;
+};
 
 export default StatusAndNotesCalendar;

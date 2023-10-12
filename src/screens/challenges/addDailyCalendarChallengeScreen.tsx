@@ -20,17 +20,6 @@ import PickerCalendar from '../../components/CalendarWrapper/PickerCalendar';
 
 type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
 
-const dateDiffInDays = (date1: Date, date2: Date) => {
-  const diffTime = Math.abs(date2 - date1);
-
-  if (isNaN(diffTime)) {
-    return 0;
-  }
-
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays + 1;
-}
-
 export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -50,7 +39,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
 
   const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDayString());
   const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
-  const [numberOfDays, setNumberOfDays] = useState(dateDiffInDays(new Date(startDate), new Date(endDate)));
+  const [numberOfDays, setNumberOfDays] = useState(timeService.dateDiffInDays(new Date(startDate), new Date(endDate)));
 
   const { t } = useTranslation('add-daily-calendar-challenge-screen')
 
@@ -79,7 +68,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     }
 
     setStartDate(day.dateString);
-    setNumberOfDays(dateDiffInDays(_startDate, _endDate));
+    setNumberOfDays(timeService.dateDiffInDays(_startDate, _endDate));
     hideStartCalendar();
   };
 
@@ -92,7 +81,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     }
 
     setEndDate(day.dateString);
-    setNumberOfDays(dateDiffInDays(_startDate, _endDate));
+    setNumberOfDays(timeService.dateDiffInDays(_startDate, _endDate));
     hideEndCalendar();
   };
 

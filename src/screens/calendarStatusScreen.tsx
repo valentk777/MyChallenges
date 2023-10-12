@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
@@ -13,8 +13,10 @@ export const CalendarStatusScreen = ({ navigation }: CalendarStatusScreenProps) 
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
+  const window = useWindowDimensions();
+  
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, height: window.height}}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
@@ -30,17 +32,13 @@ export const CalendarStatusScreen = ({ navigation }: CalendarStatusScreenProps) 
 const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
     },
     linearGradient: {
-      flex: 1,
-      colors: [theme.colors.primary, theme.colors.secondary]
+      flex: 15,
+      colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
     },
     section: {
       flex: 1,
-      // alignItems: 'center',
-      // justifyContent: 'center',
-      // height: '70%',
     },
     text: {
       fontSize: 20,

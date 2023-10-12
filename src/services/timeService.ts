@@ -27,11 +27,23 @@ const getCurrentDateString = () => {
   return new Date().toISOString();
 };
 
+const dateDiffInDays = (date1: Date, date2: Date) => {
+  const diffTime = Math.abs(date2 - date1);
+
+  if (isNaN(diffTime)) {
+    return 0;
+  }
+
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays + 1;
+}
+
 const timeService = {
   convertUTCToLocalTime,
   getCurrentDayString,
   formatDate,
   getCurrentDateString,
+  dateDiffInDays,
 };
 
 export default timeService;
