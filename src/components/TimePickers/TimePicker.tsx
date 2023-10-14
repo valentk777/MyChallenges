@@ -10,22 +10,27 @@ import { AppTheme } from '../../styles/themeModels';
 interface TimePickerProps {
   onSetStartDate: (date: Date) => void,
   onSetEndDate: (date: Date) => void
+  initialStartDate: Date;
+  initialEndDate: Date;
 }
 
 const TimePicker = (props: TimePickerProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { onSetStartDate, onSetEndDate } = props;
+  const { onSetStartDate, onSetEndDate, initialStartDate, initialEndDate } = props;
 
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
 
-  const [startDate, setStartDate] = useState(timeService.getCurrentDayString());
-  const [endDate, setEndDate] = useState(timeService.getCurrentDayString());
+  const [startDate, setStartDate] = useState(initialStartDate);
+  const [endDate, setEndDate] = useState(initialEndDate));
 
-  const [startTime, setStartTime] = useState('00:00');
-  const [endTime, setEndTime] = useState('00:30');
+  // const [startDate, setStartDate] = useState(timeService.getDate(initialStartDate));
+  // const [endDate, setEndDate] = useState(timeService.getDate(initialEndDate));
+
+  // const [startTime, setStartTime] = useState(timeService.getTime(initialStartDate));
+  // const [endTime, setEndTime] = useState(timeService.getTime(initialEndDate));
 
   const { tTime } = useTranslations();
 
@@ -34,8 +39,8 @@ const TimePicker = (props: TimePickerProps) => {
   }, [startDate, endDate, startTime, endTime]);
 
   const updateState = () => {
-    onSetStartDate(new Date(`${startDate} ${startTime}`));
-    onSetEndDate(new Date(`${endDate} ${endTime}`));
+    onSetStartDate(new Date(`${startDate} ${startTime}`).toISOString());
+    onSetEndDate(new Date(`${endDate} ${endTime}`).toISOString());
   }
 
   const onStartDayPress = (day) => {
@@ -105,10 +110,7 @@ const TimePicker = (props: TimePickerProps) => {
     const startMinutes = parseInt(startTime.split(':')[1], 10);
 
     if (startHours === 23 && startMinutes == 45) {
-      let nextDay = new Date(endDate);
-      nextDay.setDate(new Date(endDate).getDate() + 1);
-
-      setEndDate(timeService.formatDate(nextDay));
+      setEndDate(timeService.getNextDayDate(endDate));
       setEndTime("00:00");
 
       return generateTime(0, 0);

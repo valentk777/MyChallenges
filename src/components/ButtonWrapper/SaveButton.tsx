@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
+import { ButtonProps, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
@@ -11,7 +11,7 @@ export const SaveButton = (props: ButtonProps) => {
   const styles = createStyles(theme);
 
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={onPress}>
       <LinearGradient
         locations={[0.2, 1]}
@@ -23,7 +23,7 @@ export const SaveButton = (props: ButtonProps) => {
           {title}
         </Text>
       </LinearGradient>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

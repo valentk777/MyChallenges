@@ -6,27 +6,31 @@ import TimePicker from "../TimePickers/TimePicker";
 import { SaveButton } from "../ButtonWrapper/SaveButton";
 import { Note } from "../../entities/note";
 import notesService from "../../services/notesService";
+import timeService from "../../services/timeService";
 
-interface AddEventInputAreaProps {
-  onSave: (newNote: Note) => void;
+interface CalendarEventModalProps {
+  onSave: (newNote: Note, oldNote: Note | null) => void;
+  initialStartTime: Date | null;
+  initialEndTime: Date | null;
 }
 
-const AddEventInputArea = (props: AddEventInputAreaProps) => {
+const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { onSave } = props;
+  const { onSave, initialStartTime, initialEndTime } = props;
 
   const [title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(initialStartTime == null ? new Date() : initialStartTime);
+  const [endDate, setEndDate] = useState(initialEndTime == null ? new Date() : initialEndTime);
+  const [summary, setSummary] = useState("");
 
   const onLocalSave = () => {
-    const note = notesService.createNewNote(title, description, startDate, endDate);
+    const note = notesService.createNewNote(title, summary, startDate, endDate);
 
-    console.log(note);
-    // onSave(note);
+    if (note != null) {
+      onSave(note, null);
+    }
   }
 
   const renderInputContainer = () => (
@@ -43,15 +47,17 @@ const AddEventInputArea = (props: AddEventInputAreaProps) => {
         <TimePicker
           onSetStartDate={setStartDate}
           onSetEndDate={setEndDate}
+          initialStartDate={startDate}
+          initialEndDate={endDate}
         />
       </View>
       <TextInput
         multiline
-        style={styles.description}
+        style={styles.summary}
         // placeholder={t("title-placeholder")}
-        placeholder={"Add description"}
-        onChangeText={setDescription}
-        value={description}
+        placeholder={"Add summary"}
+        onChangeText={setSummary}
+        value={summary}
         placeholderTextColor={theme.colors.secondary}
       />
     </View>
@@ -69,7 +75,6 @@ const AddEventInputArea = (props: AddEventInputAreaProps) => {
 
   return (
     <KeyboardAvoidingView behavior='height'>
-
       <View style={styles.container}>
         <View style={styles.modalBoxContainer}>
           {renderInputContainer()}
@@ -111,7 +116,7 @@ const createStyles = (theme: AppTheme) => {
       flex: 2,
       justifyContent: 'center',
     },
-    description: {
+    summary: {
       flex: 2,
       borderWidth: 1,
       marginVertical: 20,
@@ -127,4 +132,4 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export default AddEventInputArea;
+export default CalendarEventModal;

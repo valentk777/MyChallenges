@@ -8,120 +8,118 @@ import {Note} from '../entities/note';
 
 const initNotesList = async (userId: string) => {
   // const response = await notesDbTable.getNotes(userId);
-  // let notes = [] as Note[];
+
+  let notes = [] as Note[];
+
   // if (response.isSuccessfull) {
   //   notes = response.result as Note[];
   // }
-  // await storeData('notes', notes);
-  // return notes;
+
+  await storeData('notes', notes);
+
+  return notes;
 };
 
 const getNotesKey = (userId: string) => {
   return `notes/${userId}`;
 };
 
-// const getAllNotes = async () => {
-//   try {
-//     const user = await userService.getCurrentUser();
+const getAllNotes = async () => {
+  try {
+    const user = await userService.getCurrentUser();
 
-//     if (user === null || user.id === '' || user.id === null) {
-//       return [] as Note[];
-//     }
+    if (user === null || user.id === '' || user.id === null) {
+      return [] as Note[];
+    }
 
-//     const notes = await getData(getNotesKey(user.id));
+    const notes = await getData(getNotesKey(user.id));
 
-//     if (notes === null) {
-//       return await initNotesList(user.id);
-//     }
+    if (notes === null) {
+      return await initNotesList(user.id);
+    }
 
-//     return notes as Note[];
-//   } catch (error) {
-//     Alert.alert(`Issues getting all notes: Error: ${error}`);
-//     return [] as Note[];
-//   }
-// };
+    return notes as Note[];
+  } catch (error) {
+    Alert.alert(`Issues getting all notes: Error: ${error}`);
+    return [] as Note[];
+  }
+};
 
-// const getNoteById = (notes: Note[], challengeId: string) => {
-//   if (notes.length == 0) {
-//     return null;
-//   }
+const getNoteById = (notes: Note[], noteId: string) => {
+  if (notes.length == 0) {
+    return null;
+  }
 
-//   const selectedNote = notes.filter(
-//     challenge => challenge.id === challengeId,
-//   );
+  const selectedNotes = notes.filter(note => note.id === noteId);
 
-//   if (selectedNote.length === 0) {
-//     return null;
-//   }
+  if (selectedNotes.length === 0) {
+    return null;
+  }
 
-//   if (selectedNote.length > 1) {
-//     Alert.alert('More than one challege with same id found');
-//   }
+  if (selectedNotes.length > 1) {
+    Alert.alert('More than one note with same id found');
+  }
 
-//   return selectedNote[0];
-// };
+  return selectedNotes[0];
+};
 
-// const storeNote = async (challenge: Note) => {
-//   try {
-//     const user = await userService.getCurrentUser();
+const storeNote = async (note: Note) => {
+  try {
+    const user = await userService.getCurrentUser();
 
-//     if (user === null || user.id === '' || user.id === null) {
-//       console.error('Cannot store challenge because user does not exist');
-//       return false;
-//     }
+    if (user === null || user.id === '' || user.id === null) {
+      console.error('Cannot store note because user does not exist');
+      return false;
+    }
 
-//     let notes = await getAllNotes();
-//     const selectedNote = getNoteById(notes, challenge.id);
+    let notes = await getAllNotes();
+    const selectedNote = getNoteById(notes, note.id);
 
-//     if (selectedNote != null) {
-//       // remove challenge to prevent from duplicates
-//       notes = notes.filter(
-//         localNote => challenge.id !== localNote.id,
-//       );
-//     }
+    if (selectedNote != null) {
+      // remove note to prevent from duplicates
+      notes = notes.filter(localNote => note.id !== localNote.id);
+    }
 
-//     notes.push(challenge);
+    notes.push(note);
 
-//     storeData(getNotesKey(user.id), notes);
-//     notesDbTable.updateDbStoredNotes(user.id, notes);
+    storeData(getNotesKey(user.id), notes);
+    // notesDbTable.updateDbStoredNotes(user.id, notes);
 
-//     return true;
-//   } catch (error) {
-//     Alert.alert(`Issues adding new challenge: Error: ${error}`);
-//     return false;
-//   }
-// };
+    return true;
+  } catch (error) {
+    Alert.alert(`Issues adding new note: Error: ${error}`);
+    return false;
+  }
+};
 
-// const removeNote = async (challengeId: string) => {
-//   try {
-//     const user = await userService.getCurrentUser();
+const removeNote = async (noteId: string) => {
+  try {
+    const user = await userService.getCurrentUser();
 
-//     if (user === null || user.id === '' || user.id === null) {
-//       console.log('Cannot remove challenge because user does not exist');
-//       return false;
-//     }
+    if (user === null || user.id === '' || user.id === null) {
+      console.log('Cannot remove note because user does not exist');
+      return false;
+    }
 
-//     const notes = await getAllNotes();
+    const notes = await getAllNotes();
 
-//     const updatedNotes = notes.filter(
-//       challenge => challenge.id !== challengeId,
-//     );
+    const updatedNotes = notes.filter(note => note.id !== noteId);
 
-//     storeData(getNotesKey(user.id), updatedNotes);
-//     notesDbTable.updateDbStoredNotes(user.id, updatedNotes);
+    storeData(getNotesKey(user.id), updatedNotes);
+    // notesDbTable.updateDbStoredNotes(user.id, updatedNotes);
 
-//     return true;
-//   } catch (error) {
-//     Alert.alert(`Issues removing challenge: Error: ${error}`);
-//     return false;
-//   }
-// };
+    return true;
+  } catch (error) {
+    Alert.alert(`Issues removing note: Error: ${error}`);
+    return false;
+  }
+};
 
 const createNewNote = (
   title: string,
-  description: string,
-  startDate: Date,
-  endDate: Date,
+  summary: string,
+  startDate: string,
+  endDate: string,
 ) => {
   if (title === '') {
     Alert.alert('Title cannot be empty');
@@ -133,26 +131,30 @@ const createNewNote = (
     return null;
   }
 
-  if (description.length > 90) {
-    Alert.alert('Description too long. Max 90 symbols allowed');
+  if (summary.length > 90) {
+    Alert.alert('Summary too long. Max 90 symbols allowed');
     return null;
   }
+
+  const currentUtcTime = timeService.getCurrentDateString();
 
   const noteCandidate = {} as Note;
 
   noteCandidate.id = uuid.v4().toString();
   noteCandidate.title = title;
-  noteCandidate.description = description;
+  noteCandidate.summary = summary;
   noteCandidate.startDate = startDate;
   noteCandidate.endDate = endDate;
+  noteCandidate.timeCreated = currentUtcTime;
+  noteCandidate.lastTimeUpdated = currentUtcTime;
 
   return noteCandidate;
 };
 
 const notesService = {
-  // getAllNotes,
-  // storeNote,
-  // removeNote,
+  getAllNotes,
+  storeNote,
+  removeNote,
   createNewNote,
 };
 

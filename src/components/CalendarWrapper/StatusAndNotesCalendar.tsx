@@ -12,45 +12,71 @@ import {
   TimelineProps,
   CalendarUtils,
 } from 'react-native-calendars';
-import challengesService from '../../services/challengesService';
-import { Challenge, DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
 import MyModal from '../Modals/MyModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
-import TimePicker from '../TimePickers/TimePicker';
-import AddEventInputArea from './AddEventInputArea';
+import CalendarEventModal from './CalendarEventModal';
 import { Theme } from "react-native-calendars/src/types";
+import { Note } from '../../entities/note';
+import notesService from '../../services/notesService';
 
-// ------------ TODO: DELETE
-const EVENT_COLOR = '#e6add8';
-const today = new Date();
-const getDate = (offset = 0) => CalendarUtils.getCalendarDateString(new Date().setDate(today.getDate() + offset));
-const timelineEvents: TimelineEventProps[] = [
-  {
-    start: `${getDate(-1)} 09:20:00`,
-    end: `${getDate(-1)} 12:00:00`,
-    title: 'Merge Request to React Native Calendars',
-    summary: 'Merge Timeline Calendar to React Native Calendars'
-  },
-  {
-    start: `${getDate()} 01:15:00`,
-    end: `${getDate()} 02:30:00`,
-    title: 'Meeting A',
-    summary: 'Summary for meeting A',
-    color: EVENT_COLOR
-  },
-  {
-    start: `${getDate()} 01:30:00`,
-    end: `${getDate()} 02:30:00`,
-    title: 'Meeting B',
-    summary: 'Summary for meeting B',
-    color: EVENT_COLOR
-  },
-];
-const INITIAL_TIME = { hour: 9, minutes: 0 };
-const EVENTS: TimelineEventProps[] = timelineEvents;
-// ------------ TODO: DELETE
+//TODO: move to calendarEventsService
+
+const noteToEvent = (note: Note) => {
+  return {
+    id: note.id,
+    start: note.startDate,
+    end: note.endDate,
+    title: note.title,
+    summary: note.summary,
+    color: note.color
+  } as TimelineEventProps;
+}
+
+// todo: refactor
+const eventToOneDayEvents = (event) => {
+  let result = [] as TimelineEventProps[];
+
+  const addEntry = (date, startTime, endTime) => {
+    const newEvent = {
+      id: event.id,
+      start: date + 'T' + startTime,
+      end: date + 'T' + endTime,
+      title: event.title,
+      summary: event.summary,
+      color: event.color
+    } as TimelineEventProps;
+
+    result = [...result, newEvent];
+  };
+
+  // Handle the start date
+  addEntry(timeService.getDate(event.start), timeService.getTime(event.start), '23:59:59.000Z');
+
+  // Handle the end date
+  let nextDay = timeService.getNextDayDate(event.start);
+
+  while(nextDay < timeService.getDate(event.end)) {
+    addEntry(nextDay, '00:00:00.000Z', '23:59:59.000Z');
+
+    nextDay = timeService.getNextDayDate(nextDay);
+  }
+
+  addEntry(nextDay, '00:00:00.000Z', timeService.getTime(event.end));
+
+  return result;
+}
+
+const noteToEvents = (note: Note) => {
+  return [noteToEvent(note)];
+  // v1 support only one day event
+  // return eventToOneDayEvents(noteToEvent(note));
+}
+
+
+
+// --------------------------------------
 
 
 
@@ -59,55 +85,76 @@ const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  // const [challenges, setChallenges] = useState([] as Challenge[]);
+  const [userNotes, setUserNotes] = useState([] as Note[]);
   const [eventsByDate, setEventsByDate] = useState({} as { [key: string]: TimelineEventProps[] });
   const [currentDate] = useState(timeService.getCurrentDateString());
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const [initialStartTime, setInitialStartTime] = useState(null as Date | null);
+  const [initialEndTime, setInitialEndTime] = useState(null as Date | null);
 
+  useEffect(() => {
+    notesService.getAllNotes().then((notes) => {
+      // notes.map(note => {notesService.removeNote(note.id)});
+      setUserNotes(notes);
 
-  // useEffect(() => {
-  //   challengesService.getAllChallenges().then((challenges) => {
-  //     setChallenges(challenges);
-  //     updateEventsByDate(challenges);
-  //   });
-  // }, [challenges]);
+      const events = notes.flatMap(note => {
+        return noteToEvents(note);
+      });
 
-  // useEffect(() => {
-  //   challengesService.getAllChallenges().then((challenges) => {
-  //     setChallenges(challenges);
-  //     setEventsByDate(challenges);
-  //   });
-  // }, [challenges]);
+      const _eventsByDate = groupBy(events, e => CalendarUtils.getCalendarDateString(e.start)) as {
+        [key: string]: TimelineEventProps[];
+      }
 
-  const getMarkedDaysFromChallenges = (challenges: Challenge[]) => {
-    challenges.map(challenge => {
-      const calendarChallenge = challenge as DailyCalendarChallenge;
+      setEventsByDate(_eventsByDate);
+    });
+  }, []);
 
-      // if (calendarChallenge)
+  const addEvetsByDate = (events: TimelineEventProps[]) => {
+    events.forEach(event => {
+      const startDate = timeService.getDate(event.start);
+      if (eventsByDate[startDate]) {
+        eventsByDate[startDate] = [...eventsByDate[startDate], event];
 
+      } else {
+        eventsByDate[startDate] = [event];
+      }
 
-      // if (typeof(challenge) == DailyCalendarChallenge){
-
-      // }
-
-
-      // challenge.timeCreated
-    })
+      // TODO: think about performance here later.
+      setEventsByDate(eventsByDate);
+    });
   }
 
-  // const updateEventsByDate = (challenges : Challenge[]) => {
+  const addNote = (note: Note) => {
+    addEvetsByDate(noteToEvents(note));
+  }
 
-  // }
+  const updateNote = (oldNote: Note, newNote: Note) => {
+      const oldEvents = noteToEvents(oldNote);
+      const newEvents = noteToEvents(newNote);
 
+      // delete old note and add new one.
+      console.log("updateNote");
+  }
 
-  // const state = {
-  //   currentDate: getDate(),
-  //   events: EVENTS,
-  //   eventsByDate: groupBy(EVENTS, e => CalendarUtils.getCalendarDateString(e.start)) as {
-  //     [key: string]: TimelineEventProps[];
-  //   }
-  // };
+  const deleteNote = (note: Note) => {
+    console.log("deleteNote");
+  }
+
+  const saveNoteChanges = async (newNote: Note, oldNote: Note | null) => {
+    await notesService.storeNote({ ...newNote, color: theme.colors.exceptional } as Note);
+
+    setIsModalVisible(false);
+
+    const isAddNewNote = oldNote == null;
+
+    if (isAddNewNote) {
+      addNote(newNote);
+      return;
+    }
+
+    updateNote(oldNote, newNote);
+  }
 
   // const marked = {
   //   // [`${getDate(-1)}`]: { marked: true },
@@ -148,72 +195,14 @@ const StatusAndNotesCalendar = () => {
   };
 
   const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
-    console.log('TimelineProps onBackgroundLongPress: ', timeString, timeObject);
+    const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
+    const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
+    const endDate = `${timeObject.date} ${hourString}:${minutesString}:00`;
 
+    setInitialStartTime(new Date(timeString));
+    setInitialEndTime(new Date(endDate));
     setIsModalVisible(true);
-
-    // const { eventsByDate } = this.state;
-    // const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
-    // const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
-
-    // const newEvent = {
-    //   id: 'draft',
-    //   start: `${timeString}`,
-    //   end: `${timeObject.date} ${hourString}:${minutesString}:00`,
-    //   title: 'New Event',
-    //   color: 'white'
-    // };
-
-    // if (timeObject.date) {
-    //   if (eventsByDate[timeObject.date]) {
-    //     eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date], newEvent];
-    //     setState({ eventsByDate });
-    //   } else {
-    //     eventsByDate[timeObject.date] = [newEvent];
-    //     setState({ eventsByDate: { ...eventsByDate } });
-    //   }
-    // }
   };
-
-  const approveNewEvent: TimelineProps['onBackgroundLongPressOut'] = (_timeString, timeObject) => {
-    console.log('TimelineProps onBackgroundLongPressOut: ', _timeString, timeObject);
-
-    // const { eventsByDate } = this.state;
-
-    // Alert.prompt('New Event', 'Enter event title', [
-    //   {
-    //     text: 'Cancel',
-    //     onPress: () => {
-    //       if (timeObject.date) {
-    //         eventsByDate[timeObject.date] = filter(eventsByDate[timeObject.date], e => e.id !== 'draft');
-
-    //         this.setState({
-    //           eventsByDate
-    //         });
-    //       }
-    //     }
-    //   },
-    //   {
-    //     text: 'Create',
-    //     onPress: eventTitle => {
-    //       if (timeObject.date) {
-    //         const draftEvent = find(eventsByDate[timeObject.date], { id: 'draft' });
-    //         if (draftEvent) {
-    //           draftEvent.id = undefined;
-    //           draftEvent.title = eventTitle ?? 'New Event';
-    //           draftEvent.color = 'lightgreen';
-    //           eventsByDate[timeObject.date] = [...eventsByDate[timeObject.date]];
-
-    //           this.setState({
-    //             eventsByDate
-    //           });
-    //         }
-    //       }
-    //     }
-    //   }
-    // ]);
-  };
-
 
   const onEventPress: TimelineProps['onEventPress'] = (event) => {
     console.log('TimelineProps onBackgroundLongPressOut: ', event);
@@ -222,14 +211,12 @@ const StatusAndNotesCalendar = () => {
   const timelineProps: Partial<TimelineProps> = {
     format24h: true,
     onBackgroundLongPress: createNewEvent,
-    onBackgroundLongPressOut: approveNewEvent,
+    // onBackgroundLongPressOut: approveNewEvent,
     onEventPress: onEventPress,
     // unavailableHours: [{ start: 0, end: 6 }, { start: 22, end: 24 }],
     // overlapEventsSpacing: 8,
     // rightEdgeSpacing: 24,
   };
-
-  // const { currentDate, eventsByDate } = this.state;
 
   return (
     <View style={styles.container}>
@@ -247,8 +234,8 @@ const StatusAndNotesCalendar = () => {
           firstDay={1}
           theme={styles.calendarTheme}
           allowShadow={true}
-        // style={styles.calendarContainer}
-        showScrollIndicator={true}
+          // style={styles.calendarContainer}
+          showScrollIndicator={true}
 
         // markingType={'multi-period'}
         // leftArrowImageSource={require('../img/previous.png')}
@@ -259,11 +246,12 @@ const StatusAndNotesCalendar = () => {
         style={styles.calendarContainer}
         > */}
         <TimelineList
+      // events={}
           events={eventsByDate}
           timelineProps={timelineProps}
           showNowIndicator
           scrollToNow
-
+          // renderItem={renderItem}
         // scrollToFirst
         // initialTime={INITIAL_TIME}
         />
@@ -272,7 +260,11 @@ const StatusAndNotesCalendar = () => {
       <View style={styles.modalContainer}>
         <MyModal isModalVisible={isModalVisible} hideModal={() => setIsModalVisible(false)}>
           <View style={styles.eventInputArea}>
-          <AddEventInputArea />
+            <CalendarEventModal 
+            onSave={saveNoteChanges} 
+            initialStartTime={initialStartTime} 
+            initialEndTime={initialEndTime} 
+            />
           </View>
         </MyModal>
       </View>

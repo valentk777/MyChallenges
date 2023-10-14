@@ -51,19 +51,19 @@ const getChallengeById = (challenges: Challenge[], challengeId: string) => {
     return null;
   }
 
-  const selectedChallenge = challenges.filter(
+  const selectedChallenges = challenges.filter(
     challenge => challenge.id === challengeId,
   );
 
-  if (selectedChallenge.length === 0) {
+  if (selectedChallenges.length === 0) {
     return null;
   }
 
-  if (selectedChallenge.length > 1) {
+  if (selectedChallenges.length > 1) {
     Alert.alert('More than one challege with same id found');
   }
 
-  return selectedChallenge[0];
+  return selectedChallenges[0];
 };
 
 const storeChallenge = async (challenge: Challenge) => {
