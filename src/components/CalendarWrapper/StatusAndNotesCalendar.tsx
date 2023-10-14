@@ -2,7 +2,7 @@ import groupBy from 'lodash/groupBy';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useCallback, useEffect, useState } from 'react';
 import { Alert, View, Text, StyleSheet, TextInput } from 'react-native';
 import {
   ExpandableCalendar,
@@ -24,16 +24,7 @@ import timeService2 from '../../services/timeService2';
 
 //TODO: move to calendarEventsService
 
-const noteToEvent = (note: Note) => {
-  return {
-    id: note.id,
-    start: new Date(note.startTime).toISOString(),
-    end: new Date(note.endTime).toISOString(),
-    title: note.title,
-    summary: note.summary,
-    color: note.color
-  } as TimelineEventProps;
-}
+
 
 // todo: refactor
 const eventToOneDayEvents = (event) => {
@@ -69,6 +60,17 @@ const eventToOneDayEvents = (event) => {
   return result;
 }
 
+const noteToEvent = (note: Note) => {
+  return {
+    id: note.id,
+    start: new Date(note.startTime).toISOString(),
+    end: new Date(note.endTime).toISOString(),
+    title: note.title,
+    summary: note.summary,
+    color: note.color,
+  } as TimelineEventProps;
+}
+
 const noteToEvents = (note: Note) => {
   return [noteToEvent(note)];
   // v1 support only one day event
@@ -96,13 +98,14 @@ const StatusAndNotesCalendar = () => {
   const [rerenderScreen, setRerenderScreen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
 
-
   useEffect(() => {
     notesService.getAllNotes().then((notes) => {
       // notes.map(note => {notesService.removeNote(note.id)});
       setUserNotes(notes);
 
       const events = notes.flatMap(note => {
+        // temp solution
+        note.color = theme.colors.secondary;
         return noteToEvents(note);
       });
 
@@ -124,7 +127,7 @@ const StatusAndNotesCalendar = () => {
         eventsByDate[startDate] = [event];
       }
 
-      // TODO: think about performance here later.
+      // TODO: Think about more performant way to do that.
       setEventsByDate(eventsByDate);
     });
   }
@@ -137,10 +140,6 @@ const StatusAndNotesCalendar = () => {
     await notesService.removeNote(note.id);
     await notesService.storeNote(note);
 
-    // todo: update event list
-    const oldEvents = noteToEvents(note);
-    const newEvents = noteToEvents(note);
-
     setRerenderScreen(!rerenderScreen);
 
     closeModalWithStateCleanUp();
@@ -149,7 +148,7 @@ const StatusAndNotesCalendar = () => {
   const deleteNote = async (note: Note) => {
     await notesService.removeNote(note.id);
 
-    // todo: update event list
+    // TODO: Think about more performant way to do that.
     setRerenderScreen(!rerenderScreen);
 
     closeModalWithStateCleanUp();
@@ -160,7 +159,6 @@ const StatusAndNotesCalendar = () => {
 
     if (isAddNewNote) {
       await notesService.storeNote(note);
-      // addNote(newNote);
     }
     else {
       await updateNote(note);
@@ -198,13 +196,11 @@ const StatusAndNotesCalendar = () => {
   //   }
   // };
 
-  const onDateChanged = (date: string, source: string) => {
-    // console.log('TimelineCalendarScreen onDateChanged: ', date, source);
-  };
+  // const onDateChanged = (date: string, source: string) => {
+  // };
 
-  const onMonthChange = (month: any, updateSource: any) => {
-    // console.log('TimelineCalendarScreen onMonthChange: ', month, updateSource);
-  };
+  // const onMonthChange = (month: any, updateSource: any) => {
+  // };
 
   const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
     const hourString = `${(timeObject.hour).toString().padStart(2, '0')}`;
@@ -242,12 +238,12 @@ const StatusAndNotesCalendar = () => {
     <View style={styles.container}>
       <CalendarProvider
         date={currentDate}
-        onDateChanged={onDateChanged}
-        onMonthChange={onMonthChange}
+        // onDateChanged={onDateChanged}
+        // onMonthChange={onMonthChange}
         disabledOpacity={0}
         numberOfDays={1}
         style={styles.calendarContainer}
-        theme={styles.calendarTheme}
+        // theme={styles.calendarTheme}
         showTodayButton={false}
       >
         <ExpandableCalendar
@@ -261,20 +257,12 @@ const StatusAndNotesCalendar = () => {
         // rightArrowImageSource={require('../img/next.png')}
         // markedDates={marked} // todo: change to state data
         />
-        {/* <View 
-        style={styles.calendarContainer}
-        > */}
         <TimelineList
-          // events={}
           events={eventsByDate}
           timelineProps={timelineProps}
           showNowIndicator
           scrollToNow
-        // renderItem={renderItem}
-        // scrollToFirst
-        // initialTime={INITIAL_TIME}
         />
-        {/* </View> */}
       </CalendarProvider>
       <View style={styles.modalContainer}>
         <MyModal isModalVisible={isModalVisible} hideModal={closeModalWithStateCleanUp}>
@@ -311,6 +299,8 @@ const createStyles = (theme: AppTheme) => {
       textMonthFontFamily: theme.fonts.bold,
       textDayHeaderFontFamily: theme.fonts.medium,
       todayTextColor: theme.colors.tertiary,
+
+
     } as Theme,
     eventInputArea: {
       top: 0,

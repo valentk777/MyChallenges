@@ -34,7 +34,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { t } = useTranslation('status-calendar-screen')
 
   const onLocalSave = () => {
-    let note = notesService.createNewNote(title, summary, startDate, endDate, theme.colors.canvasInverted);
+    let note = notesService.createNewNote(title, summary, startDate, endDate, "");
 
     if (note == null) {
       return;

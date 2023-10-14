@@ -1,19 +1,18 @@
 import {Alert} from 'react-native';
 import {getData, storeData} from './dataStorageService';
 import userService from './userService';
-// import notesDbTable from '../external/database/notesDbTable';
+import notesDbTable from '../external/database/notesDbTable';
 import uuid from 'react-native-uuid';
-import timeService from './timeService';
 import {Note} from '../entities/note';
 
 const initNotesList = async (userId: string) => {
-  // const response = await notesDbTable.getNotes(userId);
+  const response = await notesDbTable.getNotes(userId);
 
   let notes = [] as Note[];
 
-  // if (response.isSuccessfull) {
-  //   notes = response.result as Note[];
-  // }
+  if (response.isSuccessfull) {
+    notes = response.result as Note[];
+  }
 
   await storeData('notes', notes);
 
@@ -87,7 +86,7 @@ const storeNote = async (note: Note) => {
     notes.push(note);
 
     storeData(getNotesKey(user.id), notes);
-    // notesDbTable.updateDbStoredNotes(user.id, notes);
+    notesDbTable.updateDbStoredNotes(user.id, notes);
 
     return true;
   } catch (error) {
@@ -110,7 +109,7 @@ const removeNote = async (noteId: string) => {
     const updatedNotes = notes.filter(note => note.id !== noteId);
 
     storeData(getNotesKey(user.id), updatedNotes);
-    // notesDbTable.updateDbStoredNotes(user.id, updatedNotes);
+    notesDbTable.updateDbStoredNotes(user.id, updatedNotes);
 
     return true;
   } catch (error) {
@@ -126,7 +125,6 @@ const createNewNote = (
   endDate: Date,
   color: string,
 ) => {
-
   if (!isNoteValid(title, summary, color)) {
     return null;
   }
@@ -147,11 +145,7 @@ const createNewNote = (
   return noteCandidate;
 };
 
-const isNoteValid = (
-  title: string,
-  summary: string,
-  color: string,
-) => {
+const isNoteValid = (title: string, summary: string, color: string) => {
   if (title === '') {
     Alert.alert('Title cannot be empty');
     return false;
@@ -168,13 +162,12 @@ const isNoteValid = (
   }
 
   return true;
-
-}
+};
 const notesService = {
   getAllNotes,
   storeNote,
   removeNote,
-  createNewNote
+  createNewNote,
 };
 
 export default notesService;

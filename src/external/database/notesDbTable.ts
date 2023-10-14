@@ -1,29 +1,29 @@
 import firestore from '@react-native-firebase/firestore';
 import {AppResponse} from '../../entities/appResponse';
-import {Challenge} from '../../entities/challenge';
+import {Note} from '../../entities/note';
 import timeService from '../../services/timeService';
 
-export const challengesRef = firestore().collection('challenges');
+export const notesRef = firestore().collection('notes');
 
-export const getChallenges = async (userId: string) => {
+export const getNotes = async (userId: string) => {
   try {
-    let response = await challengesRef.doc(userId).get();
+    let response = await notesRef.doc(userId).get();
 
     if (response.exists) {
-      const challenges = response.data()?.challenges;
+      const notes = response.data()?.notes;
 
-      if (challenges === undefined) {
-        return {isSuccessfull: true, result: [] as Challenge[]} as AppResponse;
+      if (notes === undefined) {
+        return {isSuccessfull: true, result: [] as Note[]} as AppResponse;
       }
 
       return {
         isSuccessfull: true,
-        result: challenges as Challenge[],
+        result: notes as Note[],
       } as AppResponse;
     } else {
-      await addNewDbChallenges(userId);
-
-      return {isSuccessfull: true, result: [] as Challenge[]} as AppResponse;
+      await addNewDbNotes(userId);
+      
+      return {isSuccessfull: true, result: [] as Note[]} as AppResponse;
     }
   } catch (error) {
     console.error(error);
@@ -32,14 +32,15 @@ export const getChallenges = async (userId: string) => {
   }
 };
 
-export const addNewDbChallenges = async (userId: string) => {
+export const addNewDbNotes = async (userId: string) => {
   try {
     const dataWithOnlineStatus = {
-      challenges: [] as Challenge[],
+      notes: [] as Note[],
       lastTimeUpdated: timeService.getCurrentDateString(),
     };
 
-    await challengesRef.doc(userId).set(dataWithOnlineStatus, {merge: true});
+    await notesRef.doc(userId).set(dataWithOnlineStatus, {merge: true});
+
     return {isSuccessfull: true} as AppResponse;
   } catch (error) {
     console.log(error);
@@ -48,10 +49,7 @@ export const addNewDbChallenges = async (userId: string) => {
   }
 };
 
-export const updateDbStoredChallenges = async (
-  userId: string,
-  challenges: Challenge[],
-) => {
+export const updateDbStoredNotes = async (userId: string, notes: Note[]) => {
   if (userId == undefined || userId === '' || userId == null) {
     console.log('Cannot save to remote database');
 
@@ -59,25 +57,25 @@ export const updateDbStoredChallenges = async (
   }
 
   const dataWithOnlineStatus = {
-    challenges: challenges,
+    notes: notes,
     lastTimeUpdated: timeService.getCurrentDateString(),
   };
 
   try {
-    await challengesRef.doc(userId).update(dataWithOnlineStatus);
+    await notesRef.doc(userId).update(dataWithOnlineStatus);
 
     return {isSuccessfull: true} as AppResponse;
   } catch (error) {
     console.log(error);
-    
+
     return {isSuccessfull: false, error: error} as AppResponse;
   }
 };
 
-const challengesDbTable = {
-  getChallenges,
-  addNewDbChallenges,
-  updateDbStoredChallenges,
+const notesDbTable = {
+  getNotes,
+  addNewDbNotes,
+  updateDbStoredNotes,
 };
 
-export default challengesDbTable;
+export default notesDbTable;
