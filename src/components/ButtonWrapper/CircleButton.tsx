@@ -5,7 +5,7 @@ import { AppTheme } from "../../styles/themeModels";
 
 interface AnonymousSignInButtonProps {
   imgUrl: ImageSourcePropType;
-  style: any;
+  style?: any;
   onPress(): void;
 }
 

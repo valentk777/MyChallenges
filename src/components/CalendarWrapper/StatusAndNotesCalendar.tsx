@@ -205,7 +205,7 @@ const StatusAndNotesCalendar = () => {
     console.log(utcEventDate.toISOString());
     console.log(utcEventDate.toUTCString());
     console.log(utcEventDate.toLocaleString());
-    
+
 
     setInitialStartDate(utcEventDate);
     setInitialEndDate(timeService2.addMinutes(utcEventDate, 30));
@@ -270,7 +270,9 @@ const StatusAndNotesCalendar = () => {
         <MyModal isModalVisible={isModalVisible} hideModal={() => setIsModalVisible(false)}>
           <View style={styles.eventInputArea}>
             <CalendarEventModal
+              onBack={() => setIsModalVisible(false)}
               onSave={saveNoteChanges}
+              onDelete={deleteNote}
               initialStartTime={initialStartDate}
               initialEndTime={initialEndDate}
             />

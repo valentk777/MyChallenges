@@ -14,15 +14,15 @@ export const StatusCalendarScreen = ({ navigation }: StatusCalendarScreenProps) 
   const styles = createStyles(theme);
 
   const window = useWindowDimensions();
-  
+
   return (
-    <View style={{...styles.container, height: window.height}}>
+    <View style={{ ...styles.container, height: window.height }}>
       <LinearGradient
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
         <View style={styles.section}>
-          <StatusAndNotesCalendar/>
+          <StatusAndNotesCalendar />
         </View>
       </LinearGradient>
     </View >

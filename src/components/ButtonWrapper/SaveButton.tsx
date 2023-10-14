@@ -4,8 +4,14 @@ import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import LinearGradient from 'react-native-linear-gradient'
 
-export const SaveButton = (props: ButtonProps) => {
-  const { onPress, title } = props;
+interface SaveButtonProps extends ButtonProps {
+  isRoundTop?: boolean
+  isRoundBottom?: boolean
+  roundRadius?: number
+}
+
+export const SaveButton = (props: SaveButtonProps) => {
+  const { onPress, title, isRoundTop, isRoundBottom, roundRadius } = props;
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -16,7 +22,16 @@ export const SaveButton = (props: ButtonProps) => {
       <LinearGradient
         locations={[0.2, 1]}
         colors={styles.buttonSave.colors}
-        style={styles.buttonSave}
+        style={[
+          styles.buttonSave,
+          isRoundTop ? {
+            borderTopLeftRadius: roundRadius != undefined ? roundRadius : 30,
+            borderTopRightRadius: roundRadius != undefined ? roundRadius : 30,
+          }: {},
+          isRoundBottom ? {
+            borderBottomLeftRadius: roundRadius != undefined ? roundRadius : 30,
+            borderBottomRightRadius: roundRadius != undefined ? roundRadius : 30,
+          } : {}]}
       >
         <Text
           style={styles.textPrimary}>
@@ -42,8 +57,6 @@ const createStyles = (theme: AppTheme) => {
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 5,
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
     }
   });
 

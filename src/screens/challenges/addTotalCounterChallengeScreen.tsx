@@ -176,6 +176,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
       <SaveButton
         title={t("save")}
         onPress={async () => onSave()}
+        isRoundBottom={true}
       />
     </View>
   );

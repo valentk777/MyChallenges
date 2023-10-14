@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextStyle } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import PickerCalendar from '../CalendarWrapper/PickerCalendar';
 import timeService from '../../services/timeService';
@@ -24,7 +24,6 @@ const TimePicker = (props: TimePickerProps) => {
 
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
-
   const [startDate, setStartDate] = useState(initialStartDate);
   const [endDate, setEndDate] = useState(initialEndDate);
 
@@ -156,19 +155,25 @@ const TimePicker = (props: TimePickerProps) => {
         minDate={undefined}
       />
       <View style={styles.textImput}>
-        <TouchableOpacity onPress={() => setIsStartModalVisible(true)}>
+        <TouchableOpacity
+          onPress={() => setIsStartModalVisible(true)}
+          style={styles.textButton}
+        >
           <Text style={styles.dateText}>{tTime(startDate.toISOString(), 'EEEE, LLLL dd')}</Text>
         </TouchableOpacity>
       </View>
-      <Picker
-        selectedValue={timeService2.dateToLocalTimeString(startDate)}
-        onValueChange={handleStartTimeChange}
-        style={styles.timeImput}
-      >
-        {generateTime(0, 0).map((time) => (
-          <Picker.Item label={time} value={time} key={time} style={styles.picker} />
-        ))}
-      </Picker>
+      <View style={styles.pickerArea}>
+        <Picker
+          selectedValue={timeService2.dateToLocalTimeString(startDate)}
+          onValueChange={handleStartTimeChange}
+          mode={Picker.MODE_DROPDOWN}
+          dropdownIconColor={theme.colors.tertiary}
+        >
+          {generateTime(0, 0).map((time) => (
+            <Picker.Item label={time} value={time} key={time} style={styles.picker} />
+          ))}
+        </Picker>
+      </View>
     </View>
   );
 
@@ -182,20 +187,26 @@ const TimePicker = (props: TimePickerProps) => {
         minDate={endDate.toLocaleString()}
       />
       <View style={styles.textImput}>
-        <TouchableOpacity onPress={() => setIsEndModalVisible(true)}>
+        <TouchableOpacity
+          onPress={() => setIsEndModalVisible(true)}
+          style={styles.textButton}
+        >
           <Text style={styles.dateText}>{tTime(endDate.toISOString(), 'EEEE, LLLL dd')}</Text>
         </TouchableOpacity>
       </View>
-      <Picker
-        selectedValue={timeService2.dateToLocalTimeString(endDate)}
-        onValueChange={handleEndTimeChange}
-        style={styles.timeImput}
-      >
-        {/* {generateTimeOptions().map((time) => ( */}
-        {generateTime(0, 0).map((time) => (
-          <Picker.Item label={time} value={time} key={time} style={styles.picker} />
-        ))}
-      </Picker>
+      <View style={styles.pickerArea}>
+        <Picker
+          selectedValue={timeService2.dateToLocalTimeString(endDate)}
+          onValueChange={handleEndTimeChange}
+          mode={Picker.MODE_DROPDOWN}
+          dropdownIconColor={theme.colors.tertiary}
+        >
+          {/* {generateTimeOptions().map((time) => ( */}
+          {generateTime(0, 0).map((time) => (
+            <Picker.Item label={time} value={time} key={time} style={styles.picker} />
+          ))}
+        </Picker>
+      </View>
     </View>
   );
 
@@ -215,25 +226,30 @@ const createStyles = (theme: AppTheme) => {
     dateAndTimeSection: {
       flex: 1,
       flexDirection: 'row',
-      alignItems: 'center',
     },
     textImput: {
-      flex: 1,
-      justifyContent: 'center',
+      flex: 3,
+      flexDirection: 'column',
     },
-    timeImput: {
+    textButton: {
       flex: 1,
-      alignItems: 'center',
       justifyContent: 'center',
     },
     dateText: {
       fontFamily: theme.fonts.medium,
-      color: theme.colors.canvasInverted,
+      color: theme.colors.primary,
+      fontSize: 15,
+    },
+    pickerArea: {
+      flex: 2,
+      justifyContent: 'center',
+      flexDirection: 'column',
     },
     picker: {
-      // fontFamily: theme.fonts.bold,
-      // fontSize: 10,
-    },
+      fontFamily: theme.fonts.medium,
+      color: theme.colors.primary,
+      fontSize: 15,
+    }
   });
 
   return styles;

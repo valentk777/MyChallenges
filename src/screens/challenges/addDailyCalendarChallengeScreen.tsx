@@ -244,6 +244,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
       <SaveButton
         title={t("save")}
         onPress={async () => onSave()}
+        isRoundBottom={true}
       />
     </View>
   );

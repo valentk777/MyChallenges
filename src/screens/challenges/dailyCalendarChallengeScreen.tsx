@@ -114,6 +114,7 @@ export const DailyCalendarChallengeScreen = ({ route, navigation }: DailyCalenda
       <SaveButton
         title={t("save")}
         onPress={async () => onSave()}
+        isRoundBottom={true}
       />
     </View>
   );

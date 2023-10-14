@@ -7,9 +7,14 @@ import { SaveButton } from "../ButtonWrapper/SaveButton";
 import { Note } from "../../entities/note";
 import notesService from "../../services/notesService";
 import { useTranslation } from "react-i18next";
+import { CircleButton } from "../ButtonWrapper/CircleButton";
+import { icons } from "../../assets";
 
 interface CalendarEventModalProps {
+  onBack: () => void;
   onSave: (newNote: Note, oldNote: Note | null) => void;
+  onDelete: (note: Note) => void;
+  oldNote?: Note;
   initialStartTime: Date;
   initialEndTime: Date;
 }
@@ -18,7 +23,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { onSave, initialStartTime, initialEndTime } = props;
+  const { onBack, onSave, onDelete, initialStartTime, initialEndTime, oldNote } = props;
 
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState(initialStartTime);
@@ -27,26 +32,47 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { t } = useTranslation('status-calendar-screen')
 
   const onLocalSave = () => {
-    const note = notesService.createNewNote(title, summary, startDate, endDate);
+    const note = notesService.createNewNote(title, summary, startDate, endDate, theme.colors.canvasInverted);
 
     if (note != null) {
       onSave(note, null);
     }
   }
 
+  const onLocalDelete = () => {
+    if (oldNote === undefined) {
+      onBack();
+    } else {
+      onDelete(oldNote);
+    }
+  }
+
+  const renderHeaderContainer = () => (
+    <View style={styles.headerContainer}>
+      <CircleButton
+        imgUrl={icons["back-arrow.png"]}
+        onPress={onBack}
+        style={[styles.back, theme.shadows.dark]}
+      />
+      <CircleButton
+        imgUrl={icons['trash.png']}
+        onPress={onLocalDelete}
+        style={[styles.trash, theme.shadows.dark]}
+      />
+    </View>
+  );
+
   const renderInputContainer = () => (
     <View style={styles.inputContainer}>
-      <View  style={styles.titleArea}>
-
-      <TextInput
-        style={styles.title}
-        placeholder={t("modal-title-placeholder")}
-        onChangeText={setTitle}
-        value={title}
-        placeholderTextColor={theme.colors.secondary}
-      />
+      <View style={styles.titleArea}>
+        <TextInput
+          style={styles.title}
+          placeholder={t("modal-title-placeholder")}
+          onChangeText={setTitle}
+          value={title}
+          placeholderTextColor={theme.colors.secondary}
+        />
       </View>
-
       <View style={styles.timePicker}>
         <TimePicker
           onSetStartDate={setStartDate}
@@ -55,27 +81,26 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
           initialEndDate={endDate}
         />
       </View>
-      <View         style={styles.summaryArea}>
-
-      <TextInput
-        multiline
-        style={styles.summary}
-        placeholder={t("modal-summary-placeholder")}
-        onChangeText={setSummary}
-        value={summary}
-        placeholderTextColor={theme.colors.secondary}
-      />
+      <View style={styles.summaryArea}>
+        <TextInput
+          multiline
+          style={styles.summary}
+          placeholder={t("modal-summary-placeholder")}
+          onChangeText={setSummary}
+          value={summary}
+          placeholderTextColor={theme.colors.secondary}
+        />
       </View>
-
     </View>
   );
 
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        // title={t("save")}
-        title={"save"}
+        title={t("save")}
         onPress={onLocalSave}
+        isRoundBottom={true}
+        roundRadius={20}
       />
     </View>
   );
@@ -83,10 +108,13 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   return (
     <KeyboardAvoidingView behavior='height'>
       <View style={styles.container}>
-        <View style={styles.modalBoxContainer}>
-          {renderInputContainer()}
-          {renderSaveContainer()}
+        {renderHeaderContainer()}
+        <View style={styles.aligment}>
+          <View style={styles.modalBoxContainer}>
+            {renderInputContainer()}
+          </View>
         </View>
+        {renderSaveContainer()}
       </View>
     </KeyboardAvoidingView>
   )
@@ -98,33 +126,52 @@ const createStyles = (theme: AppTheme) => {
       height: '100%',
       borderBottomLeftRadius: 20,
       borderBottomRightRadius: 20,
-      alignItems: 'center',
+      // alignItems: 'center',
       backgroundColor: theme.colors.canvas,
+    },
+    headerContainer: {
+      flex: 1,
+      borderRadius: 0,
+    },
+    back: {
+      left: 15,
+      // top: 5,
+      // top: StatusBar.currentHeight / 10
+    },
+    trash: {
+      right: 15,
+      // top: 5,
+      // top: StatusBar.currentHeight / 2
+    },
+    aligment: {
+      flex: 10,
+      alignItems: 'center',
     },
     modalBoxContainer: {
       flex: 1,
       width: '80%',
     },
     inputContainer: {
-      flex: 5,
+      flex: 11,
     },
-    titleArea : {
+    titleArea: {
       flex: 2,
       justifyContent: 'center',
     },
     title: {
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.canvasInverted,
-      paddingBottom: 5,
+      paddingBottom: 7,
       fontFamily: theme.fonts.bold,
       fontSize: 18,
       color: theme.colors.tertiary,
       paddingLeft: 10,
     },
     timePicker: {
-      flex: 3,
+      flex: 2,
       justifyContent: 'space-around',
       paddingLeft: 10,
+      marginBottom: 20,
     },
     summaryArea: {
       flex: 3,
@@ -138,8 +185,8 @@ const createStyles = (theme: AppTheme) => {
       fontSize: 14,
     },
     saveContainer: {
-      flex: 1,
-    }
+      flex: 2,
+    },
   });
 
   return styles;
