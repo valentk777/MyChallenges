@@ -17,7 +17,7 @@
   "menu-tab-navigator": {
     "active": "AKTĪVS",
     "top": "TOPS",
-    "done": "DARĪTS",
+    "status": "PIEZĪMES",
     "user": "ES"
   },
   "add-daily-calendar-challenge-screen": {
@@ -48,6 +48,11 @@
     "description-placeholder": "Pievienojiet īsu aprakstu vai piezīmi..."
   },
   "total-counter-challenge-screen": {
+    "save": "Saglabāt"
+  },
+  "status-calendar-screen": {
+    "modal-title-placeholder": "Pievienot virsrakstu...",
+    "modal-summary-placeholder": "Pievienot kopsavilkumu...",
     "save": "Saglabāt"
   }
 }

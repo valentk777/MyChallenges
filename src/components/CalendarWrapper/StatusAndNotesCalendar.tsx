@@ -27,8 +27,8 @@ import timeService2 from '../../services/timeService2';
 const noteToEvent = (note: Note) => {
   return {
     id: note.id,
-    start: note.startTime,
-    end: note.endTime,
+    start: new Date(note.startTime).toISOString(),
+    end: new Date(note.endTime).toISOString(),
     title: note.title,
     summary: note.summary,
     color: note.color
@@ -109,7 +109,7 @@ const StatusAndNotesCalendar = () => {
 
       setEventsByDate(_eventsByDate);
     });
-  }, []);
+  }, [isModalVisible]);
 
   const addEvetsByDate = (events: TimelineEventProps[]) => {
     events.forEach(event => {
@@ -143,7 +143,7 @@ const StatusAndNotesCalendar = () => {
   }
 
   const saveNoteChanges = async (newNote: Note, oldNote: Note | null) => {
-    await notesService.storeNote({ ...newNote, color: theme.colors.exceptional } as Note);
+    await notesService.storeNote(newNote);
 
     setIsModalVisible(false);
 
@@ -213,6 +213,9 @@ const StatusAndNotesCalendar = () => {
   };
 
   const onEventPress: TimelineProps['onEventPress'] = (event) => {
+
+
+
     console.log('TimelineProps onBackgroundLongPressOut: ', event);
   };
 
@@ -221,9 +224,8 @@ const StatusAndNotesCalendar = () => {
     onBackgroundLongPress: createNewEvent,
     // onBackgroundLongPressOut: approveNewEvent,
     onEventPress: onEventPress,
-    // unavailableHours: [{ start: 0, end: 6 }, { start: 22, end: 24 }],
-    // overlapEventsSpacing: 8,
-    // rightEdgeSpacing: 24,
+    overlapEventsSpacing: 4,
+    rightEdgeSpacing: 24,
   };
 
   return (
@@ -242,7 +244,6 @@ const StatusAndNotesCalendar = () => {
           firstDay={1}
           theme={styles.calendarTheme}
           allowShadow={true}
-          // style={styles.calendarContainer}
           showScrollIndicator={true}
 
         // markingType={'multi-period'}
@@ -303,9 +304,6 @@ const createStyles = (theme: AppTheme) => {
       height: '50%',
       width: '100%',
       position: 'absolute',
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      // backgroundColor: 'green'
     }
   });
 

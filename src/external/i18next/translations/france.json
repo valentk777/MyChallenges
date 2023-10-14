@@ -17,7 +17,7 @@
   "menu-tab-navigator": {
     "active": "ACTIF",
     "top": "HAUT",
-    "done": "TERMINÉ",
+    "status": "NOTES",
     "user": "MOI"
   },
   "add-daily-calendar-challenge-screen": {
@@ -48,6 +48,11 @@
     "description-placeholder": "Ajoutez une courte description ou note..."
   },
   "total-counter-challenge-screen": {
+    "save": "Enregistrer"
+  },
+  "status-calendar-screen": {
+    "modal-title-placeholder": "Ajouter un titre...",
+    "modal-summary-placeholder": "Ajouter un résumé...",
     "save": "Enregistrer"
   }
 }

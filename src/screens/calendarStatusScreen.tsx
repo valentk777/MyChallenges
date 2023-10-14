@@ -7,9 +7,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import StatusAndNotesCalendar from '../components/CalendarWrapper/StatusAndNotesCalendar';
 
-type CalendarStatusScreenProps = NativeStackScreenProps<HomeStackParamList, 'CalendarStatusScreen'>;
+type StatusCalendarScreenProps = NativeStackScreenProps<HomeStackParamList, 'StatusCalendarScreen'>;
 
-export const CalendarStatusScreen = ({ navigation }: CalendarStatusScreenProps) => {
+export const StatusCalendarScreen = ({ navigation }: StatusCalendarScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -53,4 +53,4 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export default CalendarStatusScreen;
+export default StatusCalendarScreen;

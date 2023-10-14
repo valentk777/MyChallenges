@@ -120,6 +120,7 @@ const createNewNote = (
   summary: string,
   startDate: Date,
   endDate: Date,
+  color: string,
 ) => {
   if (title === '') {
     Alert.alert('Title cannot be empty');
@@ -147,6 +148,7 @@ const createNewNote = (
   noteCandidate.endTime = endDate.getTime();
   noteCandidate.timeCreated = currentTime;
   noteCandidate.lastTimeUpdated = currentTime;
+  noteCandidate.color = color;
 
   return noteCandidate;
 };

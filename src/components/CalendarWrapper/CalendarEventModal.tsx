@@ -6,6 +6,7 @@ import TimePicker from "../TimePickers/TimePicker";
 import { SaveButton } from "../ButtonWrapper/SaveButton";
 import { Note } from "../../entities/note";
 import notesService from "../../services/notesService";
+import { useTranslation } from "react-i18next";
 
 interface CalendarEventModalProps {
   onSave: (newNote: Note, oldNote: Note | null) => void;
@@ -23,6 +24,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const [startDate, setStartDate] = useState(initialStartTime);
   const [endDate, setEndDate] = useState(initialEndTime);
   const [summary, setSummary] = useState("");
+  const { t } = useTranslation('status-calendar-screen')
 
   const onLocalSave = () => {
     const note = notesService.createNewNote(title, summary, startDate, endDate);
@@ -34,14 +36,17 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
 
   const renderInputContainer = () => (
     <View style={styles.inputContainer}>
+      <View  style={styles.titleArea}>
+
       <TextInput
         style={styles.title}
-        // placeholder={t("title-placeholder")}
-        placeholder={"Add title"}
+        placeholder={t("modal-title-placeholder")}
         onChangeText={setTitle}
         value={title}
         placeholderTextColor={theme.colors.secondary}
       />
+      </View>
+
       <View style={styles.timePicker}>
         <TimePicker
           onSetStartDate={setStartDate}
@@ -50,15 +55,18 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
           initialEndDate={endDate}
         />
       </View>
+      <View         style={styles.summaryArea}>
+
       <TextInput
         multiline
         style={styles.summary}
-        // placeholder={t("title-placeholder")}
-        placeholder={"Add summary"}
+        placeholder={t("modal-summary-placeholder")}
         onChangeText={setSummary}
         value={summary}
         placeholderTextColor={theme.colors.secondary}
       />
+      </View>
+
     </View>
   );
 
@@ -100,28 +108,34 @@ const createStyles = (theme: AppTheme) => {
     inputContainer: {
       flex: 5,
     },
-    title: {
-      flex: 1,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.canvasInverted,
-      paddingBottom: 0,
-      marginVertical: 20,
-      padding: 0,
-      fontFamily: theme.fonts.bold,
-      fontSize: 18,
-      color: theme.colors.secondary,
-    },
-    timePicker: {
+    titleArea : {
       flex: 2,
       justifyContent: 'center',
     },
-    summary: {
-      flex: 2,
-      borderWidth: 1,
-      marginVertical: 20,
-      fontFamily: theme.fonts.light,
-      color: theme.colors.canvasInverted,
+    title: {
+      borderBottomWidth: 1,
       borderBottomColor: theme.colors.canvasInverted,
+      paddingBottom: 5,
+      fontFamily: theme.fonts.bold,
+      fontSize: 18,
+      color: theme.colors.tertiary,
+      paddingLeft: 10,
+    },
+    timePicker: {
+      flex: 3,
+      justifyContent: 'space-around',
+      paddingLeft: 10,
+    },
+    summaryArea: {
+      flex: 3,
+    },
+    summary: {
+      borderTopWidth: 1,
+      fontFamily: theme.fonts.medium,
+      color: theme.colors.canvasInverted,
+      borderColor: theme.colors.canvasInverted,
+      paddingLeft: 10,
+      fontSize: 14,
     },
     saveContainer: {
       flex: 1,

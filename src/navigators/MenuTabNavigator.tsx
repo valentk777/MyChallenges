@@ -6,18 +6,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChallengesScreen from '../screens/challengesScreen';
 import { UserScreen } from '../screens/userScreen';
 import { AddChallengeSelectionMenu } from '../components/Menu/AddChallengeSelectionMenu';
-import CompletedChallengesScreen from '../screens/completedChallengesScreen';
 import FavoriteChallengesScreenScreen from '../screens/favoriteChallengesScreen';
 import { MenuTabBarIcon } from '../components/Menu/MenuTabBarIcon';
 import { icons } from '../assets';
 import { useTranslation } from 'react-i18next';
-import CalendarStatusScreen from '../screens/calendarStatusScreen';
+import StatusCalendarScreen from '../screens/calendarStatusScreen';
 
 export type HomeStackParamList = {
   ChallengesScreen: {};
   FavoriteChallengesScreen: {};
   CreateNewChallengeButton: {};
-  CalendarStatusScreen: {};
+  StatusCalendarScreen: {};
   UserScreen: {};
 };
 
@@ -95,15 +94,15 @@ const Menu = () => {
         }}
       />
       <HomeTab.Screen
-        name="CalendarStatusScreen"
-        component={CalendarStatusScreen}
+        name="StatusCalendarScreen"
+        component={StatusCalendarScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <MenuTabBarIcon
               focused={focused}
               styles={styles}
               theme={theme}
-              text={t("done")}
+              text={t("status")}
               iconUrl={icons['read.png']}
             />
           ),

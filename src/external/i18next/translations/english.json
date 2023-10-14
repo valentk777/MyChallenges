@@ -17,7 +17,7 @@
   "menu-tab-navigator": {
     "active": "ACTIVE",
     "top": "TOP",
-    "done": "DONE",
+    "status": "STATUS",
     "user": "USER"
   },
   "add-daily-calendar-challenge-screen": {
@@ -48,6 +48,11 @@
     "description-placeholder": "Add a description, comment, or note..."
   },
   "total-counter-challenge-screen": {
+    "save": "Save"
+  },
+  "status-calendar-screen": {
+    "modal-title-placeholder": "Add title...",
+    "modal-summary-placeholder": "Add summary...",
     "save": "Save"
   }
 }

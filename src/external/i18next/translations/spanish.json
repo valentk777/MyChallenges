@@ -17,8 +17,8 @@
   "menu-tab-navigator": {
     "active": "ACTIVO",
     "top": "PRINCIPAL",
-    "done": "HECHO",
-    "user": "YO"
+    "status": "HECHO",
+    "user": "NOTAS"
   },
   "add-daily-calendar-challenge-screen": {
     "save": "Guardar",
@@ -48,6 +48,11 @@
     "description-placeholder": "Agregue breve descripción o comentario..."
   },
   "total-counter-challenge-screen": {
+    "save": "Guardar"
+  },
+  "status-calendar-screen": {
+    "modal-title-placeholder": "Agregar título...",
+    "modal-summary-placeholder": "Agregar resumen...",
     "save": "Guardar"
   }
 }

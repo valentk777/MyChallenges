@@ -17,7 +17,7 @@
   "menu-tab-navigator": {
     "active": "ATIVO",
     "top": "TOPO",
-    "done": "FEITO",
+    "status": "NOTAS",
     "user": "MIM"
   },
   "add-daily-calendar-challenge-screen": {
@@ -48,6 +48,11 @@
     "description-placeholder": "Adicione breve descrição ou comentário..."
   },
   "total-counter-challenge-screen": {
+    "save": "Salvar"
+  },
+  "status-calendar-screen": {
+    "modal-title-placeholder": "Adicionar título...",
+    "modal-summary-placeholder": "Adicionar resumo...",
     "save": "Salvar"
   }
 }
