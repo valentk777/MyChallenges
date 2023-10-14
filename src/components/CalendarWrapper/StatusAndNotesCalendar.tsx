@@ -1,9 +1,6 @@
 import groupBy from 'lodash/groupBy';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-
-import React, { Component, useCallback, useEffect, useState } from 'react';
-import { Alert, View, Text, StyleSheet, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import {
   ExpandableCalendar,
   TimelineEventProps,
@@ -21,68 +18,7 @@ import { Theme } from "react-native-calendars/src/types";
 import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
-
-//TODO: move to calendarEventsService
-
-
-
-// todo: refactor
-const eventToOneDayEvents = (event) => {
-  let result = [] as TimelineEventProps[];
-
-  const addEntry = (date, startTime, endTime) => {
-    const newEvent = {
-      id: event.id,
-      start: date + 'T' + startTime,
-      end: date + 'T' + endTime,
-      title: event.title,
-      summary: event.summary,
-      color: event.color
-    } as TimelineEventProps;
-
-    result = [...result, newEvent];
-  };
-
-  // Handle the start date
-  addEntry(timeService.getDate(event.start), timeService.getTime(event.start), '23:59:59.000Z');
-
-  // Handle the end date
-  let nextDay = timeService.getNextDayDateString(event.start);
-
-  while (nextDay < timeService.getDate(event.end)) {
-    addEntry(nextDay, '00:00:00.000Z', '23:59:59.000Z');
-
-    nextDay = timeService.getNextDayDateString(nextDay);
-  }
-
-  addEntry(nextDay, '00:00:00.000Z', timeService.getTime(event.end));
-
-  return result;
-}
-
-const noteToEvent = (note: Note) => {
-  return {
-    id: note.id,
-    start: new Date(note.startTime).toISOString(),
-    end: new Date(note.endTime).toISOString(),
-    title: note.title,
-    summary: note.summary,
-    color: note.color,
-  } as TimelineEventProps;
-}
-
-const noteToEvents = (note: Note) => {
-  return [noteToEvent(note)];
-  // v1 support only one day event
-  // return eventToOneDayEvents(noteToEvent(note));
-}
-
-
-
-// --------------------------------------
-
-
-
+import calendarEventService from '../../services/calendarEventService';
 
 const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
@@ -94,7 +30,6 @@ const StatusAndNotesCalendar = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [initialStartDate, setInitialStartDate] = useState(new Date());
   const [initialEndDate, setInitialEndDate] = useState(new Date());
-
   const [rerenderScreen, setRerenderScreen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
 
@@ -105,8 +40,8 @@ const StatusAndNotesCalendar = () => {
 
       const events = notes.flatMap(note => {
         // temp solution
-        note.color = theme.colors.secondary;
-        return noteToEvents(note);
+        note.color = theme.colors.tertiary;
+        return calendarEventService.noteToEvents(note);
       });
 
       const _eventsByDate = groupBy(events, e => CalendarUtils.getCalendarDateString(e.start)) as {
@@ -115,26 +50,7 @@ const StatusAndNotesCalendar = () => {
 
       setEventsByDate(_eventsByDate);
     });
-  }, [isModalVisible, rerenderScreen]);
-
-  const addEvetsByDate = (events: TimelineEventProps[]) => {
-    events.forEach(event => {
-      const startDate = timeService.getDate(event.start);
-      if (eventsByDate[startDate]) {
-        eventsByDate[startDate] = [...eventsByDate[startDate], event];
-
-      } else {
-        eventsByDate[startDate] = [event];
-      }
-
-      // TODO: Think about more performant way to do that.
-      setEventsByDate(eventsByDate);
-    });
-  }
-
-  const addNote = (note: Note) => {
-    addEvetsByDate(noteToEvents(note));
-  }
+  }, [isModalVisible, rerenderScreen, theme]);
 
   const updateNote = async (note: Note) => {
     await notesService.removeNote(note.id);
@@ -202,7 +118,7 @@ const StatusAndNotesCalendar = () => {
   // const onMonthChange = (month: any, updateSource: any) => {
   // };
 
-  const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
+  const createNewEvent: TimelineProps['onBackgroundLongPress'] = (_, timeObject) => {
     const hourString = `${(timeObject.hour).toString().padStart(2, '0')}`;
     const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
     const eventDate = new Date(`${timeObject.date}T${hourString}:${minutesString}:00Z`);
@@ -298,8 +214,14 @@ const createStyles = (theme: AppTheme) => {
       textDayFontFamily: theme.fonts.light,
       textMonthFontFamily: theme.fonts.bold,
       textDayHeaderFontFamily: theme.fonts.medium,
-      todayTextColor: theme.colors.tertiary,
+      textDayColor: theme.colors.primary,
+      monthTextColor: theme.colors.primary,
+      indicatorColor: theme.colors.primary,
 
+      // todayBackgroundColor: theme.colors.primary,
+      // todayTextColor: theme.colors.primary,
+      // backgroundColor: theme.colors.secondary,
+      // calendarBackground: theme.colors.secondary,
 
     } as Theme,
     eventInputArea: {

@@ -172,7 +172,7 @@ const createStyles = (theme: AppTheme) => {
       paddingBottom: 7,
       fontFamily: theme.fonts.bold,
       fontSize: 18,
-      color: theme.colors.tertiary,
+      color: theme.colors.secondary,
       paddingLeft: 10,
     },
     timePicker: {
@@ -187,7 +187,7 @@ const createStyles = (theme: AppTheme) => {
     summary: {
       borderTopWidth: 1,
       fontFamily: theme.fonts.medium,
-      color: theme.colors.canvasInverted,
+      color: theme.colors.secondary,
       borderColor: theme.colors.canvasInverted,
       paddingLeft: 10,
       fontSize: 14,

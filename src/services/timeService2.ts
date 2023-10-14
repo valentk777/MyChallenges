@@ -30,6 +30,7 @@ const getTwoDigitsNumber = (number: number): string => {
 const dateToLocalTimeString = (date: Date): string => {
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
+
   return `${hours}:${minutes}`;
 };
 
@@ -46,7 +47,7 @@ const setLocalTimeToDate = (
   minutes: number,
 ): Date => {
   const newDate = new Date(date);
-  newDate.setHours(hours, minutes);
+  newDate.setHours(hours, minutes, 0, 0);
 
   return newDate;
 };
@@ -55,7 +56,17 @@ const getLocalDayStringFromDate = (date: Date): string => {
   const year = date.getFullYear();
   const month = date.getMonth().toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
+
   return `${year}-${month}-${day}`;
+};
+
+// new day with 00:00:00 time
+const getNextDayDate = (date: Date): Date => {
+  const nextDay = new Date(date);
+  nextDay.setDate(nextDay.getDate() + 1);
+  nextDay.setHours(0, 0, 0, 0);
+
+  return nextDay;
 };
 
 // const getLocalCurrentTimestamp = (): number => {
@@ -188,6 +199,7 @@ const timeService2 = {
   getUtcDateFromLocalDate,
   addMinutes,
   getLocalDayStringFromDate,
+  getNextDayDate,
 };
 
 export default timeService2;

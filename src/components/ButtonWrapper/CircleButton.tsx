@@ -9,13 +9,13 @@ interface AnonymousSignInButtonProps {
   onPress(): void;
 }
 
-export const CircleButton = ({ imgUrl, onPress, style, ...props }: AnonymousSignInButtonProps) => {
+export const CircleButton = ({ imgUrl, onPress, style }: AnonymousSignInButtonProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (
     <TouchableOpacity
-      style={[styles.container, style, props]}
+      style={[styles.container, style, theme.shadows.primary]}
       onPress={onPress}
     >
       <Image

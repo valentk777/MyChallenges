@@ -42,17 +42,6 @@ const getTime = (date: string) => {
   const minutes = newDate.getMinutes();
   const formattedMinutes = getTwoDigitsNumber(minutes);
 
-  console.log("1 qqqqqqqq")
-  console.log(date);
-  console.log(newDate);
-  console.log(hours);
-  console.log(formattedHours);
-  console.log(minutes);
-  console.log(formattedMinutes);
-
-  console.log(`${formattedHours}:${formattedMinutes}`);
-  console.log("2 qqqqqqqq")
-
   return `${formattedHours}:${formattedMinutes}`;
 };
 

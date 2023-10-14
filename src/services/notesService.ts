@@ -4,6 +4,7 @@ import userService from './userService';
 import notesDbTable from '../external/database/notesDbTable';
 import uuid from 'react-native-uuid';
 import {Note} from '../entities/note';
+import timeService2 from './timeService2';
 
 const initNotesList = async (userId: string) => {
   const response = await notesDbTable.getNotes(userId);
@@ -105,7 +106,6 @@ const removeNote = async (noteId: string) => {
     }
 
     const notes = await getAllNotes();
-
     const updatedNotes = notes.filter(note => note.id !== noteId);
 
     storeData(getNotesKey(user.id), updatedNotes);
@@ -141,6 +141,17 @@ const createNewNote = (
   noteCandidate.timeCreated = currentTime;
   noteCandidate.lastTimeUpdated = currentTime;
   noteCandidate.color = color;
+
+  const start = timeService2.getLocalDayStringFromDate(startDate);
+  const end = timeService2.getLocalDayStringFromDate(endDate);
+
+  noteCandidate.isOneDayEvent =
+    start === end ||
+    (timeService2.dateToLocalTimeString(endDate) == '00:00' &&
+      start ===
+        timeService2.getLocalDayStringFromDate(
+          timeService2.addMinutes(endDate, -1),
+        ));
 
   return noteCandidate;
 };

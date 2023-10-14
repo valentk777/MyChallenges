@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
