@@ -90,9 +90,12 @@ const StatusAndNotesCalendar = () => {
   const [eventsByDate, setEventsByDate] = useState({} as { [key: string]: TimelineEventProps[] });
   const [currentDate] = useState(timeService.getCurrentDateString());
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [initialStartDate, setInitialStartDate] = useState(new Date());
   const [initialEndDate, setInitialEndDate] = useState(new Date());
+
+  const [rerenderScreen, setRerenderScreen] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null as Note | null);
+
 
   useEffect(() => {
     notesService.getAllNotes().then((notes) => {
@@ -109,7 +112,7 @@ const StatusAndNotesCalendar = () => {
 
       setEventsByDate(_eventsByDate);
     });
-  }, [isModalVisible]);
+  }, [isModalVisible, rerenderScreen]);
 
   const addEvetsByDate = (events: TimelineEventProps[]) => {
     events.forEach(event => {
@@ -130,31 +133,40 @@ const StatusAndNotesCalendar = () => {
     addEvetsByDate(noteToEvents(note));
   }
 
-  const updateNote = (oldNote: Note, newNote: Note) => {
-    const oldEvents = noteToEvents(oldNote);
-    const newEvents = noteToEvents(newNote);
+  const updateNote = async (note: Note) => {
+    await notesService.removeNote(note.id);
+    await notesService.storeNote(note);
 
-    // delete old note and add new one.
-    console.log("updateNote");
+    // todo: update event list
+    const oldEvents = noteToEvents(note);
+    const newEvents = noteToEvents(note);
+
+    setRerenderScreen(!rerenderScreen);
+
+    closeModalWithStateCleanUp();
   }
 
-  const deleteNote = (note: Note) => {
-    console.log("deleteNote");
+  const deleteNote = async (note: Note) => {
+    await notesService.removeNote(note.id);
+
+    // todo: update event list
+    setRerenderScreen(!rerenderScreen);
+
+    closeModalWithStateCleanUp();
   }
 
-  const saveNoteChanges = async (newNote: Note, oldNote: Note | null) => {
-    await notesService.storeNote(newNote);
-
-    setIsModalVisible(false);
-
-    const isAddNewNote = oldNote == null;
+  const saveNoteChanges = async (note: Note) => {
+    const isAddNewNote = selectedNote == null;
 
     if (isAddNewNote) {
-      addNote(newNote);
-      return;
+      await notesService.storeNote(note);
+      // addNote(newNote);
+    }
+    else {
+      await updateNote(note);
     }
 
-    updateNote(oldNote, newNote);
+    closeModalWithStateCleanUp();
   }
 
   // const marked = {
@@ -187,12 +199,11 @@ const StatusAndNotesCalendar = () => {
   // };
 
   const onDateChanged = (date: string, source: string) => {
-    console.log('TimelineCalendarScreen onDateChanged: ', date, source);
-    // setState({ currentDate: date });
+    // console.log('TimelineCalendarScreen onDateChanged: ', date, source);
   };
 
   const onMonthChange = (month: any, updateSource: any) => {
-    console.log('TimelineCalendarScreen onMonthChange: ', month, updateSource);
+    // console.log('TimelineCalendarScreen onMonthChange: ', month, updateSource);
   };
 
   const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
@@ -201,23 +212,22 @@ const StatusAndNotesCalendar = () => {
     const eventDate = new Date(`${timeObject.date}T${hourString}:${minutesString}:00Z`);
     const utcEventDate = timeService2.getUtcDateFromLocalDate(eventDate);
 
-    console.log(utcEventDate);
-    console.log(utcEventDate.toISOString());
-    console.log(utcEventDate.toUTCString());
-    console.log(utcEventDate.toLocaleString());
-
-
     setInitialStartDate(utcEventDate);
     setInitialEndDate(timeService2.addMinutes(utcEventDate, 30));
     setIsModalVisible(true);
   };
 
-  const onEventPress: TimelineProps['onEventPress'] = (event) => {
+  const onEventPress: TimelineProps['onEventPress'] = (event: TimelineEventProps) => {
+    const note = userNotes.filter(note => note.id === event.id)[0];
 
-
-
-    console.log('TimelineProps onBackgroundLongPressOut: ', event);
+    setSelectedNote(note);
+    setIsModalVisible(true);
   };
+
+  const closeModalWithStateCleanUp = () => {
+    setSelectedNote(null);
+    setIsModalVisible(false)
+  }
 
   const timelineProps: Partial<TimelineProps> = {
     format24h: true,
@@ -267,14 +277,15 @@ const StatusAndNotesCalendar = () => {
         {/* </View> */}
       </CalendarProvider>
       <View style={styles.modalContainer}>
-        <MyModal isModalVisible={isModalVisible} hideModal={() => setIsModalVisible(false)}>
+        <MyModal isModalVisible={isModalVisible} hideModal={closeModalWithStateCleanUp}>
           <View style={styles.eventInputArea}>
             <CalendarEventModal
-              onBack={() => setIsModalVisible(false)}
+              onBack={closeModalWithStateCleanUp}
               onSave={saveNoteChanges}
               onDelete={deleteNote}
               initialStartTime={initialStartDate}
               initialEndTime={initialEndDate}
+              oldNote={selectedNote}
             />
           </View>
         </MyModal>

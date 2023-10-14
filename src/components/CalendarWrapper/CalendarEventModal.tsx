@@ -12,9 +12,9 @@ import { icons } from "../../assets";
 
 interface CalendarEventModalProps {
   onBack: () => void;
-  onSave: (newNote: Note, oldNote: Note | null) => void;
+  onSave: (newNote: Note) => void;
   onDelete: (note: Note) => void;
-  oldNote?: Note;
+  oldNote: Note | null;
   initialStartTime: Date;
   initialEndTime: Date;
 }
@@ -25,22 +25,30 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
 
   const { onBack, onSave, onDelete, initialStartTime, initialEndTime, oldNote } = props;
 
-  const [title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState(initialStartTime);
-  const [endDate, setEndDate] = useState(initialEndTime);
-  const [summary, setSummary] = useState("");
+  const isCreate = oldNote === null;
+
+  const [title, setTitle] = useState(isCreate ? "" : oldNote.title);
+  const [startDate, setStartDate] = useState(isCreate ? initialStartTime : new Date(oldNote.startTime));
+  const [endDate, setEndDate] = useState(isCreate ? initialEndTime : new Date(oldNote.endTime));
+  const [summary, setSummary] = useState(isCreate ? "" : oldNote.summary);
   const { t } = useTranslation('status-calendar-screen')
 
   const onLocalSave = () => {
-    const note = notesService.createNewNote(title, summary, startDate, endDate, theme.colors.canvasInverted);
+    let note = notesService.createNewNote(title, summary, startDate, endDate, theme.colors.canvasInverted);
 
-    if (note != null) {
-      onSave(note, null);
+    if (note == null) {
+      return;
     }
+
+    if (!isCreate) {
+      note.id = oldNote.id;
+    }
+
+    onSave(note);
   }
 
   const onLocalDelete = () => {
-    if (oldNote === undefined) {
+    if (isCreate) {
       onBack();
     } else {
       onDelete(oldNote);
@@ -135,13 +143,13 @@ const createStyles = (theme: AppTheme) => {
     },
     back: {
       left: 15,
-      // top: 5,
-      // top: StatusBar.currentHeight / 10
+      top: 5,
+      // backgroundColor: theme.colors.tertiary
     },
     trash: {
       right: 15,
-      // top: 5,
-      // top: StatusBar.currentHeight / 2
+      top: 5,
+      // backgroundColor: theme.colors.tertiary
     },
     aligment: {
       flex: 10,

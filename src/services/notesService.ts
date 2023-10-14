@@ -72,6 +72,10 @@ const storeNote = async (note: Note) => {
       return false;
     }
 
+    if (!isNoteValid(note.title, note.summary, note.color)) {
+      return null;
+    }
+
     let notes = await getAllNotes();
     const selectedNote = getNoteById(notes, note.id);
 
@@ -122,18 +126,8 @@ const createNewNote = (
   endDate: Date,
   color: string,
 ) => {
-  if (title === '') {
-    Alert.alert('Title cannot be empty');
-    return null;
-  }
 
-  if (title.length > 25) {
-    Alert.alert('Title too long. Max 25 symbols allowed');
-    return null;
-  }
-
-  if (summary.length > 90) {
-    Alert.alert('Summary too long. Max 90 symbols allowed');
+  if (!isNoteValid(title, summary, color)) {
     return null;
   }
 
@@ -153,11 +147,34 @@ const createNewNote = (
   return noteCandidate;
 };
 
+const isNoteValid = (
+  title: string,
+  summary: string,
+  color: string,
+) => {
+  if (title === '') {
+    Alert.alert('Title cannot be empty');
+    return false;
+  }
+
+  if (title.length > 25) {
+    Alert.alert('Title too long. Max 25 symbols allowed');
+    return false;
+  }
+
+  if (summary.length > 90) {
+    Alert.alert('Summary too long. Max 90 symbols allowed');
+    return false;
+  }
+
+  return true;
+
+}
 const notesService = {
   getAllNotes,
   storeNote,
   removeNote,
-  createNewNote,
+  createNewNote
 };
 
 export default notesService;

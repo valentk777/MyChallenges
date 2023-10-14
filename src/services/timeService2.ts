@@ -7,13 +7,13 @@ const combineDateAndTime = (datePart: Date, timePart: Date): Date => {
     timePart.getMinutes(),
     timePart.getSeconds(),
   );
-}
+};
 
-const getUtcDateFromLocalString = (date: string) : Date => {
+const getUtcDateFromLocalString = (date: string): Date => {
   return getUtcDateFromLocalDate(new Date(date));
-}
+};
 
-const getUtcDateFromLocalDate = (date: Date) : Date => {
+const getUtcDateFromLocalDate = (date: Date): Date => {
   const currentDate = new Date();
   const offsetInMinutes = currentDate.getTimezoneOffset();
   const offsetInHours = offsetInMinutes / 60;
@@ -21,7 +21,7 @@ const getUtcDateFromLocalDate = (date: Date) : Date => {
   date.setHours(date.getHours() + offsetInHours);
 
   return date;
-}
+};
 
 const getTwoDigitsNumber = (number: number): string => {
   return number < 10 ? `0${number}` : `${number}`;
@@ -52,19 +52,11 @@ const setLocalTimeToDate = (
 };
 
 const getLocalDayStringFromDate = (date: Date): string => {
-  console.log("dcscdscsdc");
-  console.log(date.getDate());
-  console.log(`${date.getFullYear()}-${date.getMonth().toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`);
-
-  date.getDate();
-  return `${date.getFullYear()}-${date.getMonth().toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
-}
-
-
-
-
-
-
+  const year = date.getFullYear();
+  const month = date.getMonth().toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 // const getLocalCurrentTimestamp = (): number => {
 //   return Date.now();
@@ -90,23 +82,12 @@ const getLocalDayStringFromDate = (date: Date): string => {
 //   return timestampToLocalString(timestamp).split('T')[0];
 // };
 
-
-
-
-
-
 // const getNextDayTimestamp = (timestamp: number): number => {
 //   const nextDay = new Date(timestamp);
 //   nextDay.setDate(new Date(timestamp).getDate() + 1);
 
 //   return dateToDayTimestamp(nextDay);
 // };
-
-
-
-
-
-
 
 // const dateDiffInDays = (timestamp1: number, timestamp2: number) => {
 //   const diffTime = Math.abs(timestamp2 - timestamp1);
@@ -115,16 +96,10 @@ const getLocalDayStringFromDate = (date: Date): string => {
 //   return diffDays + 1;
 // };
 
-
-
 // const formatDate = timestamp => {
 //   const date = new Date(timestamp);
 //   return date.toISOString().split('T')[0];
 // };
-
-
-
-
 
 // // TODO: refactor. need to use UTC time and reuse date instead of strings
 
