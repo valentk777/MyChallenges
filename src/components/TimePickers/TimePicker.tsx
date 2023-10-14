@@ -141,7 +141,8 @@ const TimePicker = (props: TimePickerProps) => {
           selectedValue={timeService2.dateToLocalTimeString(startDate)}
           onValueChange={handleStartTimeChange}
           mode={Picker.MODE_DROPDOWN}
-          dropdownIconColor={theme.colors.tertiary}
+          numberOfLines={5}
+          // dropdownIconColor={theme.colors.tertiary}
         >
           {generateTime(0, 0).map((time) => (
             <Picker.Item label={time} value={time} key={time} style={styles.picker} />
@@ -173,7 +174,8 @@ const TimePicker = (props: TimePickerProps) => {
           selectedValue={timeService2.dateToLocalTimeString(endDate)}
           onValueChange={handleEndTimeChange}
           mode={Picker.MODE_DROPDOWN}
-          dropdownIconColor={theme.colors.tertiary}
+          numberOfLines={5}
+          // dropdownIconColor={theme.colors.tertiary}
         >
           {generateTimeOptions().map((time) => (
             <Picker.Item label={time} value={time} key={time} style={styles.picker} />
@@ -220,7 +222,7 @@ const createStyles = (theme: AppTheme) => {
     },
     picker: {
       fontFamily: theme.fonts.medium,
-      color: theme.colors.primary,
+      // color: theme.colors.primary,
       fontSize: 15,
     }
   });
