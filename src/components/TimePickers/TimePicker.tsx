@@ -6,6 +6,8 @@ import timeService from '../../services/timeService';
 import { useTranslations } from '../../hooks/useTranslations';
 import { useTheme } from '../../hooks/useTheme';
 import { AppTheme } from '../../styles/themeModels';
+import timeService2 from '../../services/timeService2';
+import { DateData } from 'react-native-calendars/src/types';
 
 interface TimePickerProps {
   onSetStartDate: (date: Date) => void,
@@ -24,75 +26,100 @@ const TimePicker = (props: TimePickerProps) => {
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
 
   const [startDate, setStartDate] = useState(initialStartDate);
-  const [endDate, setEndDate] = useState(initialEndDate));
-
-  // const [startDate, setStartDate] = useState(timeService.getDate(initialStartDate));
-  // const [endDate, setEndDate] = useState(timeService.getDate(initialEndDate));
-
-  // const [startTime, setStartTime] = useState(timeService.getTime(initialStartDate));
-  // const [endTime, setEndTime] = useState(timeService.getTime(initialEndDate));
+  const [endDate, setEndDate] = useState(initialEndDate);
 
   const { tTime } = useTranslations();
 
   useEffect(() => {
-    updateState();
-  }, [startDate, endDate, startTime, endTime]);
+    console.log("11111111111")
+    console.log(startDate);
+    console.log(startDate.toISOString()); // utc
+    console.log(startDate.toLocaleString()); // local
+    console.log("11111111111")
 
-  const updateState = () => {
-    onSetStartDate(new Date(`${startDate} ${startTime}`).toISOString());
-    onSetEndDate(new Date(`${endDate} ${endTime}`).toISOString());
-  }
+    onSetStartDate(startDate);
+    onSetEndDate(endDate);
+  }, [startDate, endDate]);
 
-  const onStartDayPress = (day) => {
-    const _startDate = new Date(day.dateString);
-    const _endDate = new Date(endDate);
+  const onStartDayUpdated = (day: DateData) => {
+    const newDate = timeService2.combineDateAndTime(new Date(day.dateString), startDate)
 
-    if (endDate !== "" && _startDate > _endDate) {
-      setEndDate(day.dateString);
+    console.log("2222222")
+    console.log(newDate);
+    console.log(newDate.toISOString()); // utc
+    console.log(newDate.toLocaleString()); // local
+    console.log("2222222")
+
+    // this is also hours based validation
+    if (newDate > endDate) {
+      // now start = end. need validation on save or just disable save for this case at all.
+      setEndDate(newDate);
     }
 
-    setStartDate(day.dateString);
+    setStartDate(newDate);
     setIsStartModalVisible(false);
-    updateState();
   };
 
-  const onEndDayPress = (day) => {
-    const _startDate = new Date(startDate);
-    const _endDate = new Date(day.dateString);
+  const onEndDayUpdated = (day: DateData) => {
+    const newDate = timeService2.combineDateAndTime(new Date(day.dateString), endDate)
 
-    if (_startDate > _endDate) {
+    console.log("3333333")
+    console.log(newDate);
+    console.log(newDate.toISOString()); // utc
+    console.log(newDate.toLocaleString()); // local
+    console.log("3333333")
+
+    // this is also hours based validation
+    if (startDate > newDate) {
       return;
     }
 
-    setEndDate(day.dateString);
+    setEndDate(newDate);
     setIsEndModalVisible(false);
-    updateState();
   };
 
   const handleStartTimeChange = (time: string) => {
-    setStartTime(time);
-    updateState();
+    const hours = parseInt(time.split(':')[0]);
+    const minutes = parseInt(time.split(':')[1]);
+    const newDate = timeService2.setLocalTimeToDate(startDate, hours, minutes);
+
+    console.log("44444444")
+    console.log(newDate);
+    console.log(newDate.toISOString()); // utc
+    console.log(newDate.toLocaleString()); // local
+    console.log("44444444")
+
+    setStartDate(newDate);
   };
 
   const handleEndTimeChange = (time: string) => {
-    setEndTime(time);
-    updateState();
+    const hours = parseInt(time.split(':')[0]);
+    const minutes = parseInt(time.split(':')[1]);
+    const newDate = timeService2.setLocalTimeToDate(endDate, hours, minutes);
+
+    console.log("5555555")
+    console.log(newDate);
+    console.log(newDate.toISOString()); // utc
+    console.log(newDate.toLocaleString()); // local
+    console.log("5555555")
+
+    setEndDate(newDate);
   };
 
   const generateTime = (startHours: number, startMinutes: number) => {
     let times = [] as string[];
 
     for (let minute = startMinutes; minute < 60; minute += 15) {
-      const formattedHour = startHours < 10 ? `0${startHours}` : `${startHours}`;
-      const formattedMinute = minute === 0 ? '00' : `${minute}`;
+      const formattedHour = timeService.getTwoDigitsNumber(startHours);
+      const formattedMinute = timeService.getTwoDigitsNumber(minute);
 
       times.push(`${formattedHour}:${formattedMinute}`);
     }
 
     for (let hour = startHours + 1; hour < 24; hour++) {
       for (let minute = 0; minute < 60; minute += 15) {
-        const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
-        const formattedMinute = minute === 0 ? '00' : `${minute}`;
+        const formattedHour = timeService.getTwoDigitsNumber(hour);
+        const formattedMinute = timeService.getTwoDigitsNumber(minute);
 
         times.push(`${formattedHour}:${formattedMinute}`);
       }
@@ -101,40 +128,40 @@ const TimePicker = (props: TimePickerProps) => {
     return times
   }
 
-  const generateTimeOptions = () => {
-    if (startDate != endDate) {
-      return generateTime(0, 0);
-    }
+  // const generateTimeOptions = () => {
+  //   if (timeService2.timestampToLocalDayString(startDate) != timeService2.timestampToLocalDayString(endDate)) {
+  //     return generateTime(0, 0);
+  //   }
 
-    const startHours = parseInt(startTime.split(':')[0], 10);
-    const startMinutes = parseInt(startTime.split(':')[1], 10);
+  //   if (timeService2.timestampToTimeString(startDate) == "23:45") {
+  //     setEndDate(timeService2.getNextDayTimestamp(endDate));
 
-    if (startHours === 23 && startMinutes == 45) {
-      setEndDate(timeService.getNextDayDate(endDate));
-      setEndTime("00:00");
+  //     return generateTime(0, 0);
+  //   }
 
-      return generateTime(0, 0);
-    }
+  //   const time = timeService2.timestampToTimeString(startDate);
+  //   const hours = parseInt(time.split(':')[0]);
+  //   const minutes = parseInt(time.split(':')[1]);
 
-    return generateTime(startHours, startMinutes + 15);
-  };
+  //   return generateTime(hours, minutes + 15);
+  // };
 
-  const renderStartDateAndTimeContainer = () => (
+  const renderStartTimeStampAndTimeContainer = () => (
     <View style={styles.dateAndTimeSection}>
       <PickerCalendar
-        onDayPress={onStartDayPress}
+        onDayPress={onStartDayUpdated}
         hideCalendar={() => setIsStartModalVisible(false)}
         isModalVisible={isStartModalVisible}
-        currentDate={startDate}
+        currentDate={startDate.toLocaleString()}
         minDate={undefined}
       />
       <View style={styles.textImput}>
         <TouchableOpacity onPress={() => setIsStartModalVisible(true)}>
-          <Text style={styles.dateText}>{tTime(startDate, 'EEEE, LLLL dd')}</Text>
+          <Text style={styles.dateText}>{tTime(startDate.toISOString(), 'EEEE, LLLL dd')}</Text>
         </TouchableOpacity>
       </View>
       <Picker
-        selectedValue={startTime}
+        selectedValue={timeService2.dateToLocalTimeString(startDate)}
         onValueChange={handleStartTimeChange}
         style={styles.timeImput}
       >
@@ -145,27 +172,28 @@ const TimePicker = (props: TimePickerProps) => {
     </View>
   );
 
-  const renderEndDateAndTimeContainer = () => (
+  const renderEndTimeStampAndTimeContainer = () => (
     <View style={styles.dateAndTimeSection}>
       <PickerCalendar
-        onDayPress={onEndDayPress}
+        onDayPress={onEndDayUpdated}
         hideCalendar={() => setIsEndModalVisible(false)}
         isModalVisible={isEndModalVisible}
-        currentDate={endDate}
-        minDate={startDate}
+        currentDate={endDate.toLocaleString()}
+        minDate={endDate.toLocaleString()}
       />
       <View style={styles.textImput}>
         <TouchableOpacity onPress={() => setIsEndModalVisible(true)}>
-          <Text style={styles.dateText}>{tTime(endDate, 'EEEE, LLLL dd')}</Text>
+          <Text style={styles.dateText}>{tTime(endDate.toISOString(), 'EEEE, LLLL dd')}</Text>
         </TouchableOpacity>
       </View>
       <Picker
-        selectedValue={endTime}
+        selectedValue={timeService2.dateToLocalTimeString(endDate)}
         onValueChange={handleEndTimeChange}
         style={styles.timeImput}
       >
-        {generateTimeOptions().map((time) => (
-          <Picker.Item label={time} value={time} key={time} />
+        {/* {generateTimeOptions().map((time) => ( */}
+        {generateTime(0, 0).map((time) => (
+          <Picker.Item label={time} value={time} key={time} style={styles.picker} />
         ))}
       </Picker>
     </View>
@@ -173,8 +201,8 @@ const TimePicker = (props: TimePickerProps) => {
 
   return (
     <View style={styles.container}>
-      {renderStartDateAndTimeContainer()}
-      {renderEndDateAndTimeContainer()}
+      {renderStartTimeStampAndTimeContainer()}
+      {renderEndTimeStampAndTimeContainer()}
     </View>
   );
 };

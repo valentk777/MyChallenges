@@ -1,10 +1,10 @@
 export interface Note {
   id: string;
   title: string;
-  startDate: string;
-  endDate: string;
+  startTime: number;
+  endTime: number;
   summary: string;
-  timeCreated: string;
-  lastTimeUpdated: string;
-  color: string; // todo: add this later as a feature
+  timeCreated: number;
+  lastTimeUpdated: number;
+  color: string;
 }

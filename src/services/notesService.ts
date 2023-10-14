@@ -118,8 +118,8 @@ const removeNote = async (noteId: string) => {
 const createNewNote = (
   title: string,
   summary: string,
-  startDate: string,
-  endDate: string,
+  startDate: Date,
+  endDate: Date,
 ) => {
   if (title === '') {
     Alert.alert('Title cannot be empty');
@@ -136,17 +136,17 @@ const createNewNote = (
     return null;
   }
 
-  const currentUtcTime = timeService.getCurrentDateString();
+  const currentTime = new Date().getTime();
 
   const noteCandidate = {} as Note;
 
   noteCandidate.id = uuid.v4().toString();
   noteCandidate.title = title;
   noteCandidate.summary = summary;
-  noteCandidate.startDate = startDate;
-  noteCandidate.endDate = endDate;
-  noteCandidate.timeCreated = currentUtcTime;
-  noteCandidate.lastTimeUpdated = currentUtcTime;
+  noteCandidate.startTime = startDate.getTime();
+  noteCandidate.endTime = endDate.getTime();
+  noteCandidate.timeCreated = currentTime;
+  noteCandidate.lastTimeUpdated = currentTime;
 
   return noteCandidate;
 };

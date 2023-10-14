@@ -4,11 +4,11 @@ import { Calendar } from "react-native-calendars";
 import timeService from "../../services/timeService";
 import { AppTheme } from "../../styles/themeModels";
 import { useTheme } from "../../hooks/useTheme";
-import { Theme } from "react-native-calendars/src/types";
+import { DateData, Theme } from "react-native-calendars/src/types";
 import MyModal from "../Modals/MyModal";
 
 interface PickerCalendarProps {
-  onDayPress: (day) => void;
+  onDayPress: (day: DateData) => void;
   hideCalendar: () => void;
   isModalVisible: boolean;
   currentDate: string;

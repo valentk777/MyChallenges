@@ -20,14 +20,15 @@ import CalendarEventModal from './CalendarEventModal';
 import { Theme } from "react-native-calendars/src/types";
 import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
+import timeService2 from '../../services/timeService2';
 
 //TODO: move to calendarEventsService
 
 const noteToEvent = (note: Note) => {
   return {
     id: note.id,
-    start: note.startDate,
-    end: note.endDate,
+    start: note.startTime,
+    end: note.endTime,
     title: note.title,
     summary: note.summary,
     color: note.color
@@ -55,12 +56,12 @@ const eventToOneDayEvents = (event) => {
   addEntry(timeService.getDate(event.start), timeService.getTime(event.start), '23:59:59.000Z');
 
   // Handle the end date
-  let nextDay = timeService.getNextDayDate(event.start);
+  let nextDay = timeService.getNextDayDateString(event.start);
 
-  while(nextDay < timeService.getDate(event.end)) {
+  while (nextDay < timeService.getDate(event.end)) {
     addEntry(nextDay, '00:00:00.000Z', '23:59:59.000Z');
 
-    nextDay = timeService.getNextDayDate(nextDay);
+    nextDay = timeService.getNextDayDateString(nextDay);
   }
 
   addEntry(nextDay, '00:00:00.000Z', timeService.getTime(event.end));
@@ -90,8 +91,8 @@ const StatusAndNotesCalendar = () => {
   const [currentDate] = useState(timeService.getCurrentDateString());
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const [initialStartTime, setInitialStartTime] = useState(null as Date | null);
-  const [initialEndTime, setInitialEndTime] = useState(null as Date | null);
+  const [initialStartDate, setInitialStartDate] = useState(new Date());
+  const [initialEndDate, setInitialEndDate] = useState(new Date());
 
   useEffect(() => {
     notesService.getAllNotes().then((notes) => {
@@ -130,11 +131,11 @@ const StatusAndNotesCalendar = () => {
   }
 
   const updateNote = (oldNote: Note, newNote: Note) => {
-      const oldEvents = noteToEvents(oldNote);
-      const newEvents = noteToEvents(newNote);
+    const oldEvents = noteToEvents(oldNote);
+    const newEvents = noteToEvents(newNote);
 
-      // delete old note and add new one.
-      console.log("updateNote");
+    // delete old note and add new one.
+    console.log("updateNote");
   }
 
   const deleteNote = (note: Note) => {
@@ -195,12 +196,19 @@ const StatusAndNotesCalendar = () => {
   };
 
   const createNewEvent: TimelineProps['onBackgroundLongPress'] = (timeString, timeObject) => {
-    const hourString = `${(timeObject.hour + 1).toString().padStart(2, '0')}`;
+    const hourString = `${(timeObject.hour).toString().padStart(2, '0')}`;
     const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
-    const endDate = `${timeObject.date} ${hourString}:${minutesString}:00`;
+    const eventDate = new Date(`${timeObject.date}T${hourString}:${minutesString}:00Z`);
+    const utcEventDate = timeService2.getUtcDateFromLocalDate(eventDate);
 
-    setInitialStartTime(new Date(timeString));
-    setInitialEndTime(new Date(endDate));
+    console.log(utcEventDate);
+    console.log(utcEventDate.toISOString());
+    console.log(utcEventDate.toUTCString());
+    console.log(utcEventDate.toLocaleString());
+    
+
+    setInitialStartDate(utcEventDate);
+    setInitialEndDate(timeService2.addMinutes(utcEventDate, 30));
     setIsModalVisible(true);
   };
 
@@ -246,12 +254,12 @@ const StatusAndNotesCalendar = () => {
         style={styles.calendarContainer}
         > */}
         <TimelineList
-      // events={}
+          // events={}
           events={eventsByDate}
           timelineProps={timelineProps}
           showNowIndicator
           scrollToNow
-          // renderItem={renderItem}
+        // renderItem={renderItem}
         // scrollToFirst
         // initialTime={INITIAL_TIME}
         />
@@ -260,10 +268,10 @@ const StatusAndNotesCalendar = () => {
       <View style={styles.modalContainer}>
         <MyModal isModalVisible={isModalVisible} hideModal={() => setIsModalVisible(false)}>
           <View style={styles.eventInputArea}>
-            <CalendarEventModal 
-            onSave={saveNoteChanges} 
-            initialStartTime={initialStartTime} 
-            initialEndTime={initialEndTime} 
+            <CalendarEventModal
+              onSave={saveNoteChanges}
+              initialStartTime={initialStartDate}
+              initialEndTime={initialEndDate}
             />
           </View>
         </MyModal>

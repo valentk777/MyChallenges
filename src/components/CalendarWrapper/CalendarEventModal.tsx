@@ -6,12 +6,11 @@ import TimePicker from "../TimePickers/TimePicker";
 import { SaveButton } from "../ButtonWrapper/SaveButton";
 import { Note } from "../../entities/note";
 import notesService from "../../services/notesService";
-import timeService from "../../services/timeService";
 
 interface CalendarEventModalProps {
   onSave: (newNote: Note, oldNote: Note | null) => void;
-  initialStartTime: Date | null;
-  initialEndTime: Date | null;
+  initialStartTime: Date;
+  initialEndTime: Date;
 }
 
 const CalendarEventModal = (props: CalendarEventModalProps) => {
@@ -21,8 +20,8 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { onSave, initialStartTime, initialEndTime } = props;
 
   const [title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState(initialStartTime == null ? new Date() : initialStartTime);
-  const [endDate, setEndDate] = useState(initialEndTime == null ? new Date() : initialEndTime);
+  const [startDate, setStartDate] = useState(initialStartTime);
+  const [endDate, setEndDate] = useState(initialEndTime);
   const [summary, setSummary] = useState("");
 
   const onLocalSave = () => {

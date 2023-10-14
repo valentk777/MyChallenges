@@ -29,14 +29,29 @@ const getDate = (date: string) => {
   return date.split('T')[0];
 };
 
+const getTwoDigitsNumber = (number: number) => {
+  return number < 10 ? `0${number}` : `${number}`;
+};
+
 const getTime = (date: string) => {
   const newDate = new Date(date);
-  
-  const hours = newDate.getUTCHours();
-  const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
 
-  const minutes = newDate.getUTCMinutes();
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+  const hours = newDate.getHours();
+  const formattedHours = getTwoDigitsNumber(hours);
+
+  const minutes = newDate.getMinutes();
+  const formattedMinutes = getTwoDigitsNumber(minutes);
+
+  console.log("1 qqqqqqqq")
+  console.log(date);
+  console.log(newDate);
+  console.log(hours);
+  console.log(formattedHours);
+  console.log(minutes);
+  console.log(formattedMinutes);
+
+  console.log(`${formattedHours}:${formattedMinutes}`);
+  console.log("2 qqqqqqqq")
 
   return `${formattedHours}:${formattedMinutes}`;
 };
@@ -56,12 +71,19 @@ const dateDiffInDays = (date1: Date, date2: Date) => {
   return diffDays + 1;
 };
 
-const getNextDayDate = (date: string) => {
+const getNextDayDateString = (date: string) => {
   let nextDay = new Date(date);
   nextDay.setDate(new Date(date).getDate() + 1);
 
   return formatDate(nextDay);
-}
+};
+
+const getNextDayDate = (date: Date) => {
+  let nextDay = new Date(date);
+  nextDay.setDate(new Date(date).getDate() + 1);
+
+  return nextDay;
+};
 
 const timeService = {
   convertUTCToLocalTime,
@@ -71,7 +93,9 @@ const timeService = {
   dateDiffInDays,
   getDate,
   getTime,
+  getNextDayDateString,
   getNextDayDate,
+  getTwoDigitsNumber,
 };
 
 export default timeService;
