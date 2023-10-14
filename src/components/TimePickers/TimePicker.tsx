@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import PickerCalendar from '../CalendarWrapper/PickerCalendar';
 import timeService from '../../services/timeService';
@@ -8,6 +8,9 @@ import { useTheme } from '../../hooks/useTheme';
 import { AppTheme } from '../../styles/themeModels';
 import timeService2 from '../../services/timeService2';
 import { DateData } from 'react-native-calendars/src/types';
+import { CalendarUtils } from 'react-native-calendars';
+
+const STEP_NUMBER_OF_MINUTES = 15;
 
 interface TimePickerProps {
   onSetStartDate: (date: Date) => void,
@@ -30,12 +33,6 @@ const TimePicker = (props: TimePickerProps) => {
   const { tTime } = useTranslations();
 
   useEffect(() => {
-    console.log("11111111111")
-    console.log(startDate);
-    console.log(startDate.toISOString()); // utc
-    console.log(startDate.toLocaleString()); // local
-    console.log("11111111111")
-
     onSetStartDate(startDate);
     onSetEndDate(endDate);
   }, [startDate, endDate]);
@@ -43,16 +40,9 @@ const TimePicker = (props: TimePickerProps) => {
   const onStartDayUpdated = (day: DateData) => {
     const newDate = timeService2.combineDateAndTime(new Date(day.dateString), startDate)
 
-    console.log("2222222")
-    console.log(newDate);
-    console.log(newDate.toISOString()); // utc
-    console.log(newDate.toLocaleString()); // local
-    console.log("2222222")
-
     // this is also hours based validation
     if (newDate > endDate) {
-      // now start = end. need validation on save or just disable save for this case at all.
-      setEndDate(newDate);
+      setEndDate(timeService2.addMinutes(newDate, STEP_NUMBER_OF_MINUTES));
     }
 
     setStartDate(newDate);
@@ -61,12 +51,6 @@ const TimePicker = (props: TimePickerProps) => {
 
   const onEndDayUpdated = (day: DateData) => {
     const newDate = timeService2.combineDateAndTime(new Date(day.dateString), endDate)
-
-    console.log("3333333")
-    console.log(newDate);
-    console.log(newDate.toISOString()); // utc
-    console.log(newDate.toLocaleString()); // local
-    console.log("3333333")
 
     // this is also hours based validation
     if (startDate > newDate) {
@@ -82,12 +66,6 @@ const TimePicker = (props: TimePickerProps) => {
     const minutes = parseInt(time.split(':')[1]);
     const newDate = timeService2.setLocalTimeToDate(startDate, hours, minutes);
 
-    console.log("44444444")
-    console.log(newDate);
-    console.log(newDate.toISOString()); // utc
-    console.log(newDate.toLocaleString()); // local
-    console.log("44444444")
-
     setStartDate(newDate);
   };
 
@@ -96,19 +74,13 @@ const TimePicker = (props: TimePickerProps) => {
     const minutes = parseInt(time.split(':')[1]);
     const newDate = timeService2.setLocalTimeToDate(endDate, hours, minutes);
 
-    console.log("5555555")
-    console.log(newDate);
-    console.log(newDate.toISOString()); // utc
-    console.log(newDate.toLocaleString()); // local
-    console.log("5555555")
-
     setEndDate(newDate);
   };
 
   const generateTime = (startHours: number, startMinutes: number) => {
     let times = [] as string[];
 
-    for (let minute = startMinutes; minute < 60; minute += 15) {
+    for (let minute = startMinutes; minute < 60; minute += STEP_NUMBER_OF_MINUTES) {
       const formattedHour = timeService.getTwoDigitsNumber(startHours);
       const formattedMinute = timeService.getTwoDigitsNumber(minute);
 
@@ -116,7 +88,7 @@ const TimePicker = (props: TimePickerProps) => {
     }
 
     for (let hour = startHours + 1; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
+      for (let minute = 0; minute < 60; minute += STEP_NUMBER_OF_MINUTES) {
         const formattedHour = timeService.getTwoDigitsNumber(hour);
         const formattedMinute = timeService.getTwoDigitsNumber(minute);
 
@@ -127,23 +99,25 @@ const TimePicker = (props: TimePickerProps) => {
     return times
   }
 
-  // const generateTimeOptions = () => {
-  //   if (timeService2.timestampToLocalDayString(startDate) != timeService2.timestampToLocalDayString(endDate)) {
-  //     return generateTime(0, 0);
-  //   }
+  const generateTimeOptions = () => {
 
-  //   if (timeService2.timestampToTimeString(startDate) == "23:45") {
-  //     setEndDate(timeService2.getNextDayTimestamp(endDate));
+    if (timeService2.getLocalDayStringFromDate(startDate) != timeService2.getLocalDayStringFromDate(endDate)) {
+      return generateTime(0, 0);
+    }
 
-  //     return generateTime(0, 0);
-  //   }
+    const time = timeService2.dateToLocalTimeString(startDate);
 
-  //   const time = timeService2.timestampToTimeString(startDate);
-  //   const hours = parseInt(time.split(':')[0]);
-  //   const minutes = parseInt(time.split(':')[1]);
+    if (time == "23:45") {
+      setEndDate(timeService2.addMinutes(endDate, STEP_NUMBER_OF_MINUTES));
 
-  //   return generateTime(hours, minutes + 15);
-  // };
+      return generateTime(0, 0);
+    }
+
+    const hours = parseInt(time.split(':')[0]);
+    const minutes = parseInt(time.split(':')[1]);
+
+    return generateTime(hours, minutes + STEP_NUMBER_OF_MINUTES);
+  };
 
   const renderStartTimeStampAndTimeContainer = () => (
     <View style={styles.dateAndTimeSection}>
@@ -151,7 +125,7 @@ const TimePicker = (props: TimePickerProps) => {
         onDayPress={onStartDayUpdated}
         hideCalendar={() => setIsStartModalVisible(false)}
         isModalVisible={isStartModalVisible}
-        currentDate={startDate.toLocaleString()}
+        currentDate={CalendarUtils.getCalendarDateString(startDate)}
         minDate={undefined}
       />
       <View style={styles.textImput}>
@@ -183,8 +157,8 @@ const TimePicker = (props: TimePickerProps) => {
         onDayPress={onEndDayUpdated}
         hideCalendar={() => setIsEndModalVisible(false)}
         isModalVisible={isEndModalVisible}
-        currentDate={endDate.toLocaleString()}
-        minDate={endDate.toLocaleString()}
+        currentDate={CalendarUtils.getCalendarDateString(endDate)}
+        minDate={CalendarUtils.getCalendarDateString(startDate)}
       />
       <View style={styles.textImput}>
         <TouchableOpacity
@@ -201,8 +175,7 @@ const TimePicker = (props: TimePickerProps) => {
           mode={Picker.MODE_DROPDOWN}
           dropdownIconColor={theme.colors.tertiary}
         >
-          {/* {generateTimeOptions().map((time) => ( */}
-          {generateTime(0, 0).map((time) => (
+          {generateTimeOptions().map((time) => (
             <Picker.Item label={time} value={time} key={time} style={styles.picker} />
           ))}
         </Picker>

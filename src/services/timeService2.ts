@@ -51,6 +51,14 @@ const setLocalTimeToDate = (
   return newDate;
 };
 
+const getLocalDayStringFromDate = (date: Date): string => {
+  console.log("dcscdscsdc");
+  console.log(date.getDate());
+  console.log(`${date.getFullYear()}-${date.getMonth().toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`);
+
+  date.getDate();
+  return `${date.getFullYear()}-${date.getMonth().toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
+}
 
 
 
@@ -204,6 +212,7 @@ const timeService2 = {
   getUtcDateFromLocalString,
   getUtcDateFromLocalDate,
   addMinutes,
+  getLocalDayStringFromDate,
 };
 
 export default timeService2;
