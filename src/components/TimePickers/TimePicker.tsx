@@ -222,7 +222,7 @@ const createStyles = (theme: AppTheme) => {
     },
     picker: {
       fontFamily: theme.fonts.medium,
-      // color: theme.colors.primary,
+      color: theme.colors.primary,
       fontSize: 15,
     }
   });
