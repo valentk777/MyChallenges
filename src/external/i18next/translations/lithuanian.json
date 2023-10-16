@@ -53,6 +53,7 @@
   "status-calendar-screen": {
     "modal-title-placeholder": "Pridėti pavadinimą...",
     "modal-summary-placeholder": "Pridėti santrauką...",
+    "checkbox": "Ar tai yra visos dienos įvykis?",
     "save": "Išsaugoti"
   }
 }

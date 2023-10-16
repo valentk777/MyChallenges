@@ -53,6 +53,7 @@
   "status-calendar-screen": {
     "modal-title-placeholder": "Pievienot virsrakstu...",
     "modal-summary-placeholder": "Pievienot kopsavilkumu...",
+    "checkbox": "Vai tas ir pilnas dienas pasākums?",
     "save": "Saglabāt"
   }
 }

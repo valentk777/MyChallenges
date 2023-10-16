@@ -53,6 +53,7 @@
   "status-calendar-screen": {
     "modal-title-placeholder": "Add title...",
     "modal-summary-placeholder": "Add summary...",
+    "checkbox": "Is full day event?",
     "save": "Save"
   }
 }

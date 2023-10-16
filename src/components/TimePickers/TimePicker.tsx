@@ -142,19 +142,20 @@ const TimePicker = (props: TimePickerProps) => {
       </View>
       <View style={styles.pickerArea}>
         <Picker
-          selectedValue={disabled ? "00:00" : timeService2.dateToLocalTimeString(startDate)}
+          selectedValue={timeService2.dateToLocalTimeString(startDate)}
           onValueChange={handleStartTimeChange}
           mode={Picker.MODE_DROPDOWN}
           numberOfLines={5}
           enabled={!disabled}
           dropdownIconColor={theme.colors.tertiary}
+          itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
         >
-          {generateTime(0, 0).map((time) => (
+          {(disabled ? ["00:00"] : generateTime(0, 0)).map((time) => (
             <Picker.Item
             label={time}
              value={time} 
              key={time}
-             style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+            //  style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
              />
           ))}
         </Picker>
@@ -184,18 +185,19 @@ const TimePicker = (props: TimePickerProps) => {
       </View>
       <View style={styles.pickerArea}>
         <Picker
-          selectedValue={disabled ? "00:00" : timeService2.dateToLocalTimeString(endDate)}
+          selectedValue={timeService2.dateToLocalTimeString(endDate)}
           onValueChange={handleEndTimeChange}
           mode={Picker.MODE_DROPDOWN}
           numberOfLines={5}
           enabled={!disabled}
+          itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
         >
-          {generateTimeOptions().map((time) => (
+          {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
             <Picker.Item
              label={time}
               value={time} 
               key={time}
-              style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+              // style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
               />
           ))}
         </Picker>
@@ -242,7 +244,7 @@ const createStyles = (theme: AppTheme) => {
       fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
       backgroundColor: theme.colors.canvas,
-      fontSize: 15,
+      fontSize: 20,
     }
   });
 

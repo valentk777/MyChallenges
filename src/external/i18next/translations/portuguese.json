@@ -53,6 +53,7 @@
   "status-calendar-screen": {
     "modal-title-placeholder": "Adicionar título...",
     "modal-summary-placeholder": "Adicionar resumo...",
+    "checkbox": "É um evento de dia inteiro?",
     "save": "Salvar"
   }
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, TextInput, KeyboardAvoidingView, Text } from "react-native";
 import { AppTheme } from "../../styles/themeModels";
 import { useTheme } from "../../hooks/useTheme";
 import TimePicker from "../TimePickers/TimePicker";
@@ -9,7 +9,7 @@ import notesService from "../../services/notesService";
 import { useTranslation } from "react-i18next";
 import { CircleButton } from "../ButtonWrapper/CircleButton";
 import { icons } from "../../assets";
-import CheckBox from 'react-native-check-box'
+import CheckBox from '@react-native-community/checkbox';
 import timeService2 from "../../services/timeService2";
 
 interface CalendarEventModalProps {
@@ -20,7 +20,6 @@ interface CalendarEventModalProps {
   initialStartTime: Date;
   initialEndTime: Date;
 }
-        // full day event should be 00:00:00
 
 const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { theme } = useTheme();
@@ -34,7 +33,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const [startDate, setStartDate] = useState(isCreate ? initialStartTime : new Date(oldNote.startTime));
   const [endDate, setEndDate] = useState(isCreate ? initialEndTime : new Date(oldNote.endTime));
   const [summary, setSummary] = useState(isCreate ? "" : oldNote.summary);
-  const [isFullDayEvent, setIsFullDayEvent] = useState(isCreate ? initialStartTime ==  initialEndTime : oldNote.isFullDayEvent);
+  const [isFullDayEvent, setIsFullDayEvent] = useState(isCreate ? initialStartTime == initialEndTime : oldNote.isFullDayEvent);
 
   const { t } = useTranslation('status-calendar-screen')
 
@@ -43,7 +42,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
 
     if (isFullDayEvent) {
       note = notesService.createNewNote(title, summary, timeService2.setUtcTimeToDate(startDate, 0, 0), timeService2.setUtcTimeToDate(endDate, 0, 0), "", isFullDayEvent);
-    } else{
+    } else {
       note = notesService.createNewNote(title, summary, startDate, endDate, "", isFullDayEvent);
     }
 
@@ -100,14 +99,13 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
           initialEndDate={endDate}
           disabled={isFullDayEvent}
         />
-      <CheckBox
-          onClick={()=>{setIsFullDayEvent(!isFullDayEvent)}}
-          isChecked={isFullDayEvent}
-          checkBoxColor={theme.colors.primary}
-          ri={theme.colors.primary}
-          rightTextStyle={styles.checkBoxText}
-          rightText={"Is full day event?"}
-      />
+        <View style={styles.checkBoxArea}>
+          <CheckBox
+            onValueChange={(newValue) => { setIsFullDayEvent(newValue) }}
+            value={isFullDayEvent}
+          />
+          <Text style={styles.checkBoxText}>{t("checkbox")}</Text>
+        </View>
       </View>
       <View style={styles.summaryArea}>
         <TextInput
@@ -201,9 +199,15 @@ const createStyles = (theme: AppTheme) => {
       paddingLeft: 10,
       marginBottom: 20,
     },
+    checkBoxArea: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
     checkBoxText: {
       fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
+      fontSize: 14,
     },
     summaryArea: {
       flex: 3,

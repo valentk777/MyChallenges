@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",
+    "@react-native-community/checkbox": "^0.5.16",
     "@react-native-firebase/app": "^18.5.0",
     "@react-native-firebase/auth": "^18.5.0",
     "@react-native-firebase/firestore": "^18.5.0",
@@ -31,7 +32,6 @@
     "react-native": "0.72.4",
     "react-native-big-calendar": "^4.5.0",
     "react-native-calendars": "^1.1301.0",
-    "react-native-check-box": "^2.1.7",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-health-connect": "^1.2.0",
     "react-native-image-picker": "^7.0.0",
