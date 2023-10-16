@@ -92,8 +92,8 @@ android {
         applicationId "com.baitupasaulis.challengetracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 47
-        versionName "1.0.47"
+        versionCode 48
+        versionName "1.0.48"
     }
     signingConfigs {
         release {
