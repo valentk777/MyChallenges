@@ -17,13 +17,14 @@ interface TimePickerProps {
   onSetEndDate: (date: Date) => void
   initialStartDate: Date;
   initialEndDate: Date;
+  disabled: boolean;
 }
 
 const TimePicker = (props: TimePickerProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { onSetStartDate, onSetEndDate, initialStartDate, initialEndDate } = props;
+  const { onSetStartDate, onSetEndDate, initialStartDate, initialEndDate, disabled } = props;
 
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
@@ -132,20 +133,29 @@ const TimePicker = (props: TimePickerProps) => {
         <TouchableOpacity
           onPress={() => setIsStartModalVisible(true)}
           style={styles.textButton}
+          disabled={disabled}
         >
-          <Text style={styles.dateText}>{tTime(startDate.toISOString(), 'EEEE, LLLL dd')}</Text>
+          <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
+            {tTime(startDate.toISOString(), 'EEEE, LLLL dd')}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.pickerArea}>
         <Picker
-          selectedValue={timeService2.dateToLocalTimeString(startDate)}
+          selectedValue={disabled ? "00:00" : timeService2.dateToLocalTimeString(startDate)}
           onValueChange={handleStartTimeChange}
           mode={Picker.MODE_DROPDOWN}
           numberOfLines={5}
-          // dropdownIconColor={theme.colors.tertiary}
+          enabled={!disabled}
+          dropdownIconColor={theme.colors.tertiary}
         >
           {generateTime(0, 0).map((time) => (
-            <Picker.Item label={time} value={time} key={time} style={styles.picker} />
+            <Picker.Item
+            label={time}
+             value={time} 
+             key={time}
+             style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+             />
           ))}
         </Picker>
       </View>
@@ -165,20 +175,28 @@ const TimePicker = (props: TimePickerProps) => {
         <TouchableOpacity
           onPress={() => setIsEndModalVisible(true)}
           style={styles.textButton}
+          disabled={disabled}
         >
-          <Text style={styles.dateText}>{tTime(endDate.toISOString(), 'EEEE, LLLL dd')}</Text>
+          <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
+            {tTime(endDate.toISOString(), 'EEEE, LLLL dd')}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.pickerArea}>
         <Picker
-          selectedValue={timeService2.dateToLocalTimeString(endDate)}
+          selectedValue={disabled ? "00:00" : timeService2.dateToLocalTimeString(endDate)}
           onValueChange={handleEndTimeChange}
           mode={Picker.MODE_DROPDOWN}
           numberOfLines={5}
-          // dropdownIconColor={theme.colors.tertiary}
+          enabled={!disabled}
         >
           {generateTimeOptions().map((time) => (
-            <Picker.Item label={time} value={time} key={time} style={styles.picker} />
+            <Picker.Item
+             label={time}
+              value={time} 
+              key={time}
+              style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+              />
           ))}
         </Picker>
       </View>
@@ -211,7 +229,7 @@ const createStyles = (theme: AppTheme) => {
       justifyContent: 'center',
     },
     dateText: {
-      fontFamily: theme.fonts.medium,
+      fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
       fontSize: 15,
     },
@@ -221,8 +239,9 @@ const createStyles = (theme: AppTheme) => {
       flexDirection: 'column',
     },
     picker: {
-      fontFamily: theme.fonts.medium,
+      fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
+      backgroundColor: theme.colors.canvas,
       fontSize: 15,
     }
   });

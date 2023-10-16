@@ -6,6 +6,7 @@ import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
 import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import StatusAndNotesCalendar from '../components/CalendarWrapper/StatusAndNotesCalendar';
+import StatusAndNotesCalendar2 from '../components/CalendarWrapper/StatusAndNotesCalendar2';
 
 type StatusCalendarScreenProps = NativeStackScreenProps<HomeStackParamList, 'StatusCalendarScreen'>;
 
@@ -21,8 +22,9 @@ export const StatusCalendarScreen = ({ navigation }: StatusCalendarScreenProps) 
         colors={styles.linearGradient.colors}
         style={styles.linearGradient}
       >
-        <View style={styles.section}>
-          <StatusAndNotesCalendar />
+        <View style={{...styles.section,  height: window.height - 150 }}>
+          {/* <StatusAndNotesCalendar /> */}
+          <StatusAndNotesCalendar2 />
         </View>
       </LinearGradient>
     </View >
@@ -34,11 +36,11 @@ const createStyles = (theme: AppTheme) => {
     container: {
     },
     linearGradient: {
-      flex: 15,
+      flex: 1,
       colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
     },
     section: {
-      flex: 1,
+      backgroundColor: theme.colors.canvas
     },
     text: {
       fontSize: 20,

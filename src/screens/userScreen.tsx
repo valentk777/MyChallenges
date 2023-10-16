@@ -189,7 +189,6 @@ const createStyles = (theme: AppTheme) => {
       tintColor: theme.colors.canvasInverted,
     },
     signOut: {
-      tintColor: theme.colors.canvas,
       top: 30,
       right: 30,
       height: 50,

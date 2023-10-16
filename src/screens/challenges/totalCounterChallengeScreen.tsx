@@ -143,7 +143,6 @@ const createStyles = (theme: AppTheme) => {
       flex: 1
     },
     trashCan: {
-      tintColor: theme.colors.canvas,
       position: 'absolute',
       top: 15,
       right: 15,

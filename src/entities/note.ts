@@ -7,5 +7,6 @@ export interface Note {
   timeCreated: number;
   lastTimeUpdated: number;
   color: string;
-  isOneDayEvent: boolean;
+  isFullDayEvent: boolean;
+  // isOneDayEvent: boolean;
 }

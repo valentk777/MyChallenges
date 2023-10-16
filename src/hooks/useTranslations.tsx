@@ -7,6 +7,13 @@ import { useCurrentUser } from './useCurrentUser';
 import { LocaleConfig } from 'react-native-calendars';
 import { hourPickerLocales } from '../external/i18next/translations/hourPickerLocales';
 
+import 'dayjs/locale/lt'
+import 'dayjs/locale/en'
+import 'dayjs/locale/lv'
+import 'dayjs/locale/pt'
+import 'dayjs/locale/es'
+import 'dayjs/locale/fr'
+
 const LOCALES = {
   lt,
   en: enUS,

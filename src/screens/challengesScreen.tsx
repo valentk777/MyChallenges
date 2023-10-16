@@ -8,9 +8,9 @@ import { HomeStackParamList } from '../navigators/MenuTabNavigator';
 import { ChallengesList } from '../components/ChallengesList/ChallengesList';
 import { ChallengeFilteringOptions } from '../entities/challengeFilters';
 
-type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
+type ChallengesScreen2Props = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen2'>;
 
-const ChallengesScreen = ({ navigation }: ChallengesScreenProps) => {
+const ChallengesScreen2 = ({ navigation }: ChallengesScreen2Props) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -42,4 +42,4 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export default ChallengesScreen;
+export default ChallengesScreen2;

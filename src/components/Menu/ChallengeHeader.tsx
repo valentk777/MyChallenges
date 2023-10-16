@@ -54,15 +54,15 @@ const createStyles = (theme: AppTheme) => {
     },
     back: {
       left: 15,
-      top: StatusBar.currentHeight / 2
+      top: StatusBar.currentHeight / 2,
     },
     edit: {
       right: 65,
-      top: StatusBar.currentHeight / 2
+      top: StatusBar.currentHeight / 2,
     },
     trash: {
       right: 15,
-      top: StatusBar.currentHeight / 2
+      top: StatusBar.currentHeight / 2,
     },
   });
 

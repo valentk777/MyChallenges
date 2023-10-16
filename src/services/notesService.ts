@@ -124,6 +124,7 @@ const createNewNote = (
   startDate: Date,
   endDate: Date,
   color: string,
+  isFullDayEvent: boolean,
 ) => {
   if (!isNoteValid(title, summary, color)) {
     return null;
@@ -141,17 +142,18 @@ const createNewNote = (
   noteCandidate.timeCreated = currentTime;
   noteCandidate.lastTimeUpdated = currentTime;
   noteCandidate.color = color;
+  noteCandidate.isFullDayEvent = isFullDayEvent;
 
-  const start = timeService2.getLocalDayStringFromDate(startDate);
-  const end = timeService2.getLocalDayStringFromDate(endDate);
+  // const start = timeService2.getLocalDayStringFromDate(startDate);
+  // const end = timeService2.getLocalDayStringFromDate(endDate);
 
-  noteCandidate.isOneDayEvent =
-    start === end ||
-    (timeService2.dateToLocalTimeString(endDate) == '00:00' &&
-      start ===
-        timeService2.getLocalDayStringFromDate(
-          timeService2.addMinutes(endDate, -1),
-        ));
+  // noteCandidate.isOneDayEvent =
+  //   start === end ||
+  //   (timeService2.dateToLocalTimeString(endDate) == '00:00' &&
+  //     start ===
+  //       timeService2.getLocalDayStringFromDate(
+  //         timeService2.addMinutes(endDate, -1),
+  //       ));
 
   return noteCandidate;
 };

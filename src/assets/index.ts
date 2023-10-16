@@ -23,6 +23,7 @@ export const icons = {
   'light-mode.png': require('./icons/light-mode.png'),
   'night-mode.png': require('./icons/night-mode.png'),
   'halloween.png': require('./icons/halloween.png'),
+  'today-calendar.png': require('./icons/today-calendar.png'),
 }
 
 export const images = {

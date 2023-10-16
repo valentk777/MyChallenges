@@ -9,6 +9,8 @@ import notesService from "../../services/notesService";
 import { useTranslation } from "react-i18next";
 import { CircleButton } from "../ButtonWrapper/CircleButton";
 import { icons } from "../../assets";
+import CheckBox from 'react-native-check-box'
+import timeService2 from "../../services/timeService2";
 
 interface CalendarEventModalProps {
   onBack: () => void;
@@ -18,6 +20,7 @@ interface CalendarEventModalProps {
   initialStartTime: Date;
   initialEndTime: Date;
 }
+        // full day event should be 00:00:00
 
 const CalendarEventModal = (props: CalendarEventModalProps) => {
   const { theme } = useTheme();
@@ -31,10 +34,18 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
   const [startDate, setStartDate] = useState(isCreate ? initialStartTime : new Date(oldNote.startTime));
   const [endDate, setEndDate] = useState(isCreate ? initialEndTime : new Date(oldNote.endTime));
   const [summary, setSummary] = useState(isCreate ? "" : oldNote.summary);
+  const [isFullDayEvent, setIsFullDayEvent] = useState(isCreate ? initialStartTime ==  initialEndTime : oldNote.isFullDayEvent);
+
   const { t } = useTranslation('status-calendar-screen')
 
   const onLocalSave = () => {
-    let note = notesService.createNewNote(title, summary, startDate, endDate, "");
+    let note = null as Note | null;
+
+    if (isFullDayEvent) {
+      note = notesService.createNewNote(title, summary, timeService2.setUtcTimeToDate(startDate, 0, 0), timeService2.setUtcTimeToDate(endDate, 0, 0), "", isFullDayEvent);
+    } else{
+      note = notesService.createNewNote(title, summary, startDate, endDate, "", isFullDayEvent);
+    }
 
     if (note == null) {
       return;
@@ -87,7 +98,16 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
           onSetEndDate={setEndDate}
           initialStartDate={startDate}
           initialEndDate={endDate}
+          disabled={isFullDayEvent}
         />
+      <CheckBox
+          onClick={()=>{setIsFullDayEvent(!isFullDayEvent)}}
+          isChecked={isFullDayEvent}
+          checkBoxColor={theme.colors.primary}
+          ri={theme.colors.primary}
+          rightTextStyle={styles.checkBoxText}
+          rightText={"Is full day event?"}
+      />
       </View>
       <View style={styles.summaryArea}>
         <TextInput
@@ -176,17 +196,21 @@ const createStyles = (theme: AppTheme) => {
       paddingLeft: 10,
     },
     timePicker: {
-      flex: 2,
+      flex: 3,
       justifyContent: 'space-around',
       paddingLeft: 10,
       marginBottom: 20,
+    },
+    checkBoxText: {
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.primary,
     },
     summaryArea: {
       flex: 3,
     },
     summary: {
       borderTopWidth: 1,
-      fontFamily: theme.fonts.medium,
+      fontFamily: theme.fonts.regular,
       color: theme.colors.secondary,
       borderColor: theme.colors.canvasInverted,
       paddingLeft: 10,

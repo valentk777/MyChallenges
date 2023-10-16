@@ -41,6 +41,7 @@ const createStyles = (theme: AppTheme) => {
     image: {
       width: theme.sizes.large,
       height: theme.sizes.large,
+      tintColor: theme.colors.primary,
     }
   });
 
