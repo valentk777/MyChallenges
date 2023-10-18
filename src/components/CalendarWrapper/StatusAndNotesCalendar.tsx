@@ -47,8 +47,13 @@ const StatusAndNotesCalendar = () => {
         note.color = theme.colors.tertiary;
 
         // TODO: think about splitting them per day instead of creating one visual event.
+        // return calendarEventService.noteToEvents(note);
         return [calendarEventService.noteToEvent(note)];
       });
+
+      console.log(notes.length);
+      console.log(events.length);
+      console.log(events);
 
       setEvents(events);
     });
@@ -136,7 +141,6 @@ const StatusAndNotesCalendar = () => {
     if (isMoreEventsModalVisible) {
 
       const updatedNotes = oneDayEvents.filter(e => e.id !== note.id);
-      // updatedNotes = updatedNotes.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
 
       setOneDayEvents(updatedNotes);
     }
@@ -342,7 +346,8 @@ const createStyles = (theme: AppTheme) => {
     },
     calendarCellStyle: {
       // backgroundColor: theme.colors.canvas,
-      // borderRadius: 3,
+      // borderCurve: 50,
+      // borderRadius: 5,
       borderColor: theme.colors.primary,
     },
     calendarCellTextStyle: {

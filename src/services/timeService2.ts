@@ -74,8 +74,18 @@ const getLocalDayStringFromDate = (date: Date): string => {
 // new day with 00:00:00 time
 const getNextDayDate = (date: Date): Date => {
   const nextDay = new Date(date);
+
   nextDay.setDate(nextDay.getDate() + 1);
   nextDay.setHours(0, 0, 0, 0);
+
+  return nextDay;
+};
+
+const getNextUtcDayDate = (date: Date): Date => {
+  const nextDay = new Date(date);
+
+  nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+  nextDay.setUTCHours(0, 0, 0, 0);
 
   return nextDay;
 };
@@ -205,6 +215,7 @@ const timeService2 = {
   addMinutes,
   getLocalDayStringFromDate,
   getNextDayDate,
+  getNextUtcDayDate,
 };
 
 export default timeService2;

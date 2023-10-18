@@ -45,6 +45,7 @@ const TimePicker = (props: TimePickerProps) => {
       setStartDate(newDate);
       setEndDate(newDate);
       setIsStartModalVisible(false);
+      
       return;
     }
 
@@ -154,9 +155,8 @@ const TimePicker = (props: TimePickerProps) => {
               onValueChange={handleStartTimeChange}
               mode={Picker.MODE_DROPDOWN}
               numberOfLines={5}
-              enabled={!disabled}
               dropdownIconColor={theme.colors.tertiary}
-              itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+              itemStyle={styles.picker}
             >
               {(disabled ? ["00:00"] : generateTime(0, 0)).map((time) => (
                 <Picker.Item
@@ -172,11 +172,6 @@ const TimePicker = (props: TimePickerProps) => {
   );
 
   const renderEndTimeStampAndTimeContainer = () => {
-
-    if (disabled) {
-      return (<View />);
-    }
-
     return (
       <View style={styles.dateAndTimeSection}>
         <PickerCalendar
@@ -190,31 +185,32 @@ const TimePicker = (props: TimePickerProps) => {
           <TouchableOpacity
             onPress={() => setIsEndModalVisible(true)}
             style={styles.textButton}
-            disabled={disabled}
           >
-            <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
+            <Text style={styles.dateText}>
               {tTime(endDate.toISOString(), 'EEEE, LLLL dd')}
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.pickerArea}>
-          <Picker
-            selectedValue={timeService2.dateToLocalTimeString(endDate)}
-            onValueChange={handleEndTimeChange}
-            mode={Picker.MODE_DROPDOWN}
-            numberOfLines={5}
-            enabled={!disabled}
-            itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
-          >
-            {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
-              <Picker.Item
-                label={time}
-                value={time}
-                key={time}
-              />
-            ))}
-          </Picker>
-        </View>
+        {
+          disabled ? (<View />) : (
+            <View style={styles.pickerArea}>
+              <Picker
+                selectedValue={timeService2.dateToLocalTimeString(endDate)}
+                onValueChange={handleEndTimeChange}
+                mode={Picker.MODE_DROPDOWN}
+                numberOfLines={5}
+                itemStyle={styles.picker}
+              >
+                {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
+                  <Picker.Item
+                    label={time}
+                    value={time}
+                    key={time}
+                  />
+                ))}
+              </Picker>
+            </View>
+          )}
       </View>
     )
   };
@@ -247,7 +243,7 @@ const createStyles = (theme: AppTheme) => {
     dateText: {
       fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
-      fontSize: 15,
+      fontSize: 13,
     },
     pickerArea: {
       flex: 2,
@@ -258,7 +254,7 @@ const createStyles = (theme: AppTheme) => {
       fontFamily: theme.fonts.regular,
       color: theme.colors.primary,
       backgroundColor: theme.colors.canvas,
-      fontSize: 20,
+      fontSize: 13,
     }
   });
 
