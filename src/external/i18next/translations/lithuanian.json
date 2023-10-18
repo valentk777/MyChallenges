@@ -54,6 +54,8 @@
     "modal-title-placeholder": "Pridėti pavadinimą...",
     "modal-summary-placeholder": "Pridėti santrauką...",
     "checkbox": "Ar tai yra visos dienos įvykis?",
+    "full-day-event": "Visos dienos įvykis",
+    "more-events": "+{moreCount} daugiau",
     "save": "Išsaugoti"
   }
 }

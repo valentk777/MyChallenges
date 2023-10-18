@@ -17,6 +17,8 @@ import { hourPickerLocales } from '../../external/i18next/translations/hourPicke
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
 import MoreEventsModal from './MoreEventsModal';
 
+const today = new Date();
+
 const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -24,14 +26,16 @@ const StatusAndNotesCalendar = () => {
   const { currentLanguage } = useTranslations();
   const window = useWindowDimensions();
 
-  const [mode, setMode] = useState<Mode>('month')
-  const [events, setEvents] = useState<CustomCalendarEvent[]>([])
-  const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
-  const [currentDate, setCurrentDate] = useState(new Date());
   const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
   const [isMoreEventsModalVisible, setIsMoreEventsModalVisible] = useState(false);
-  const [initialStartDate, setInitialStartDate] = useState(new Date());
-  const [initialEndDate, setInitialEndDate] = useState(new Date());
+
+  const [mode, setMode] = useState<Mode>('month')
+  const [currentDate, setCurrentDate] = useState(today);
+  const [events, setEvents] = useState<CustomCalendarEvent[]>([])
+  const [initialStartDate, setInitialStartDate] = useState(today);
+  const [initialEndDate, setInitialEndDate] = useState(today);
+
+  const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
 
   const { t } = useTranslation();
@@ -43,12 +47,13 @@ const StatusAndNotesCalendar = () => {
       const events = notes.flatMap(note => {
         note.color = theme.colors.tertiary;
 
+        // TODO: think about splitting them per day instead of creating one visual event.
         return [calendarEventService.noteToEvent(note)];
       });
 
       setEvents(events);
     });
-  }, [isAddOrUpdateModalVisible, theme]);
+  }, [isAddOrUpdateModalVisible, theme, mode]);
 
   const onPressEvent = useCallback((event: CustomCalendarEvent) => {
     console.log(event);
@@ -83,8 +88,10 @@ const StatusAndNotesCalendar = () => {
     }, [events, setEvents])
 
   const onMoreEventsPress = useCallback((moreEvents: CustomCalendarEvent[]) => {
+    const sortedEvents = [...moreEvents].sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
+
     setIsMoreEventsModalVisible(true);
-    setOneDayEvents(moreEvents);
+    setOneDayEvents(sortedEvents);
   }, [events, setEvents])
 
   const closeAddOrUpdateModalWithStateCleanUp = () => {
@@ -100,6 +107,8 @@ const StatusAndNotesCalendar = () => {
   const saveNoteChanges = async (note: Note) => {
     const isAddNewNote = selectedNote == null;
 
+    console.log(isAddNewNote);
+
     if (isAddNewNote) {
       await notesService.storeNote(note);
     }
@@ -108,9 +117,10 @@ const StatusAndNotesCalendar = () => {
     }
 
     if (isMoreEventsModalVisible) {
+
       const leftOneDayEvents = oneDayEvents.filter(e => e.id !== note.id);
-      const updatedNotes = [...leftOneDayEvents, calendarEventService.noteToEvent(note)];
-      updatedNotes.sort(note => note.timeCreated.getTime())
+      let updatedNotes = [...leftOneDayEvents, calendarEventService.noteToEvent(note)];
+      updatedNotes = updatedNotes.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
 
       setOneDayEvents(updatedNotes);
     }
@@ -121,6 +131,14 @@ const StatusAndNotesCalendar = () => {
   const updateNote = async (note: Note) => {
     await notesService.removeNote(note.id);
     await notesService.storeNote(note);
+
+    if (isMoreEventsModalVisible) {
+
+      const updatedNotes = oneDayEvents.filter(e => e.id !== note.id);
+      // updatedNotes = updatedNotes.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
+
+      setOneDayEvents(updatedNotes);
+    }
 
     closeAddOrUpdateModalWithStateCleanUp();
   }
@@ -148,12 +166,22 @@ const StatusAndNotesCalendar = () => {
     </View>
   );
 
+  const onDayView = () => {
+    setMode('day');
+    setCurrentDate(today);
+  }
+
+  const onMonthView = () => {
+    setMode('month');
+    setCurrentDate(today);
+  }
+
   const renderWeekHeader = () => (
     <View style={styles.headerContainer}>
       <View style={styles.buttonRow}>
         <CircleButton
           imgUrl={icons['calendar.png']}
-          onPress={() => setMode('month')}
+          onPress={onMonthView}
           style={[styles.month, theme.shadows.dark]}
         />
         <View style={styles.montTitleArea}>
@@ -163,7 +191,7 @@ const StatusAndNotesCalendar = () => {
         </View>
         <CircleButton
           imgUrl={icons['today-calendar.png']}
-          onPress={() => setMode('day')}
+          onPress={onDayView}
           style={[styles.today, theme.shadows.dark]}
         />
         {/* day, 3days, week, month */}
@@ -177,7 +205,7 @@ const StatusAndNotesCalendar = () => {
         <View style={styles.buttonRow}>
           <CircleButton
             imgUrl={icons['calendar.png']}
-            onPress={() => setMode('month')}
+            onPress={onMonthView}
             style={[styles.month, theme.shadows.dark]}
           />
           <View style={styles.montTitleArea}>
@@ -187,7 +215,7 @@ const StatusAndNotesCalendar = () => {
           </View>
           <CircleButton
             imgUrl={icons['today-calendar.png']}
-            onPress={() => setMode('day')}
+            onPress={onDayView}
             style={[styles.today, theme.shadows.dark]}
           />
         </View>
@@ -203,28 +231,29 @@ const StatusAndNotesCalendar = () => {
   const renderCalendar = () => (
     <View style={styles.calendarContainer}>
       <Calendar
+        date={currentDate}
         events={events}
-        height={window.height - 80} // hight of header.
+        height={window.height - 80} // hight of header
         locale={currentLanguage}
         swipeEnabled={true}
-        showTime={true} // rodyti ar nerodyti laika ant evento
+        showTime={true}
         showAllDayEventCell={true}
-        showAdjacentMonths={false} // ar rodyti kito menesio diens menesio viewe
-        sortedMonthView={false} // galbut ir false gali buti, nzn
+        showAdjacentMonths={false}
+        sortedMonthView={false}
         isEventOrderingEnabled={false}
         mode={mode}
-        moreLabel={t("+{moreCount} more")} // ka rasyt kai eventu per daug mont viewe
+        moreLabel={t("more-events")}
         onPressEvent={onPressEvent}
         onChangeDate={onChangeDate}
-        onPressCell={addEvent} // kai paspaudi tiesiog ant kalendoriaus ploto kur nera evento
+        onPressCell={addEvent}
         onPressMoreLabel={onMoreEventsPress}
-        // onLongPressCell={addLongEvent} // kai ilgai paspaudi tiesiog ant kalendoriaus ploto kur nera evento
+        // onLongPressCell={addLongEvent}
         renderHeader={renderWeekHeader}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
         calendarCellStyle={styles.calendarCellStyle}
         calendarCellTextStyle={styles.calendarCellTextStyle}
-        eventCellStyle={styles.eventCellStyle}       // evento spalvos dalis
-        hourStyle={styles.hourStyle} // valandu rodymas
+        eventCellStyle={styles.eventCellStyle}
+        hourStyle={styles.hourStyle}
         // theme={darkTheme}
         // dayHeaderStyle
         // dayHeaderHighlightColor

@@ -27,13 +27,13 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
 
   const { onBack, onSave, onDelete, initialStartTime, initialEndTime, oldNote } = props;
 
-  const isCreate = oldNote === null;
+  const isNewNote = oldNote === null;
 
-  const [title, setTitle] = useState(isCreate ? "" : oldNote.title);
-  const [startDate, setStartDate] = useState(isCreate ? initialStartTime : new Date(oldNote.startTime));
-  const [endDate, setEndDate] = useState(isCreate ? initialEndTime : new Date(oldNote.endTime));
-  const [summary, setSummary] = useState(isCreate ? "" : oldNote.summary);
-  const [isFullDayEvent, setIsFullDayEvent] = useState(isCreate ? initialStartTime == initialEndTime : oldNote.isFullDayEvent);
+  const [title, setTitle] = useState(isNewNote ? "" : oldNote.title);
+  const [startDate, setStartDate] = useState(isNewNote ? initialStartTime : new Date(oldNote.startTime));
+  const [endDate, setEndDate] = useState(isNewNote ? initialEndTime : new Date(oldNote.endTime));
+  const [summary, setSummary] = useState(isNewNote ? "" : oldNote.summary);
+  const [isFullDayEvent, setIsFullDayEvent] = useState(isNewNote ? initialStartTime == initialEndTime : oldNote.isFullDayEvent);
 
   const { t } = useTranslation('status-calendar-screen')
 
@@ -50,15 +50,17 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
       return;
     }
 
-    if (!isCreate) {
+    if (!isNewNote) {
       note.id = oldNote.id;
+      note.timeCreated = oldNote.timeCreated;
+      note.color = oldNote.color;
     }
 
     onSave(note);
   }
 
   const onLocalDelete = () => {
-    if (isCreate) {
+    if (isNewNote) {
       onBack();
     } else {
       onDelete(oldNote);

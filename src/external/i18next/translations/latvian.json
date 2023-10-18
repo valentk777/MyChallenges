@@ -54,6 +54,8 @@
     "modal-title-placeholder": "Pievienot virsrakstu...",
     "modal-summary-placeholder": "Pievienot kopsavilkumu...",
     "checkbox": "Vai tas ir pilnas dienas pasākums?",
+    "full-day-event": "Pilnas dienas pasākums",
+    "more-events": "+{moreCount} vairāk",
     "save": "Saglabāt"
   }
 }

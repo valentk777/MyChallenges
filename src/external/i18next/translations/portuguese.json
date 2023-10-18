@@ -54,6 +54,8 @@
     "modal-title-placeholder": "Adicionar título...",
     "modal-summary-placeholder": "Adicionar resumo...",
     "checkbox": "É um evento de dia inteiro?",
+    "full-day-event": "Evento de dia inteiro",
+    "more-events": "+{moreCount} mais",
     "save": "Salvar"
   }
 }
