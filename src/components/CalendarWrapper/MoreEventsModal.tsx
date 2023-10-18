@@ -23,7 +23,7 @@ const MoreEventsModal = (props: MoreEventsModalProps) => {
 
   const window = useWindowDimensions();
 
-  const { t } = useTranslation();
+  const { t } = useTranslation('status-calendar-screen');
   const { tTime } = useTranslations();
 
   const renderItem = (event: CustomCalendarEvent, index: number) => {

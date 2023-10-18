@@ -23,7 +23,9 @@ const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { currentLanguage } = useTranslations();
+  const { t } = useTranslation('status-calendar-screen');
+  const { currentLanguage, tTime } = useTranslations();
+
   const window = useWindowDimensions();
 
   const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
@@ -37,9 +39,6 @@ const StatusAndNotesCalendar = () => {
 
   const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
-
-  const { t } = useTranslation();
-  const { tTime } = useTranslations();
 
   useEffect(() => {
     notesService.getAllNotes().then((notes) => {
@@ -56,8 +55,6 @@ const StatusAndNotesCalendar = () => {
   }, [isAddOrUpdateModalVisible, theme, mode]);
 
   const onPressEvent = useCallback((event: CustomCalendarEvent) => {
-    console.log(event);
-
     const selectedEvent = events.filter(_event => _event.id === event.id)[0];
 
     setSelectedNote(calendarEventService.eventToNote(selectedEvent));
@@ -107,8 +104,6 @@ const StatusAndNotesCalendar = () => {
   const saveNoteChanges = async (note: Note) => {
     const isAddNewNote = selectedNote == null;
 
-    console.log(isAddNewNote);
-
     if (isAddNewNote) {
       await notesService.storeNote(note);
     }
@@ -132,6 +127,12 @@ const StatusAndNotesCalendar = () => {
     await notesService.removeNote(note.id);
     await notesService.storeNote(note);
 
+    closeAddOrUpdateModalWithStateCleanUp();
+  }
+
+  const deleteNote = async (note: Note) => {
+    await notesService.removeNote(note.id);
+
     if (isMoreEventsModalVisible) {
 
       const updatedNotes = oneDayEvents.filter(e => e.id !== note.id);
@@ -139,12 +140,6 @@ const StatusAndNotesCalendar = () => {
 
       setOneDayEvents(updatedNotes);
     }
-
-    closeAddOrUpdateModalWithStateCleanUp();
-  }
-
-  const deleteNote = async (note: Note) => {
-    await notesService.removeNote(note.id);
 
     closeAddOrUpdateModalWithStateCleanUp();
   }
