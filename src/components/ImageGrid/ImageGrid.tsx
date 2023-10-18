@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
-import MyModal from '../Modals/MyModal';
+import BlackScreenModal from '../Modals/BlackScreenModal';
 
 interface ImageGalleryModalProps {
   visible: boolean;
@@ -35,7 +35,7 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
   };
 
   return (
-    <MyModal isModalVisible={visible} hideModal={() => onClose(currentIndexLocation)} >
+    <BlackScreenModal isModalVisible={visible} onHideModal={() => onClose(currentIndexLocation)} >
       <View style={styles.container}>
         <View style={styles.modalContent}>
           <FlatList
@@ -48,7 +48,7 @@ const ImageGalleryModal = ({ visible, imagesToDisplay, onClose, currentIndex }: 
           />
         </View>
       </View>
-    </MyModal>
+    </BlackScreenModal>
   );
 };
 

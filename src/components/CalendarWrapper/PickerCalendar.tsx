@@ -5,7 +5,7 @@ import timeService from "../../services/timeService";
 import { AppTheme } from "../../styles/themeModels";
 import { useTheme } from "../../hooks/useTheme";
 import { DateData, Theme } from "react-native-calendars/src/types";
-import MyModal from "../Modals/MyModal";
+import BlackScreenModal from "../Modals/BlackScreenModal";
 
 interface PickerCalendarProps {
   onDayPress: (day: DateData) => void;
@@ -26,7 +26,7 @@ const PickerCalendar = (props: PickerCalendarProps) => {
 
   return (
     <View style={styles.calendarContainer}>
-      <MyModal isModalVisible={isModalVisible} hideModal={hideCalendar} >
+      <BlackScreenModal isModalVisible={isModalVisible} onHideModal={hideCalendar} >
         <Calendar
           style={[styles.calendarStyles, { width: window.width * 0.8 }]}
           theme={styles.calendarTheme}
@@ -39,7 +39,7 @@ const PickerCalendar = (props: PickerCalendarProps) => {
             [currentDate]: { selected: true, disableTouchEvent: true, selectedColor: theme.colors.tertiary },
           }}
         />
-      </MyModal>
+      </BlackScreenModal>
     </View>
   )
 }

@@ -41,6 +41,13 @@ const TimePicker = (props: TimePickerProps) => {
   const onStartDayUpdated = (day: DateData) => {
     const newDate = timeService2.combineDateAndTime(new Date(day.dateString), startDate)
 
+    if (disabled) {
+      setStartDate(newDate);
+      setEndDate(newDate);
+      setIsStartModalVisible(false);
+      return;
+    }
+
     // this is also hours based validation
     if (newDate > endDate) {
       setEndDate(timeService2.addMinutes(newDate, STEP_NUMBER_OF_MINUTES));
@@ -133,77 +140,84 @@ const TimePicker = (props: TimePickerProps) => {
         <TouchableOpacity
           onPress={() => setIsStartModalVisible(true)}
           style={styles.textButton}
-          disabled={disabled}
         >
-          <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
+          <Text style={styles.dateText}>
             {tTime(startDate.toISOString(), 'EEEE, LLLL dd')}
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.pickerArea}>
-        <Picker
-          selectedValue={timeService2.dateToLocalTimeString(startDate)}
-          onValueChange={handleStartTimeChange}
-          mode={Picker.MODE_DROPDOWN}
-          numberOfLines={5}
-          enabled={!disabled}
-          dropdownIconColor={theme.colors.tertiary}
-          itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
-        >
-          {(disabled ? ["00:00"] : generateTime(0, 0)).map((time) => (
-            <Picker.Item
-            label={time}
-             value={time} 
-             key={time}
-            //  style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
-             />
-          ))}
-        </Picker>
-      </View>
+      {
+        disabled ? (<View />) : (
+          <View style={styles.pickerArea}>
+            <Picker
+              selectedValue={timeService2.dateToLocalTimeString(startDate)}
+              onValueChange={handleStartTimeChange}
+              mode={Picker.MODE_DROPDOWN}
+              numberOfLines={5}
+              enabled={!disabled}
+              dropdownIconColor={theme.colors.tertiary}
+              itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+            >
+              {(disabled ? ["00:00"] : generateTime(0, 0)).map((time) => (
+                <Picker.Item
+                  label={time}
+                  value={time}
+                  key={time}
+                />
+              ))}
+            </Picker>
+          </View>
+        )}
     </View>
   );
 
-  const renderEndTimeStampAndTimeContainer = () => (
-    <View style={styles.dateAndTimeSection}>
-      <PickerCalendar
-        onDayPress={onEndDayUpdated}
-        hideCalendar={() => setIsEndModalVisible(false)}
-        isModalVisible={isEndModalVisible}
-        currentDate={CalendarUtils.getCalendarDateString(endDate)}
-        minDate={CalendarUtils.getCalendarDateString(startDate)}
-      />
-      <View style={styles.textImput}>
-        <TouchableOpacity
-          onPress={() => setIsEndModalVisible(true)}
-          style={styles.textButton}
-          disabled={disabled}
-        >
-          <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
-            {tTime(endDate.toISOString(), 'EEEE, LLLL dd')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.pickerArea}>
-        <Picker
-          selectedValue={timeService2.dateToLocalTimeString(endDate)}
-          onValueChange={handleEndTimeChange}
-          mode={Picker.MODE_DROPDOWN}
-          numberOfLines={5}
-          enabled={!disabled}
-          itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
-        >
-          {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
-            <Picker.Item
-             label={time}
-              value={time} 
-              key={time}
-              // style={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+  const renderEndTimeStampAndTimeContainer = () => {
+
+    if (disabled) {
+      return (<View />);
+    }
+
+    return (
+      <View style={styles.dateAndTimeSection}>
+        <PickerCalendar
+          onDayPress={onEndDayUpdated}
+          hideCalendar={() => setIsEndModalVisible(false)}
+          isModalVisible={isEndModalVisible}
+          currentDate={CalendarUtils.getCalendarDateString(endDate)}
+          minDate={CalendarUtils.getCalendarDateString(startDate)}
+        />
+        <View style={styles.textImput}>
+          <TouchableOpacity
+            onPress={() => setIsEndModalVisible(true)}
+            style={styles.textButton}
+            disabled={disabled}
+          >
+            <Text style={[styles.dateText, disabled ? { color: theme.colors.canvasInverted } : {}]}>
+              {tTime(endDate.toISOString(), 'EEEE, LLLL dd')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.pickerArea}>
+          <Picker
+            selectedValue={timeService2.dateToLocalTimeString(endDate)}
+            onValueChange={handleEndTimeChange}
+            mode={Picker.MODE_DROPDOWN}
+            numberOfLines={5}
+            enabled={!disabled}
+            itemStyle={[styles.picker, disabled ? { color: theme.colors.canvasInverted } : {}]}
+          >
+            {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
+              <Picker.Item
+                label={time}
+                value={time}
+                key={time}
               />
-          ))}
-        </Picker>
+            ))}
+          </Picker>
+        </View>
       </View>
-    </View>
-  );
+    )
+  };
 
   return (
     <View style={styles.container}>

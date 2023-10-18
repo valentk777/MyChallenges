@@ -5,4 +5,5 @@ export interface CustomCalendarEvent extends ICalendarEventBase {
   summary: string;
   color: string;
   isFullDayEvent: boolean;
+  timeCreated: Date;
 }

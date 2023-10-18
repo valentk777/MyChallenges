@@ -1,73 +1,100 @@
-import groupBy from 'lodash/groupBy';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import {
-  ExpandableCalendar,
-  TimelineEventProps,
-  TimelineList,
-  CalendarProvider,
-  TimelineProps,
-  CalendarUtils,
-} from 'react-native-calendars';
-import timeService from '../../services/timeService';
-import MyModal from '../Modals/MyModal';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView } from 'react-native';
+import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
 import CalendarEventModal from './CalendarEventModal';
-import { Theme } from "react-native-calendars/src/types";
 import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
 import calendarEventService from '../../services/calendarEventService';
+import { Calendar, CalendarHeaderForMonthViewProps, DateRangeHandler, Mode } from 'react-native-big-calendar';
+import { useTranslations } from '../../hooks/useTranslations';
+import { CircleButton } from '../ButtonWrapper/CircleButton';
+import { icons } from '../../assets';
+import { useTranslation } from 'react-i18next';
+import { hourPickerLocales } from '../../external/i18next/translations/hourPickerLocales';
+import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
+import MoreEventsModal from './MoreEventsModal';
 
 const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const [userNotes, setUserNotes] = useState([] as Note[]);
-  const [eventsByDate, setEventsByDate] = useState({} as { [key: string]: TimelineEventProps[] });
-  const [currentDate] = useState(timeService.getCurrentDateString());
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { currentLanguage } = useTranslations();
+  const window = useWindowDimensions();
+
+  const [mode, setMode] = useState<Mode>('month')
+  const [events, setEvents] = useState<CustomCalendarEvent[]>([])
+  const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
+  const [isMoreEventsModalVisible, setIsMoreEventsModalVisible] = useState(false);
   const [initialStartDate, setInitialStartDate] = useState(new Date());
   const [initialEndDate, setInitialEndDate] = useState(new Date());
-  const [rerenderScreen, setRerenderScreen] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
+
+  const { t } = useTranslation();
+  const { tTime } = useTranslations();
 
   useEffect(() => {
     notesService.getAllNotes().then((notes) => {
-      // notes.map(note => {notesService.removeNote(note.id)});
-      setUserNotes(notes);
 
       const events = notes.flatMap(note => {
-        // temp solution
         note.color = theme.colors.tertiary;
-        return calendarEventService.noteToEvents(note);
+
+        return [calendarEventService.noteToEvent(note)];
       });
 
-      const _eventsByDate = groupBy(events, e => CalendarUtils.getCalendarDateString(e.start)) as {
-        [key: string]: TimelineEventProps[];
+      setEvents(events);
+    });
+  }, [isAddOrUpdateModalVisible, theme]);
+
+  const onPressEvent = useCallback((event: CustomCalendarEvent) => {
+    console.log(event);
+
+    const selectedEvent = events.filter(_event => _event.id === event.id)[0];
+
+    setSelectedNote(calendarEventService.eventToNote(selectedEvent));
+    setIsAddOrUpdateModalVisible(true);
+  }, [events])
+
+  const onChangeDate: DateRangeHandler = useCallback(([, end]) => {
+    setCurrentDate(end)
+  }, [])
+
+  const addEvent = useCallback(
+    (start: Date) => {
+
+      if (mode == 'month') {
+        const updateFullDayDate = timeService2.setUtcTimeToDate(start, 0, 0);
+
+        setInitialStartDate(updateFullDayDate);
+        setInitialEndDate(updateFullDayDate);
+      }
+      else {
+        const updateFullDayDate = timeService2.setLocalTimeToDate(start, start.getHours(), start.getMinutes());
+
+        setInitialStartDate(updateFullDayDate);
+        setInitialEndDate(timeService2.addMinutes(updateFullDayDate, 30));
       }
 
-      setEventsByDate(_eventsByDate);
-    });
-  }, [isModalVisible, rerenderScreen, theme]);
+      setIsAddOrUpdateModalVisible(true);
+    }, [events, setEvents])
 
-  const updateNote = async (note: Note) => {
-    await notesService.removeNote(note.id);
-    await notesService.storeNote(note);
+  const onMoreEventsPress = useCallback((moreEvents: CustomCalendarEvent[]) => {
+    setIsMoreEventsModalVisible(true);
+    setOneDayEvents(moreEvents);
+  }, [events, setEvents])
 
-    setRerenderScreen(!rerenderScreen);
-
-    closeModalWithStateCleanUp();
+  const closeAddOrUpdateModalWithStateCleanUp = () => {
+    setSelectedNote(null);
+    setIsAddOrUpdateModalVisible(false)
   }
 
-  const deleteNote = async (note: Note) => {
-    await notesService.removeNote(note.id);
-
-    // TODO: Think about more performant way to do that.
-    setRerenderScreen(!rerenderScreen);
-
-    closeModalWithStateCleanUp();
+  const closeMoreEventsModalWithStateCleanUp = () => {
+    setOneDayEvents([]);
+    setIsMoreEventsModalVisible(false)
   }
 
   const saveNoteChanges = async (note: Note) => {
@@ -80,120 +107,150 @@ const StatusAndNotesCalendar = () => {
       await updateNote(note);
     }
 
-    closeModalWithStateCleanUp();
+    if (isMoreEventsModalVisible) {
+      const leftOneDayEvents = oneDayEvents.filter(e => e.id !== note.id);
+      const updatedNotes = [...leftOneDayEvents, calendarEventService.noteToEvent(note)];
+      updatedNotes.sort(note => note.timeCreated.getTime())
+
+      setOneDayEvents(updatedNotes);
+    }
+
+    closeAddOrUpdateModalWithStateCleanUp();
   }
 
-  // const marked = {
-  //   // [`${getDate(-1)}`]: { marked: true },
-  //   // [`${getDate()}`]: { marked: true },
-  //   // [`${getDate(1)}`]: { marked: true },
-  //   // [`${getDate(2)}`]: { marked: true },
-  //   // [`${getDate(4)}`]: { marked: true },
-  //   [`${getDate()}`]: {
-  //     marked: true,
-  //     periods: [
-  //       {startingDay: true, endingDay: false, color: 'green'},
-  //       {startingDay: true, endingDay: false, color: 'orange'}
-  //     ]
-  //   },
-  //   [`${getDate(1)}`]: {
-  //     periods: [
-  //       {startingDay: false, endingDay: true, color: 'green'},
-  //       {startingDay: false, endingDay: false, color: 'orange'},
-  //       {startingDay: true, endingDay: false, color: 'pink'}
-  //     ]
-  //   },
-  //   [`${getDate(2)}`]: {
-  //     periods: [
-  //       {startingDay: true, endingDay: true, color: 'orange'},
-  //       // {color: 'transparent'},
-  //       {startingDay: false, endingDay: false, color: 'pink'}
-  //     ]
-  //   }
-  // };
+  const updateNote = async (note: Note) => {
+    await notesService.removeNote(note.id);
+    await notesService.storeNote(note);
 
-  // const onDateChanged = (date: string, source: string) => {
-  // };
-
-  // const onMonthChange = (month: any, updateSource: any) => {
-  // };
-
-  const createNewEvent: TimelineProps['onBackgroundLongPress'] = (_, timeObject) => {
-    const hourString = `${(timeObject.hour).toString().padStart(2, '0')}`;
-    const minutesString = `${timeObject.minutes.toString().padStart(2, '0')}`;
-    const eventDate = new Date(`${timeObject.date}T${hourString}:${minutesString}:00Z`);
-    const utcEventDate = timeService2.getUtcDateFromLocalDate(eventDate);
-
-    setInitialStartDate(utcEventDate);
-    setInitialEndDate(timeService2.addMinutes(utcEventDate, 30));
-    setIsModalVisible(true);
-  };
-
-  const onEventPress: TimelineProps['onEventPress'] = (event: TimelineEventProps) => {
-    const note = userNotes.filter(note => note.id === event.id)[0];
-
-    setSelectedNote(note);
-    setIsModalVisible(true);
-  };
-
-  const closeModalWithStateCleanUp = () => {
-    setSelectedNote(null);
-    setIsModalVisible(false)
+    closeAddOrUpdateModalWithStateCleanUp();
   }
 
-  const timelineProps: Partial<TimelineProps> = {
-    format24h: true,
-    onBackgroundLongPress: createNewEvent,
-    // onBackgroundLongPressOut: approveNewEvent,
-    onEventPress: onEventPress,
-    overlapEventsSpacing: 4,
-    rightEdgeSpacing: 24,
+  const deleteNote = async (note: Note) => {
+    await notesService.removeNote(note.id);
+
+    closeAddOrUpdateModalWithStateCleanUp();
+  }
+
+  const renderAddOrUpdateModal = () => (
+    <View style={styles.modalAddOrUpdateContainer}>
+      <BlackScreenModal isModalVisible={isAddOrUpdateModalVisible} onHideModal={closeAddOrUpdateModalWithStateCleanUp}>
+        <View style={styles.eventInputArea}>
+          <CalendarEventModal
+            onBack={closeAddOrUpdateModalWithStateCleanUp}
+            onSave={saveNoteChanges}
+            onDelete={deleteNote}
+            initialStartTime={initialStartDate}
+            initialEndTime={initialEndDate}
+            oldNote={selectedNote}
+          />
+        </View>
+      </BlackScreenModal>
+    </View>
+  );
+
+  const renderWeekHeader = () => (
+    <View style={styles.headerContainer}>
+      <View style={styles.buttonRow}>
+        <CircleButton
+          imgUrl={icons['calendar.png']}
+          onPress={() => setMode('month')}
+          style={[styles.month, theme.shadows.dark]}
+        />
+        <View style={styles.montTitleArea}>
+          <Text style={styles.montTitle}>
+            {tTime(currentDate.toISOString(), 'EEEE, LLLL dd yyyy')}
+          </Text>
+        </View>
+        <CircleButton
+          imgUrl={icons['today-calendar.png']}
+          onPress={() => setMode('day')}
+          style={[styles.today, theme.shadows.dark]}
+        />
+        {/* day, 3days, week, month */}
+      </View>
+    </View>
+  );
+
+  const renderMonthHeader = ({ locale }: CalendarHeaderForMonthViewProps) => {
+    return (
+      <View style={styles.headerContainer}>
+        <View style={styles.buttonRow}>
+          <CircleButton
+            imgUrl={icons['calendar.png']}
+            onPress={() => setMode('month')}
+            style={[styles.month, theme.shadows.dark]}
+          />
+          <View style={styles.montTitleArea}>
+            <Text style={styles.montTitle}>
+              {tTime(currentDate.toISOString(), 'yyyy MMMM')}
+            </Text>
+          </View>
+          <CircleButton
+            imgUrl={icons['today-calendar.png']}
+            onPress={() => setMode('day')}
+            style={[styles.today, theme.shadows.dark]}
+          />
+        </View>
+        <View style={styles.weekDaysRow}>
+          {[...hourPickerLocales[locale].dayNamesShort.slice(1, 7), hourPickerLocales[locale].dayNamesShort[0]].map((day, index) => (
+            <Text key={day} style={styles.dayNameShortText}>{t(day)}</Text>
+          ))}
+        </View>
+      </View>
+    )
   };
+
+  const renderCalendar = () => (
+    <View style={styles.calendarContainer}>
+      <Calendar
+        events={events}
+        height={window.height - 80} // hight of header.
+        locale={currentLanguage}
+        swipeEnabled={true}
+        showTime={true} // rodyti ar nerodyti laika ant evento
+        showAllDayEventCell={true}
+        showAdjacentMonths={false} // ar rodyti kito menesio diens menesio viewe
+        sortedMonthView={false} // galbut ir false gali buti, nzn
+        isEventOrderingEnabled={false}
+        mode={mode}
+        moreLabel={t("+{moreCount} more")} // ka rasyt kai eventu per daug mont viewe
+        onPressEvent={onPressEvent}
+        onChangeDate={onChangeDate}
+        onPressCell={addEvent} // kai paspaudi tiesiog ant kalendoriaus ploto kur nera evento
+        onPressMoreLabel={onMoreEventsPress}
+        // onLongPressCell={addLongEvent} // kai ilgai paspaudi tiesiog ant kalendoriaus ploto kur nera evento
+        renderHeader={renderWeekHeader}
+        renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
+        calendarCellStyle={styles.calendarCellStyle}
+        calendarCellTextStyle={styles.calendarCellTextStyle}
+        eventCellStyle={styles.eventCellStyle}       // evento spalvos dalis
+        hourStyle={styles.hourStyle} // valandu rodymas
+        // theme={darkTheme}
+        // dayHeaderStyle
+        // dayHeaderHighlightColor
+        // weekDayHeaderHighlightColor
+        // ampm={true} // ar rodyti 24 ar 12 val ant evento. tai manau, kad ant anglu reikia true
+        overlapOffset={8} // sitas rodo kiek atitraukt nuo krasto eventams kurie persidengia. reikia patobulint sita
+      // renderEvent={renderEvent} // how event shgould be rendered
+      // eventMinHeightForMonthView
+      // renderCustomDateForMonth={}
+      // disableMonthEventCellPress={true}
+      />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
-      <CalendarProvider
-        date={currentDate}
-        // onDateChanged={onDateChanged}
-        // onMonthChange={onMonthChange}
-        disabledOpacity={0}
-        numberOfDays={1}
-        style={styles.calendarContainer}
-        // theme={styles.calendarTheme}
-        showTodayButton={false}
-      >
-        <ExpandableCalendar
-          firstDay={1}
-          theme={styles.calendarTheme}
-          allowShadow={true}
-          showScrollIndicator={true}
-
-        // markingType={'multi-period'}
-        // leftArrowImageSource={require('../img/previous.png')}
-        // rightArrowImageSource={require('../img/next.png')}
-        // markedDates={marked} // todo: change to state data
+      <SafeAreaView>
+        <MoreEventsModal
+          data={oneDayEvents}
+          isModalVisible={isMoreEventsModalVisible}
+          onHideModal={closeMoreEventsModalWithStateCleanUp}
+          onItemPress={onPressEvent}
         />
-        <TimelineList
-          events={eventsByDate}
-          timelineProps={timelineProps}
-          showNowIndicator
-          scrollToNow
-        />
-      </CalendarProvider>
-      <View style={styles.modalContainer}>
-        <MyModal isModalVisible={isModalVisible} hideModal={closeModalWithStateCleanUp}>
-          <View style={styles.eventInputArea}>
-            <CalendarEventModal
-              onBack={closeModalWithStateCleanUp}
-              onSave={saveNoteChanges}
-              onDelete={deleteNote}
-              initialStartTime={initialStartDate}
-              initialEndTime={initialEndDate}
-              oldNote={selectedNote}
-            />
-          </View>
-        </MyModal>
-      </View>
+        {renderAddOrUpdateModal()}
+        {renderCalendar()}
+      </SafeAreaView>
     </View>
   );
 }
@@ -203,27 +260,153 @@ const createStyles = (theme: AppTheme) => {
     container: {
       flex: 1,
     },
-    calendarContainer: {
-      flex: 4,
+    headerContainer: {
+      height: 80,
+      backgroundColor: theme.colors.primary
     },
-    modalContainer: {
+    buttonRow: {
+      height: 55,
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    montTitleArea: {
+      justifyContent: 'center',
+      alignContent: 'center',
+    },
+    montTitle: {
+      fontFamily: theme.fonts.medium,
+      fontSize: 18,
+      color: theme.colors.tertiary,
+    },
+    today: {
+      right: 15,
+      top: 10,
+    },
+    month: {
+      left: 15,
+      top: 10,
+    },
+    weekDaysRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+    },
+    dayNameShortText: {
+      fontFamily: theme.fonts.medium,
+      fontSize: 14,
+      color: theme.colors.tertiary,
+    },
+    calendarContainer: {
+      // backgroundColor: theme.colors.canvasInverted
+      // flex: 1,
+    },
+    headerContentStyle: {
+      // flexDirection: 'row',
+      // justifyContent: 'center',
+      // alignItems: 'center',
+      // backgroundColor: 'green',
+      // fontFamily: theme.fonts.bold,
+      // fontSize: 18,
+      // color: theme.colors.secondary,
+    },
+    dayHeaderStyle: {
+      // marginLeft: 10,
+      // backgroundColor: '#f1f1f1',
+      // paddingVertical: 6,
+      // paddingHorizontal: 12,
+      // borderRadius: 12,
+    },
+    calendarCellStyle: {
+      // backgroundColor: theme.colors.canvas,
+      // borderRadius: 3,
+      borderColor: theme.colors.primary,
+    },
+    calendarCellTextStyle: {
+      // backgroundColor: theme.colors.canvas,
+      fontFamily: theme.fonts.medium,
+      // fontSize: 14,
+      color: theme.colors.primary,
+    },
+    eventCellStyle: {
+      // borderWidth: 1,
+      // borderColor: 'green',
+      backgroundColor: theme.colors.secondary,
+      // fontFamily: theme.fonts.medium,
+      // fontSize: 14,
+      // color: theme.colors.tertiary,
+      // padding: 0,
+      // margin: 0,
+    },
+    eventCellTextStyle: {
+      // borderWidth: 1,
+      // borderColor: 'green',
+      // backgroundColor: theme.colors.secondary,
+      fontFamily: theme.fonts.medium,
+      fontSize: 14,
+      color: theme.colors.tertiary,
+      // padding: 0,
+      // margin: 0,
+    },
+    hourStyle: {
+      // justifyContent: 'center',
+      // fontFamily: theme.fonts.medium,
+      // fontSize: 14,
+      // color: theme.colors.secondary,
+    },
+    buttonContainer: {
+      // backgroundColor: '#f1f1f1',
+      // borderRadius: 10,
+      // paddingHorizontal: 15,
+      // paddingVertical: 5,
+    },
+    buttonContainerActive: {
+      // borderBottomColor: 'blue',
+      // borderBottomWidth: 3,
+    },
+    // buttonRow: {
+    //   flexDirection: 'row',
+    //   justifyContent: 'space-between',
+    //   // padding: 10,
+    // },
+    headline: {
+      // fontSize: 16,
+    },
+    modalAddOrUpdateContainer: {
       flex: 1,
     },
-    calendarTheme: {
-      arrowColor: theme.colors.canvasInverted,
-      textDayFontFamily: theme.fonts.light,
-      textMonthFontFamily: theme.fonts.bold,
-      textDayHeaderFontFamily: theme.fonts.medium,
-      textDayColor: theme.colors.primary,
-      monthTextColor: theme.colors.primary,
-      indicatorColor: theme.colors.primary,
 
-      // todayBackgroundColor: theme.colors.primary,
-      // todayTextColor: theme.colors.primary,
-      // backgroundColor: theme.colors.secondary,
-      // calendarBackground: theme.colors.secondary,
+    // calendarTheme: {
+    //   palette: {
+    //     primary: {
+    //       main: '#4caf50',
+    //       contrastText: '#fff',
+    //     },
+    //   },
+    //   eventCellOverlappings: [
+    //     {
+    //       main: '#17651a',
+    //       contrastText: '#fff',
+    //     },
+    //     {
+    //       main: '#08540b',
+    //       contrastText: '#fff',
+    //     },
+    //   ],
 
-    } as Theme,
+    //   // arrowColor: theme.colors.canvasInverted,
+    //   // textDayFontFamily: theme.fonts.light,
+    //   // textMonthFontFamily: theme.fonts.bold,
+    //   // textDayHeaderFontFamily: theme.fonts.medium,
+    //   // textDayColor: theme.colors.primary,
+    //   // monthTextColor: theme.colors.primary,
+    //   // indicatorColor: theme.colors.primary,
+
+    //   // todayBackgroundColor: theme.colors.primary,
+    //   // todayTextColor: theme.colors.primary,
+    //   // backgroundColor: theme.colors.secondary,
+    //   // calendarBackground: theme.colors.secondary,
+
+    // } as DeepPartial<ThemeInterface>,
     eventInputArea: {
       top: 0,
       height: '50%',

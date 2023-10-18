@@ -152,7 +152,6 @@ const createStyles = (theme: AppTheme) => {
       height: '100%',
       borderBottomLeftRadius: 20,
       borderBottomRightRadius: 20,
-      // alignItems: 'center',
       backgroundColor: theme.colors.canvas,
     },
     headerContainer: {
@@ -162,12 +161,10 @@ const createStyles = (theme: AppTheme) => {
     back: {
       left: 15,
       top: 5,
-      // backgroundColor: theme.colors.tertiary
     },
     trash: {
       right: 15,
       top: 5,
-      // backgroundColor: theme.colors.tertiary
     },
     aligment: {
       flex: 10,

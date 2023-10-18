@@ -3,32 +3,30 @@ import { View, Modal, TouchableWithoutFeedback, StyleSheet, useWindowDimensions 
 import { AppTheme } from "../../styles/themeModels";
 import { useTheme } from "../../hooks/useTheme";
 
-interface MyModalProps {
+interface BlackScreenModalProps {
   children?: React.ReactNode | undefined;
   isModalVisible: boolean;
-  hideModal: () => void;
+  onHideModal: () => void;
 }
 
-const MyModal = (props: MyModalProps) => {
+const BlackScreenModal = (props: BlackScreenModalProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const window = useWindowDimensions();
 
-  const { children, isModalVisible, hideModal } = props;
+  const { children, isModalVisible, onHideModal } = props;
 
   return (
     <Modal
       transparent={true}
       animationType='fade'
       visible={isModalVisible}
-      onRequestClose={hideModal}
+      onRequestClose={onHideModal}
     >
-      <TouchableWithoutFeedback onPress={hideModal}>
+      <TouchableWithoutFeedback onPress={onHideModal}>
         <View style={{ ...styles.modalBackground, height: window.height }}>
-        <TouchableWithoutFeedback onPress={() => {}}>
-        {/* <View style={styles.modalContainer}> */}
+          <TouchableWithoutFeedback onPress={() => { }}>
             {children}
-            {/* </View> */}
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
@@ -44,24 +42,9 @@ const createStyles = (theme: AppTheme) => {
       alignItems: 'center',
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
-    modalContainer: {
-      // backgroundColor: 'blue',
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      // width: '100%',
-      // width: '100%',
-      // height:'100%',
-      // width: 300,
-      // height: 200,
-      // backgroundColor: 'white',
-      // borderRadius: 10,
-      // padding: 20,
-      // justifyContent: 'center',
-      // alignItems: 'center',
-    },
   });
 
   return styles;
 };
 
-export default MyModal;
+export default BlackScreenModal;

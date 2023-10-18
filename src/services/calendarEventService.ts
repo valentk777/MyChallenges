@@ -10,6 +10,7 @@ const noteToEvent = (note: Note): CustomCalendarEvent => {
     summary: note.summary,
     color: note.color,
     isFullDayEvent: note.isFullDayEvent,
+    timeCreated: new Date(note.timeCreated),
   } as CustomCalendarEvent;
 };
 
@@ -22,6 +23,7 @@ const eventToNote = (event: CustomCalendarEvent): Note => {
     summary: event.summary,
     color: event.color,
     isFullDayEvent: event.isFullDayEvent,
+    timeCreated: event.timeCreated.getTime(),
   } as Note;
 };
 
