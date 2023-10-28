@@ -51,11 +51,6 @@ const StatusAndNotesCalendar = () => {
         return [calendarEventService.noteToEvent(note)];
       });
 
-      console.log(notes.length);
-      console.log(events.length);
-      console.log(notes);
-      console.log(events);
-
       setEvents(events);
     });
   }, [isAddOrUpdateModalVisible, theme, mode]);
