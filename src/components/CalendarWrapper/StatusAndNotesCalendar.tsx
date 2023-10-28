@@ -53,6 +53,7 @@ const StatusAndNotesCalendar = () => {
 
       console.log(notes.length);
       console.log(events.length);
+      console.log(notes);
       console.log(events);
 
       setEvents(events);
@@ -212,11 +213,11 @@ const StatusAndNotesCalendar = () => {
               {tTime(currentDate.toISOString(), 'yyyy MMMM')}
             </Text>
           </View>
-          <CircleButton
+          {/* <CircleButton
             imgUrl={icons['today-calendar.png']}
             onPress={onDayView}
             style={[styles.today, theme.shadows.dark]}
-          />
+          /> */}
         </View>
         <View style={styles.weekDaysRow}>
           {[...hourPickerLocales[locale].dayNamesShort.slice(1, 7), hourPickerLocales[locale].dayNamesShort[0]].map((day, index) => (
@@ -238,7 +239,7 @@ const StatusAndNotesCalendar = () => {
         showTime={true}
         showAllDayEventCell={true}
         showAdjacentMonths={false}
-        sortedMonthView={false}
+        sortedMonthView={true}
         isEventOrderingEnabled={false}
         mode={mode}
         moreLabel={t("more-events")}
@@ -246,19 +247,22 @@ const StatusAndNotesCalendar = () => {
         onChangeDate={onChangeDate}
         onPressCell={addEvent}
         onPressMoreLabel={onMoreEventsPress}
-        // onLongPressCell={addLongEvent}
         renderHeader={renderWeekHeader}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
         calendarCellStyle={styles.calendarCellStyle}
         calendarCellTextStyle={styles.calendarCellTextStyle}
         eventCellStyle={styles.eventCellStyle}
         hourStyle={styles.hourStyle}
+        overlapOffset={8} // sitas rodo kiek atitraukt nuo krasto eventams kurie persidengia. reikia patobulint sita
+
+
+        // onLongPressCell={addLongEvent}
+
         // theme={darkTheme}
         // dayHeaderStyle
         // dayHeaderHighlightColor
         // weekDayHeaderHighlightColor
         // ampm={true} // ar rodyti 24 ar 12 val ant evento. tai manau, kad ant anglu reikia true
-        overlapOffset={8} // sitas rodo kiek atitraukt nuo krasto eventams kurie persidengia. reikia patobulint sita
       // renderEvent={renderEvent} // how event shgould be rendered
       // eventMinHeightForMonthView
       // renderCustomDateForMonth={}
