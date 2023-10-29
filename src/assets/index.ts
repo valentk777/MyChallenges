@@ -31,5 +31,5 @@ export const images = {
 }
 
 export const logo = {
-  'logo_500x500.png': require('./logo/logo_500x500.png'),
+  'app_logo.png': require('./logo/logo-v2-512.jpg'),
 }

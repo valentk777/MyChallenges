@@ -90,6 +90,10 @@ const getNextUtcDayDate = (date: Date): Date => {
   return nextDay;
 };
 
+const isSameDay = (date1: Date, date2: Date): boolean => {
+  return setUtcTimeToDate(date1, 0, 0).getTime() == setUtcTimeToDate(date2, 0, 0).getTime()
+}
+
 // const getLocalCurrentTimestamp = (): number => {
 //   return Date.now();
 // };
@@ -216,6 +220,7 @@ const timeService2 = {
   getLocalDayStringFromDate,
   getNextDayDate,
   getNextUtcDayDate,
+  isSameDay,
 };
 
 export default timeService2;

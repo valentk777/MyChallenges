@@ -55,10 +55,10 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   }, [fadeAnim]);
 
   const renderHeaderContainer = () => (
-    <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.headerContainer, theme.shadows.primary, { opacity: fadeAnim }]}>
       <Image
         style={styles.headerImage}
-        source={logo['logo_500x500.png']}
+        source={logo['app_logo.png']}
       />
       <Text style={styles.titleTextStyle}>Welcome Back!</Text>
       {/* <View style={styles.descriptionContainer}>
@@ -189,6 +189,7 @@ const createStyles = (theme: AppTheme) => {
       width: '40%',
       height: undefined,
       aspectRatio: 1,
+      borderRadius: 20,
     },
     titleTextStyle: {
       fontFamily: theme.fonts.bold,

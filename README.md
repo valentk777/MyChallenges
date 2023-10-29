@@ -10,7 +10,7 @@
 
 ## What is this?
 <div align="left">
-  <img alt='Logo' src='https://github.com/valentk777/MyChallenges/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/logo_500x500.png' height="100"  />
+  <img alt='Logo' src='https://github.com/valentk777/MyChallenges/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/logo-v2.png' height="100"  />
   This is a mobile app with React Native for creating and tracking your challenges.
 </div>
 

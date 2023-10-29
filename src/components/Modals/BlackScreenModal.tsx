@@ -7,6 +7,7 @@ interface BlackScreenModalProps {
   children?: React.ReactNode | undefined;
   isModalVisible: boolean;
   onHideModal: () => void;
+  onBackgroundPress?: () => void;
 }
 
 const BlackScreenModal = (props: BlackScreenModalProps) => {
@@ -14,7 +15,7 @@ const BlackScreenModal = (props: BlackScreenModalProps) => {
   const styles = createStyles(theme);
   const window = useWindowDimensions();
 
-  const { children, isModalVisible, onHideModal } = props;
+  const { children, isModalVisible, onHideModal, onBackgroundPress } = props;
 
   return (
     <Modal
@@ -25,7 +26,7 @@ const BlackScreenModal = (props: BlackScreenModalProps) => {
     >
       <TouchableWithoutFeedback onPress={onHideModal}>
         <View style={{ ...styles.modalBackground, height: window.height }}>
-          <TouchableWithoutFeedback onPress={() => { }}>
+          <TouchableWithoutFeedback onPress={onBackgroundPress}>
             {children}
           </TouchableWithoutFeedback>
         </View>

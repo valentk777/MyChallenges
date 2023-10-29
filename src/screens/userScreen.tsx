@@ -59,7 +59,7 @@ export const UserScreen = () => {
 
   const renderHeaderContainer = () => (
     <View style={styles.headerContainer}>
-      <Image style={styles.logo} source={logo['logo_500x500.png']} />
+      <Image style={styles.logo} source={logo['app_logo.png']} />
       <CircleButton
         imgUrl={icons["logout.png"]}
         onPress={() => signOut(user.id)}
@@ -211,6 +211,7 @@ const createStyles = (theme: AppTheme) => {
       height: 55,
       width: undefined,
       aspectRatio: 1,
+      borderRadius: 500,
     },
     titleTextStyle: {
       fontFamily: theme.fonts.bold,

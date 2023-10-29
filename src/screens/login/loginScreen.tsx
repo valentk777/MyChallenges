@@ -24,10 +24,10 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   }, [fadeAnim]);
 
   const renderHeaderContainer = () => (
-    <Animated.View style={[styles.headerContainer, { opacity: fadeAnim }]}>
+    <Animated.View style={[styles.headerContainer, theme.shadows.primary, { opacity: fadeAnim }]}>
       <Image
         style={styles.image}
-        source={logo['logo_500x500.png']}
+        source={logo['app_logo.png']}
       />
       <Text style={styles.text}>My Challenges</Text>
     </Animated.View>
@@ -87,6 +87,7 @@ const createStyles = (theme: AppTheme) => {
       width: '40%',
       height: undefined,
       aspectRatio: 1,
+      borderRadius: 20,
     },
     text: {
       fontSize: 20,

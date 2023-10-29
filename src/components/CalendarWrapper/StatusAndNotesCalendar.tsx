@@ -37,6 +37,7 @@ const StatusAndNotesCalendar = () => {
   const [initialStartDate, setInitialStartDate] = useState(today);
   const [initialEndDate, setInitialEndDate] = useState(today);
 
+  const [oneDayEventsDate, setOneDayEventsDate] = useState<Date | null>(null)
   const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
 
@@ -45,9 +46,6 @@ const StatusAndNotesCalendar = () => {
 
       const events = notes.flatMap(note => {
         note.color = theme.colors.tertiary;
-
-        // TODO: think about splitting them per day instead of creating one visual event.
-        // return calendarEventService.noteToEvents(note);
         return [calendarEventService.noteToEvent(note)];
       });
 
@@ -55,14 +53,14 @@ const StatusAndNotesCalendar = () => {
     });
   }, [isAddOrUpdateModalVisible, theme, mode]);
 
-  const onPressEvent = useCallback((event: CustomCalendarEvent) => {
+  const editEvent = useCallback((event: CustomCalendarEvent) => {
     const selectedEvent = events.filter(_event => _event.id === event.id)[0];
 
     setSelectedNote(calendarEventService.eventToNote(selectedEvent));
     setIsAddOrUpdateModalVisible(true);
   }, [events])
 
-  const onChangeDate: DateRangeHandler = useCallback(([, end]) => {
+  const updateDate: DateRangeHandler = useCallback(([, end]) => {
     setCurrentDate(end)
   }, [])
 
@@ -85,11 +83,46 @@ const StatusAndNotesCalendar = () => {
       setIsAddOrUpdateModalVisible(true);
     }, [events, setEvents])
 
-  const onMoreEventsPress = useCallback((moreEvents: CustomCalendarEvent[]) => {
+
+  const findIntersectDate = (moreEvents: CustomCalendarEvent[]) => {
+    for (const element of moreEvents) {
+
+      if (element.isFullDayEvent) {
+        return element.start;
+      }
+
+      console.log(timeService2.setUtcTimeToDate(element.start, 0, 0));
+
+      if (timeService2.isSameDay(element.start, element.end)) {
+        return timeService2.setUtcTimeToDate(element.start, 0, 0);
+      }
+    }
+
+    // if we have case that all days is in the middle, then we have a bug.
+    
+    return new Date();
+  }
+
+  const displayMoreEventsModal = useCallback((moreEvents: CustomCalendarEvent[]) => {
     const sortedEvents = [...moreEvents].sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
+    const date = findIntersectDate(sortedEvents);
 
     setIsMoreEventsModalVisible(true);
     setOneDayEvents(sortedEvents);
+    setOneDayEventsDate(date);
+  }, [events, setEvents])
+
+  const displayMoreEventsModalOnLongPress = useCallback((date: Date) => {
+    const dateDayString = timeService2.getLocalDayStringFromDate(date);
+    const onlyThisDayEvents = [...events.filter(x =>
+      timeService2.getLocalDayStringFromDate(x.start) <= dateDayString
+      && dateDayString <= timeService2.getLocalDayStringFromDate(x.end))
+    ];
+    const sortedEvents = onlyThisDayEvents.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
+
+    setIsMoreEventsModalVisible(true);
+    setOneDayEvents(sortedEvents);
+    setOneDayEventsDate(date);
   }, [events, setEvents])
 
   const closeAddOrUpdateModalWithStateCleanUp = () => {
@@ -100,6 +133,7 @@ const StatusAndNotesCalendar = () => {
   const closeMoreEventsModalWithStateCleanUp = () => {
     setOneDayEvents([]);
     setIsMoreEventsModalVisible(false)
+    setOneDayEventsDate(null);
   }
 
   const saveNoteChanges = async (note: Note) => {
@@ -171,35 +205,12 @@ const StatusAndNotesCalendar = () => {
     setCurrentDate(today);
   }
 
-  const renderWeekHeader = () => (
-    <View style={styles.headerContainer}>
-      <View style={styles.buttonRow}>
-        <CircleButton
-          imgUrl={icons['calendar.png']}
-          onPress={onMonthView}
-          style={[styles.month, theme.shadows.dark]}
-        />
-        <View style={styles.montTitleArea}>
-          <Text style={styles.montTitle}>
-            {tTime(currentDate.toISOString(), 'EEEE, LLLL dd yyyy')}
-          </Text>
-        </View>
-        <CircleButton
-          imgUrl={icons['today-calendar.png']}
-          onPress={onDayView}
-          style={[styles.today, theme.shadows.dark]}
-        />
-        {/* day, 3days, week, month */}
-      </View>
-    </View>
-  );
-
   const renderMonthHeader = ({ locale }: CalendarHeaderForMonthViewProps) => {
     return (
       <View style={styles.headerContainer}>
         <View style={styles.buttonRow}>
           <CircleButton
-            imgUrl={icons['calendar.png']}
+            imgUrl={icons['today-calendar.png']}
             onPress={onMonthView}
             style={[styles.month, theme.shadows.dark]}
           />
@@ -228,6 +239,7 @@ const StatusAndNotesCalendar = () => {
       <Calendar
         date={currentDate}
         events={events}
+        // weekStartsOn={1}
         height={window.height - 80} // hight of header
         locale={currentLanguage}
         swipeEnabled={true}
@@ -235,23 +247,24 @@ const StatusAndNotesCalendar = () => {
         showAllDayEventCell={true}
         showAdjacentMonths={false}
         sortedMonthView={true}
-        isEventOrderingEnabled={false}
+        isEventOrderingEnabled={true}
         mode={mode}
-        moreLabel={t("more-events")}
-        onPressEvent={onPressEvent}
-        onChangeDate={onChangeDate}
+        onPressEvent={editEvent}
+        onChangeDate={updateDate}
         onPressCell={addEvent}
-        onPressMoreLabel={onMoreEventsPress}
-        renderHeader={renderWeekHeader}
+        moreLabel={t("more-events")}
+        onPressMoreLabel={displayMoreEventsModal}
+        // renderHeader={(allDayEvents) => renderWeekHeader(allDayEvents)}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
         calendarCellStyle={styles.calendarCellStyle}
-        calendarCellTextStyle={styles.calendarCellTextStyle}
-        eventCellStyle={styles.eventCellStyle}
+        calendarCellTextStyle={(date) => {
+          return timeService2.isSameDay(date, new Date()) ? styles.todayCalendarCellTextStyle : styles.calendarCellTextStyle
+        }}
+        eventCellStyle={(event) => {
+          return event.isFullDayEvent ? styles.fullDayEventCellStyle : styles.eventCellStyle;
+        }}
         hourStyle={styles.hourStyle}
-        overlapOffset={8} // sitas rodo kiek atitraukt nuo krasto eventams kurie persidengia. reikia patobulint sita
-
-
-        // onLongPressCell={addLongEvent}
+        onLongPressCell={displayMoreEventsModalOnLongPress}
 
         // theme={darkTheme}
         // dayHeaderStyle
@@ -270,10 +283,12 @@ const StatusAndNotesCalendar = () => {
     <View style={styles.container}>
       <SafeAreaView>
         <MoreEventsModal
-          data={oneDayEvents}
+          date={oneDayEventsDate == null ? new Date() : oneDayEventsDate}
+          events={oneDayEvents}
           isModalVisible={isMoreEventsModalVisible}
           onHideModal={closeMoreEventsModalWithStateCleanUp}
-          onItemPress={onPressEvent}
+          onItemPress={editEvent}
+          onBackgroundPress={() => addEvent(oneDayEventsDate == null ? new Date() : oneDayEventsDate)}
         />
         {renderAddOrUpdateModal()}
         {renderCalendar()}
@@ -355,10 +370,34 @@ const createStyles = (theme: AppTheme) => {
       // fontSize: 14,
       color: theme.colors.primary,
     },
-    eventCellStyle: {
+    todayCalendarCellTextStyle: {
+      // backgroundColor: theme.colors.canvas,
+      fontFamily: theme.fonts.bold,
+      // fontSize: 14,
+      color: theme.colors.exceptional,
+    },
+    fullDayEventCellStyle: {
+      backgroundColor: theme.colors.primary,
+      paddingBottom: 1,
+
+
       // borderWidth: 1,
       // borderColor: 'green',
+
+      // fontFamily: theme.fonts.medium,
+      // fontSize: 14,
+      // color: theme.colors.tertiary,
+      // padding: 0,
+      // margin: 0,
+    },
+    eventCellStyle: {
       backgroundColor: theme.colors.secondary,
+      paddingBottom: 1,
+
+
+      // borderWidth: 1,
+      // borderColor: 'green',
+
       // fontFamily: theme.fonts.medium,
       // fontSize: 14,
       // color: theme.colors.tertiary,

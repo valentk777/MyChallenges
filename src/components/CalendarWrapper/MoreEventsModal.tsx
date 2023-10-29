@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, useWindowDimensions, FlatList, TouchableOpacity, Image } from 'react-native';
 import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
@@ -9,14 +9,16 @@ import { useTranslation } from 'react-i18next';
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
 
 interface MoreEventsModalProps {
-  data: CustomCalendarEvent[];
+  date: Date;
+  events: CustomCalendarEvent[];
   isModalVisible: boolean;
   onHideModal: () => void;
   onItemPress: (item: CustomCalendarEvent) => void
+  onBackgroundPress: () => void
 }
 
 const MoreEventsModal = (props: MoreEventsModalProps) => {
-  const { data, isModalVisible, onHideModal, onItemPress } = props;
+  const { date, events, isModalVisible, onHideModal, onItemPress, onBackgroundPress } = props;
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -54,10 +56,18 @@ const MoreEventsModal = (props: MoreEventsModalProps) => {
   };
 
   return (
-    <BlackScreenModal isModalVisible={isModalVisible} onHideModal={onHideModal}>
+    <BlackScreenModal
+      isModalVisible={isModalVisible}
+      onHideModal={onHideModal}
+      onBackgroundPress={onBackgroundPress}
+    >
       <View style={{ ...styles.moreEventsModalContainer, width: window.width * 0.8, height: window.height * 0.8 }}>
+        <View style={styles.dateTextArea}>
+          <Text style={styles.dateText}>{tTime(date.toISOString(), 'LLL do, YYY')}</Text>
+
+        </View>
         <FlatList
-          data={data}
+          data={events}
           renderItem={({ item, index }) => renderItem(item, index)}
           keyExtractor={item => item.id}
           numColumns={1}
@@ -71,33 +81,25 @@ const MoreEventsModal = (props: MoreEventsModalProps) => {
 
 const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
-    moreEventsContainer: {
-      // flex: 1,
-      // top: 0,
-      // height: 250,
-      // width: 250,
-      // backgroundColor: 'green'
-      // justifyContent: 'center',
-      // alignItems: 'flex-start',
-      // borderStartColor: 'green',
+    dateTextArea: {
+      height: 40
+    },
+    dateText: {
+      fontSize: 15,
+      fontFamily: theme.fonts.bold,
+      color: theme.colors.canvas,
     },
     moreEventsModalContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 20,
-      // top: 0,
       padding: 20,
-      // flex: 0.8,
       backgroundColor: theme.colors.primary
     },
     moreEventsItemContainer: {
       flex: 1,
       height: 90,
       marginBottom: 10,
-      // borderTopColor: theme.colors.canvasInverted,
-      // borderTopWidth: 1,
-      // borderBottomColor: theme.colors.canvasInverted,
-      // borderBottomWidth: 1,
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: theme.colors.canvas,
@@ -124,18 +126,13 @@ const createStyles = (theme: AppTheme) => {
     title: {
       flex: 1,
       fontSize: 15,
-      // paddingLeft: 5,
       fontFamily: theme.fonts.medium,
       color: theme.colors.primary,
     },
     timeArea: {
       flex: 2,
       flexDirection: 'row',
-      // marginTop: 5,
-      // paddingLeft: 5,
       justifyContent: 'flex-start',
-
-      // backgroundColor: 'green'
     },
     time: {
       fontSize: 10,
