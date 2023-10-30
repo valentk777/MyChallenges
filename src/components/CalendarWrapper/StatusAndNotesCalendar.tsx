@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
 import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
@@ -98,8 +98,7 @@ const StatusAndNotesCalendar = () => {
       }
     }
 
-    // if we have case that all days is in the middle, then we have a bug.
-    
+    // NOTE: if we have case that all days is in the middle, then we have a bug.
     return new Date();
   }
 
@@ -195,11 +194,6 @@ const StatusAndNotesCalendar = () => {
     </View>
   );
 
-  const onDayView = () => {
-    setMode('day');
-    setCurrentDate(today);
-  }
-
   const onMonthView = () => {
     setMode('month');
     setCurrentDate(today);
@@ -219,11 +213,6 @@ const StatusAndNotesCalendar = () => {
               {tTime(currentDate.toISOString(), 'yyyy MMMM')}
             </Text>
           </View>
-          {/* <CircleButton
-            imgUrl={icons['today-calendar.png']}
-            onPress={onDayView}
-            style={[styles.today, theme.shadows.dark]}
-          /> */}
         </View>
         <View style={styles.weekDaysRow}>
           {[...hourPickerLocales[locale].dayNamesShort.slice(1, 7), hourPickerLocales[locale].dayNamesShort[0]].map((day, index) => (
@@ -235,13 +224,17 @@ const StatusAndNotesCalendar = () => {
   };
 
   const renderCalendar = () => (
-    <View style={styles.calendarContainer}>
+    <ScrollView style={styles.calendarContainer}>
       <Calendar
         date={currentDate}
         events={events}
-        // weekStartsOn={1}
         height={window.height - 80} // hight of header
         locale={currentLanguage}
+        onPressEvent={editEvent}
+        onChangeDate={updateDate}
+        onPressCell={addEvent}
+        moreLabel={t("more-events")}
+        onPressMoreLabel={displayMoreEventsModal}
         swipeEnabled={true}
         showTime={true}
         showAllDayEventCell={true}
@@ -249,11 +242,7 @@ const StatusAndNotesCalendar = () => {
         sortedMonthView={true}
         isEventOrderingEnabled={true}
         mode={mode}
-        onPressEvent={editEvent}
-        onChangeDate={updateDate}
-        onPressCell={addEvent}
-        moreLabel={t("more-events")}
-        onPressMoreLabel={displayMoreEventsModal}
+
         // renderHeader={(allDayEvents) => renderWeekHeader(allDayEvents)}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
         calendarCellStyle={styles.calendarCellStyle}
@@ -276,7 +265,7 @@ const StatusAndNotesCalendar = () => {
       // renderCustomDateForMonth={}
       // disableMonthEventCellPress={true}
       />
-    </View>
+    </ScrollView>
   );
 
   return (
@@ -339,7 +328,7 @@ const createStyles = (theme: AppTheme) => {
       color: theme.colors.tertiary,
     },
     calendarContainer: {
-      // backgroundColor: theme.colors.canvasInverted
+      backgroundColor: theme.colors.canvas
       // flex: 1,
     },
     headerContentStyle: {
