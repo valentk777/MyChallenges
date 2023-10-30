@@ -1,6 +1,6 @@
 {
   "name": "mychallenges",
-  "version": "1.0.52",
+  "version": "1.0.53",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
