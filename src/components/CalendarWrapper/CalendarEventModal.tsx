@@ -105,6 +105,7 @@ const CalendarEventModal = (props: CalendarEventModalProps) => {
           <CheckBox
             onValueChange={(newValue) => { setIsFullDayEvent(newValue) }}
             value={isFullDayEvent}
+            tintColors={styles.checkBoxTintColors}
           />
           <Text style={styles.checkBoxText}>{t("checkbox")}</Text>
         </View>
@@ -202,6 +203,10 @@ const createStyles = (theme: AppTheme) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
+    },
+    checkBoxTintColors: {
+      true: theme.colors.secondary,
+      false: theme.colors.secondary,
     },
     checkBoxText: {
       fontFamily: theme.fonts.regular,

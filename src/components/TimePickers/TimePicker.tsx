@@ -45,7 +45,7 @@ const TimePicker = (props: TimePickerProps) => {
       setStartDate(newDate);
       setEndDate(newDate);
       setIsStartModalVisible(false);
-      
+
       return;
     }
 
@@ -156,13 +156,16 @@ const TimePicker = (props: TimePickerProps) => {
               mode={Picker.MODE_DROPDOWN}
               numberOfLines={5}
               dropdownIconColor={theme.colors.tertiary}
-              itemStyle={styles.picker}
+              selectionColor={theme.colors.exceptional}
+              dropdownIconRippleColor={theme.colors.exceptional}
+              style={styles.picker}
             >
               {(disabled ? ["00:00"] : generateTime(0, 0)).map((time) => (
                 <Picker.Item
                   label={time}
                   value={time}
                   key={time}
+                  style={styles.pickerItem}
                 />
               ))}
             </Picker>
@@ -195,17 +198,21 @@ const TimePicker = (props: TimePickerProps) => {
           disabled ? (<View />) : (
             <View style={styles.pickerArea}>
               <Picker
-                selectedValue={timeService2.dateToLocalTimeString(endDate)}
-                onValueChange={handleEndTimeChange}
+                selectedValue={timeService2.dateToLocalTimeString(startDate)}
+                onValueChange={handleStartTimeChange}
                 mode={Picker.MODE_DROPDOWN}
                 numberOfLines={5}
-                itemStyle={styles.picker}
+                dropdownIconColor={theme.colors.tertiary}
+                selectionColor={theme.colors.exceptional}
+                dropdownIconRippleColor={theme.colors.exceptional}
+                style={styles.picker}
               >
                 {(disabled ? ["00:00"] : generateTimeOptions()).map((time) => (
                   <Picker.Item
                     label={time}
                     value={time}
                     key={time}
+                    style={styles.pickerItem}
                   />
                 ))}
               </Picker>
@@ -255,6 +262,12 @@ const createStyles = (theme: AppTheme) => {
       color: theme.colors.primary,
       backgroundColor: theme.colors.canvas,
       fontSize: 13,
+    },
+    pickerItem: {
+      color: theme.colors.primary,
+      backgroundColor: theme.colors.canvas,
+      fontSize: 13,
+      fontFamily: theme.fonts.regular,
     }
   });
 
