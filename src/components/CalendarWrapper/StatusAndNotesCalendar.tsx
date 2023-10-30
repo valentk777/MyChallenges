@@ -30,13 +30,11 @@ const StatusAndNotesCalendar = () => {
 
   const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
   const [isMoreEventsModalVisible, setIsMoreEventsModalVisible] = useState(false);
-
   const [mode, setMode] = useState<Mode>('month')
   const [currentDate, setCurrentDate] = useState(today);
   const [events, setEvents] = useState<CustomCalendarEvent[]>([])
   const [initialStartDate, setInitialStartDate] = useState(today);
   const [initialEndDate, setInitialEndDate] = useState(today);
-
   const [oneDayEventsDate, setOneDayEventsDate] = useState<Date | null>(null)
   const [oneDayEvents, setOneDayEvents] = useState<CustomCalendarEvent[]>([])
   const [selectedNote, setSelectedNote] = useState(null as Note | null);
@@ -99,7 +97,7 @@ const StatusAndNotesCalendar = () => {
     }
 
     // NOTE: if we have case that all days is in the middle, then we have a bug.
-    return new Date();
+    return today;
   }
 
   const displayMoreEventsModal = useCallback((moreEvents: CustomCalendarEvent[]) => {
@@ -226,44 +224,31 @@ const StatusAndNotesCalendar = () => {
   const renderCalendar = () => (
     <ScrollView style={styles.calendarContainer}>
       <Calendar
+        height={window.height - 80 - 149} // hight of header
+        // height={525} // hight of header
         date={currentDate}
         events={events}
-        height={window.height - 80} // hight of header
         locale={currentLanguage}
+        mode={mode}
         onPressEvent={editEvent}
         onChangeDate={updateDate}
         onPressCell={addEvent}
         moreLabel={t("more-events")}
         onPressMoreLabel={displayMoreEventsModal}
         swipeEnabled={true}
-        showTime={true}
-        showAllDayEventCell={true}
         showAdjacentMonths={false}
-        sortedMonthView={true}
         isEventOrderingEnabled={true}
-        mode={mode}
-
-        // renderHeader={(allDayEvents) => renderWeekHeader(allDayEvents)}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
-        calendarCellStyle={styles.calendarCellStyle}
-        calendarCellTextStyle={(date) => {
-          return timeService2.isSameDay(date, new Date()) ? styles.todayCalendarCellTextStyle : styles.calendarCellTextStyle
-        }}
         eventCellStyle={(event) => {
           return event.isFullDayEvent ? styles.fullDayEventCellStyle : styles.eventCellStyle;
         }}
-        hourStyle={styles.hourStyle}
+        calendarCellStyle={styles.calendarCellStyle}
+        calendarCellTextStyle={(date) => {
+          return timeService2.isSameDay(date, today) ? styles.todayCalendarCellTextStyle : styles.calendarCellTextStyle
+        }}
+        // calendarContainerStyle={{height: 525, backgroundColor: 'green'}}
+        // bodyContainerStyle={{height: 525}}
         onLongPressCell={displayMoreEventsModalOnLongPress}
-
-        // theme={darkTheme}
-        // dayHeaderStyle
-        // dayHeaderHighlightColor
-        // weekDayHeaderHighlightColor
-        // ampm={true} // ar rodyti 24 ar 12 val ant evento. tai manau, kad ant anglu reikia true
-      // renderEvent={renderEvent} // how event shgould be rendered
-      // eventMinHeightForMonthView
-      // renderCustomDateForMonth={}
-      // disableMonthEventCellPress={true}
       />
     </ScrollView>
   );
@@ -272,12 +257,12 @@ const StatusAndNotesCalendar = () => {
     <View style={styles.container}>
       <SafeAreaView>
         <MoreEventsModal
-          date={oneDayEventsDate == null ? new Date() : oneDayEventsDate}
+          date={oneDayEventsDate == null ? today : oneDayEventsDate}
           events={oneDayEvents}
           isModalVisible={isMoreEventsModalVisible}
           onHideModal={closeMoreEventsModalWithStateCleanUp}
           onItemPress={editEvent}
-          onBackgroundPress={() => addEvent(oneDayEventsDate == null ? new Date() : oneDayEventsDate)}
+          onBackgroundPress={() => addEvent(oneDayEventsDate == null ? today : oneDayEventsDate)}
         />
         {renderAddOrUpdateModal()}
         {renderCalendar()}
@@ -328,141 +313,35 @@ const createStyles = (theme: AppTheme) => {
       color: theme.colors.tertiary,
     },
     calendarContainer: {
-      backgroundColor: theme.colors.canvas
-      // flex: 1,
-    },
-    headerContentStyle: {
-      // flexDirection: 'row',
-      // justifyContent: 'center',
-      // alignItems: 'center',
-      // backgroundColor: 'green',
-      // fontFamily: theme.fonts.bold,
-      // fontSize: 18,
-      // color: theme.colors.secondary,
-    },
-    dayHeaderStyle: {
-      // marginLeft: 10,
-      // backgroundColor: '#f1f1f1',
-      // paddingVertical: 6,
-      // paddingHorizontal: 12,
-      // borderRadius: 12,
+      backgroundColor: theme.colors.canvas,
     },
     calendarCellStyle: {
-      // backgroundColor: theme.colors.canvas,
-      // borderCurve: 50,
-      // borderRadius: 5,
       borderColor: theme.colors.primary,
     },
     calendarCellTextStyle: {
-      // backgroundColor: theme.colors.canvas,
       fontFamily: theme.fonts.medium,
-      // fontSize: 14,
       color: theme.colors.primary,
     },
     todayCalendarCellTextStyle: {
-      // backgroundColor: theme.colors.canvas,
       fontFamily: theme.fonts.bold,
-      // fontSize: 14,
       color: theme.colors.exceptional,
     },
     fullDayEventCellStyle: {
       backgroundColor: theme.colors.primary,
       paddingBottom: 1,
-
-
-      // borderWidth: 1,
-      // borderColor: 'green',
-
-      // fontFamily: theme.fonts.medium,
-      // fontSize: 14,
-      // color: theme.colors.tertiary,
-      // padding: 0,
-      // margin: 0,
     },
     eventCellStyle: {
       backgroundColor: theme.colors.secondary,
       paddingBottom: 1,
-
-
-      // borderWidth: 1,
-      // borderColor: 'green',
-
-      // fontFamily: theme.fonts.medium,
-      // fontSize: 14,
-      // color: theme.colors.tertiary,
-      // padding: 0,
-      // margin: 0,
     },
     eventCellTextStyle: {
-      // borderWidth: 1,
-      // borderColor: 'green',
-      // backgroundColor: theme.colors.secondary,
       fontFamily: theme.fonts.medium,
       fontSize: 14,
       color: theme.colors.tertiary,
-      // padding: 0,
-      // margin: 0,
-    },
-    hourStyle: {
-      // justifyContent: 'center',
-      // fontFamily: theme.fonts.medium,
-      // fontSize: 14,
-      // color: theme.colors.secondary,
-    },
-    buttonContainer: {
-      // backgroundColor: '#f1f1f1',
-      // borderRadius: 10,
-      // paddingHorizontal: 15,
-      // paddingVertical: 5,
-    },
-    buttonContainerActive: {
-      // borderBottomColor: 'blue',
-      // borderBottomWidth: 3,
-    },
-    // buttonRow: {
-    //   flexDirection: 'row',
-    //   justifyContent: 'space-between',
-    //   // padding: 10,
-    // },
-    headline: {
-      // fontSize: 16,
     },
     modalAddOrUpdateContainer: {
       flex: 1,
     },
-
-    // calendarTheme: {
-    //   palette: {
-    //     primary: {
-    //       main: '#4caf50',
-    //       contrastText: '#fff',
-    //     },
-    //   },
-    //   eventCellOverlappings: [
-    //     {
-    //       main: '#17651a',
-    //       contrastText: '#fff',
-    //     },
-    //     {
-    //       main: '#08540b',
-    //       contrastText: '#fff',
-    //     },
-    //   ],
-
-    //   // arrowColor: theme.colors.canvasInverted,
-    //   // textDayFontFamily: theme.fonts.light,
-    //   // textMonthFontFamily: theme.fonts.bold,
-    //   // textDayHeaderFontFamily: theme.fonts.medium,
-    //   // textDayColor: theme.colors.primary,
-    //   // monthTextColor: theme.colors.primary,
-    //   // indicatorColor: theme.colors.primary,
-
-    //   // todayBackgroundColor: theme.colors.primary,
-    //   // todayTextColor: theme.colors.primary,
-    //   // backgroundColor: theme.colors.secondary,
-    //   // calendarBackground: theme.colors.secondary,
-
-    // } as DeepPartial<ThemeInterface>,
     eventInputArea: {
       top: 0,
       height: '50%',
