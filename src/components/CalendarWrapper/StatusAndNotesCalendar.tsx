@@ -230,6 +230,7 @@ const StatusAndNotesCalendar = () => {
         events={events}
         locale={currentLanguage}
         mode={mode}
+        weekStartsOn={1}
         onPressEvent={editEvent}
         onChangeDate={updateDate}
         onPressCell={addEvent}
