@@ -225,8 +225,8 @@ const StatusAndNotesCalendar = () => {
     event: T,
     touchableOpacityProps: CalendarTouchableOpacityProps,
   ) => (
-    <TouchableOpacity {...touchableOpacityProps}>
-      <Text style={styles.eventText}>{event.title}</Text>
+    <TouchableOpacity {...touchableOpacityProps} style={[touchableOpacityProps.style]}>
+      <Text style={styles.eventText} numberOfLines={3}>{event.title}</Text>
     </TouchableOpacity>
   )
 
@@ -282,6 +282,7 @@ const StatusAndNotesCalendar = () => {
         calendarCellTextStyle={(date) => {
           return timeService2.isSameDay(date, today) ? styles.todayCalendarCellTextStyle : styles.calendarCellTextStyle
         }}
+        maxVisibleEventCount={2}
         // calendarContainerStyle={{height: 525, backgroundColor: 'green'}}
         // bodyContainerStyle={{height: 525}}
         onLongPressCell={displayMoreEventsModalOnLongPress}
@@ -364,11 +365,17 @@ const createStyles = (theme: AppTheme) => {
     },
     fullDayEventCellStyle: {
       backgroundColor: theme.colors.primary,
-      paddingBottom: 1,
+      paddingBottom: 0,
+      marginBottom: 0,
+      minHeight: 15,
+      maxHeight: 40,
     },
     eventCellStyle: {
       backgroundColor: theme.colors.secondary,
-      paddingBottom: 1,
+      paddingBottom: 0,
+      marginBottom: 0,
+      minHeight: 15,
+      maxHeight: 40,
     },
     modalAddOrUpdateContainer: {
       flex: 1,
@@ -381,8 +388,13 @@ const createStyles = (theme: AppTheme) => {
     },
     eventText: {
       fontFamily: theme.fonts.light,
-      fontSize: 10,
+      fontSize: 9,
       color: theme.colors.canvas,
+      padding: 0,
+      margin: 0,
+      lineHeight: 10,
+      minHeight: 15,
+      maxHeight: 40,
     },
 
   });
