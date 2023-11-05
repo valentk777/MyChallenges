@@ -94,6 +94,15 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
   return setUtcTimeToDate(date1, 0, 0).getTime() == setUtcTimeToDate(date2, 0, 0).getTime()
 }
 
+const getUTCThisMonthFirstDayDate = (date: Date): Date => {
+  const thisMonthFirstDay = new Date(date);
+  thisMonthFirstDay.setUTCDate(1);
+  thisMonthFirstDay.setUTCHours(0, 0, 0, 0);
+
+  return thisMonthFirstDay;
+}
+
+
 // const getLocalCurrentTimestamp = (): number => {
 //   return Date.now();
 // };
@@ -202,6 +211,8 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
 //   return nextDay;
 // };
 
+
+
 const timeService2 = {
   // getLocalCurrentTimestamp,
   // getLocalCurrentDayTimestamp,
@@ -221,6 +232,7 @@ const timeService2 = {
   getNextDayDate,
   getNextUtcDayDate,
   isSameDay,
+  getUTCThisMonthFirstDayDate,
 };
 
 export default timeService2;

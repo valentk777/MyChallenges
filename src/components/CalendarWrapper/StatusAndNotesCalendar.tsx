@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
@@ -8,7 +8,7 @@ import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
 import calendarEventService from '../../services/calendarEventService';
-import { Calendar, CalendarHeaderForMonthViewProps, DateRangeHandler, Mode } from 'react-native-big-calendar';
+import { Calendar, CalendarHeaderForMonthViewProps, CalendarTouchableOpacityProps, DateRangeHandler, EventRenderer, ICalendarEventBase, Mode } from 'react-native-big-calendar';
 import { useTranslations } from '../../hooks/useTranslations';
 import { CircleButton } from '../ButtonWrapper/CircleButton';
 import { icons } from '../../assets';
@@ -61,7 +61,7 @@ const StatusAndNotesCalendar = () => {
   const updateDate: DateRangeHandler = useCallback(([, end]) => {
     setCurrentDate(end)
   }, [])
-
+  
   const addEvent = useCallback(
     (start: Date) => {
 
@@ -221,6 +221,40 @@ const StatusAndNotesCalendar = () => {
     )
   };
 
+  const renderEvent = <T extends CustomCalendarEvent>(
+    event: T,
+    touchableOpacityProps: CalendarTouchableOpacityProps,
+  ) => (
+    <TouchableOpacity {...touchableOpacityProps}>
+      <Text style={styles.eventText}>{event.title}</Text>
+    </TouchableOpacity>
+  )
+
+
+  // const renderEvent: EventRenderer = ({
+  //   touchableOpacityProps,
+  //   event,
+  //   showTime = true,
+  //   textColor,
+  //   ampm,
+  // }: any) => {
+  //   console.log(event);
+
+
+  //   // const eventTimeStyle = { fontSize: theme.typography.xs.fontSize, color: textColor }
+  //   // const eventTitleStyle = { fontSize: theme.typography.sm.fontSize, color: textColor }
+
+  //   return (
+  //     <TouchableOpacity {...touchableOpacityProps}>
+  //         <Text 
+  //         // style={eventTitleStyle}
+  //         >{event.title}
+  //         </Text>
+  //         {event.children && event.children}
+  //   </TouchableOpacity>
+  //   )
+  // };
+
   const renderCalendar = () => (
     <ScrollView style={styles.calendarContainer}>
       <Calendar
@@ -234,10 +268,11 @@ const StatusAndNotesCalendar = () => {
         onPressEvent={editEvent}
         onChangeDate={updateDate}
         onPressCell={addEvent}
+        renderEvent={renderEvent}
         moreLabel={t("more-events")}
         onPressMoreLabel={displayMoreEventsModal}
         swipeEnabled={true}
-        showAdjacentMonths={false}
+        showAdjacentMonths={true}
         isEventOrderingEnabled={true}
         renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
         eventCellStyle={(event) => {
@@ -335,11 +370,6 @@ const createStyles = (theme: AppTheme) => {
       backgroundColor: theme.colors.secondary,
       paddingBottom: 1,
     },
-    eventCellTextStyle: {
-      fontFamily: theme.fonts.medium,
-      fontSize: 14,
-      color: theme.colors.tertiary,
-    },
     modalAddOrUpdateContainer: {
       flex: 1,
     },
@@ -348,7 +378,13 @@ const createStyles = (theme: AppTheme) => {
       height: '50%',
       width: '100%',
       position: 'absolute',
-    }
+    },
+    eventText: {
+      fontFamily: theme.fonts.light,
+      fontSize: 10,
+      color: theme.colors.canvas,
+    },
+
   });
 
   return styles;
