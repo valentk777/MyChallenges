@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
@@ -8,14 +8,10 @@ import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
 import calendarEventService from '../../services/calendarEventService';
-import { Calendar, CalendarHeaderForMonthViewProps, CalendarTouchableOpacityProps, DateRangeHandler, EventRenderer, ICalendarEventBase, Mode } from 'react-native-big-calendar';
-import { useTranslations } from '../../hooks/useTranslations';
-import { CircleButton } from '../ButtonWrapper/CircleButton';
-import { icons } from '../../assets';
-import { useTranslation } from 'react-i18next';
-import { hourPickerLocales } from '../../external/i18next/translations/hourPickerLocales';
+import { DateRangeHandler } from 'react-native-big-calendar';
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
 import MoreEventsModal from './MoreEventsModal';
+import { MyCalendar } from '../_NewCalendar/MyCalendar';
 
 const today = new Date();
 
@@ -23,14 +19,8 @@ const StatusAndNotesCalendar = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const { t } = useTranslation('status-calendar-screen');
-  const { currentLanguage, tTime } = useTranslations();
-
-  const window = useWindowDimensions();
-
   const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
   const [isMoreEventsModalVisible, setIsMoreEventsModalVisible] = useState(false);
-  const [mode, setMode] = useState<Mode>('month')
   const [currentDate, setCurrentDate] = useState(today);
   const [events, setEvents] = useState<CustomCalendarEvent[]>([])
   const [initialStartDate, setInitialStartDate] = useState(today);
@@ -49,7 +39,7 @@ const StatusAndNotesCalendar = () => {
 
       setEvents(events);
     });
-  }, [isAddOrUpdateModalVisible, theme, mode]);
+  }, [isAddOrUpdateModalVisible, theme]);
 
   const editEvent = useCallback((event: CustomCalendarEvent) => {
     const selectedEvent = events.filter(_event => _event.id === event.id)[0];
@@ -61,22 +51,14 @@ const StatusAndNotesCalendar = () => {
   const updateDate: DateRangeHandler = useCallback(([, end]) => {
     setCurrentDate(end)
   }, [])
-  
+
   const addEvent = useCallback(
     (start: Date) => {
 
-      if (mode == 'month') {
-        const updateFullDayDate = timeService2.setUtcTimeToDate(start, 0, 0);
+      const updateFullDayDate = timeService2.setUtcTimeToDate(start, 0, 0);
 
-        setInitialStartDate(updateFullDayDate);
-        setInitialEndDate(updateFullDayDate);
-      }
-      else {
-        const updateFullDayDate = timeService2.setLocalTimeToDate(start, start.getHours(), start.getMinutes());
-
-        setInitialStartDate(updateFullDayDate);
-        setInitialEndDate(timeService2.addMinutes(updateFullDayDate, 30));
-      }
+      setInitialStartDate(updateFullDayDate);
+      setInitialEndDate(updateFullDayDate);
 
       setIsAddOrUpdateModalVisible(true);
     }, [events, setEvents])
@@ -192,102 +174,22 @@ const StatusAndNotesCalendar = () => {
     </View>
   );
 
-  const onMonthView = () => {
-    setMode('month');
+  const onToday = () => {
     setCurrentDate(today);
   }
 
-  const renderMonthHeader = ({ locale }: CalendarHeaderForMonthViewProps) => {
-    return (
-      <View style={styles.headerContainer}>
-        <View style={styles.buttonRow}>
-          <CircleButton
-            imgUrl={icons['today-calendar.png']}
-            onPress={onMonthView}
-            style={[styles.month, theme.shadows.dark]}
-          />
-          <View style={styles.montTitleArea}>
-            <Text style={styles.montTitle}>
-              {tTime(currentDate.toISOString(), 'yyyy MMMM')}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.weekDaysRow}>
-          {[...hourPickerLocales[locale].dayNamesShort.slice(1, 7), hourPickerLocales[locale].dayNamesShort[0]].map((day, index) => (
-            <Text key={day} style={styles.dayNameShortText}>{t(day)}</Text>
-          ))}
-        </View>
-      </View>
-    )
-  };
-
-  const renderEvent = <T extends CustomCalendarEvent>(
-    event: T,
-    touchableOpacityProps: CalendarTouchableOpacityProps,
-  ) => (
-    <TouchableOpacity {...touchableOpacityProps} style={[touchableOpacityProps.style]}>
-      <Text style={styles.eventText} numberOfLines={3}>{event.title}</Text>
-    </TouchableOpacity>
-  )
-
-
-  // const renderEvent: EventRenderer = ({
-  //   touchableOpacityProps,
-  //   event,
-  //   showTime = true,
-  //   textColor,
-  //   ampm,
-  // }: any) => {
-  //   console.log(event);
-
-
-  //   // const eventTimeStyle = { fontSize: theme.typography.xs.fontSize, color: textColor }
-  //   // const eventTitleStyle = { fontSize: theme.typography.sm.fontSize, color: textColor }
-
-  //   return (
-  //     <TouchableOpacity {...touchableOpacityProps}>
-  //         <Text 
-  //         // style={eventTitleStyle}
-  //         >{event.title}
-  //         </Text>
-  //         {event.children && event.children}
-  //   </TouchableOpacity>
-  //   )
-  // };
-
   const renderCalendar = () => (
-    <ScrollView style={styles.calendarContainer}>
-      <Calendar
-        height={window.height - 80 - 149} // hight of header
-        // height={525} // hight of header
-        date={currentDate}
-        events={events}
-        locale={currentLanguage}
-        mode={mode}
-        weekStartsOn={1}
-        onPressEvent={editEvent}
-        onChangeDate={updateDate}
-        onPressCell={addEvent}
-        renderEvent={renderEvent}
-        moreLabel={t("more-events")}
-        onPressMoreLabel={displayMoreEventsModal}
-        swipeEnabled={true}
-        showAdjacentMonths={true}
-        isEventOrderingEnabled={true}
-        renderHeaderForMonthView={(locale) => renderMonthHeader(locale)}
-        eventCellStyle={(event) => {
-          return event.isFullDayEvent ? styles.fullDayEventCellStyle : styles.eventCellStyle;
-        }}
-        calendarCellStyle={styles.calendarCellStyle}
-        calendarCellTextStyle={(date) => {
-          return timeService2.isSameDay(date, today) ? styles.todayCalendarCellTextStyle : styles.calendarCellTextStyle
-        }}
-        maxVisibleEventCount={2}
-        // calendarContainerStyle={{height: 525, backgroundColor: 'green'}}
-        // bodyContainerStyle={{height: 525}}
-        onLongPressCell={displayMoreEventsModalOnLongPress}
-      />
-    </ScrollView>
+    <MyCalendar
+      events={events}
+      date={currentDate}
+      weekStartsOn={1}
+      onToday={onToday}
+      onChangeDate={updateDate}
+      onPressCell={addEvent}
+      onLongPressCell={displayMoreEventsModalOnLongPress}
+      onPressEvent={editEvent}
+      onPressMoreLabel={displayMoreEventsModal}
+    />
   );
 
   return (
@@ -313,70 +215,6 @@ const createStyles = (theme: AppTheme) => {
     container: {
       flex: 1,
     },
-    headerContainer: {
-      height: 80,
-      backgroundColor: theme.colors.primary
-    },
-    buttonRow: {
-      height: 55,
-      width: '100%',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    montTitleArea: {
-      justifyContent: 'center',
-      alignContent: 'center',
-    },
-    montTitle: {
-      fontFamily: theme.fonts.medium,
-      fontSize: 18,
-      color: theme.colors.tertiary,
-    },
-    today: {
-      right: 15,
-      top: 10,
-    },
-    month: {
-      left: 15,
-      top: 10,
-    },
-    weekDaysRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    dayNameShortText: {
-      fontFamily: theme.fonts.medium,
-      fontSize: 14,
-      color: theme.colors.tertiary,
-    },
-    calendarContainer: {
-      backgroundColor: theme.colors.canvas,
-    },
-    calendarCellStyle: {
-      borderColor: theme.colors.primary,
-    },
-    calendarCellTextStyle: {
-      fontFamily: theme.fonts.medium,
-      color: theme.colors.primary,
-    },
-    todayCalendarCellTextStyle: {
-      fontFamily: theme.fonts.bold,
-      color: theme.colors.exceptional,
-    },
-    fullDayEventCellStyle: {
-      backgroundColor: theme.colors.primary,
-      paddingBottom: 0,
-      marginBottom: 0,
-      minHeight: 15,
-      maxHeight: 40,
-    },
-    eventCellStyle: {
-      backgroundColor: theme.colors.secondary,
-      paddingBottom: 0,
-      marginBottom: 0,
-      minHeight: 15,
-      maxHeight: 40,
-    },
     modalAddOrUpdateContainer: {
       flex: 1,
     },
@@ -386,17 +224,6 @@ const createStyles = (theme: AppTheme) => {
       width: '100%',
       position: 'absolute',
     },
-    eventText: {
-      fontFamily: theme.fonts.light,
-      fontSize: 9,
-      color: theme.colors.canvas,
-      padding: 0,
-      margin: 0,
-      lineHeight: 10,
-      minHeight: 15,
-      maxHeight: 40,
-    },
-
   });
 
   return styles;

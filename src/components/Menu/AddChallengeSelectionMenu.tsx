@@ -159,7 +159,7 @@ const createStyles = (theme: AppTheme) => {
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: 'rgba(0,0,0,0.7)'
+      backgroundColor: 'rgba(0, 0, 0, 0.7)'
     },
     space: {
       // this space allow buttons to grow on a screen when I add new ones

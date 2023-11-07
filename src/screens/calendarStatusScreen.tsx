@@ -38,7 +38,7 @@ const createStyles = (theme: AppTheme) => {
       colors: [theme.colors.primary, theme.colors.secondary, theme.colors.primary]
     },
     section: {
-      backgroundColor: theme.colors.canvas
+      // backgroundColor: theme.colors.canvas
     },
     text: {
       fontSize: 20,
