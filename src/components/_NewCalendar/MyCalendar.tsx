@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useTheme } from '../../hooks/useTheme'
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent'
@@ -8,16 +8,9 @@ import { AppTheme } from '../../styles/themeModels'
 import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
 import screenConstants from '../../constants/constants'
 
-
-export type DateRangeHandler = ([start, end]: [Date, Date]) => void
-export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
-
 export interface CalendarContainerProps {
   events: CustomCalendarEvent[]
   date: Date
-  weekStartsOn?: WeekNum
-  onToday: () => void
-  onChangeDate: DateRangeHandler
   onPressCell: (date: Date) => void
   onLongPressCell: (date: Date) => void
   onPressEvent: (event: CustomCalendarEvent) => void
@@ -27,9 +20,6 @@ export interface CalendarContainerProps {
 const _CalendarContainer = ({
   events,
   date,
-  weekStartsOn = 0,
-  onToday,
-  onChangeDate,
   onPressCell,
   onLongPressCell,
   onPressEvent,
@@ -38,95 +28,42 @@ const _CalendarContainer = ({
 
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const [targetDate, setTargetDate] = useState(dayjs(date))
 
-
-  // const window = useWindowDimensions();
-
-  // const getDatesInMonth = (date: Date | dayjs.Dayjs = new Date())=>  {
-  //   const subject = dayjs(date)
-  //   const days = Array(subject.daysInMonth())
-  //     .fill(0)
-  //     .map((_, i) => {
-  //       return subject.date(i + 1).locale(currentLanguage)
-  //     })
-  //   return days
-  // }
-
-  const [initialDate, setTargetDate] = React.useState(dayjs(date))
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (date) {
       setTargetDate(dayjs(date))
     }
-  }, [date])
+    console.log("_CalendarContainer");
+    console.log(events.length);
+  }, [date, events])
 
-  // const allDayEvents = React.useMemo(
-  //   () => events.filter((event) => event.isFullDayEvent),
-  //   [events],
-  // )
+  const onToday = () => {
+    setTargetDate(dayjs(date))
+  }
 
-  // const daytimeEvents = React.useMemo(
-  //   () => events.filter((event) => !event.isFullDayEvent),
-  //   [events],
-  // )
-
-  // const getDateRange = React.useCallback(
-  //   (date: dayjs.Dayjs) => {
-  //     return getDatesInMonth(date)
-  //   },
-  //   [currentLanguage, weekStartsOn],
-  // )
-
-  // const cellHeight = React.useMemo(
-  //   () => Math.max(height - 30, MIN_HEIGHT) / 24,
-  //   [height],
-  // )
-
-  // const onSwipeHorizontal = React.useCallback(
-  //   (direction: HorizontalDirection) => {
-  //     if (!swipeEnabled) {
-  //       return
-  //     }
-  //     let nextTargetDate: dayjs.Dayjs
-  //     if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-  //       nextTargetDate = targetDate.add(modeToNum('month', targetDate), 'day')
-  //     } else {
-  //       nextTargetDate = targetDate.add(targetDate.date() * -1, 'day')
-  //     }
-  //     setTargetDate(nextTargetDate)
-  //     if (onChangeDate) {
-  //       const nextDateRange = getDateRange(nextTargetDate)
-  //       onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
-  //     }
-  //   },
-  //   [swipeEnabled, targetDate, getDateRange, onChangeDate],
-  // )
-
-  // const commonProps = {
-  //   cellHeight,
-  //   dateRange: getDateRange(targetDate),
-  //   onPressEvent,
-  // }
+  const onChangeDate = (date: dayjs.Dayjs) => {
+    setTargetDate(date);
+  }
 
   return (
     <View style={styles.constainer}>
       <View style={styles.calendarHeader}>
-      <CalendarHeaderForMonthView
-        onToday={onToday}
-        currentDate={date}
-      />
+        <CalendarHeaderForMonthView
+          onToday={onToday}
+          currentDate={targetDate.toDate()}
+        />
       </View>
       <View style={styles.calendarBody}>
-      <CalendarBodyForMonthView
-        events={events}
-        initialDate={initialDate}
-        weekStartsOn={weekStartsOn}
-        // onChangeDate={onChangeDate}
-        onPressCell={onPressCell}
-        onLongPressCell={onLongPressCell}
-        onPressEvent={onPressEvent}
-        onPressMoreLabel={onPressMoreLabel}
-      />
+        <CalendarBodyForMonthView
+          events={events}
+          targetDate={targetDate}
+          onChangeDate={onChangeDate}
+          onPressCell={onPressCell}
+          onLongPressCell={onLongPressCell}
+          onPressEvent={onPressEvent}
+          onPressMoreLabel={onPressMoreLabel}
+        />
       </View>
     </View>
   )
@@ -148,4 +85,5 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export const MyCalendar = React.memo(_CalendarContainer)
+// export const MyCalendar = memo(_CalendarContainer)
+export const MyCalendar = _CalendarContainer

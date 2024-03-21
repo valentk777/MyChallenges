@@ -1,12 +1,11 @@
-import inRange from 'lodash/inRange';
-import debounce from 'lodash/debounce';
-import noop from 'lodash/noop';
-
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react';
 import { ScrollViewProps } from 'react-native';
 import { DataProvider, LayoutProvider, RecyclerListView, RecyclerListViewProps } from 'recyclerlistview';
 import constants from '../../constants/constants';
 import { useCombinedRefs } from '../../hooks/useCombinedRefs';
+import inRange from 'lodash/inRange';
+import debounce from 'lodash/debounce';
+import noop from 'lodash/noop';
 
 const dataProviderMaker = (items: string[]) => new DataProvider((item1, item2) => item1 !== item2).cloneWithRows(items);
 

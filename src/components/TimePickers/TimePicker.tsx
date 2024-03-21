@@ -134,7 +134,7 @@ const TimePicker = (props: TimePickerProps) => {
         onDayPress={onStartDayUpdated}
         hideCalendar={() => setIsStartModalVisible(false)}
         isModalVisible={isStartModalVisible}
-        currentDate={CalendarUtils.getCalendarDateString(startDate)}
+        currentDate={timeService2.dateToLocalTimeString(startDate)}
         minDate={undefined}
       />
       <View style={styles.textImput}>

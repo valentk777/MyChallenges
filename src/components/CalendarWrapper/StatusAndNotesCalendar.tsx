@@ -8,7 +8,6 @@ import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
 import calendarEventService from '../../services/calendarEventService';
-import { DateRangeHandler } from 'react-native-big-calendar';
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
 import MoreEventsModal from './MoreEventsModal';
 import { MyCalendar } from '../_NewCalendar/MyCalendar';
@@ -21,7 +20,6 @@ const StatusAndNotesCalendar = () => {
 
   const [isAddOrUpdateModalVisible, setIsAddOrUpdateModalVisible] = useState(false);
   const [isMoreEventsModalVisible, setIsMoreEventsModalVisible] = useState(false);
-  const [currentDate, setCurrentDate] = useState(today);
   const [events, setEvents] = useState<CustomCalendarEvent[]>([])
   const [initialStartDate, setInitialStartDate] = useState(today);
   const [initialEndDate, setInitialEndDate] = useState(today);
@@ -37,6 +35,8 @@ const StatusAndNotesCalendar = () => {
         return [calendarEventService.noteToEvent(note)];
       });
 
+      console.log("events updated");
+      console.log(events.length);
       setEvents(events);
     });
   }, [isAddOrUpdateModalVisible, theme]);
@@ -48,20 +48,19 @@ const StatusAndNotesCalendar = () => {
     setIsAddOrUpdateModalVisible(true);
   }, [events])
 
-  const updateDate: DateRangeHandler = useCallback(([, end]) => {
-    setCurrentDate(end)
-  }, [])
+  // const addEvent = useCallback(
+  const addEvent = (start: Date) => {
+      console.log("Add event");
+      console.log(start);
 
-  const addEvent = useCallback(
-    (start: Date) => {
+      // const updateFullDayDate = timeService2.setLocalTimeToDate(start, 0, 0);
+      // console.log(updateFullDayDate);
 
-      const updateFullDayDate = timeService2.setUtcTimeToDate(start, 0, 0);
-
-      setInitialStartDate(updateFullDayDate);
-      setInitialEndDate(updateFullDayDate);
+      setInitialStartDate(start);
+      setInitialEndDate(start);
 
       setIsAddOrUpdateModalVisible(true);
-    }, [events, setEvents])
+    };
 
 
   const findIntersectDate = (moreEvents: CustomCalendarEvent[]) => {
@@ -70,8 +69,6 @@ const StatusAndNotesCalendar = () => {
       if (element.isFullDayEvent) {
         return element.start;
       }
-
-      console.log(timeService2.setUtcTimeToDate(element.start, 0, 0));
 
       if (timeService2.isSameDay(element.start, element.end)) {
         return timeService2.setUtcTimeToDate(element.start, 0, 0);
@@ -126,7 +123,6 @@ const StatusAndNotesCalendar = () => {
     }
 
     if (isMoreEventsModalVisible) {
-
       const leftOneDayEvents = oneDayEvents.filter(e => e.id !== note.id);
       let updatedNotes = [...leftOneDayEvents, calendarEventService.noteToEvent(note)];
       updatedNotes = updatedNotes.sort((a, b) => a.timeCreated.getTime() - b.timeCreated.getTime());
@@ -148,7 +144,6 @@ const StatusAndNotesCalendar = () => {
     await notesService.removeNote(note.id);
 
     if (isMoreEventsModalVisible) {
-
       const updatedNotes = oneDayEvents.filter(e => e.id !== note.id);
 
       setOneDayEvents(updatedNotes);
@@ -174,17 +169,10 @@ const StatusAndNotesCalendar = () => {
     </View>
   );
 
-  const onToday = () => {
-    setCurrentDate(today);
-  }
-
   const renderCalendar = () => (
     <MyCalendar
       events={events}
-      date={currentDate}
-      weekStartsOn={1}
-      onToday={onToday}
-      onChangeDate={updateDate}
+      date={today}
       onPressCell={addEvent}
       onLongPressCell={displayMoreEventsModalOnLongPress}
       onPressEvent={editEvent}

@@ -38,7 +38,7 @@
 
 ## Start an app
 
-`npx react-native start`
+`npx react-native start --reset-cache`
 `npm run android`
 
 ## Rename bundle

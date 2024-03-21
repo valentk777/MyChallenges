@@ -1,3 +1,4 @@
+import React, { memo } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import { useTheme } from '../../hooks/useTheme'
 import { AppTheme } from '../../styles/themeModels'
@@ -6,9 +7,6 @@ import { CircleButton } from '../ButtonWrapper/CircleButton'
 import { icons } from '../../assets'
 import { hourPickerLocales } from '../../external/i18next/translations/hourPickerLocales'
 import { useTranslation } from 'react-i18next'
-import React from 'react'
-
-export type WeekNum = 0 | 1 | 2 | 3 | 4 | 5 | 6
 
 export interface CalendarHeaderForMonthViewProps {
   onToday: () => void;
@@ -85,4 +83,5 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export const CalendarHeaderForMonthView = React.memo(_CalendarHeaderForMonthView)
+// export const CalendarHeaderForMonthView = memo(_CalendarHeaderForMonthView)
+export const CalendarHeaderForMonthView = _CalendarHeaderForMonthView

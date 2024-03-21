@@ -38,23 +38,23 @@ export const UserScreen = () => {
 
 
   const handleCameraPress = () => {
-    launchCamera({ mediaType: 'photo' }, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        user.profilePictureURL = response.assets[0].uri;
-        userService.updateUserPicture(user);
-        setForceUpdate(prev => prev + 1);
-      }
-    });
+    // launchCamera({ mediaType: 'photo' }, (response) => {
+    //   if (response.assets && response.assets.length > 0) {
+    //     user.profilePictureURL = response.assets[0].uri;
+    //     userService.updateUserPicture(user);
+    //     setForceUpdate(prev => prev + 1);
+    //   }
+    // });
   };
 
   const handleGalleryPress = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        user.profilePictureURL = response.assets[0].uri;
-        userService.updateUserPicture(user);
-        setForceUpdate(prev => prev + 1);
-      }
-    });
+    // launchImageLibrary({ mediaType: 'photo' }, (response) => {
+    //   if (response.assets && response.assets.length > 0) {
+    //     user.profilePictureURL = response.assets[0].uri;
+    //     userService.updateUserPicture(user);
+    //     setForceUpdate(prev => prev + 1);
+    //   }
+    // });
   };
 
   const renderHeaderContainer = () => (
@@ -70,9 +70,9 @@ export const UserScreen = () => {
 
   const renderUserImageContainer = () => (
     <View style={styles.userImageArea}>
-      <View style={[styles.userImageShadowArea, theme.shadows.primary]}>
+      {/* <View style={[styles.userImageShadowArea, theme.shadows.primary]}>
         <Image key={forceUpdate} style={styles.userImage} source={{ uri: user.profilePictureURL }} />
-      </View>
+      </View> */}
       {/* <TouchableOpacity
       onPress={handleCameraPress}
       style={[styles.button, { left: 30 }]}

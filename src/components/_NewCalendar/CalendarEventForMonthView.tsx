@@ -1,82 +1,71 @@
+import React, { memo, useEffect, useMemo } from 'react'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
-import * as React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native'
 import { useTheme } from '../../hooks/useTheme'
 import { AppTheme } from '../../styles/themeModels'
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent'
+import constants from '../../constants/constants'
 
 dayjs.extend(duration)
 
+const CELL_WIDTH = constants.screenWidth / 7;
+
 interface CalendarEventProps {
   event: CustomCalendarEvent
-  onPressEvent?: (event: CustomCalendarEvent) => void
+  onPressEvent: (event: CustomCalendarEvent) => void
   date: dayjs.Dayjs
-  dayOfTheWeek: number
-  calendarWidth: number
 }
 
-export function getEventSpanningInfo(
-  event: CustomCalendarEvent,
-  date: dayjs.Dayjs,
-  dayOfTheWeek: number,
-  calendarWidth: number,
-  showAdjacentMonths: boolean,
-) {
-  const dayWidth = calendarWidth / 7;
-
-  // adding + 1 because durations start at 0
-  const eventDuration = Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(dayjs(event.start))).asDays()) + 1;
-  const eventDaysLeft = Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(date)).asDays()) + 1;
-  const weekDaysLeft = 7 - dayOfTheWeek;
-  const monthDaysLeft = date.endOf('month').date() - date.date();
-  // console.log(dayOfTheWeek === 0 && !showAdjacentMonths && monthDaysLeft < 7)
-  const isMultipleDays = eventDuration > 1;
-  // This is to determine how many days from the event to show during a week
-  const eventWeekDuration =
-    !showAdjacentMonths && monthDaysLeft < 7 && monthDaysLeft < eventDuration
-      ? monthDaysLeft + 1
-      : eventDaysLeft > weekDaysLeft
-      ? weekDaysLeft
-      : eventDaysLeft < eventDuration
-      ? eventDaysLeft
-      : eventDuration;
-  const isMultipleDaysStart =
-    isMultipleDays &&
-    (date.isSame(event.start, 'day') ||
-      (dayOfTheWeek === 0 && date.isAfter(event.start)) ||
-      (!showAdjacentMonths && date.get('date') === 1));
-  // - 6 to take in account the padding
-  const eventWidth = dayWidth * eventWeekDuration - 6;
-
-  return { eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
-}
-
-function _CalendarEventForMonthView({
+const _CalendarEventForMonthView = ({
   event,
   onPressEvent,
   date,
-  dayOfTheWeek,
-  calendarWidth,
-  // eventMinHeightForMonthView,
-}: CalendarEventProps) {
+}: CalendarEventProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
+  const getEventSpanningInfo = () => {
+    // adding + 1 because durations start at 0
+    const eventDuration = Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(dayjs(event.start))).asDays()) + 1;
+    const eventDaysLeft = Math.floor(dayjs.duration(dayjs(event.end).endOf('day').diff(date)).asDays()) + 1;
+    const dayOfTheWeek = (date.day() - 1) % 7;
+    const weekDaysLeft = 7 - dayOfTheWeek;
+    const isMultipleDays = eventDuration > 1;
+    const isMultipleDaysStart =
+      isMultipleDays && (date.isSame(event.start, 'day') || (dayOfTheWeek === 0 && date.isAfter(event.start)));
 
-  const   showAdjacentMonths = true;
+    const getEventWeekDuration = () => {
+      if (eventDaysLeft > weekDaysLeft) {
+        return weekDaysLeft;
+      }
 
+      if (eventDaysLeft < eventDuration) {
+        return eventDaysLeft;
+      }
 
-  const { 
+      return eventDuration;
+    }
+
+    // This is to determine how many days from the event to show during a week
+    const eventWeekDuration = getEventWeekDuration();
+
+    const eventWidth = CELL_WIDTH * eventWeekDuration; // - 6 to take in account the padding
+
+    return { dayOfTheWeek, eventWidth, isMultipleDays, isMultipleDaysStart, eventWeekDuration }
+  }
+
+  const {
+    dayOfTheWeek,
     eventWidth,
-     isMultipleDays, 
-    isMultipleDaysStart, 
+    isMultipleDays,
+    isMultipleDaysStart,
     eventWeekDuration
-   } = React.useMemo(
-    () => getEventSpanningInfo(event, date, dayOfTheWeek, calendarWidth, showAdjacentMonths),
-    [date, dayOfTheWeek, event, calendarWidth, showAdjacentMonths],
-  )
+  } = getEventSpanningInfo();
 
+  console.log("---------");
+  console.log(date);
+  console.log(dayOfTheWeek);
   console.log(eventWidth);
   console.log(isMultipleDays);
   console.log(isMultipleDaysStart);
@@ -84,27 +73,24 @@ function _CalendarEventForMonthView({
 
   return (
     <TouchableOpacity
-      style={{ minHeight: 16 }}
-      onPress={() => !event.disabled && onPressEvent?.(event)}
-      delayPressIn={20}
+      key={`${event.start.toISOString()}_${event.title}`}
+      style={{
+        ...styles.fullDayEventCellStyle,
+        left: dayOfTheWeek * CELL_WIDTH,
+        width: eventWidth,
+      }}
+      onPress={() => onPressEvent(event)}
     >
-      {(!isMultipleDays && date.isSame(event.start, 'day')) || (isMultipleDays && isMultipleDaysStart) 
-      ? (
+      {(!isMultipleDays && date.isSame(event.start, 'day')) || (isMultipleDays && isMultipleDaysStart)
+        ? (
           <TouchableOpacity
-          key={`${event.start.toISOString()}_${event.title}`}
-          delayPressIn={20}
-          style={[
-            // event.isFullDayEvent ? styles.fullDayEventCellStyle : styles.eventCellStyle,
-          // {left: 0, marginTop: 2,},
-          isMultipleDaysStart && eventWeekDuration > 1
-          ? {
-              backgroundColor: 'green',
-              position: 'relative',
-              width: eventWidth,
-              zIndex: 10000000000,
-            }
-          : {},
-          ]}
+            style={{
+              ...styles.eventCellStyle,
+              // width: eventWidth
+            }}
+            onPress={() => onPressEvent(event)}
+            // onPress={() => console.log(date)}
+
           >
             <Text
               style={styles.eventText}
@@ -114,41 +100,50 @@ function _CalendarEventForMonthView({
             </Text>
           </TouchableOpacity>
         )
-       : null
-       }
+        : null
+      }
     </TouchableOpacity>
   )
 }
 
 const createStyles = (theme: AppTheme) => {
   const styles = StyleSheet.create({
+
+
+
     eventText: {
       fontFamily: theme.fonts.light,
       fontSize: 9,
-      color: theme.colors.canvas,
-      padding: 0,
-      margin: 0,
-      lineHeight: 10,
+      color: theme.colors.primary,
+      // padding: 0,
+      // margin: 0,
+      // lineHeight: 10,
+      // backgroundColor: 'green'
       // minHeight: 10,
       // maxHeight: 40,
     },
     fullDayEventCellStyle: {
-      backgroundColor: theme.colors.primary,
-      paddingBottom: 0,
-      marginBottom: 0,
-      minHeight: 15,
-      maxHeight: 40,
+      backgroundColor: theme.colors.secondary,
+      minHeight: 16,
+      // paddingBottom: 0,
+      // marginBottom: 0,
+      // minHeight: 15,
+      // maxHeight: 40,
     },
     eventCellStyle: {
-      backgroundColor: theme.colors.secondary,
-      paddingBottom: 0,
-      marginBottom: 0,
-      minHeight: 15,
-      maxHeight: 40,
+      // backgroundColor: theme.colors.secondary,
+      backgroundColor: "red",
+      borderRadius: 2,
+
+      // paddingBottom: 0,
+      // marginBottom: 0,
+      // minHeight: 15,
+      // maxHeight: 40,
     },
   });
 
   return styles;
 };
 
-export const CalendarEventForMonthView = React.memo(_CalendarEventForMonthView)
+// export const CalendarEventForMonthView = memo(_CalendarEventForMonthView)
+export const CalendarEventForMonthView = _CalendarEventForMonthView
