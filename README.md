@@ -30,6 +30,12 @@
   <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347280.png' height="300" />
 </div>
 
+</br>
+</br>
+</br>
+
+# Development
+
 ## Tech stack:
 
 - Node.Js v18.14.0
