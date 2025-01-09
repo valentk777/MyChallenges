@@ -5,24 +5,29 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=valentk777_mychallenges&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=valentk777_mychallenges)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=valentk777_mychallenges&metric=bugs)](https://sonarcloud.io/summary/new_code?id=valentk777_mychallenges)
 
+
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![React native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
 <a href='https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker'>
   <img alt='Get it on Google Play' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/feature%20graphic.jpg'/>
 </a>
 
 ## What is this?
 <div align="left">
-  <img alt='Logo' src='https://github.com/valentk777/MyChallenges/blob/47448f395f81b3d20a8fd10ab8a4c36856161393/Design/logo-v2.png' height="100"  />
-  This is a mobile app with React Native for creating and tracking your challenges.
+  Discover a user-friendly app for tracking your journey to a healthier 🍏, more active lifestyle 🏋️‍♂️. From counting steps and event participation to detailed measurements like weight loss, our app offers several options. You can even create calendar-based challenges 📅 for regular exercise, healthy living habits, and better sleep 🛌. Stay motivated, achieve your goals, and live your best life with 'MyChallenges' app ✨
 </div>
 
 ## Screenshots
 
 <div align="center">
-  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347994.png' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347478.png' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347449.png' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347622.png' height="400" />
-  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347280.png' height="400" />
+  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347994.png' height="300" />
+  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347478.png' height="300" />
+  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347449.png' height="300" />
+  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347622.png' height="300" />
+  <img alt='screen' src='https://github.com/valentk777/MyChallenges/blob/a13b767cb0c3e90c112971bf98efb2ea90462474/Design/Screenshots%20-%20v2/Screenshot_1696347280.png' height="300" />
 </div>
 
 ## Tech stack:
