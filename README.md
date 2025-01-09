@@ -1,5 +1,5 @@
 # MyChallenges
-[![Build](https://github.com/valentk777/MyChallenges/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/valentk777/MyChallenges/actions/workflows/main.yml)
+[![Pipeline](https://github.com/valentk777/MyChallenges/actions/workflows/main.yml/badge.svg)](https://github.com/valentk777/MyChallenges/actions/workflows/main.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valentk777_mychallenges&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=valentk777_mychallenges)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=valentk777_mychallenges&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=valentk777_mychallenges)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=valentk777_mychallenges&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=valentk777_mychallenges)
@@ -7,7 +7,7 @@
 
 
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)
+[![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.baitupasaulis.challengetracker)
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![React native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
