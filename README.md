@@ -36,6 +36,7 @@
 
 # Development
 
+[!WARNING]
 ## Tech stack:
 
 - Node.Js v18.14.0
