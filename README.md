@@ -83,3 +83,37 @@ To release an application run this command under 'android' folder
 Bundle appears in ...\MyChallenges\android\app\build\outputs\bundle\release
 https://play.google.com/console/u/0/developers/6969098457648081136/app-list
 
+<!-- 
+
+NOTES:
+
+push notifications
+usage guidence (kqip nqudotis appsu)
+improve user menu.
+sudwti taskusius ant dienu kurios turi  eventus
+pridey kalendorinius challenge i kalendoriu. Kaip?
+prideti kalendoriuje opcija pamatyti viena dvi arba 3 dienas
+prodeti kalendoriuje opcija gristi i today
+prideti custom kalendoriaus dizaina
+prideti custom kalendoriaus itemus
+try to create phone widget pvz kalendorius per visa ekrana telefo neatidarius appso
+
+Check if there is a way to increase counting speed on longer press
+add option to upload image from picture
+add option to uoload image from file
+try to create more icons
+pabandyti integruoti google kalendorius arba exportuot visus challenges i excel ir store i failu sistema arba google drive. Taip apsimokant
+prideti galimybe ikelti savo nuotrauja
+prideti galimybe exportuoti info i kalendoriu i google kalendoriu?
+prideti animaciju
+sutvarkyti loading screen
+login with facebook. 
+rodyti skirtinga spalva taskus kurie jau yra pradeti arba baigti. Zalia geltona ir balta turbut?
+. Pvz svoris. Goal turi buti count
+padaryti paprasta float type pasirinkima kur galima per viena skaiciu po kablelio pakelinet count bet naudoti ta pati UI. Tiesiog esamame UI pridet nauja opcija (varnele) detailed true false. Kur jeigu true leidzia skaicius po kablelio. O quantity komponentas paspaudus prideda viena skaiciu po kablelio. O palaikius priededa po viena skaiciu pilna. 
+padaryti skaiciaus validacija / korekcija po to kai unselect challenge adde. Nes tada useris matys, ka pasirenka. Simple count 
+arba padaryti galimybe atidarius challenge count matyt ne plius minus, o galet irasyt data ir skaicij ir parodyt visa edit lista. Kada pvz kiek svere.. Goal pasiektas kad paskutinis irasas atitinka target. Ikonke butu kazkoks list itemas arba popierius su rasiklius nes siajp cia logas. Naujas tipaa butu Events log
+prideti opcija useriui pasikeisti kalba
+prideti lokale
+
+ -->
