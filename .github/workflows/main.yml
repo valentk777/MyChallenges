@@ -12,19 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the main GitHub branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: 'true'
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18.17
 
@@ -32,13 +32,13 @@ jobs:
         run: npm install
 
       - name: Cache Gradle Wrapper
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Cache Gradle Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
@@ -87,7 +87,7 @@ jobs:
           cp /home/runner/work/MyChallenges/MyChallenges/android/app/build/outputs/bundle/release/app-release.aab /home/runner/work/MyChallenges/MyChallenges/app-release.aab
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Signed MyChallenges v-${{ steps.package-version.outputs.current-version }}
           path: /home/runner/work/MyChallenges/MyChallenges/app-release.aab
