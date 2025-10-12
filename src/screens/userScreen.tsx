@@ -8,8 +8,6 @@ import { icons, logo } from '../assets';
 import { CircleButton } from '../components/ButtonWrapper/CircleButton';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import userService from '../services/userService';
 import { useTranslation } from 'react-i18next';
 import { useTranslations } from '../hooks/useTranslations';
 import ThemesList from '../components/ThemesList/ThemesList';
@@ -37,25 +35,25 @@ export const UserScreen = () => {
   // }, [user]);
 
 
-  const handleCameraPress = () => {
-    launchCamera({ mediaType: 'photo' }, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        user.profilePictureURL = response.assets[0].uri;
-        userService.updateUserPicture(user);
-        setForceUpdate(prev => prev + 1);
-      }
-    });
-  };
+  // const handleCameraPress = () => {
+  //   launchCamera({ mediaType: 'photo' }, (response) => {
+  //     if (response.assets && response.assets.length > 0) {
+  //       user.profilePictureURL = response.assets[0].uri;
+  //       userService.updateUserPicture(user);
+  //       setForceUpdate(prev => prev + 1);
+  //     }
+  //   });
+  // };
 
-  const handleGalleryPress = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.assets && response.assets.length > 0) {
-        user.profilePictureURL = response.assets[0].uri;
-        userService.updateUserPicture(user);
-        setForceUpdate(prev => prev + 1);
-      }
-    });
-  };
+  // const handleGalleryPress = () => {
+  //   launchImageLibrary({ mediaType: 'photo' }, (response) => {
+  //     if (response.assets && response.assets.length > 0) {
+  //       user.profilePictureURL = response.assets[0].uri;
+  //       userService.updateUserPicture(user);
+  //       setForceUpdate(prev => prev + 1);
+  //     }
+  //   });
+  // };
 
   const renderHeaderContainer = () => (
     <View style={styles.headerContainer}>

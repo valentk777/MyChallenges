@@ -47,7 +47,7 @@ const getAllChallenges = async () => {
 };
 
 const getChallengeById = (challenges: Challenge[], challengeId: string) => {
-  if (challenges.length == 0) {
+  if (challenges.length === 0) {
     return null;
   }
 

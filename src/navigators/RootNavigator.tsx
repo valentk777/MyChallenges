@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import AuthStackNavigator from "./AuthStackNavigator"
-import MainStackNavigator from "./MainStackNavigator";
+import AuthStackNavigator, { AuthStackParamList } from "./AuthStackNavigator"
+import MainStackNavigator, { MainStackParamList } from "./MainStackNavigator";
 import { useAuth } from "../hooks/useAuth";
 import { Keyboard } from "react-native";
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  SplashScreen: {};
-  AuthStack: {};
-  MainStack: {};
+  SplashScreen: undefined;
+  AuthStack: NavigatorScreenParams<AuthStackParamList>;
+  MainStack: NavigatorScreenParams<MainStackParamList>;
 };
 
 const Root = createNativeStackNavigator<RootStackParamList>()
@@ -18,7 +19,7 @@ const RootNavigator = () => {
 
   useEffect(() => {
     setAppState();
-  }, [state])
+  }, [state]);
 
   const setAppState = async () => {
     if (state.isAuthenticated) {

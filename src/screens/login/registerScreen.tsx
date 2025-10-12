@@ -14,7 +14,6 @@ type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'RegisterS
 
 export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const window = useWindowDimensions();
-
     const { theme } = useTheme();
     const styles = createStyles(theme);
 
@@ -24,7 +23,7 @@ export const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const [password, setPassword] = useState("");
 
     const handleSignIn = () => {
-        navigation.navigate("SingInScreen", {});
+        navigation.navigate("SignInScreen");
     }
 
     const handleRegisterButton = () => {

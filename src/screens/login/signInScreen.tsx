@@ -10,9 +10,9 @@ import { LoginUser } from '../../entities/user';
 import { icons, logo } from '../../assets';
 import { SignInButton } from '../../components/ButtonWrapper/SignInButton';
 
-type SingInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SingInScreen'>;
+type SignInScreenProps = NativeStackScreenProps<AuthStackParamList, 'SignInScreen'>;
 
-export const SingInScreen = ({ navigation }: SingInScreenProps) => {
+export const SignInScreen = ({ navigation }: SignInScreenProps) => {
   const window = useWindowDimensions();
 
   const { theme } = useTheme();
@@ -24,7 +24,7 @@ export const SingInScreen = ({ navigation }: SingInScreenProps) => {
   const [password, setPassword] = useState("");
 
   const handleRegistration = () => {
-    navigation.navigate("RegisterScreen", {});
+    navigation.navigate("RegisterScreen");
   }
 
   const handleSignInButton = () => {
@@ -283,4 +283,4 @@ const createStyles = (theme: AppTheme) => {
   return styles;
 };
 
-export default SingInScreen;
+export default SignInScreen;

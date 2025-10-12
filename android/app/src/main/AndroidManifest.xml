@@ -1,9 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- <uses-permission android:name="android.permission.health.READ_DISTANCE"/> -->
-    <!-- <uses-permission android:name="android.permission.health.READ_EXERCISE"/> -->
-    <!-- <uses-permission android:name="android.permission.health.READ_STEPS"/> -->
 
     <application
       android:name=".MainApplication"
@@ -11,7 +8,9 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:usesCleartextTraffic="${usesCleartextTraffic}"
+      android:supportsRtl="true">
       <meta-data
         android:name="com.baitupasaulis.challengetracker"
         android:value="Valentinas Kaminskas" />
@@ -24,11 +23,8 @@
         android:screenOrientation="portrait"
         android:exported="true">
         <intent-filter>
-          <action android:name="android.intent.action.MAIN" />
-          <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        <intent-filter>
-          <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
     </application>

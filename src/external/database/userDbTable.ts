@@ -1,47 +1,66 @@
-import firestore from '@react-native-firebase/firestore';
-import {AppResponse} from '../../entities/appResponse';
-import {UserAccount} from '../../entities/user';
+import { getApp } from '@react-native-firebase/app';
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from '@react-native-firebase/firestore';
+import { AppResponse } from '../../entities/appResponse';
+import { UserAccount } from '../../entities/user';
 import timeService from '../../services/timeService';
 
-export const usersRef = firestore().collection('users');
+export type UserDoc = UserAccount & {
+  lastOnlineTimestamp: string;
+  profilePictureURL?: string | null;
+};
 
-export const addNewUser = async (user: UserAccount) => {
-  const dataWithOnlineStatus = {
+const db = getFirestore(getApp());
+const usersCollection = collection(db, 'users');
+
+export const addNewUser = async (user: UserAccount): Promise<AppResponse> => {
+  const dataWithOnlineStatus: UserDoc = {
     ...user,
     lastOnlineTimestamp: timeService.getCurrentDateString(),
   };
 
   try {
-    await usersRef.doc(user.id).set(dataWithOnlineStatus, {merge: true});
-    return {isSuccessfull: true, result: dataWithOnlineStatus} as AppResponse;
+    const userDocRef = doc(usersCollection, user.id);
+    await setDoc(userDocRef, dataWithOnlineStatus, { merge: true });
+
+    return { isSuccessfull: true, result: dataWithOnlineStatus, error: null };
   } catch (error) {
     console.log(error);
-    return {isSuccessfull: false, error: error} as AppResponse;
+    return { isSuccessfull: false, result: null, error };
   }
 };
 
-export const updateUser = async (user: UserAccount) => {
-  const dataWithOnlineStatus = {
+export const updateUser = async (user: UserAccount): Promise<AppResponse> => {
+  const dataWithOnlineStatus: Partial<UserDoc> = {
     ...user,
     lastOnlineTimestamp: timeService.getCurrentDateString(),
   };
 
   try {
-    await usersRef.doc(user.id).update(dataWithOnlineStatus);
+    const userDocRef = doc(usersCollection, user.id);
+    await updateDoc(userDocRef, dataWithOnlineStatus);
 
-    return {isSuccessfull: true} as AppResponse;
+    return { isSuccessfull: true, result: null, error: null };
   } catch (error) {
     console.log(error);
-    
-    return {isSuccessfull: false, error: error} as AppResponse;
+    return { isSuccessfull: false, result: null, error };
   }
 };
 
-export const getUserByID = async (userID: string) => {
+export const getUserByID = async (
+  userID: string,
+): Promise<UserAccount | null> => {
   try {
-    const document = await usersRef.doc(userID).get();
+    const userDocRef = doc(usersCollection, userID);
+    const document = await getDoc<UserDoc>(userDocRef);
 
-    if (document?.exists) {
+    if (document.exists()) {
       return document.data() as UserAccount;
     }
 
@@ -55,13 +74,14 @@ export const getUserByID = async (userID: string) => {
 export const updateProfilePhoto = async (
   userID: string,
   profilePictureURL: string,
-) => {
+): Promise<{ success?: boolean; error?: unknown }> => {
   try {
-    await usersRef.doc(userID).update({profilePictureURL: profilePictureURL});
-    return {success: true};
+    const userDocRef = doc(usersCollection, userID);
+    await updateDoc(userDocRef, { profilePictureURL });
+    return { success: true };
   } catch (error) {
     console.log(error);
-    return {error: error};
+    return { error };
   }
 };
 

@@ -4,7 +4,6 @@ import userService from './userService';
 import notesDbTable from '../external/database/notesDbTable';
 import uuid from 'react-native-uuid';
 import {Note} from '../entities/note';
-import timeService2 from './timeService2';
 
 const initNotesList = async (userId: string) => {
   const response = await notesDbTable.getNotes(userId);
@@ -46,7 +45,7 @@ const getAllNotes = async () => {
 };
 
 const getNoteById = (notes: Note[], noteId: string) => {
-  if (notes.length == 0) {
+  if (notes.length === 0) {
     return null;
   }
 

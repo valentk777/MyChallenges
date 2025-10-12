@@ -37,10 +37,10 @@ const MoreEventsModal = (props: MoreEventsModalProps) => {
               <Text style={styles.title}>{event.title}</Text>
             </View>
             <View style={[styles.timeArea, { alignItems: 'flex-end' }]}>
-              <Text style={styles.time}>{event.isFullDayEvent ? t("full-day-event") : tTime(event.start.toISOString(), 'HH:ss, LLL do, YYY')}</Text>
+              <Text style={styles.time}>{event.isFullDayEvent ? t("full-day-event") : tTime(event.start.toISOString(), 'HH:ss, LLL do, yyy')}</Text>
             </View>
             <View style={[styles.timeArea, { alignItems: 'flex-start' }]}>
-              <Text style={styles.time}>{event.isFullDayEvent ? "" : tTime(event.end.toISOString(), 'HH:ss, LLL do, YYY')}</Text>
+              <Text style={styles.time}>{event.isFullDayEvent ? "" : tTime(event.end.toISOString(), 'HH:ss, LLL do, yyy')}</Text>
             </View>
           </View>
           <View style={styles.arrowArea}>
@@ -63,7 +63,7 @@ const MoreEventsModal = (props: MoreEventsModalProps) => {
     >
       <View style={{ ...styles.moreEventsModalContainer, width: window.width * 0.8, height: window.height * 0.8 }}>
         <View style={styles.dateTextArea}>
-          <Text style={styles.dateText}>{tTime(date.toISOString(), 'LLL do, YYY')}</Text>
+          <Text style={styles.dateText}>{tTime(date.toISOString(), 'LLL do, yyy')}</Text>
 
         </View>
         <FlatList

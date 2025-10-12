@@ -86,7 +86,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
       const result = await challengesService.storeChallenge(challenge);
 
       if (result) {
-        navigation.navigate('ChallengesScreen');
+        navigation.navigate('HomeTab', { screen: 'ChallengesScreen' });
       }
     }
     catch (exception) {
@@ -101,7 +101,7 @@ export const AddTotalCounterChallengeScreen = ({ navigation, route }: AddTotalCo
       </View>
       <CircleButton
         imgUrl={icons["back-arrow.png"]}
-        onPress={() => navigation.navigate('ChallengesScreen')}
+        onPress={() => navigation.navigate('HomeTab', { screen: 'ChallengesScreen' })}
         style={styles.backCircle}
       />
     </View>

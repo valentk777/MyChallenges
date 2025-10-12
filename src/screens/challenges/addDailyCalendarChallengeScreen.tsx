@@ -1,10 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert, useWindowDimensions, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Alert,
+  useWindowDimensions,
+  TouchableOpacity,
+} from 'react-native';
 import { SaveButton } from '../../components/ButtonWrapper/SaveButton';
 import { useTheme } from '../../hooks/useTheme';
 import { AppTheme } from '../../styles/themeModels';
-import LinearGradient from 'react-native-linear-gradient'
+import LinearGradient from 'react-native-linear-gradient';
 import { MainStackParamList } from '../../navigators/MainStackNavigator';
 import challengesService from '../../services/challengesService';
 import { useHeaderHeight } from '@react-navigation/elements';
@@ -14,13 +22,18 @@ import ImageSwapper from '../../components/ImageSwapper/ImageSwapper';
 import { SvgComponents } from '../../assets/svgIndex';
 import { DailyCalendarChallenge } from '../../entities/challenge';
 import timeService from '../../services/timeService';
-import { Theme } from 'react-native-calendars/src/types';
 import { useTranslation } from 'react-i18next';
 import PickerCalendar from '../../components/CalendarWrapper/PickerCalendar';
 
-type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<MainStackParamList, 'AddDailyCalendarChallengeScreen'>;
+type AddDailyCalendarChallengeScreenProps = NativeStackScreenProps<
+  MainStackParamList,
+  'AddDailyCalendarChallengeScreen'
+>;
 
-export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyCalendarChallengeScreenProps) => {
+export const AddDailyCalendarChallengeScreen = ({
+  navigation,
+  route,
+}: AddDailyCalendarChallengeScreenProps) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -32,16 +45,36 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const [isStartModalVisible, setIsStartModalVisible] = useState(false);
   const [isEndModalVisible, setIsEndModalVisible] = useState(false);
 
-  const [title, onChangeTitleText] = useState(originalChallenge?.title != null ? originalChallenge.title : '');
-  const [description, onChangeDescriptionText] = useState(originalChallenge?.description != null ? originalChallenge.description : '');
-  const [targetValue, onChangeTargetValueText] = useState(originalChallenge?.targetValue != null ? originalChallenge.targetValue.toString() : '');
-  const [imageLocation, setCurrentImageLocation] = useState(originalChallenge?.image != null ? originalChallenge.image : SvgComponents[0].location);
+  const [title, onChangeTitleText] = useState(
+    originalChallenge?.title != null ? originalChallenge.title : '',
+  );
+  const [description, onChangeDescriptionText] = useState(
+    originalChallenge?.description != null ? originalChallenge.description : '',
+  );
+  const [targetValue, onChangeTargetValueText] = useState(
+    originalChallenge?.targetValue != null
+      ? originalChallenge.targetValue.toString()
+      : '',
+  );
+  const [imageLocation, setCurrentImageLocation] = useState(
+    originalChallenge?.image != null
+      ? originalChallenge.image
+      : SvgComponents[0].location,
+  );
 
-  const [startDate, setStartDate] = useState(originalChallenge?.startDate != null ? originalChallenge.startDate : timeService.getCurrentDayString());
-  const [endDate, setEndDate] = useState(originalChallenge?.endDate != null ? originalChallenge.endDate : '');
-  const [numberOfDays, setNumberOfDays] = useState(timeService.dateDiffInDays(new Date(startDate), new Date(endDate)));
+  const [startDate, setStartDate] = useState(
+    originalChallenge?.startDate != null
+      ? originalChallenge.startDate
+      : timeService.getCurrentDayString(),
+  );
+  const [endDate, setEndDate] = useState(
+    originalChallenge?.endDate != null ? originalChallenge.endDate : '',
+  );
+  const [numberOfDays, setNumberOfDays] = useState(
+    timeService.dateDiffInDays(new Date(startDate), new Date(endDate)),
+  );
 
-  const { t } = useTranslation('add-daily-calendar-challenge-screen')
+  const { t } = useTranslation('add-daily-calendar-challenge-screen');
 
   const showStartCalendar = () => {
     setIsStartModalVisible(true);
@@ -59,11 +92,11 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     setIsEndModalVisible(false);
   };
 
-  const onStartDayPress = (day) => {
+  const onStartDayPress = (day: any) => {
     const _startDate = new Date(day.dateString);
     const _endDate = new Date(endDate);
 
-    if (endDate !== "" && _startDate > _endDate) {
+    if (endDate !== '' && _startDate > _endDate) {
       return;
     }
 
@@ -72,7 +105,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     hideStartCalendar();
   };
 
-  const onEndDayPress = (day) => {
+  const onEndDayPress = day => {
     const _startDate = new Date(startDate);
     const _endDate = new Date(day.dateString);
 
@@ -90,10 +123,16 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   };
 
   const createOrUpdateChallenge = () => {
-
     const targetValueInt = parseInt(targetValue, 10);
 
-    const challengeCandidate = challengesService.createNewChallenge(title, description, 0, targetValueInt, imageLocation, challengeType) as DailyCalendarChallenge;
+    const challengeCandidate = challengesService.createNewChallenge(
+      title,
+      description,
+      0,
+      targetValueInt,
+      imageLocation,
+      challengeType,
+    ) as DailyCalendarChallenge;
 
     if (challengeCandidate == null) {
       return null;
@@ -107,19 +146,22 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     }
 
     if (targetValueInt > numberOfDays) {
-      Alert.alert("Target value cannot be bigger than number of days");
+      Alert.alert('Target value cannot be bigger than number of days');
       return null;
     }
 
-    if (endDate === "") {
-      Alert.alert("End date cannot be empty");
+    if (endDate === '') {
+      Alert.alert('End date cannot be empty');
       return null;
     }
 
     challengeCandidate.startDate = startDate;
     challengeCandidate.endDate = endDate;
 
-    let datesCompleted = originalChallenge?.datesCompleted != null ? originalChallenge.datesCompleted : [];
+    let datesCompleted =
+      originalChallenge?.datesCompleted != null
+        ? originalChallenge.datesCompleted
+        : [];
 
     datesCompleted = datesCompleted.filter(
       date => startDate <= date && date <= endDate,
@@ -129,7 +171,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     challengeCandidate.currentValue = datesCompleted.length;
 
     return challengeCandidate;
-  }
+  };
 
   const onSave = async () => {
     try {
@@ -142,15 +184,15 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
       const result = await challengesService.storeChallenge(challenge);
 
       if (result) {
-        navigation.navigate('ChallengesScreen');
+        navigation.navigate('HomeTab', { screen: 'ChallengesScreen' });
       }
-    }
-    catch (exception) {
+    } catch (exception) {
+      console.log(exception);
       return false;
     }
-  }
+  };
 
-  const setNumericValueOrDefault = (value: string, setValueFunction) => {
+  const setNumericValueOrDefault = (value: string, setValueFunction: any) => {
     const defaultNumbericValue = '0';
     const numericValue = parseInt(value, 10);
 
@@ -159,16 +201,19 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
     } else {
       setValueFunction(defaultNumbericValue);
     }
-  }
+  };
 
   const renderHeaderContainer = () => (
     <View style={styles.imageArea}>
       <View style={styles.imageSwapper}>
-        <ImageSwapper onImageChange={handleImageChange} initialImageLocation={imageLocation} />
+        <ImageSwapper
+          onImageChange={handleImageChange}
+          initialImageLocation={imageLocation}
+        />
       </View>
       <CircleButton
-        imgUrl={icons["back-arrow.png"]}
-        onPress={() => navigation.navigate('ChallengesScreen')}
+        imgUrl={icons['back-arrow.png']}
+        onPress={() => navigation.navigate('HomeTab', { screen: 'ChallengesScreen' })}
         style={styles.backCircle}
       />
     </View>
@@ -177,10 +222,10 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const renderInputContainer = () => (
     <View style={styles.textArea}>
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("title")}</Text>
+        <Text style={styles.text}>{t('title')}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder={t("title-placeholder")}
+          placeholder={t('title-placeholder')}
           onChangeText={onChangeTitleText}
           value={title}
           placeholderTextColor={theme.colors.secondary}
@@ -202,34 +247,42 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
       />
 
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("start-date")}</Text>
+        <Text style={styles.text}>{t('start-date')}</Text>
         <TouchableOpacity onPress={showStartCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{startDate || t("start-date-placeholder")}</Text>
+          <Text style={styles.dateText}>
+            {startDate || t('start-date-placeholder')}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("end-date")}</Text>
+        <Text style={styles.text}>{t('end-date')}</Text>
         <TouchableOpacity onPress={showEndCalendar} style={styles.textbox}>
-          <Text style={styles.dateText}>{endDate || t("end-date-placeholder")}</Text>
+          <Text style={styles.dateText}>
+            {endDate || t('end-date-placeholder')}
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("target-value", { numberOfDays: numberOfDays })}</Text>
+        <Text style={styles.text}>
+          {t('target-value', { numberOfDays: numberOfDays })}
+        </Text>
         <TextInput
           style={styles.textbox}
-          placeholder={t("target-value-placeholder")}
+          placeholder={t('target-value-placeholder')}
           onChangeText={onChangeTargetValueText}
-          onBlur={() => setNumericValueOrDefault(targetValue, onChangeTargetValueText)}
+          onBlur={() =>
+            setNumericValueOrDefault(targetValue, onChangeTargetValueText)
+          }
           value={targetValue}
           keyboardType="numeric"
           placeholderTextColor={theme.colors.secondary}
         />
       </View>
       <View style={styles.textImput}>
-        <Text style={styles.text}>{t("description")}</Text>
+        <Text style={styles.text}>{t('description')}</Text>
         <TextInput
           style={styles.textbox}
-          placeholder={t("description-placeholder")}
+          placeholder={t('description-placeholder')}
           onChangeText={onChangeDescriptionText}
           value={description}
           placeholderTextColor={theme.colors.secondary}
@@ -242,7 +295,7 @@ export const AddDailyCalendarChallengeScreen = ({ navigation, route }: AddDailyC
   const renderSaveContainer = () => (
     <View style={styles.saveContainer}>
       <SaveButton
-        title={t("save")}
+        title={t('save')}
         onPress={async () => onSave()}
         isRoundTop={true}
       />
@@ -303,7 +356,7 @@ const createStyles = (theme: AppTheme) => {
       height: '80%',
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      backgroundColor: theme.colors.canvas
+      backgroundColor: theme.colors.canvas,
     },
     imageArea: {
       flex: 1,

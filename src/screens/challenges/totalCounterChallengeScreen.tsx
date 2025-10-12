@@ -32,31 +32,31 @@ export const TotalCounterChallengeScreen = ({ route, navigation }: TotalCounterC
     setCount(value);
   }
 
-  const updateChallengeStatus = (challenge: TotalCounterChallenge) => {
-    const percentage = challengesService.getPercentage(challenge.currentValue, challenge.initialValue, challenge.targetValue);
+  const updateChallengeStatus = (_challenge: TotalCounterChallenge) => {
+    const percentage = challengesService.getPercentage(_challenge.currentValue, _challenge.initialValue, _challenge.targetValue);
 
     if (percentage >= 100) {
-      challenge.status = ProgressStatus.Completed;
+      _challenge.status = ProgressStatus.Completed;
     }
     else if (percentage > 0) {
-      challenge.status = ProgressStatus.InProgress;
+      _challenge.status = ProgressStatus.InProgress;
     }
     else {
-      challenge.status = ProgressStatus.NotStarted;
+      _challenge.status = ProgressStatus.NotStarted;
     }
 
-    return challenge;
+    return _challenge;
   }
 
-  const onSave = async (challenge: TotalCounterChallenge, newCount: number, navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
-    challenge.currentValue = newCount;
-    challenge.lastTimeUpdated = timeService.getCurrentDateString();
-    challenge = updateChallengeStatus(challenge);
+  const onSave = async (_challenge: TotalCounterChallenge, _newCount: number, _navigation: NativeStackNavigationProp<MainStackParamList, "TotalCounterChallengeScreen", undefined>) => {
+    _challenge.currentValue = _newCount;
+    _challenge.lastTimeUpdated = timeService.getCurrentDateString();
+    _challenge = updateChallengeStatus(_challenge);
 
-    const result = await challengesService.storeChallenge(challenge);
+    const result = await challengesService.storeChallenge(_challenge);
 
     if (result) {
-      navigation.goBack();
+      _navigation.goBack();
     }
   }
 

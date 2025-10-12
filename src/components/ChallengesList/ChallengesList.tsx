@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, Alert, FlatList, RefreshControl, SafeAreaView, StyleSheet, View } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { AppTheme } from '../../styles/themeModels';
 import { Challenge } from '../../entities/challenge';
 import { PressableTile } from '../Tile/PressableTile';
-import { HomeStackParamList } from '../../navigators/MenuTabNavigator';
 import { ChallengeFilteringOptions } from '../../entities/challengeFilters';
 import { ProgressStatus } from '../../entities/progressStatus';
 import challengesService from '../../services/challengesService';
 import { ChallengeTypes } from '../../entities/challengeTypes';
 import { useTheme } from '../../hooks/useTheme';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MainStackParamList } from '../../navigators/MainStackNavigator';
 
-type ChallengesScreenProps = NativeStackScreenProps<HomeStackParamList, 'ChallengesScreen'>;
+type ChallengesNavigationProp = NativeStackNavigationProp<  MainStackParamList>;
 
 interface ChallengesListProps {
-  navigation: ChallengesScreenProps;
+  navigation: ChallengesNavigationProp;
   filteringOptions: ChallengeFilteringOptions;
 }
 
@@ -34,37 +42,39 @@ export const ChallengesList = (props: ChallengesListProps) => {
   }, [navigation]);
 
   const OnPressNavigate = (item: Challenge) => {
-    if (item.type === ChallengeTypes.TotalSimpleCounter || item.type === ChallengeTypes.TotalDetailedCounter) {
-      navigation.navigate('TotalCounterChallengeScreen', { challenge: item })
-    }
-    else if (item.type === ChallengeTypes.DailyBolleanCalendar) {
-      navigation.navigate('DailyCalendarChallengeScreen', { challenge: item })
-    }
-    else {
+    if (
+      item.type === ChallengeTypes.TotalSimpleCounter ||
+      item.type === ChallengeTypes.TotalDetailedCounter
+    ) {
+      navigation.navigate('TotalCounterChallengeScreen', { challenge: item });
+    } else if (item.type === ChallengeTypes.DailyBolleanCalendar) {
+      navigation.navigate('DailyCalendarChallengeScreen', { challenge: item });
+    } else {
       console.log(item.type);
     }
-  }
+  };
 
   const renderItem = (item: Challenge, index: number) => {
     return (
       <PressableTile
         title={item.title}
         challenge={item}
-        onPress={() => OnPressNavigate(item)} />
+        onPress={() => OnPressNavigate(item)}
+      />
     );
   };
 
   const filterData = (data: Challenge[]) => {
     if (filteringOptions === ChallengeFilteringOptions.OnlyFavorite) {
-      return data.filter((item) => item.favorite);
+      return data.filter(item => item.favorite);
     }
 
     if (filteringOptions === ChallengeFilteringOptions.OnlyCompleted) {
-      return data.filter((item) => item.status == ProgressStatus.Completed);
+      return data.filter(item => item.status == ProgressStatus.Completed);
     }
 
     return data;
-  }
+  };
 
   function toSorted(data: Challenge[]) {
     const sortedData = data.slice();
@@ -85,7 +95,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
     try {
       const challenges = await challengesService.getAllChallenges();
 
-      if (challenges.length == 0) {
+      if (challenges.length === 0) {
         setRefreshing(false);
         setDataSource([]);
         return;
@@ -96,7 +106,7 @@ export const ChallengesList = (props: ChallengesListProps) => {
       setDataSource(filteredData);
       setRefreshing(false);
     } catch (error) {
-      Alert.alert(`${error}`)
+      Alert.alert(`${error}`);
     }
   }
 
@@ -116,7 +126,11 @@ export const ChallengesList = (props: ChallengesListProps) => {
           numColumns={1}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 100, justifyContent: 'center', paddingBottom: 150 }}
+          contentContainerStyle={{
+            flexGrow: 100,
+            justifyContent: 'center',
+            paddingBottom: 150,
+          }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

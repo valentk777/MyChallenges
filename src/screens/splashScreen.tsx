@@ -1,14 +1,10 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { AppTheme } from '../styles/themeModels';
 import LinearGradient from 'react-native-linear-gradient'
-import { RootStackParamList } from '../navigators/RootNavigator';
 
-type SplashScreenProps = NativeStackScreenProps<RootStackParamList, 'SplashScreen'>;
-
-export const SplashScreen = ({ navigation }: SplashScreenProps) => {
+export const SplashScreen = () => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 

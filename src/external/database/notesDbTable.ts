@@ -1,74 +1,82 @@
-import firestore from '@react-native-firebase/firestore';
-import {AppResponse} from '../../entities/appResponse';
-import {Note} from '../../entities/note';
+import { getApp } from '@react-native-firebase/app';
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from '@react-native-firebase/firestore';
+import { AppResponse } from '../../entities/appResponse';
+import { Note } from '../../entities/note';
 import timeService from '../../services/timeService';
 
-export const notesRef = firestore().collection('notes');
+export type NoteDoc = {
+  notes: Note[];
+  lastTimeUpdated: string;
+};
 
-export const getNotes = async (userId: string) => {
+const db = getFirestore(getApp());
+const notesCollection = collection(db, 'notes');
+
+export const getNotes = async (userId: string): Promise<AppResponse> => {
   try {
-    let response = await notesRef.doc(userId).get();
+    const userDocRef = doc(notesCollection, userId);
+    const response = await getDoc<NoteDoc>(userDocRef);
 
-    if (response.exists) {
-      const notes = response.data()?.notes;
+    if (response.exists()) {
+      const data = response.data();
+      const notes = data?.notes ?? [];
 
-      if (notes === undefined) {
-        return {isSuccessfull: true, result: [] as Note[]} as AppResponse;
-      }
-
-      return {
-        isSuccessfull: true,
-        result: notes as Note[],
-      } as AppResponse;
+      return { isSuccessfull: true, result: notes, error: null };
     } else {
       await addNewDbNotes(userId);
-      
-      return {isSuccessfull: true, result: [] as Note[]} as AppResponse;
+      return { isSuccessfull: true, result: [], error: null };
     }
   } catch (error) {
     console.error(error);
-
-    return {isSuccessfull: false, error: error} as AppResponse;
+    return { isSuccessfull: false, result: null, error };
   }
 };
 
-export const addNewDbNotes = async (userId: string) => {
+export const addNewDbNotes = async (userId: string): Promise<AppResponse> => {
   try {
-    const dataWithOnlineStatus = {
-      notes: [] as Note[],
+    const newData: NoteDoc = {
+      notes: [],
       lastTimeUpdated: timeService.getCurrentDateString(),
     };
 
-    await notesRef.doc(userId).set(dataWithOnlineStatus, {merge: true});
+    const userDocRef = doc(notesCollection, userId);
+    await setDoc(userDocRef, newData, { merge: true });
 
-    return {isSuccessfull: true} as AppResponse;
+    return { isSuccessfull: true, result: null, error: null };
   } catch (error) {
     console.log(error);
-
-    return {isSuccessfull: false, error: error} as AppResponse;
+    return { isSuccessfull: false, result: null, error };
   }
 };
 
-export const updateDbStoredNotes = async (userId: string, notes: Note[]) => {
-  if (userId == undefined || userId === '' || userId == null) {
+export const updateDbStoredNotes = async (
+  userId: string,
+  notes: Note[],
+): Promise<AppResponse | void> => {
+  if (!userId) {
     console.log('Cannot save to remote database');
-
     return;
   }
 
-  const dataWithOnlineStatus = {
-    notes: notes,
+  const newData: NoteDoc = {
+    notes,
     lastTimeUpdated: timeService.getCurrentDateString(),
   };
 
   try {
-    await notesRef.doc(userId).update(dataWithOnlineStatus);
-
-    return {isSuccessfull: true} as AppResponse;
+    const userDocRef = doc(notesCollection, userId);
+    await updateDoc(userDocRef, newData);
+    return { isSuccessfull: true, result: null, error: null };
   } catch (error) {
     console.log(error);
-
-    return {isSuccessfull: false, error: error} as AppResponse;
+    return { isSuccessfull: false, result: null, error };
   }
 };
 

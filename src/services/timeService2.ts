@@ -91,7 +91,7 @@ const getNextUtcDayDate = (date: Date): Date => {
 };
 
 const isSameDay = (date1: Date, date2: Date): boolean => {
-  return setUtcTimeToDate(date1, 0, 0).getTime() == setUtcTimeToDate(date2, 0, 0).getTime()
+  return setUtcTimeToDate(date1, 0, 0).getTime() === setUtcTimeToDate(date2, 0, 0).getTime()
 }
 
 const getUTCThisMonthFirstDayDate = (date: Date): Date => {

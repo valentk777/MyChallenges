@@ -1,8 +1,7 @@
-import React from 'react';
-import AppContent from './src/AppContent';
-import { AuthProvider } from './src/hooks/useAuth';
-import { TranslationProvider } from './src/hooks/useTranslations';
-import { ThemeProvider } from './src/hooks/useTheme';
+import AppContent from "./src/AppContent";
+import { AuthProvider } from "./src/hooks/useAuth";
+import { ThemeProvider } from "./src/hooks/useTheme";
+import { TranslationProvider } from "./src/hooks/useTranslations";
 
 const App = () => {
   return (

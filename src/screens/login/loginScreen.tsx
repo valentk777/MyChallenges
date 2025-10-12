@@ -44,14 +44,14 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.register}
-            onPress={() => navigation.navigate('RegisterScreen', {})}
+            onPress={() => navigation.navigate('RegisterScreen')}
           >
             <Text style={styles.bottomText}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.signIn}
-            onPress={() => navigation.navigate('SingInScreen', {})}
+            onPress={() => navigation.navigate('SignInScreen')}
           >
             <Text style={{ ...styles.bottomText, color: theme.colors.canvas }}>Sign In</Text>
           </TouchableOpacity>

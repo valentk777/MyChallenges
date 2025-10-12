@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, useWindowDimensions, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, useWindowDimensions, ScrollView, TouchableOpacity } from 'react-native';
 import BlackScreenModal from '../Modals/BlackScreenModal';
 import { AppTheme } from '../../styles/themeModels';
 import { useTheme } from '../../hooks/useTheme';
@@ -8,7 +8,7 @@ import { Note } from '../../entities/note';
 import notesService from '../../services/notesService';
 import timeService2 from '../../services/timeService2';
 import calendarEventService from '../../services/calendarEventService';
-import { Calendar, CalendarHeaderForMonthViewProps, CalendarTouchableOpacityProps, DateRangeHandler, EventRenderer, ICalendarEventBase, Mode } from 'react-native-big-calendar';
+import { Calendar, CalendarHeaderForMonthViewProps, CalendarTouchableOpacityProps, DateRangeHandler, Mode } from 'react-native-big-calendar';
 import { useTranslations } from '../../hooks/useTranslations';
 import { CircleButton } from '../ButtonWrapper/CircleButton';
 import { icons } from '../../assets';
@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { hourPickerLocales } from '../../external/i18next/translations/hourPickerLocales';
 import { CustomCalendarEvent } from '../../entities/customCalendarEvent';
 import MoreEventsModal from './MoreEventsModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const today = new Date();
 

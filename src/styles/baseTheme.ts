@@ -1,4 +1,4 @@
-import {Fonts, Shadow, Shadows, Sizes} from './themeModels';
+import {Fonts, Sizes} from './themeModels';
 
 const sizes: Sizes = {
   small: 8,

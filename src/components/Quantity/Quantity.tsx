@@ -70,7 +70,7 @@ export const Quantity = (props: QuantityProps) => {
           />
         </TouchableWithoutFeedback>
       </View>
-      <View style={styles.verticleLine}></View>
+      <View style={styles.verticleLine} />
       <View style={styles.right}>
         <TouchableWithoutFeedback
           onPress={onShortIncreasePress}

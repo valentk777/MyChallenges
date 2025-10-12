@@ -40,12 +40,12 @@ interface TranslationContextProviderProps
 }
 
 const changeDatesInCalendar = (language: string) => {
-  LocaleConfig.locales['en'] = hourPickerLocales['en'];
-  LocaleConfig.locales['lt'] = hourPickerLocales['lt'];
-  LocaleConfig.locales['pt'] = hourPickerLocales['pt'];
-  LocaleConfig.locales['es'] = hourPickerLocales['es'];
-  LocaleConfig.locales['fr'] = hourPickerLocales['fr'];
-  LocaleConfig.locales['lv'] = hourPickerLocales['lv'];
+  LocaleConfig.locales.en = hourPickerLocales.en;
+  LocaleConfig.locales.lt = hourPickerLocales.lt;
+  LocaleConfig.locales.pt = hourPickerLocales.pt;
+  LocaleConfig.locales.es = hourPickerLocales.es;
+  LocaleConfig.locales.fr = hourPickerLocales.fr;
+  LocaleConfig.locales.lv = hourPickerLocales.lv;
 
   LocaleConfig.defaultLocale = language;
 }

@@ -1,21 +1,32 @@
-import React, { createNativeStackNavigator } from "@react-navigation/native-stack"
-import Menu from "./MenuTabNavigator"
-import AddTotalCounterChallengeScreen from "../screens/challenges/addTotalCounterChallengeScreen"
-import TotalCounterChallengeScreen from "../screens/challenges/totalCounterChallengeScreen"
-import { DailyCalendarChallenge, TotalCounterChallenge } from "../entities/challenge";
-import AddDailyCalendarChallengeScreen from "../screens/challenges/addDailyCalendarChallengeScreen";
-import DailyCalendarChallengeScreen from "../screens/challenges/dailyCalendarChallengeScreen";
-import { ChallengeTypes } from "../entities/challengeTypes";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Menu, { HomeStackParamList } from './MenuTabNavigator';
+import AddTotalCounterChallengeScreen from '../screens/challenges/addTotalCounterChallengeScreen';
+import TotalCounterChallengeScreen from '../screens/challenges/totalCounterChallengeScreen';
+import {
+  DailyCalendarChallenge,
+  TotalCounterChallenge,
+} from '../entities/challenge';
+import AddDailyCalendarChallengeScreen from '../screens/challenges/addDailyCalendarChallengeScreen';
+import DailyCalendarChallengeScreen from '../screens/challenges/dailyCalendarChallengeScreen';
+import { ChallengeTypes } from '../entities/challengeTypes';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type MainStackParamList = {
-  HomeTab: {};
-  AddTotalCounterChallengeScreen: { challengeType: ChallengeTypes, isDetailedCount: boolean, originalChallenge: TotalCounterChallenge | null };
+  HomeTab: NavigatorScreenParams<HomeStackParamList>;
+  AddTotalCounterChallengeScreen: {
+    challengeType: ChallengeTypes;
+    isDetailedCount: boolean;
+    originalChallenge: TotalCounterChallenge | null;
+  };
   TotalCounterChallengeScreen: { challenge: TotalCounterChallenge };
-  AddDailyCalendarChallengeScreen: { challengeType: ChallengeTypes, originalChallenge: DailyCalendarChallenge | null };
+  AddDailyCalendarChallengeScreen: {
+    challengeType: ChallengeTypes;
+    originalChallenge: DailyCalendarChallenge | null;
+  };
   DailyCalendarChallengeScreen: { challenge: DailyCalendarChallenge };
 };
 
-const MainStack = createNativeStackNavigator<MainStackParamList>()
+const MainStack = createNativeStackNavigator<MainStackParamList>();
 
 const MainStackNavigator = () => {
   return (
@@ -23,11 +34,9 @@ const MainStackNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="HomeTab">
-      <MainStack.Screen
-        name="HomeTab"
-        component={Menu}
-      />
+      initialRouteName="HomeTab"
+    >
+      <MainStack.Screen name="HomeTab" component={Menu} />
       <MainStack.Screen
         name="AddTotalCounterChallengeScreen"
         component={AddTotalCounterChallengeScreen}
@@ -45,7 +54,7 @@ const MainStackNavigator = () => {
         component={DailyCalendarChallengeScreen}
       />
     </MainStack.Navigator>
-  )
-}
+  );
+};
 
-export default MainStackNavigator
+export default MainStackNavigator;

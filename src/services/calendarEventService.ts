@@ -1,6 +1,6 @@
 import {CustomCalendarEvent} from '../entities/customCalendarEvent';
 import {Note} from '../entities/note';
-import timeService2 from './timeService2';
+// import timeService2 from './timeService2';
 
 const noteToEvent = (note: Note): CustomCalendarEvent => {
   return {
