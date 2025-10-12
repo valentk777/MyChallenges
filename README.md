@@ -45,7 +45,7 @@
 ## Setting up environment:
 - `npx react-native info`
 - `git lfs install` (used for large files)
-- Install Node.Js v18.17.0
+- Install Node.Js v22.20.0
 - Install Android studio
 
 ## Start an app
