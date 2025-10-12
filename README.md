@@ -59,7 +59,7 @@
 
 ## Versioning
 npm run version:up
-git add . && git commit -m 'release 1.0.X: increase versions and build numbers' && git push && git push origin --tags
+git add . && git commit -m 'release 1.1.X: increase versions and build numbers' && git push && git push origin --tags
 
 
 <!-- https://github.com/gustarus/react-native-version-up
